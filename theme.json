@@ -86,25 +86,25 @@
         },
         {
           "slug": "body",
-          "name": "Source Serif 4 (leipäteksti)",
-          "fontFamily": "'Source Serif 4', Georgia, serif",
+          "name": "Newsreader (leipäteksti)",
+          "fontFamily": "'Newsreader', Georgia, serif",
           "fontFace": [
             {
-              "fontFamily": "Source Serif 4",
+              "fontFamily": "Newsreader",
               "fontStyle": "normal",
               "fontWeight": "400 700",
               "fontDisplay": "swap",
               "src": [
-                "file:./fonts/SourceSerif4-latin.woff2"
+                "file:./fonts/Newsreader-latin.woff2"
               ]
             },
             {
-              "fontFamily": "Source Serif 4",
+              "fontFamily": "Newsreader",
               "fontStyle": "italic",
               "fontWeight": "400 700",
               "fontDisplay": "swap",
               "src": [
-                "file:./fonts/SourceSerif4-Italic-latin.woff2"
+                "file:./fonts/Newsreader-Italic-latin.woff2"
               ]
             }
           ]
@@ -234,6 +234,6 @@
         }
       }
     },
-    "css": ".editor-styles-wrapper { --ground: #F7F6F9; --surface: #FFFFFF; --tint: #F2EDF7; --soft: #EAE3F2; --lavender: #D3C4E3; --ink: #211B27; --ink-2: #3A3442; --muted: #4F4758; --rule: #E8E3ED; --rule-strong: #D1CAD8; --accent: #573F74; --deep: #503B68; --on-deep: #FFFFFF; --code-ground: #16121E; --display: 'Instrument Serif', serif; --body: 'Source Serif 4', Georgia, serif; --sans: 'Geist', system-ui, sans-serif; --mono: ui-monospace, Menlo, Consolas, monospace; }\n.editor-styles-wrapper a { text-decoration-thickness: 1px; text-underline-offset: .22em; }"
+    "css": ".editor-styles-wrapper { --ground: #F7F6F9; --surface: #FFFFFF; --tint: #F2EDF7; --soft: #EAE3F2; --lavender: #D3C4E3; --ink: #211B27; --ink-2: #3A3442; --muted: #4F4758; --rule: #E8E3ED; --rule-strong: #D1CAD8; --accent: #573F74; --deep: #503B68; --on-deep: #FFFFFF; --code-ground: #16121E; --display: 'Instrument Serif', serif; --body: 'Newsreader', Georgia, serif; --sans: 'Geist', system-ui, sans-serif; --mono: ui-monospace, Menlo, Consolas, monospace; }\n.editor-styles-wrapper a { text-decoration-thickness: 1px; text-underline-offset: .22em; }"
   }
 }

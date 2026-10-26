@@ -1,10 +1,10 @@
 /**
- * The text itself: Source Serif 4 in a 760px column. Element-level rules, so they
+ * The text itself: Newsreader in a 760px column. Element-level rules, so they
  * hold for block posts and for the classic-editor HTML of the 2005–2020
  * archive alike. Block-specific details load per block (css/blocks/).
  */
 .prose {
-  font-size: 20px;
+  font-size: 21px;
   line-height: 1.7;
   overflow-wrap: break-word;
 }
@@ -443,7 +443,7 @@
 
 @media (max-width: 860px) {
   .prose {
-    font-size: 18px;
+    font-size: 19px;
   }
 
   .prose :where(.alignleft, .alignright) {
