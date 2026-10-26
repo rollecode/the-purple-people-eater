@@ -178,6 +178,11 @@
   const dialog = $('#search');
   if (dialog) {
     const input = $('#search-input', dialog);
+
+    // The counted placeholder does not fit a phone
+    if (window.matchMedia('(max-width: 600px)').matches) {
+      input.placeholder = 'Hae Rollemaasta';
+    }
     const results = $('#search-results', dialog);
     const status = $('#search-status', dialog);
     const empty = $('[data-search-empty]', dialog);

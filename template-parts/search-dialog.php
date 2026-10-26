@@ -15,7 +15,7 @@ $stats = site_stats();
     <form class="s-input" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
       <?php the_icon( 'search' ); ?>
       <label class="screen-reader-text" for="search-input">Hae Rollemaasta</label>
-      <input id="search-input" type="search" name="s" autocomplete="off" enterkeyhint="search" aria-controls="search-results" aria-describedby="search-status" placeholder="<?php echo esc_attr( sprintf( 'Hae %s kirjoituksesta ja %s päivästä', fi_number( $stats['posts'] ), fi_number( $stats['diary'] ) ) ); ?>">
+      <input id="search-input" type="search" name="s" autocomplete="off" enterkeyhint="search" aria-controls="search-results" aria-describedby="search-status" placeholder="<?php echo esc_attr( sprintf( 'Hae %s kirjoituksen ja %s lokikirjan päivän joukosta', fi_number( $stats['posts'] ), fi_number( $stats['diary'] ) ) ); ?>">
       <button class="x-btn" type="button" aria-label="Sulje haku" data-close-search><?php the_icon( 'close' ); ?></button>
     </form>
 
