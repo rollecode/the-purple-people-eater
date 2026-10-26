@@ -69,6 +69,15 @@
   list-style: none;
 }
 
+/* Diary days in a listing carry the diary's mark */
+.type-diary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
 /* Text first; the image, when there is one, sits on the right */
 .row {
   display: grid;

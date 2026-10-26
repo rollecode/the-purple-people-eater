@@ -27,11 +27,11 @@ if ( ! empty( $now['watched'] ) ) :
   $movie = $now['watched'];
   ?>
   <li>
-    <?php the_icon( 'rollekino' ); ?>
+    <?php the_icon( 'Trakt' === ( $movie['source'] ?? '' ) ? 'trakt' : 'rollekino' ); ?>
     <div>
       <span class="label meta-text">Katsottua</span>
       <a class="what" href="<?php echo esc_url( $movie['url'] ); ?>"><?php echo esc_html( $movie['title'] ); ?></a>
-      <span class="src">Rollekino, <?php echo esc_html( wp_date( 'j.n.Y', $movie['date'] ) ); ?></span>
+      <span class="src"><?php echo esc_html( ( $movie['source'] ?? 'Rollekino' ) . ', ' . wp_date( 'j.n.Y', $movie['date'] ) ); ?></span>
     </div>
   </li>
   <?php

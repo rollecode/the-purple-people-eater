@@ -61,9 +61,9 @@ $permalink = get_permalink();
             <span class="step-n" aria-hidden="true">1</span>
             <div>
               <b>Kopioi kirjoituksen osoite</b>
-              <div class="inrow">
+              <div class="copyfield">
                 <input class="copybox" value="<?php echo esc_url( $permalink ); ?>" readonly aria-label="Kirjoituksen osoite">
-                <button class="btn btn-ghost" type="button" data-copy="<?php echo esc_url( $permalink ); ?>"><?php the_icon( 'copy' ); ?><span>Kopioi</span></button>
+                <button class="btn" type="button" data-copy="<?php echo esc_url( $permalink ); ?>"><?php the_icon( 'copy' ); ?><span>Kopioi</span></button>
               </div>
             </div>
           </li>

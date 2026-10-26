@@ -5,7 +5,7 @@
 .site-foot {
   margin-top: 96px;
   padding: 72px var(--pad) 36px;
-  border-top: 1px solid var(--rule);
+  border-top: 1px solid color-mix(in oklab, var(--rule) 60%, transparent);
   background: var(--tint);
   color: var(--ink);
 }
@@ -74,8 +74,7 @@
 .foot-elsewhere ul {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  margin: 0;
+  margin: 12px 0 0 -11px;
   padding: 0;
   list-style: none;
 }
@@ -99,25 +98,21 @@
   height: 17px;
 }
 
-/* Three equal columns, so the logos sit in the exact middle */
 .foot-base {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   margin-top: 56px;
   padding-top: 28px;
   gap: 16px;
-  border-top: 1px solid var(--rule-strong);
+  border-top: 1px solid color-mix(in oklab, var(--rule-strong) 45%, transparent);
   color: var(--muted);
   font-size: 14.5px;
 }
 
 .foot-base p {
   margin: 0;
-}
-
-.foot-base .themesw {
-  justify-self: end;
 }
 
 .themesw {
@@ -168,22 +163,6 @@
 /* Same weight in both states, so choosing a theme never shifts the text */
 .themesw button[aria-pressed="true"] {
   color: var(--deep);
-}
-
-@media (max-width: 1100px) {
-  .foot-base {
-    grid-template-columns: 1fr;
-    justify-items: start;
-  }
-
-  .foot-base .themesw {
-    justify-self: start;
-  }
-
-  .foot-elsewhere ul {
-    justify-content: flex-start;
-    margin-left: -11px;
-  }
 }
 
 @media (max-width: 860px) {

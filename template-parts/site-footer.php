@@ -1,7 +1,7 @@
 <?php
 /**
- * Site footer: the umbrella and a line about the site with the two ways to
- * follow it, then the copyright, every other place Rolle is active and the
+ * Site footer: the umbrella, a line about the site and every other place
+ * Rolle is active, the two ways to follow it, then the copyright and the
  * theme switch. Included by the classic footer.php and the
  * minimalistmadness/site-footer block.
  *
@@ -31,6 +31,14 @@ $elsewhere = [
         <div>
           <p class="foot-line">Rollen blogi ja lokikirja. Kirjoituksia vuodesta 2005, päiväkirjaa vuodesta 2021.</p>
           <p class="foot-stats meta-text"><?php echo esc_html( sprintf( '%s kirjoitusta · %s lokikirjan päivää · %s sanaa', fi_number( $stats['posts'] ), fi_number( $stats['diary'] ), fi_number( $stats['words'] ) ) ); ?></p>
+
+          <nav class="foot-elsewhere" aria-label="Rolle muualla">
+            <ul>
+              <?php foreach ( $elsewhere as [ $name, $url, $icon ] ) : ?>
+                <li><a href="<?php echo esc_url( $url ); ?>" aria-label="<?php echo esc_attr( $name ); ?>" title="<?php echo esc_attr( $name ); ?>"><?php the_icon( $icon ); ?></a></li>
+              <?php endforeach; ?>
+            </ul>
+          </nav>
         </div>
       </div>
 
@@ -42,14 +50,6 @@ $elsewhere = [
 
     <div class="foot-base">
       <p>Oikeudet omistaa Rolle Laukkarinen, 1999–<?php echo esc_html( wp_date( 'Y' ) ); ?>.</p>
-
-      <nav class="foot-elsewhere" aria-label="Rolle muualla">
-        <ul>
-          <?php foreach ( $elsewhere as [ $name, $url, $icon ] ) : ?>
-            <li><a href="<?php echo esc_url( $url ); ?>" aria-label="<?php echo esc_attr( $name ); ?>" title="<?php echo esc_attr( $name ); ?>"><?php the_icon( $icon ); ?></a></li>
-          <?php endforeach; ?>
-        </ul>
-      </nav>
 
       <div class="themesw" role="group" aria-label="Väriteema">
         <button type="button" aria-pressed="false" data-theme-set="light"><?php the_icon( 'sun', 'ic-sm' ); ?>Vaalea</button>

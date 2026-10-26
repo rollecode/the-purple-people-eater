@@ -175,7 +175,7 @@
   transform: translateY(12px);
 }
 
-.read-meter svg {
+.read-meter .ring {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -198,6 +198,86 @@
   font-size: 12.5px;
   font-variant-numeric: tabular-nums;
   font-weight: 600;
+  transition: opacity .2s, transform .3s var(--ease);
+}
+
+/* Finished: the number gives way to a tick, ripples spread like rain on water */
+.read-meter .check {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: var(--accent);
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.6;
+}
+
+.read-meter .ripples i {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.read-meter.is-done {
+  animation: meter-pop .55s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.read-meter.is-done .done {
+  stroke-dashoffset: 0;
+}
+
+.read-meter.is-done .pct {
+  opacity: 0;
+  transform: scale(.6);
+}
+
+.read-meter.is-done .check {
+  animation: meter-check .45s .15s var(--ease) forwards;
+}
+
+.read-meter.is-done .ripples i {
+  animation: meter-ripple 1.5s var(--ease) forwards;
+}
+
+.read-meter.is-done .ripples i:nth-child(2) {
+  animation-delay: .25s;
+}
+
+.read-meter.is-done .ripples i:nth-child(3) {
+  animation-delay: .5s;
+}
+
+.read-meter.is-gone {
+  transition-duration: .8s;
+}
+
+@keyframes meter-pop {
+  45% {
+    transform: scale(1.14);
+  }
+}
+
+@keyframes meter-check {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes meter-ripple {
+  from {
+    opacity: .7;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(2.8);
+  }
 }
 
 .read-meter:hover {
@@ -208,6 +288,16 @@
   .read-meter,
   .read-meter .done {
     transition: none;
+  }
+
+  .read-meter.is-done,
+  .read-meter.is-done .ripples i {
+    animation: none;
+  }
+
+  .read-meter.is-done .check {
+    animation: none;
+    stroke-dashoffset: 0;
   }
 }
 

@@ -32,6 +32,13 @@ require get_theme_file_path( 'inc/hooks/site-stats.php' );
 require get_theme_file_path( 'inc/hooks/navigation.php' );
 
 /**
+ * Tweets without X's script
+ */
+require get_theme_file_path( 'inc/hooks/embeds.php' );
+add_filter( 'embed_oembed_html', __NAMESPACE__ . '\drop_tweet_script' );
+add_filter( 'the_content', __NAMESPACE__ . '\drop_tweet_script', 30 );
+
+/**
  * Names for unnamed frames and image links in content
  */
 require get_theme_file_path( 'inc/hooks/accessibility.php' );
@@ -44,6 +51,7 @@ add_filter( 'the_content', __NAMESPACE__ . '\name_image_links', 30 );
  */
 require get_theme_file_path( 'inc/hooks/side-notes.php' );
 add_filter( 'the_content', __NAMESPACE__ . '\add_side_notes', 20 );
+add_action( LINK_PREVIEW_EVENT, __NAMESPACE__ . '\fetch_link_preview' );
 
 /**
  * Scripts and styles associated hooks

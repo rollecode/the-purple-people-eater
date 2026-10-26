@@ -19,7 +19,9 @@ $types    = [
 <li class="row<?php echo has_post_thumbnail() ? ' has-thumb' : ''; ?>">
   <div>
     <p class="meta-line meta-text">
-      <?php if ( is_search() ) : ?>
+      <?php if ( $is_diary ) : ?>
+        <span class="type-diary"><?php the_icon( 'logbook', 'ic-sm' ); ?>Lokikirja</span>
+      <?php elseif ( is_search() ) : ?>
         <span><?php echo esc_html( $types[ get_post_type() ] ?? '' ); ?></span>
       <?php endif; ?>
       <span><time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( post_date_fi() ); ?></time></span>

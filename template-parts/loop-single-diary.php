@@ -29,36 +29,26 @@ rewind_posts();
     $next      = get_next_post();
     ?>
     <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-      <header class="read art-head">
-        <h1 class="cover-title"><?php the_title(); ?></h1>
+      <header class="read diary-head">
+        <p class="diary-kicker"><a href="<?php echo esc_url( get_post_type_archive_link( 'diary' ) ); ?>"><?php the_icon( 'logbook', 'ic-sm' ); ?>Lokikirja</a><span aria-hidden="true">·</span><?php the_title(); ?></p>
+        <h1><time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( diary_long_date() ); ?></time></h1>
+        <p class="meta-line meta-text">
+          <span><?php echo esc_html( ucfirst( diary_time() ) ); ?></span>
+          <span><?php echo esc_html( fi_number( post_words() ) ); ?> sanaa</span>
+          <?php if ( $likes ) : ?>
+            <span><?php echo esc_html( fi_count( $likes, 'reaktio', 'reaktiota' ) ); ?></span>
+          <?php endif; ?>
+        </p>
       </header>
 
       <div class="read">
-        <div class="byline">
-          <img src="<?php echo esc_url( get_theme_file_uri( 'images/author-info.jpg' ) ); ?>" alt="" width="60" height="60">
-          <div>
-            <p class="who-line">Kirjoittanut <strong>Rolle Laukkarinen</strong></p>
-            <p class="meta">
-              <span><?php the_icon( 'cal', 'ic-sm' ); ?><time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( diary_long_date() ); ?></time></span>
-              <span><?php the_icon( 'clock', 'ic-sm' ); ?><?php echo esc_html( diary_time() ); ?></span>
-              <span><?php echo esc_html( fi_number( post_words() ) ); ?> sanaa</span>
-              <?php if ( $likes ) : ?>
-                <span><?php the_icon( 'heart', 'ic-sm' ); ?><?php echo esc_html( fi_count( $likes, 'reaktio', 'reaktiota' ) ); ?></span>
-              <?php endif; ?>
-            </p>
-          </div>
-        </div>
 
         <div class="prose">
           <?php the_content(); ?>
         </div>
 
         <?php
-        get_template_part( 'template-parts/diary-data' );
-
-        if ( $likes ) {
-          echo do_blocks( '<!-- wp:activitypub/reactions /-->' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- block markup
-        }
+        get_template_part( 'template-parts/diary-data', null, [ 'reactions' => true ] );
 
         edit_post_link( 'Muokkaa', '<p class="edit-link">', '</p>' );
         get_template_part( 'template-parts/year-since-now' );

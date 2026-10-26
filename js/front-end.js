@@ -427,6 +427,7 @@
   const RESUME_MIN = 5;
   const RESUME_MAX = 95;
   const METER_FROM = 2;
+  const METER_DONE_MS = 2400;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const whenFi = (time) => {
@@ -470,7 +471,7 @@
     meter.type = 'button';
     meter.className = 'read-meter';
     meter.hidden = true;
-    meter.innerHTML = '<svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="19"/><circle class="done" cx="22" cy="22" r="19" pathLength="100"/></svg><span class="pct" aria-hidden="true"></span>';
+    meter.innerHTML = '<span class="ripples" aria-hidden="true"><i></i><i></i><i></i></span><svg class="ring" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="19"/><circle class="done" cx="22" cy="22" r="19" pathLength="100"/></svg><span class="pct" aria-hidden="true"></span><svg class="check" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9" pathLength="1"/></svg>';
     document.body.append(meter);
     meter.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
@@ -529,10 +530,24 @@
         const value = progress();
         const pct = Math.round(value * 100);
         const footer = $('.site-foot');
-        meter.hidden = pct < METER_FROM || (footer && footer.getBoundingClientRect().top < window.innerHeight);
-        meter.style.setProperty('--progress', pct);
-        $('.pct', meter).textContent = `${pct} %`;
-        meter.setAttribute('aria-label', `Luettu ${pct} %, takaisin alkuun`);
+        const finished = meter.classList.contains('is-done');
+        meter.hidden = meter.classList.contains('is-gone') || pct < METER_FROM || (footer && footer.getBoundingClientRect().top < window.innerHeight);
+
+        // The end: a tick, a ripple, and the meter bows out
+        if (pct >= 100 && !finished) {
+          meter.classList.add('is-done');
+          meter.setAttribute('aria-label', 'Luettu loppuun, takaisin alkuun');
+          setTimeout(() => {
+            meter.classList.add('is-gone');
+            meter.hidden = true;
+          }, METER_DONE_MS);
+        }
+
+        if (!finished && pct < 100) {
+          meter.style.setProperty('--progress', pct);
+          $('.pct', meter).textContent = `${pct} %`;
+          meter.setAttribute('aria-label', `Luettu ${pct} %, takaisin alkuun`);
+        }
 
         const now = Date.now();
         if (now - lastSave < 1000) {

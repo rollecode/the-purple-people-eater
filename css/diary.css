@@ -250,8 +250,45 @@
   color: inherit;
 }
 
-.dentry .wp-block-activitypub-reactions,
-.read > .wp-block-activitypub-reactions {
+/* A day's head: the diary's mark and the date, not an article's title */
+.diary-head {
+  padding-top: 72px;
+  padding-bottom: 32px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.diary-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0 0 14px;
+  gap: 4px 10px;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.diary-kicker a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.diary-kicker a:hover {
+  text-decoration: underline;
+}
+
+.diary-head h1 {
+  color: var(--ink);
+  font-size: clamp(40px, 4.4vw, 62px);
+  font-style: italic;
+  line-height: 1.04;
+}
+
+.diary-head .meta-line {
   margin-top: 16px;
 }
 

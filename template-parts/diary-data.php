@@ -1,7 +1,8 @@
 <?php
 /**
  * The day under a diary entry: what Rolle is grateful for, the day's
- * measures as bars and the conditions it was written in.
+ * measures as bars, the conditions it was written in and, on the entry's
+ * own page ($args['reactions']), the likes and boosts it got.
  *
  * @package minimalistmadness
  */
@@ -11,8 +12,9 @@ namespace Air_Light;
 $gratitude  = get_post_meta( get_the_ID(), 'gratitude', true );
 $scales     = diary_scales( get_the_ID() );
 $conditions = diary_conditions( get_the_ID() );
+$reactions  = ! empty( $args['reactions'] );
 
-if ( ! $gratitude && ! $scales && ! $conditions ) {
+if ( ! $gratitude && ! $scales && ! $conditions && ! $reactions ) {
   return;
 }
 ?>
@@ -50,4 +52,10 @@ if ( ! $gratitude && ! $scales && ! $conditions ) {
       <?php endforeach; ?>
     </p>
   <?php endif; ?>
+
+  <?php
+  if ( $reactions ) {
+    get_template_part( 'template-parts/reactions' );
+  }
+  ?>
 </section>

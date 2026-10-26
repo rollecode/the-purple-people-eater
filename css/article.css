@@ -623,6 +623,58 @@
   text-decoration: underline;
 }
 
+/* Likes and boosts (template-parts/reactions.php) */
+.rx {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+}
+
+.rx-faces {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  gap: 4px;
+  list-style: none;
+}
+
+.rx-faces a {
+  display: block;
+  border-radius: 50%;
+}
+
+.rx-faces img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--soft);
+  object-fit: cover;
+}
+
+.rx-count {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  gap: 7px;
+  color: var(--ink-2);
+}
+
+.rx-count .ic {
+  color: var(--accent);
+}
+
+.day .rx {
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+}
+
+.rx + .fedi-note {
+  margin-top: 16px;
+}
+
 /* The ActivityPub remote reply dialog, in the theme's colours */
 .activitypub-modal__overlay {
   --activitypub-modal-background-color: var(--surface);
@@ -762,23 +814,39 @@
   line-height: 1.6;
 }
 
-.inrow {
+/* The address and its copy button as one field */
+.copyfield {
   display: flex;
+  align-items: center;
+  padding: 5px 5px 5px 16px;
   gap: 10px;
+  border: 1px solid var(--field-line);
+  border-radius: 999px;
+  background: var(--field);
 }
 
-.inrow input {
-  flex: 1;
-  min-width: 0;
-}
-
-.inrow .btn {
-  flex: none;
+.copyfield:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .copybox {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  color: var(--ink);
   font-family: var(--mono);
   font-size: 13.5px;
+}
+
+.copyfield .btn {
+  flex: none;
+  min-height: 40px;
+  padding: 0 16px;
+  font-size: 15px;
 }
 
 @media (max-width: 860px) {

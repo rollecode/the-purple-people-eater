@@ -1,8 +1,9 @@
 <?php
 /**
  * "Nyt" on the front page: the latest scrobble from Last.fm and the latest
- * film on Rollekino. Pages render whatever is cached and never wait for
- * the outside services; the browser asks the endpoint for a fresh copy.
+ * watched film or episode from Trakt, or the latest Rollekino film when
+ * Trakt does not answer. Pages render whatever is cached and never wait
+ * for the outside services; the browser asks the endpoint for a fresh copy.
  *
  * @package minimalistmadness
  */
@@ -12,6 +13,7 @@ namespace Air_Light;
 const NOW_CACHE_KEY = 'rollemaa_now';
 const NOW_CACHE_TTL = 5 * MINUTE_IN_SECONDS;
 const NOW_ROLLEKINO = 'https://www.rollekino.fi/wp-json/wp/v2/movie?per_page=1&_fields=title,link,date';
+const NOW_TRAKT     = 'https://api.trakt.tv/users/rolle/history?limit=1';
 
 /**
  * What Rolle listens to and last watched.
@@ -35,19 +37,85 @@ function now_data( $fetch ) {
     }
   }
 
-  $response = wp_remote_get( NOW_ROLLEKINO, [ 'timeout' => 3 ] );
-  $movies   = is_wp_error( $response ) ? null : json_decode( wp_remote_retrieve_body( $response ), true );
-  if ( ! empty( $movies[0]['title']['rendered'] ) ) {
-    $now['watched'] = [
-      'title' => html_entity_decode( $movies[0]['title']['rendered'], ENT_QUOTES, 'UTF-8' ),
-      'url'   => $movies[0]['link'],
-      'date'  => strtotime( $movies[0]['date'] ),
-    ];
+  $watched = trakt_watched() ?? rollekino_watched();
+  if ( $watched ) {
+    $now['watched'] = $watched;
   }
 
   set_transient( NOW_CACHE_KEY, $now, NOW_CACHE_TTL );
 
   return $now;
+}
+
+/**
+ * The latest film or episode in Rolle's Trakt history.
+ *
+ * @return array{title:string, url:string, date:int, source:string}|null
+ */
+function trakt_watched() {
+  $key = getenv( 'TRAKT_API_KEY' );
+  if ( ! $key ) {
+    return null;
+  }
+
+  $response = wp_remote_get( NOW_TRAKT, [
+    'timeout' => 3,
+    'headers' => [
+      'Content-Type'      => 'application/json',
+      'trakt-api-version' => '2',
+      'trakt-api-key'     => $key,
+    ],
+  ] );
+
+  if ( is_wp_error( $response ) || \WP_Http::OK !== wp_remote_retrieve_response_code( $response ) ) {
+    return null;
+  }
+
+  $item = json_decode( wp_remote_retrieve_body( $response ), true )[0] ?? null;
+
+  if ( 'episode' === ( $item['type'] ?? '' ) ) {
+    $show    = $item['show'];
+    $episode = $item['episode'];
+
+    return [
+      'title'  => sprintf( '%s, kausi %d, jakso %d', $show['title'], $episode['season'], $episode['number'] ),
+      'url'    => sprintf( 'https://trakt.tv/shows/%s/seasons/%d/episodes/%d', $show['ids']['slug'], $episode['season'], $episode['number'] ),
+      'date'   => strtotime( $item['watched_at'] ),
+      'source' => 'Trakt',
+    ];
+  }
+
+  if ( 'movie' === ( $item['type'] ?? '' ) ) {
+    return [
+      'title'  => sprintf( '%s (%d)', $item['movie']['title'], $item['movie']['year'] ),
+      'url'    => 'https://trakt.tv/movies/' . $item['movie']['ids']['slug'],
+      'date'   => strtotime( $item['watched_at'] ),
+      'source' => 'Trakt',
+    ];
+  }
+
+  return null;
+}
+
+/**
+ * The latest film reviewed on Rollekino.
+ *
+ * @return array{title:string, url:string, date:int, source:string}|null
+ */
+function rollekino_watched() {
+  $response = wp_remote_get( NOW_ROLLEKINO, [ 'timeout' => 3 ] );
+  $movies   = is_wp_error( $response ) ? null : json_decode( wp_remote_retrieve_body( $response ), true );
+
+  if ( empty( $movies[0]['title']['rendered'] ) ) {
+    return null;
+  }
+
+  return [
+    'title'  => html_entity_decode( $movies[0]['title']['rendered'], ENT_QUOTES, 'UTF-8' ),
+    'url'    => $movies[0]['link'],
+    'date'   => strtotime( $movies[0]['date'] ),
+    'source' => 'Rollekino',
+  ];
 }
 
 function register_now_api() {

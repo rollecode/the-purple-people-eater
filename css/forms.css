@@ -14,7 +14,6 @@
 
 .field input,
 .field textarea,
-.inrow input,
 .bigsearch input {
   width: 100%;
   padding: 13px 15px;
@@ -32,7 +31,6 @@
 
 .field input:focus,
 .field textarea:focus,
-.inrow input:focus,
 .bigsearch input:focus {
   outline: 2px solid var(--accent);
   outline-offset: 1px;

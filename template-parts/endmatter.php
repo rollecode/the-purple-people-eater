@@ -38,11 +38,7 @@ $share_url = add_query_arg( 'text', rawurlencode( get_the_title() . ' ' . $perma
   <?php if ( is_singular( 'post' ) ) : ?>
     <section aria-labelledby="reactions-title">
       <h2 id="reactions-title">Reaktiot fediversumissa</h2>
-      <?php
-      if ( $responses['likes'] + $responses['boosts'] ) {
-        echo do_blocks( '<!-- wp:activitypub/reactions /-->' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- block markup
-      }
-      ?>
+      <?php get_template_part( 'template-parts/reactions' ); ?>
       <p class="fedi-note">Tykkää, boostaa tai vastaa omalta Mastodon-tililtäsi: hae palvelimesi haulla tämän kirjoituksen osoite. Reaktiot päivittyvät tänne. Rolle Mastodonissa: <a href="https://mementomori.social/@rolle" rel="me">@rolle@mementomori.social</a>.</p>
     </section>
 

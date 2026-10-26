@@ -31,8 +31,9 @@
   margin-top: 0;
 }
 
-/* Drop cap: the opening paragraph, three lines deep */
-.prose > p:first-child::first-letter,
+/* Drop cap: an article's opening paragraph, three lines deep. Diary days
+   start plain, like a page in a notebook */
+.type-post .prose > p:first-child::first-letter,
 .prose .has-drop-cap::first-letter {
   float: left;
   margin: .07em .08em 0 -.02em;
@@ -45,7 +46,7 @@
 }
 
 @supports (initial-letter: 3) or (-webkit-initial-letter: 3) {
-  .prose > p:first-child::first-letter,
+  .type-post .prose > p:first-child::first-letter,
   .prose .has-drop-cap::first-letter {
     float: none;
     margin: 0 .12em 0 0;
@@ -290,6 +291,45 @@
   clear: both;
 }
 
+/* Tweets as saved quotes, always on black like X's dark theme */
+.prose blockquote.twitter-tweet {
+  position: relative;
+  max-width: 550px;
+  padding: 20px 56px 18px 22px;
+  border: 1px solid #2F3336;
+  border-radius: 14px;
+  background: #000;
+  color: #A9B4BE;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-style: normal;
+  line-height: 1.5;
+}
+
+.prose blockquote.twitter-tweet::before {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  background: #E7E9EA;
+  content: "";
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* The tweet; the "— Name (@handle) date" line after it stays smaller */
+.prose blockquote.twitter-tweet p {
+  margin: 0 0 14px;
+  color: #E7E9EA;
+  font-size: 17px;
+}
+
+.prose blockquote.twitter-tweet a {
+  color: #8ECDF8;
+  font-weight: 500;
+}
+
 /* Links in running text: stronger colour, semibold, a firm underline */
 .prose a:not([class]),
 .cmt-body a:not([class]) {
@@ -338,8 +378,14 @@
   font-weight: 600;
 }
 
-.mnote .about {
+.mnote .about,
+.mnote .snippet {
   display: block;
+}
+
+.mnote .snippet {
+  margin-top: 4px;
+  color: var(--muted);
 }
 
 .prose sup.ref {
@@ -365,6 +411,10 @@
   .mnote a,
   .mnote .about {
     display: inline;
+  }
+
+  .mnote .snippet {
+    margin-top: 2px;
   }
 
   .mnote .about::before {

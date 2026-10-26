@@ -10,6 +10,7 @@ namespace Air_Light;
 const WORDS_PER_MINUTE = 200;
 const EXCERPT_SENTENCES   = 2;
 const TEXT_CARD_SENTENCES = 6;
+const REACTION_FACES      = 24;
 
 /**
  * Finnish number: four digits stay together (3458), longer ones get
