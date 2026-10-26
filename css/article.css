@@ -642,6 +642,7 @@
 
 .rx-faces a {
   display: block;
+  position: relative;
   border-radius: 50%;
 }
 
@@ -652,6 +653,24 @@
   border-radius: 50%;
   background: var(--soft);
   object-fit: cover;
+  transition: transform .18s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+/* A quick, springy lift on the face you point at */
+.rx-faces a:hover,
+.rx-faces a:focus-visible {
+  z-index: 1;
+}
+
+.rx-faces a:hover img,
+.rx-faces a:focus-visible img {
+  transform: scale(1.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rx-faces img {
+    transition: none;
+  }
 }
 
 .rx-count {
