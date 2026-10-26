@@ -8,10 +8,11 @@
 
 namespace Air_Light;
 
-const DIARY_HABITS_TOTAL = 10;
-const DIARY_SCALE_LOW    = 40;
-const DIARY_SCALE_HIGH   = 60;
-const DIARY_INVERTED     = [ 'Ahdistus' ];
+const DIARY_HABITS_TOTAL  = 10;
+const DIARY_SCALE_LOW     = 40;
+const DIARY_SCALE_HIGH    = 60;
+const DIARY_INVERTED      = [ 'Ahdistus' ];
+const YEAR_AGO_OPEN_WORDS = 160;
 
 /**
  * "Sunnuntaina 25. lokakuuta 2026": weekday in the essive, month in the

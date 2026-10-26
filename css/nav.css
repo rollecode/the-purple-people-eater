@@ -175,6 +175,16 @@
   transform: translateY(12px);
 }
 
+/* Ring, number, tick and ripples share one centred cell */
+.read-meter > * {
+  grid-area: 1 / 1;
+}
+
+.read-meter .ripples {
+  position: absolute;
+  inset: 0;
+}
+
 .read-meter .ring {
   position: absolute;
   inset: 0;

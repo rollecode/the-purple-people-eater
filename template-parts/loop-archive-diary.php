@@ -46,8 +46,8 @@ $first = get_posts( [
 
   <?php if ( ! is_date() && ! is_paged() ) : ?>
     <div class="diary-heat">
-      <div class="heat-scroll" tabindex="0" role="region" aria-label="Kirjoituskalenteri, vieritettävä">
-        <div class="heat" id="heatmap" role="img" aria-label="Kirjoitetut sanat päivittäin viimeisen vuoden ajalta"></div>
+      <div class="heat-scroll" tabindex="0" role="region" aria-label="Kirjoituskalenteri: sanat päivittäin viimeisen vuoden ajalta. Päivien välillä nuolinäppäimillä.">
+        <div class="heat" id="heatmap"></div>
       </div>
     </div>
   <?php endif; ?>

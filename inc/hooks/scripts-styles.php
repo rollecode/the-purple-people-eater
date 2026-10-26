@@ -12,6 +12,8 @@
 
 namespace Air_Light;
 
+const HEATMAP_DAYS = 400;
+
 /**
  * Fetch a remote /wp-json/words/v1/getposts feed with transient caching.
  *
@@ -45,6 +47,28 @@ function fetch_external_words( $url, $cache_key ) {
 /**
  * Heatmap stuff
  */
+/**
+ * Diary entries of the heatmap's year, as day => address, so each square
+ * can open its day.
+ *
+ * @return array<string, string> Y-m-d => permalink.
+ */
+function heatmap_days() {
+  $days = [];
+
+  foreach ( get_posts( [
+    'post_type'      => 'diary',
+    'posts_per_page' => HEATMAP_DAYS,
+    'fields'         => 'ids',
+    'no_found_rows'  => true,
+    'date_query'     => [ [ 'after' => '13 months ago' ] ],
+  ] ) as $diary_id ) {
+    $days[ get_the_date( 'Y-m-d', $diary_id ) ] = get_permalink( $diary_id );
+  }
+
+  return $days;
+}
+
 function heatmap_data() {
   global $post;
 
@@ -227,6 +251,7 @@ function enqueue_theme_scripts() {
       true
     );
     wp_localize_script( 'heatmap', 'heatmapdata', heatmap_data() );
+    wp_localize_script( 'heatmap', 'heatmapdays', heatmap_days() );
   }
 
   $config = [

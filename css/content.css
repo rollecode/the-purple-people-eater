@@ -107,12 +107,25 @@
   margin: .45em 0 0;
 }
 
+/* Quotes hang a large quotation mark instead of a side rule */
 .prose blockquote {
+  position: relative;
   margin: 1.8em 0;
-  padding: .2em 0 .2em 1.4em;
-  border-left: 1px solid var(--accent);
+  padding: .2em 0 .2em 1.5em;
   color: var(--ink-2);
   font-style: italic;
+}
+
+.prose blockquote::before {
+  position: absolute;
+  top: -.08em;
+  left: -.05em;
+  color: var(--accent);
+  content: "”";
+  font-family: var(--display);
+  font-size: 2.8em;
+  font-style: normal;
+  line-height: 1;
 }
 
 .prose blockquote p {

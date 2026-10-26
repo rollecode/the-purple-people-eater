@@ -1,16 +1,33 @@
 /**
- * Quote block: a thin accent line and the source in Geist.
+ * Quote block: a hanging quotation mark and the source in Geist.
  */
 :is(.prose, .editor-styles-wrapper) .wp-block-quote {
+  position: relative;
   margin-block: 1.8em;
-  padding: .2em 0 .2em 1.4em;
-  border-left: 1px solid var(--accent);
+  padding: .2em 0 .2em 1.5em;
+  border: 0;
+}
+
+/* The editor has no content.css, so it gets the mark here */
+.editor-styles-wrapper .wp-block-quote::before {
+  position: absolute;
+  top: -.08em;
+  left: -.05em;
+  color: var(--accent);
+  content: "”";
+  font-family: var(--display);
+  font-size: 2.8em;
+  line-height: 1;
 }
 
 :is(.prose, .editor-styles-wrapper) .wp-block-quote.is-style-large,
 :is(.prose, .editor-styles-wrapper) .wp-block-quote.is-large {
   padding-left: 0;
-  border: 0;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-quote.is-style-large::before,
+:is(.prose, .editor-styles-wrapper) .wp-block-quote.is-large::before {
+  content: none;
 }
 
 :is(.prose, .editor-styles-wrapper) .wp-block-quote.is-style-large p,

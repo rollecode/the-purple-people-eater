@@ -225,9 +225,9 @@
   list-style: none;
 }
 
+/* The bar is the line under each keyword, so no rule of its own */
 .tagbars li {
-  padding: 10px 0;
-  border-bottom: 1px solid var(--rule);
+  padding: 9px 0;
   break-inside: avoid;
 }
 
@@ -240,8 +240,15 @@
   text-decoration: none;
 }
 
-.tagbars a:hover .nm {
-  text-decoration: underline;
+/* No underline, it would sit on the bar: the name and the bar light up */
+.tagbars a:hover .nm,
+.tagbars a:focus-visible .nm {
+  color: var(--accent);
+}
+
+.tagbars a:hover .b i,
+.tagbars a:focus-visible .b i {
+  background: var(--accent);
 }
 
 .tagbars .nm {
@@ -264,7 +271,8 @@
   display: block;
   height: 100%;
   border-radius: 9px;
-  background: var(--deep);
+  background: color-mix(in oklab, var(--accent) 55%, var(--soft));
+  transition: background .2s var(--ease);
 }
 
 .ranked {
@@ -326,16 +334,68 @@
 }
 
 /* All posts on one page */
+/* All posts: a sticky year rail beside one steady column of dates and titles */
 .all-posts {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 860px);
+  align-items: start;
   padding-bottom: 40px;
+  gap: 64px;
+}
+
+.all-years {
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding-top: 56px;
+  scrollbar-width: thin;
+}
+
+.all-years ol {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 2px;
+  list-style: none;
+}
+
+.all-years a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 5px 12px;
+  border-radius: 6px;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.all-years a .meta-text {
+  color: var(--muted);
+}
+
+.all-years a:hover,
+.all-years a[aria-current="true"] {
+  background: var(--soft);
+  color: var(--ink);
 }
 
 .all-year {
   padding-top: 56px;
+  scroll-margin-top: 16px;
+}
+
+.all-year-title {
+  margin-bottom: 8px;
+  font-size: clamp(44px, 4.4vw, 64px);
 }
 
 .all-month {
-  margin: 28px 0 8px;
+  margin: 28px 0 6px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
   color: var(--muted);
   font-family: var(--sans);
   font-size: 14px;
@@ -346,22 +406,20 @@
 .all-list {
   margin: 0;
   padding: 0;
-  columns: 2 360px;
-  column-gap: 40px;
   list-style: none;
 }
 
 .all-list li {
   display: grid;
-  grid-template-columns: 52px minmax(0, 1fr);
+  grid-template-columns: 64px minmax(0, 1fr);
   align-items: baseline;
-  padding: 6px 0;
-  gap: 10px;
-  break-inside: avoid;
+  padding: 7px 0;
+  gap: 12px;
 }
 
 .all-list time {
   color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 
 .all-list a {
@@ -381,6 +439,36 @@
 }
 
 @media (max-width: 860px) {
+  /* The year rail becomes a bar across the top */
+  .all-posts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .all-years {
+    z-index: 5;
+    top: 0;
+    max-height: none;
+    margin-inline: calc(-1 * var(--pad));
+    padding: 10px var(--pad);
+    overflow-x: auto;
+    border-bottom: 1px solid var(--rule);
+    background: var(--ground);
+  }
+
+  .all-years ol {
+    display: flex;
+    width: max-content;
+  }
+
+  .all-years a {
+    gap: 6px;
+  }
+
+  .all-year {
+    scroll-margin-top: 64px;
+  }
+
   .row {
     padding: 22px 0;
     gap: 16px;

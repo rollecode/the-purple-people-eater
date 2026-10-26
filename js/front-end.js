@@ -428,6 +428,7 @@
   const RESUME_MAX = 95;
   const METER_FROM = 2;
   const METER_DONE_MS = 2400;
+  const METER_RESET = 97;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const whenFi = (time) => {
@@ -530,6 +531,13 @@
         const value = progress();
         const pct = Math.round(value * 100);
         const footer = $('.site-foot');
+
+        // Back up the text after finishing: the meter returns
+        if (pct < METER_RESET) {
+          clearTimeout(meter.doneTimer);
+          meter.classList.remove('is-done', 'is-gone');
+        }
+
         const finished = meter.classList.contains('is-done');
         meter.hidden = meter.classList.contains('is-gone') || pct < METER_FROM || (footer && footer.getBoundingClientRect().top < window.innerHeight);
 
@@ -537,7 +545,7 @@
         if (pct >= 100 && !finished) {
           meter.classList.add('is-done');
           meter.setAttribute('aria-label', 'Luettu loppuun, takaisin alkuun');
-          setTimeout(() => {
+          meter.doneTimer = setTimeout(() => {
             meter.classList.add('is-gone');
             meter.hidden = true;
           }, METER_DONE_MS);
@@ -558,6 +566,26 @@
         store.set(key, { pct: Math.round(value * 100), heading: passed ? passed.textContent.trim() : '', at: now });
       });
     }, { passive: true });
+  }
+
+  /**
+   * All posts page: the year rail marks the year in view
+   */
+  const yearLinks = $$('.all-years a');
+  if (yearLinks.length && 'IntersectionObserver' in window) {
+    const yearObserver = new IntersectionObserver((entries) => {
+      entries.filter((entry) => entry.isIntersecting).forEach((entry) => {
+        yearLinks.forEach((link) => {
+          const current = link.hash === `#${entry.target.id}`;
+          link.toggleAttribute('aria-current', current);
+          if (current) {
+            link.setAttribute('aria-current', 'true');
+            link.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+          }
+        });
+      });
+    }, { rootMargin: '-12% 0px -80% 0px' });
+    $$('.all-year').forEach((year) => yearObserver.observe(year));
   }
 
   /**
@@ -584,7 +612,7 @@
     const expanded = 'true' === button.getAttribute('aria-expanded');
     body.classList.toggle('is-clamped', expanded);
     button.setAttribute('aria-expanded', String(!expanded));
-    $('.screen-reader-text', button).textContent = expanded ? 'Näytä koko kommentti' : 'Näytä vähemmän';
+    $('.screen-reader-text, .lbl', button).textContent = expanded ? (button.dataset.more || 'Näytä koko kommentti') : (button.dataset.less || 'Näytä vähemmän');
   }));
 
   /**

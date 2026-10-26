@@ -14,6 +14,10 @@
   border: 0;
 }
 
+:is(.prose, .editor-styles-wrapper) .wp-block-pullquote blockquote::before {
+  content: none;
+}
+
 :is(.prose, .editor-styles-wrapper) .wp-block-pullquote p {
   margin: 0 0 12px;
   color: var(--accent);

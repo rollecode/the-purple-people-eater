@@ -1,6 +1,7 @@
 <?php
 /**
- * Every article on one page, by year and month, newest first.
+ * Every article on one page, by year and month, newest first, with the
+ * years in a rail that stays in view.
  *
  * Template Name: Kaikki kirjoitukset
  *
@@ -35,22 +36,32 @@ foreach ( $all_posts as $item ) {
   </header>
 
   <div class="wrap all-posts">
-    <?php foreach ( $posts_by_month as $year => $months ) : ?>
-      <section class="all-year" aria-labelledby="year-<?php echo esc_attr( $year ); ?>">
-        <h2 class="sec-title" id="year-<?php echo esc_attr( $year ); ?>"><?php echo esc_html( $year ); ?></h2>
-        <?php foreach ( $months as $month => $items ) : ?>
-          <h3 class="all-month"><?php echo esc_html( ucfirst( date_i18n( 'F', mktime( 0, 0, 0, $month, 1, $year ) ) ) ); ?></h3>
-          <ul class="all-list">
-            <?php foreach ( $items as $item ) : ?>
-              <li>
-                <time class="meta-text" datetime="<?php echo esc_attr( get_the_date( 'c', $item ) ); ?>"><?php echo esc_html( get_the_time( 'j.n.', $item ) ); ?></time>
-                <a href="<?php echo esc_url( get_permalink( $item ) ); ?>"><?php echo wp_kses_post( get_the_title( $item ) ); ?></a>
-              </li>
-            <?php endforeach; ?>
-          </ul>
+    <nav class="all-years" aria-label="Vuodet">
+      <ol>
+        <?php foreach ( $posts_by_month as $year => $months ) : ?>
+          <li><a href="#year-<?php echo esc_attr( $year ); ?>"><?php echo esc_html( $year ); ?> <span class="meta-text"><?php echo esc_html( array_sum( array_map( 'count', $months ) ) ); ?></span></a></li>
         <?php endforeach; ?>
-      </section>
-    <?php endforeach; ?>
+      </ol>
+    </nav>
+
+    <div class="all-body">
+      <?php foreach ( $posts_by_month as $year => $months ) : ?>
+        <section class="all-year" id="year-<?php echo esc_attr( $year ); ?>" aria-labelledby="year-title-<?php echo esc_attr( $year ); ?>">
+          <h2 class="all-year-title" id="year-title-<?php echo esc_attr( $year ); ?>"><?php echo esc_html( $year ); ?></h2>
+          <?php foreach ( $months as $month => $items ) : ?>
+            <h3 class="all-month"><?php echo esc_html( ucfirst( $GLOBALS['wp_locale']->get_month( $month ) ) ); ?></h3>
+            <ul class="all-list">
+              <?php foreach ( $items as $item ) : ?>
+                <li>
+                  <time class="meta-text" datetime="<?php echo esc_attr( get_the_date( 'c', $item ) ); ?>"><?php echo esc_html( get_the_time( 'j.n.', $item ) ); ?></time>
+                  <a href="<?php echo esc_url( get_permalink( $item ) ); ?>"><?php echo wp_kses_post( get_the_title( $item ) ); ?></a>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          <?php endforeach; ?>
+        </section>
+      <?php endforeach; ?>
+    </div>
   </div>
 </main>
 <?php

@@ -3,7 +3,9 @@
  * square per day, darker for more words.
  *
  * Data comes from the `heatmapdata` global (localized on the diary archive
- * only): { <unix timestamp of local midnight>: <word count> }.
+ * only): { <unix timestamp of local midnight>: <word count> }, and the
+ * days with a diary entry from `heatmapdays`: { 'Y-m-d': <address> }.
+ * Those days are links: one tab stop, arrow keys between days.
  */
 
 (() => {
@@ -14,6 +16,7 @@
     return;
   }
 
+  const days = window.heatmapdays || {};
   const MONTHS = [ 'tammi', 'helmi', 'maalis', 'huhti', 'touko', 'kesä', 'heinä', 'elo', 'syys', 'loka', 'marras', 'joulu' ];
   const CELL = 18; // 14px square and a 4px gap
   const localIso = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -49,9 +52,12 @@
       }
     }
     const value = counts[localIso(day)] || 0;
-    const title = `${day.getDate()}.${day.getMonth() + 1}.${day.getFullYear()}: ${value ? `${value} sanaa` : 'ei merkintää'}`;
-    const isToday = day.getTime() === today.getTime() ? ' class="is-today"' : '';
-    cells += `<i data-l="${level(value)}" title="${title}"${isToday}></i>`;
+    const label = `${day.getDate()}.${day.getMonth() + 1}.${day.getFullYear()}: ${value ? `${value} sanaa` : 'ei merkintää'}`;
+    const isToday = day.getTime() === today.getTime() ? ' is-today' : '';
+    const url = days[localIso(day)];
+    cells += url
+      ? `<a class="heat-day${isToday}" href="${url}" data-l="${level(value)}" data-tip="${label}" aria-label="${label}, avaa päivä" tabindex="-1"></a>`
+      : `<i class="heat-day${isToday}" data-l="${level(value)}" data-tip="${label}"></i>`;
   }
 
   el.innerHTML = `<div class="heat-months" aria-hidden="true">${months}</div>
@@ -63,5 +69,72 @@
   const scroller = el.closest('.heat-scroll');
   if (scroller) {
     scroller.scrollLeft = scroller.scrollWidth;
+  }
+
+  // One tab stop: the newest day; arrows move a day up or down, a week sideways
+  const cellsList = [...el.querySelectorAll('.heat-day')];
+  const links = cellsList.filter((cell) => 'A' === cell.tagName);
+  if (links.length) {
+    links[links.length - 1].tabIndex = 0;
+  }
+
+  const STEPS = { ArrowDown: 1, ArrowUp: -1, ArrowRight: 7, ArrowLeft: -7 };
+  el.addEventListener('keydown', (event) => {
+    const from = cellsList.indexOf(event.target);
+    let step = STEPS[event.key];
+    if (from < 0 || ('Home' !== event.key && 'End' !== event.key && !step)) {
+      return;
+    }
+    event.preventDefault();
+
+    let target = null;
+    if ('Home' === event.key || 'End' === event.key) {
+      target = 'Home' === event.key ? links[0] : links[links.length - 1];
+    } else {
+      // Skip days without an entry in the same direction
+      for (let index = from + step; index >= 0 && index < cellsList.length; index += step) {
+        if ('A' === cellsList[index].tagName) {
+          target = cellsList[index];
+          break;
+        }
+      }
+    }
+
+    if (target) {
+      event.target.tabIndex = -1;
+      target.tabIndex = 0;
+      target.focus();
+    }
+  });
+
+  // A black tooltip with the day, on pointer and on focus
+  const tip = document.createElement('div');
+  tip.className = 'heat-tip';
+  tip.setAttribute('aria-hidden', 'true');
+  tip.hidden = true;
+  document.body.append(tip);
+
+  const showTip = (event) => {
+    const cell = event.target.closest('.heat-day');
+    if (!cell) {
+      return;
+    }
+    const rect = cell.getBoundingClientRect();
+    tip.textContent = cell.dataset.tip;
+    tip.hidden = false;
+    tip.style.left = `${rect.left + rect.width / 2}px`;
+    tip.style.top = `${rect.top}px`;
+  };
+  const hideTip = () => {
+    tip.hidden = true;
+  };
+
+  el.addEventListener('pointerover', showTip);
+  el.addEventListener('focusin', showTip);
+  el.addEventListener('pointerleave', hideTip);
+  el.addEventListener('focusout', hideTip);
+  window.addEventListener('scroll', hideTip, { passive: true });
+  if (scroller) {
+    scroller.addEventListener('scroll', hideTip, { passive: true });
   }
 })();

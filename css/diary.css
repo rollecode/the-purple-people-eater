@@ -73,17 +73,23 @@
   gap: 4px;
 }
 
-.heat-grid i {
+.heat-day {
+  display: block;
   border-radius: 3px;
   background: var(--h0);
 }
 
-.heat-grid i[data-l="1"] { background: var(--h1); }
-.heat-grid i[data-l="2"] { background: var(--h2); }
-.heat-grid i[data-l="3"] { background: var(--h3); }
-.heat-grid i[data-l="4"] { background: var(--h4); }
+.heat-day[data-l="1"] { background: var(--h1); }
+.heat-day[data-l="2"] { background: var(--h2); }
+.heat-day[data-l="3"] { background: var(--h3); }
+.heat-day[data-l="4"] { background: var(--h4); }
 
-.heat-grid i.is-today {
+a.heat-day:hover {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+
+.heat-day.is-today {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
@@ -102,6 +108,25 @@
   width: 14px;
   height: 14px;
   border-radius: 3px;
+}
+
+/* Black tooltip over a heatmap day, placed by heatmap.js */
+.heat-tip {
+  position: fixed;
+  z-index: 70;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 8px));
+  white-space: nowrap;
+}
+
+.heat-tip[hidden] {
+  display: none;
 }
 
 /* The days */
@@ -319,13 +344,11 @@
   color: var(--ink);
 }
 
-/* A year ago: a memory set apart from today's entry, its text a preview */
+/* A year ago: the whole day on its own tinted sheet; a long one opens on request */
 .yearago {
-  position: relative;
   margin-top: 72px;
   padding: 28px 30px 26px;
-  border-left: 3px solid var(--lavender);
-  border-radius: 4px 8px 8px 4px;
+  border-radius: 8px;
   background: var(--tint);
 }
 
@@ -353,31 +376,27 @@
 }
 
 .yearago .dmeta {
-  margin: 8px 0 16px;
+  margin: 8px 0 18px;
 }
 
 .yearago-text {
-  max-height: 11.5em;
-  overflow: hidden;
   color: var(--ink-2);
-  font-family: var(--body);
   font-size: 17px;
-  line-height: 1.65;
-  -webkit-mask-image: linear-gradient(#000 55%, transparent);
-  mask-image: linear-gradient(#000 55%, transparent);
 }
 
-.yearago-text p {
-  margin: 0 0 .8em;
+.yearago-text.is-clamped {
+  max-height: 16em;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(#000 60%, transparent);
+  mask-image: linear-gradient(#000 60%, transparent);
 }
 
-.yearago-text img,
-.yearago-text figure {
-  display: none;
+.yearago-more {
+  margin-top: 14px;
 }
 
-.yearago .textlink {
-  margin-top: 6px;
+.yearago-more[aria-expanded="true"] .ic {
+  transform: rotate(180deg);
 }
 
 .prevnext {
