@@ -41,7 +41,7 @@ $author    = '' === $full_name ? get_the_author() : $full_name;
         <span data-resume-text></span>
         <span class="resume-bar" aria-hidden="true"><i></i></span>
       </div>
-      <a href="#" data-resume-go>Jatka, <span data-resume-pct></span> %</a>
+      <a href="#" data-resume-go>Jatka kohdasta <span data-resume-pct></span> %</a>
     </div>
   <?php endif; ?>
 </div>

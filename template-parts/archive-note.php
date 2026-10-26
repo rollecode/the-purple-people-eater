@@ -23,5 +23,5 @@ $age = author_age( $written );
 ?>
 <aside class="archive-note" aria-label="Arkistomatskua">
   <span class="yr" aria-hidden="true"><?php echo esc_html( $written->format( 'Y' ) ); ?></span>
-  <p><b>Arkistomatskua.</b> Kirjoitettu <?php echo esc_html( wp_date( 'F', $written->getTimestamp() ) ); ?>ssa <?php echo esc_html( $written->format( 'Y' ) ); ?>, <?php echo esc_html( $ago ); ?> vuotta sitten. Olin kirjoittamishetkellä <?php echo esc_html( $age ); ?>-vuotias.</p>
+  <p><b>Arkistomatskua.</b> Kirjoitettu <?php echo esc_html( wp_date( 'F', $written->getTimestamp() ) ); ?>ssa <?php echo esc_html( $written->format( 'Y' ) ); ?>, <?php echo esc_html( fi_number_words( $ago ) ); ?> vuotta sitten. Olin kirjoittamishetkellä <?php echo esc_html( $age ); ?>-vuotias.</p>
 </aside>

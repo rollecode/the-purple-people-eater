@@ -462,7 +462,7 @@
         image.insertAdjacentHTML('beforeend', '<span class="ribbon" title="Lukeminen kesken"></span>');
       }
       const link = $('.card-title a', card);
-      $('.card-body', card).insertAdjacentHTML('beforeend', `<a class="resume-chip" href="${link.href}#jatka">Jatka siitä mihin jäit, ${saved.pct} % luettu</a>`);
+      $('.card-body', card).insertAdjacentHTML('beforeend', `<a class="resume-chip" href="${link.href}#jatka">Jatka siitä, mihin jäit (${saved.pct} % luettu)</a>`);
     });
   }
 
@@ -512,7 +512,7 @@
 
       const hero = $('.photo-hero');
       if (hero) {
-        hero.insertAdjacentHTML('beforeend', `<a class="ribbon" href="#" data-resume-go aria-label="Jatka siitä mihin jäit, ${saved.pct} % luettu"></a>`);
+        hero.insertAdjacentHTML('beforeend', `<a class="ribbon" href="#" data-resume-go aria-label="Jatka siitä, mihin jäit (${saved.pct} % luettu)"></a>`);
       }
 
       $$('[data-resume-go]').forEach((link) => link.addEventListener('click', (event) => {
@@ -650,7 +650,7 @@
     <p class="ownad-note">Sori häiriö, tämä on härski oman firmani mainos. Teksti jatkuu alla.</p>
     ${DUDE_LOGO}
     <p class="ownad-title">Tarvitsetko laadukkaat ja helposti päivitettävät verkkosivut?</p>
-    <p class="ownad-text">Teemme kotimaisia WordPress-sivustoja, jotka latautuvat supernopeasti, ovat helppoja päivittää ja naurettavan hyvännäköisiä.</p>
+    <p class="ownad-text">Teemme kotimaisia WordPress-sivustoja, jotka latautuvat supernopeasti ja ovat helposti päivitettäviä ja naurettavan hyvännäköisiä.</p>
     <ul class="ownad-facts">
       <li>Vuodesta 2013</li>
       <li>Satoja asiakkaita</li>

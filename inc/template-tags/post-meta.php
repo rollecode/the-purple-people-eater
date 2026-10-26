@@ -161,6 +161,18 @@ function post_responses( $post_id ) {
 }
 
 /**
+ * Small numbers in running text as words, as Finnish style prefers:
+ * kolme vuotta sitten, 17 vuotta sitten.
+ *
+ * @param int $number Number.
+ */
+function fi_number_words( $number ) {
+  $words = [ 'nolla', 'yksi', 'kaksi', 'kolme', 'neljä', 'viisi', 'kuusi', 'seitsemän', 'kahdeksan', 'yhdeksän', 'kymmenen' ];
+
+  return $words[ (int) $number ] ?? fi_number( $number );
+}
+
+/**
  * Finnish count with the right form: 1 kommentti, 2 kommenttia.
  *
  * @param int    $number   Count.
