@@ -1,11 +1,8 @@
 /**
- * Air theme JavaScript, vanilla and buildless.
+ * Front-end JavaScript, vanilla and buildless. Every part checks for its
+ * markup first, so one file serves all views. Settings come from
+ * window.rollemaa (scripts-styles.php).
  *
- * Replaces the old webpack bundle (jQuery, Vue, moment, frappe-charts,
- * fitvids, what-input, lazyload). Everything here runs on plain platform
- * APIs so there is no build step and nothing to keep updated.
- *
- * Loaded in the footer, so the DOM is parsed by the time this runs.
  * Conditional extras live in their own files: heatmap.js (diary archive)
  * and prism.js (singulars with code blocks).
  */
@@ -13,90 +10,118 @@
 (() => {
   'use strict';
 
-  // JavaScript is active: swap the body class
-  document.body.classList.remove('no-js');
-  document.body.classList.add('js');
+  const config = window.rollemaa || {};
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-  /**
-   * what-input replacement: expose the current input method as
-   * [data-whatinput] on <html> for the focus styles in base/_accessibility.
-   */
-  const setInput = (method) => document.documentElement.setAttribute('data-whatinput', method);
-  setInput('mouse');
-  document.addEventListener('pointerdown', (e) => setInput('touch' === e.pointerType ? 'touch' : 'mouse'), { passive: true });
-  document.addEventListener('keydown', (e) => {
-    if ([ 'Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' ', 'Escape' ].includes(e.key)) {
-      setInput('keyboard');
+  // localStorage can be missing or full; nothing here is worth an error
+  const store = {
+    get(key) {
+      try {
+        return JSON.parse(localStorage.getItem(key));
+      } catch (error) {
+        return null;
+      }
+    },
+    set(key, value) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch (error) {
+        // Private mode or quota: the feature just forgets
+      }
+    },
+    // Plain strings, shared with the prepaint script: read, write or remove (null)
+    raw(key, value) {
+      try {
+        if (undefined === value) {
+          return localStorage.getItem(key);
+        }
+        if (null === value) {
+          localStorage.removeItem(key);
+        } else {
+          localStorage.setItem(key, value);
+        }
+      } catch (error) {
+        return null;
+      }
+      return value;
+    },
+  };
+
+  const getJson = (path) => fetch(`${config.rest}${path}`).then((response) => {
+    if (!response.ok) {
+      throw new Error(response.statusText);
     }
-  }, { passive: true });
-
-  // Localized strings helper
-  const t = (key) => {
-    const strings = window.minimalistmadness_screenReaderText || {};
-    return typeof strings[key] === 'undefined' ? '' : strings[key];
-  };
-
-  const debounce = (fn, wait) => {
-    let timeout;
-    return (...args) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => fn(...args), wait);
-    };
-  };
+    return response.json();
+  });
 
   /**
-   * External link labels and indicator arrows
+   * Theme switch: light, dark or follow the system. The prepaint script in
+   * <head> has already set the class; this keeps it and the buttons in sync.
    */
-  const isLinkExternal = (href, localDomains) => {
-    if (!href.length) return false;
-    if (/^(#|tel:|mailto:|\/)/.test(href)) return false;
-    let url;
+  const themeButtons = $$('[data-theme-set]');
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const themeSwitch = $('.themesw');
+
+  // The highlight slides under the pressed button
+  const moveThemePill = () => {
+    const pressed = $('[aria-pressed="true"]', themeSwitch);
+    if (!pressed) {
+      return;
+    }
+    themeSwitch.style.setProperty('--pill-x', `${pressed.offsetLeft}px`);
+    themeSwitch.style.setProperty('--pill-w', `${pressed.offsetWidth}px`);
+  };
+
+  const applyTheme = () => {
+    const choice = store.raw('theme');
+    const theme = choice || (systemDark.matches ? 'theme-dark' : 'theme-light');
+    document.documentElement.className = theme;
+    themeButtons.forEach((button) => {
+      const value = button.dataset.themeSet;
+      const pressed = choice ? `theme-${value}` === choice : 'auto' === value;
+      button.setAttribute('aria-pressed', String(pressed));
+    });
+    if (themeSwitch) {
+      moveThemePill();
+    }
+  };
+
+  themeButtons.forEach((button) => button.addEventListener('click', () => {
+    const value = button.dataset.themeSet;
+    store.raw('theme', 'auto' === value ? null : `theme-${value}`);
+    applyTheme();
+  }));
+
+  systemDark.addEventListener('change', applyTheme);
+  applyTheme();
+
+  if (themeSwitch) {
+    // Font loading and layout changes resize the buttons under the pill
+    new ResizeObserver(moveThemePill).observe(themeSwitch);
+    requestAnimationFrame(() => themeSwitch.classList.add('is-ready'));
+  }
+
+  /**
+   * Screen readers hear that a link leaves the site
+   */
+  const localHosts = [ window.location.host ].concat(config.localDomains || []);
+  $$('.prose a[href^="http"], .keywords a[href^="http"]').forEach((link) => {
+    let host;
     try {
-      url = new URL(href);
+      host = new URL(link.href).host;
     } catch (error) {
-      return false;
+      return;
     }
-    return !localDomains.some((domain) => url.host === domain);
-  };
-
-  const getChildAltText = (link) => {
-    const children = [...link.children];
-    if (!children.length) return '';
-    const imgs = children.filter((child) => child.tagName.toLowerCase() === 'img');
-    if (children.length !== imgs.length) return '';
-    return imgs.filter((img) => img.alt && img.alt !== '').map((img) => img.alt).join(', ');
-  };
-
-  const styleExternalLinks = () => {
-    const localDomains = [ window.location.host ].concat(window.minimalistmadness_externalLinkDomains || []);
-
-    [...document.querySelectorAll('a')].filter((link) => isLinkExternal(link.href, localDomains)).forEach((link) => {
-      if (link.childElementCount === 1 && link.children[0].tagName.toLowerCase() === 'img') return;
-
-      if (!link.classList.contains('no-external-link-label')) {
-        const text = link.textContent.trim().length ? link.textContent.trim() : getChildAltText(link);
-        link.setAttribute('aria-label', link.target === '_blank'
-          ? `${text}: ${t('external_link')}, ${t('target_blank')}`
-          : `${text}: ${t('external_link')}`);
-      }
-
-      if (![ 'no-external-link-indicator', 'global-link', 'button' ].some((cls) => link.classList.contains(cls)) && !link.closest('.activitypub-embed, .wp-block-embed')) {
-        link.insertAdjacentHTML('beforeend', '<svg class="external-link-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9"><path d="M4.499 1.497h4v4m0-4l-7 7" fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path></svg>');
-      }
-    });
-
-    // Aria-labels for image-only links
-    [...document.querySelectorAll('a')].forEach((link) => {
-      if (link.textContent.trim() !== '' || link.ariaLabel) return;
-      const label = getChildAltText(link);
-      if (label !== '') link.ariaLabel = label;
-    });
-  };
-
-  styleExternalLinks();
+    if (localHosts.includes(host) || link.getAttribute('aria-label') || !link.textContent.trim()) {
+      return;
+    }
+    link.setAttribute('aria-label', `${link.textContent.trim()}: ulkoinen sivusto`);
+  });
 
   // Mastodon embed script, only when the page actually has an embed
-  if (document.querySelector('iframe[src*="mementomori.social"]')) {
+  if ($('iframe[src*="mementomori.social"]')) {
     const tag = document.createElement('script');
     tag.src = 'https://mementomori.social/embed.js';
     document.head.appendChild(tag);
@@ -105,263 +130,509 @@
   /**
    * Most read posts counter, one count per post per hour per tab
    */
-  if (typeof window.mostRead !== 'undefined') {
-    const key = `mostread_${window.mostRead.id}`;
+  if (config.post) {
+    const key = `mostread_${config.post}`;
     const now = Date.now();
     if (now - Number(sessionStorage.getItem(key)) > 3600000) {
       sessionStorage.setItem(key, now);
-      fetch(window.mostRead.url, { method: 'POST', keepalive: true });
+      fetch(`${config.rest}read/${config.post}`, { method: 'POST', keepalive: true });
     }
   }
 
   /**
-   * Own ad, with permanent dismiss
+   * Logo rain
    */
-  const adContent = '<p class="promotion-info">Sori häiriö, tämä on härski oman firmani mainos, teksti jatkuu alapuolella...</p><a href="https://www.dude.fi/yhteystiedot" class="global-link" aria-hidden="true" tabindex="-1"></a><div class="spans"><div class="span span-first"><div class="inner"><h2 class="screen-reader-text">Digitoimisto Dude Oy -mainos:</h2><svg aria-hidden="true" width="110" height="21.98" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 2267.72 453.54" xml:space="preserve"><path fill="currentColor" d="M950.26 211.64c0 37.66-12.7 111.12-97.79 111.12-85.61 0-98.4-73.47-98.4-111.12V5.23H590.91v217.92c0 138.73 97.78 221.55 261.55 221.55 163.39 0 260.93-82.82 260.93-221.55V5.23H950.26v206.41zM2264.41 127.17V5.23h-505.2v439.48h505.2V322.76h-345.08v-48.71h286.91v-98.17h-286.91v-48.71zM317.21 5.23H3v439.48h314.21c108.81 0 219.87-87.76 219.87-219.74 0-132.83-111.06-219.74-219.87-219.74zm-39.84 317.53H166.14v-195.4h111.23c57.58 0 97.7 45.79 97.7 97.61 0 52.51-40.12 97.79-97.7 97.79zM1485.51 5.23H1171.3v439.48h314.21c108.81 0 219.87-87.76 219.87-219.74 0-132.83-111.06-219.74-219.87-219.74zm-39.84 317.53h-111.23v-195.4h111.23c57.58 0 97.7 45.79 97.7 97.61 0 52.51-40.12 97.79-97.7 97.79z"/></svg></div></div><div class="span span-second"><h3 class="title">Tarvitsetko laadukkaat ja helposti päivitettävät verkkosivut?</h3><p>Nämäkin sivut joita juuri nyt katselet ovat käsintehtyä, kotimaista laatua. Toteuttamamme WordPress-verkkosivut latautuvat supernopeasti ja ovat naurettavan hyvännäköisiä. Emme käytä valmispalikoita, vaan suunnittelemme ja koodaamme kaikki käsin itse. Yrityksemme on ollut toiminnassa vuodesta 2013 ja kasvu on ollut tasaista. Meihin luottaa jo sadat asiakkaat. <a href="https://www.dude.fi/yhteystiedot">Tutustu lisää ja ota yhteyttä!</a> <button class="hide-forever-ad hide-forever"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="13" height="13"><path d="M11.559 1.042L1.042 11.912m0-10.87l10.517 10.87" stroke="currentColor" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/></svg>Ei kiinnosta, piilota mainos pysyvästi</button></p></div>';
-
-  if (window.localStorage.getItem('hide_dude_ad') !== '1') {
-    const spawnAd = (referenceElement) => {
-      const ownAd = document.createElement('div');
-      ownAd.innerHTML = adContent;
-      ownAd.classList.add('ownad-unblockable');
-      referenceElement.parentNode.insertBefore(ownAd, referenceElement.nextSibling);
-    };
-
-    if (document.getElementById('article-text-content')) {
-      const articleElement = document.querySelector('.container-article').children[0];
-      if (articleElement && articleElement.children.length) {
-        spawnAd(articleElement.children[Math.floor(articleElement.children.length / 3)]);
+  const brand = $('.brand');
+  if (brand && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let rained = false;
+    const makeItRain = () => {
+      if (rained) {
+        return;
       }
-    }
-
-    const slot = document.getElementById('spawn-slot');
-    if (slot) spawnAd(slot);
-  }
-
-  document.addEventListener('click', (e) => {
-    if (e.target.closest && e.target.closest('.hide-forever-ad')) {
-      const ownAd = document.querySelector('.ownad-unblockable');
-      ownAd.classList.add('closing');
-      window.setTimeout(() => ownAd.classList.add('dismissed'), 400);
-      window.localStorage.setItem('hide_dude_ad', '1');
-    }
-  });
-
-  /**
-   * Random posts page (template-parts/random.php)
-   */
-  const dynamicContent = document.querySelector('.dynamic-content');
-  if (dynamicContent) {
-    const loadRandom = () => {
-      fetch('/random-dynamic/')
-        .then((response) => response.text())
-        .then((html) => { dynamicContent.innerHTML = html; });
+      rained = true;
+      let drops = '';
+      let backDrops = '';
+      for (let left = 0; left < 100;) {
+        const hundred = Math.floor(Math.random() * 98 + 1);
+        const five = Math.floor(Math.random() * 4 + 2);
+        left += five;
+        const timing = `animation-delay: 0.${hundred}s; animation-duration: 0.5${hundred}s;`;
+        const drop = (side) => `<div class="drop" style="${side}: ${left}%; bottom: ${five + five - 1 + 100}%; ${timing}"><div class="stem" style="${timing}"></div><div class="splat" style="${timing}"></div></div>`;
+        drops += drop('left');
+        backDrops += drop('right');
+      }
+      $('.rain.front-row').innerHTML = drops;
+      $('.rain.back-row').innerHTML = backDrops;
     };
-    loadRandom();
-    document.querySelectorAll('.load-more-random').forEach((el) => el.addEventListener('click', (e) => {
-      e.preventDefault();
-      loadRandom();
-    }));
+    brand.addEventListener('mouseenter', () => {
+      makeItRain();
+      document.body.classList.add('splat-toggle');
+    });
+    brand.addEventListener('mouseleave', () => document.body.classList.remove('splat-toggle'));
   }
 
   /**
-   * Search overlay
+   * Search dialog: Algolia results grouped by type, arrow keys between
+   * results, the last searches remembered on this device.
    */
-  const searchOverlay = document.querySelector('.overlay-search');
-  const searchInput = document.querySelector('.overlay-search .search-input');
-  const searchResults = document.querySelector('ul.search-results');
-
-  const closeSearch = () => {
-    if (searchOverlay) searchOverlay.classList.remove('overlay-open');
-    document.body.classList.remove('overlay-open', 'search-open');
-    if (searchResults) searchResults.innerHTML = '';
-    document.querySelectorAll('.search-mobile input, .overlay-search input').forEach((input) => { input.value = ''; });
-  };
-
-  closeSearch();
-
-  document.querySelectorAll('.search-trigger').forEach((el) => el.addEventListener('click', (e) => {
-    e.preventDefault();
-    document.body.classList.remove('main-navigation-open', 'is-scrolling-prevented');
-    if (searchOverlay) searchOverlay.classList.add('overlay-open');
-    document.body.classList.add('overlay-open', 'search-open');
-    if (searchInput) searchInput.focus();
-  }));
-
-  document.addEventListener('click', (e) => {
-    if (e.target.closest && (e.target.closest('.button-close') || e.target.closest('.article--link'))) closeSearch();
-  });
-
-  document.addEventListener('keyup', (e) => {
-    if (e.key === 'Escape' && document.body.classList.contains('search-open')) closeSearch();
-  });
-
-  if (searchInput && window.algolia) {
-    const { appId, searchKey, index } = window.algolia;
-    const endpoint = `https://${appId}-dsn.algolia.net/1/indexes/${index}/query`;
+  const dialog = $('#search');
+  if (dialog) {
+    const input = $('#search-input', dialog);
+    const results = $('#search-results', dialog);
+    const status = $('#search-status', dialog);
+    const empty = $('[data-search-empty]', dialog);
+    const recentList = $('[data-search-recent]', dialog);
+    const allLink = $('[data-search-all]', dialog);
+    const randomLink = { href: allLink.href, html: allLink.innerHTML };
+    const RECENT_KEY = 'rollemaa:searches';
+    const MIN_LENGTH = 3;
     const cache = new Map();
-
-    const renderHits = (hits) => {
-      if (!hits.length) {
-        searchResults.innerHTML = '<li class="no-results"><h2>Ei hakutuloksia.</h2></li>';
-        return;
-      }
-      searchResults.innerHTML = hits.map((hit) => `<li><a href="${hit.url}" class="global-link" aria-hidden="true" tabindex="-1"></a><span class="search-post-type">${hit.type_label} &middot; <span class="search-post-date">${hit.date_readable}</span></span><h2><a class="article--link" href="${hit.url}">${hit._highlightResult.title.value}</a></h2><div class="search-excerpt">${hit._snippetResult ? hit._snippetResult.content.value : ''}</div></li>`).join('');
+    const groups = { post: 'Artikkelit', diary: 'Lokikirja', page: 'Sivut' };
+    const escapeHtml = (text) => String(text).replace(/[&<>"']/g, (char) => `&#${char.charCodeAt(0)};`);
+    const dateFi = (unix) => {
+      const date = new Date(unix * 1000);
+      return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
     };
 
-    // Free plan: 10K requests a month, so wait for 3 characters and a typing pause, and never ask twice
-    const doSearch = debounce(() => {
-      const search = searchInput.value.trim();
+    const showRecent = () => {
+      const recent = store.get(RECENT_KEY) || [];
+      recentList.innerHTML = recent.map((term) => `<li><a href="#" data-search-term="${escapeHtml(term)}">${escapeHtml(term)}</a></li>`).join('');
+      empty.hidden = !recent.length;
+    };
 
-      if (search.length < 3) {
-        searchResults.innerHTML = '';
+    const remember = (term) => {
+      const recent = (store.get(RECENT_KEY) || []).filter((item) => item !== term);
+      store.set(RECENT_KEY, [ term ].concat(recent).slice(0, 5));
+    };
+
+    const resetAllLink = () => {
+      allLink.href = randomLink.href;
+      allLink.innerHTML = randomLink.html;
+    };
+
+    const open = () => {
+      showRecent();
+      dialog.showModal();
+      input.focus();
+    };
+
+    const close = () => dialog.close();
+
+    dialog.addEventListener('close', () => {
+      input.value = '';
+      results.innerHTML = '';
+      status.textContent = '';
+      resetAllLink();
+    });
+
+    // A click on the backdrop lands on the dialog element itself
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) {
+        close();
+      }
+    });
+
+    $$('[data-open-search]').forEach((button) => button.addEventListener('click', open));
+    $$('[data-close-search]', dialog).forEach((button) => button.addEventListener('click', close));
+
+    document.addEventListener('keydown', (event) => {
+      const typing = event.target.closest('input, textarea, select, [contenteditable]');
+      if ('/' === event.key && !typing && !dialog.open) {
+        event.preventDefault();
+        open();
+      }
+    });
+
+    const render = (term, response) => {
+      const hits = response.hits || [];
+      const facets = (response.facets && response.facets.post_type) || {};
+      const total = response.nbHits || 0;
+
+      if (!hits.length) {
+        results.innerHTML = `<p class="s-none">Ei osumia haulle ”${escapeHtml(term)}”. Kokeile toista sanaa.</p>`;
+        status.textContent = 'Ei osumia';
+        resetAllLink();
         return;
       }
 
-      if (cache.has(search)) {
-        renderHits(cache.get(search));
+      const byType = {};
+      hits.forEach((hit) => {
+        (byType[hit.post_type] = byType[hit.post_type] || []).push(hit);
+      });
+
+      results.innerHTML = Object.keys(groups).filter((type) => byType[type]).map((type) => {
+        const items = byType[type].map((hit) => {
+          const day = 'diary' === type && /^Päivä \d+$/.test(hit.title);
+          let thumb = `<svg aria-hidden="true"><use href="${config.sprite}#logo"></use></svg>`;
+          if (hit.image) {
+            thumb = `<img src="${escapeHtml(hit.image)}" alt="">`;
+          } else if (day) {
+            thumb = `<span>${escapeHtml(hit.title).replace(' ', '<br>')}</span>`;
+          }
+          const snippet = hit._snippetResult ? hit._snippetResult.content.value : '';
+          return `<li><a href="${escapeHtml(hit.url)}"><span class="sq" aria-hidden="true">${thumb}</span><span><span class="t">${hit._highlightResult.title.value}</span><span class="x">${snippet}</span></span><span class="meta-text">${dateFi(hit.date)} <span class="enter" aria-hidden="true">↵</span></span></a></li>`;
+        }).join('');
+        const count = facets[type] || byType[type].length;
+        return `<section class="s-group"><h2><span>${groups[type]}</span><span>${byType[type].length} / ${count}</span></h2><ul class="s-list">${items}</ul></section>`;
+      }).join('');
+
+      const counts = Object.keys(groups).filter((type) => facets[type]).map((type) => `${groups[type]} ${facets[type]}`).join(' · ');
+      status.textContent = `${total} osumaa${counts ? `. ${counts}` : ''}`;
+      allLink.href = `/?s=${encodeURIComponent(term)}`;
+      allLink.textContent = `Kaikki ${total} osumaa`;
+    };
+
+    const search = (term) => {
+      if (cache.has(term)) {
+        render(term, cache.get(term));
         return;
       }
 
-      fetch(endpoint, {
+      const { appId, searchKey, index } = config.algolia;
+      fetch(`https://${appId}-dsn.algolia.net/1/indexes/${index}/query`, {
         method: 'POST',
         headers: { 'X-Algolia-Application-Id': appId, 'X-Algolia-API-Key': searchKey },
-        body: JSON.stringify({ query: search }),
+        body: JSON.stringify({
+          query: term,
+          facets: [ 'post_type' ],
+          facetingAfterDistinct: true,
+          attributesToRetrieve: [ 'title', 'url', 'date', 'post_type', 'image' ],
+        }),
       })
         .then((response) => response.json())
-        .then((result) => {
-          cache.set(search, result.hits || []);
-          if (searchInput.value.trim() === search) renderHits(result.hits || []);
-        });
-    }, 300);
-
-    searchInput.addEventListener('input', doSearch);
-  }
-
-  /**
-   * Comments: reveal the other fields when typing a comment
-   */
-  const commentField = document.querySelector('textarea#comment');
-  if (commentField) {
-    commentField.addEventListener('keyup', () => {
-      document.querySelectorAll('.hidden-by-default').forEach((el) => el.classList.add('show'));
-    }, { once: true });
-  }
-
-  /**
-   * Front page load more (replaces the Vue construct)
-   */
-  const loadMoreButton = document.querySelector('.block-loadable button.load-more');
-  if (loadMoreButton && typeof window.paged_query !== 'undefined') {
-    const query = window.paged_query.posts_query;
-    const feed = document.querySelector('.block-loadable .items-vue');
-    const spinner = document.querySelector('.block-loadable .load-more-spinner');
-    const buttonContainer = loadMoreButton.closest('.load-more-container');
-
-    const renderPost = (post) => `<article class="entry post-card post no-animation item-vue" id="post-${post.id}">
-      <div class="post-card-content">
-        <a href="${post.link}" class="global-link" aria-label="${(post.title.rendered || '').replace(/"/g, '&quot;')}" aria-hidden="true" tabindex="-1"></a>
-        <div class="post-card-image no-bottom-radius"><div class="img"><p class="post-card-details">${post.time_custom || ''}<br><span class="time-to-read">${post.reading_time_custom || ''} lukukokemus</span></p><div class="image image-background image-background-layer"><img src="${post.featured_image_custom || ''}" alt="" loading="lazy"></div></div></div>
-        <div class="post-card-information">
-          <h2 class="post-card-title-large"><a href="${post.link}">${post.title.rendered}</a></h2>
-          <p>${post.excerpt || ''}</p>
-        </div>
-      </div>
-    </article>`;
-
-    loadMoreButton.addEventListener('click', (e) => {
-      e.preventDefault();
-      spinner.style.display = '';
-      query.paged += 1;
-
-      const params = new URLSearchParams({
-        page: query.paged,
-        per_page: query.posts_per_page,
-        _fields: 'id,link,title,excerpt,time_custom,reading_time_custom,featured_image_custom',
-      });
-      (query.post__not_in || []).forEach((id) => params.append('exclude[]', id));
-
-      fetch(`${window.air.baseurl}wp/v2/posts?${params}`)
-        .then((response) => response.json())
-        .then((posts) => {
-          spinner.style.display = 'none';
-          if (!posts || !posts.length) {
-            buttonContainer.style.display = 'none';
-            return;
+        .then((response) => {
+          cache.set(term, response);
+          if (input.value.trim() === term) {
+            render(term, response);
+            remember(term);
           }
-          feed.insertAdjacentHTML('beforeend', posts.map(renderPost).join(''));
-          styleExternalLinks();
-          buttonContainer.style.display = posts.length < window.air.posts_per_page ? 'none' : '';
         })
-        .catch(() => { spinner.style.display = 'none'; });
+        .catch(() => {
+          status.textContent = 'Haku ei juuri nyt vastaa. Paina Enter, niin haetaan sivuston omalla haulla.';
+        });
+    };
+
+    // Free plan: 10K requests a month, so wait for three characters and a
+    // typing pause, and never ask twice for the same thing
+    let timer;
+    input.addEventListener('input', () => {
+      clearTimeout(timer);
+      const term = input.value.trim();
+      empty.hidden = term.length > 0 || !recentList.children.length;
+
+      if (term.length < MIN_LENGTH) {
+        results.innerHTML = '';
+        status.textContent = '';
+        resetAllLink();
+        return;
+      }
+
+      timer = setTimeout(() => search(term), 300);
+    });
+
+    recentList.addEventListener('click', (event) => {
+      const link = event.target.closest('[data-search-term]');
+      if (!link) {
+        return;
+      }
+      event.preventDefault();
+      input.value = link.dataset.searchTerm;
+      input.dispatchEvent(new Event('input'));
+      input.focus();
+    });
+
+    // Arrow keys move between the input and the result links
+    dialog.addEventListener('keydown', (event) => {
+      if (![ 'ArrowDown', 'ArrowUp' ].includes(event.key)) {
+        return;
+      }
+      const links = $$('.s-list a, [data-search-recent] a', dialog);
+      if (!links.length) {
+        return;
+      }
+      event.preventDefault();
+      const current = links.indexOf(document.activeElement);
+      const next = 'ArrowDown' === event.key ? current + 1 : current - 1;
+      if (next < 0) {
+        input.focus();
+      } else {
+        links[Math.min(next, links.length - 1)].focus();
+      }
     });
   }
 
   /**
-   * Scroll indicator on single hero
+   * Front page: more cards
    */
-  const scrollIndicator = document.querySelector('.scroll-indicator');
-  if (scrollIndicator) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY >= 200) {
-        scrollIndicator.classList.add('fadeout');
-        setTimeout(() => { scrollIndicator.style.display = 'none'; }, 500);
-      } else {
-        scrollIndicator.classList.remove('fadeout');
-        setTimeout(() => { scrollIndicator.style.display = ''; }, 500);
+  const loadMore = $('[data-load-more]');
+  const feed = $('[data-feed]');
+  if (loadMore && feed) {
+    const counter = $('[data-feed-count]');
+    loadMore.addEventListener('click', () => {
+      loadMore.disabled = true;
+      const shown = $$('.card', feed).length;
+
+      getJson(`cards?offset=${shown}`)
+        .then(({ html, done }) => {
+          const first = feed.children.length;
+          feed.insertAdjacentHTML('beforeend', html);
+          markResumable(feed);
+          if (counter) {
+            counter.textContent = counter.textContent.replace(/^\d+/, String(1 + $$('.card', feed).length));
+          }
+          // Keyboard users continue from the first new card
+          const firstNew = feed.children[first];
+          if (firstNew) {
+            $('.card-title a', firstNew).focus();
+          }
+          loadMore.closest('.loadmore').hidden = done;
+        })
+        .finally(() => {
+          loadMore.disabled = false;
+        });
+    });
+  }
+
+  /**
+   * Front page: draw new random finds
+   */
+  const picks = $('#random-picks');
+  $$('[data-shuffle]').forEach((button) => button.addEventListener('click', () => {
+    picks.classList.add('is-loading');
+    getJson('random')
+      .then(({ html }) => {
+        picks.innerHTML = html;
+      })
+      .finally(() => picks.classList.remove('is-loading'));
+  }));
+
+  /**
+   * Front page: refresh the "Nyt" panel; the page shows the cached copy
+   */
+  const nowPanel = $('[data-now]');
+  if (nowPanel) {
+    getJson('now').then(({ html }) => {
+      if (html) {
+        $('[data-now-items]', nowPanel).innerHTML = html;
+        nowPanel.hidden = false;
       }
+    }).catch(() => {});
+  }
+
+  /**
+   * Long texts remember how far you got. The byline offers to continue,
+   * and front page cards show a ribbon on texts left unfinished.
+   */
+  const READ_PREFIX = 'rollemaa:read:';
+  const RESUME_MIN = 5;
+  const RESUME_MAX = 95;
+  const METER_FROM = 2;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const whenFi = (time) => {
+    const date = new Date(time);
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    const clock = `klo ${date.getHours()}.${String(date.getMinutes()).padStart(2, '0')}`;
+    if (date.toDateString() === today.toDateString()) {
+      return `tänään ${clock}`;
+    }
+    if (date.toDateString() === yesterday.toDateString()) {
+      return `eilen ${clock}`;
+    }
+    return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${clock}`;
+  };
+
+  function markResumable(root) {
+    $$('.card[data-post-id]', root).forEach((card) => {
+      const saved = store.get(`${READ_PREFIX}${card.dataset.postId}`);
+      if (!saved || saved.pct < RESUME_MIN || saved.pct > RESUME_MAX || $('.resume-chip', card)) {
+        return;
+      }
+      const image = $('.card-img', card);
+      if (image) {
+        image.insertAdjacentHTML('beforeend', '<span class="ribbon" title="Lukeminen kesken"></span>');
+      }
+      const link = $('.card-title a', card);
+      $('.card-body', card).insertAdjacentHTML('beforeend', `<a class="resume-chip" href="${link.href}#jatka">Jatka siitä mihin jäit, ${saved.pct} % luettu</a>`);
+    });
+  }
+
+  markResumable(document);
+
+  const prose = $('.single-post .prose');
+  if (prose && config.post) {
+    const key = `${READ_PREFIX}${config.post}`;
+
+    // How far the reader is, in a corner; pressing it goes back to the top
+    const meter = document.createElement('button');
+    meter.type = 'button';
+    meter.className = 'read-meter';
+    meter.hidden = true;
+    meter.innerHTML = '<svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="19"/><circle class="done" cx="22" cy="22" r="19" pathLength="100"/></svg><span class="pct" aria-hidden="true"></span>';
+    document.body.append(meter);
+    meter.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+      const main = $('#content');
+      main.setAttribute('tabindex', '-1');
+      main.focus({ preventScroll: true });
+    });
+
+    const headings = $$('h2, h3', prose);
+    const progress = () => {
+      const rect = prose.getBoundingClientRect();
+      const read = (window.innerHeight - rect.top) / rect.height;
+      return Math.max(0, Math.min(1, read));
+    };
+
+    // Offer to continue from where the last visit ended
+    const saved = store.get(key);
+    const resume = $('[data-resume]');
+    const jumpTo = (pct) => {
+      const top = prose.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: top + prose.offsetHeight * (pct / 100) - window.innerHeight * .8 });
+    };
+
+    if (saved && resume && saved.pct >= RESUME_MIN && saved.pct <= RESUME_MAX) {
+      const heading = saved.heading.replace(/[<>&]/g, '');
+      const place = heading ? ` ja pääsit kohtaan <i>${heading}</i>` : '';
+      const stop = /[.?!]$/.test(heading) ? '' : '.';
+      $('[data-resume-text]', resume).innerHTML = `Luit tätä viimeksi ${whenFi(saved.at)}${place}${stop}`;
+      $('[data-resume-pct]', resume).textContent = saved.pct;
+      $('.resume-bar i', resume).style.width = `${saved.pct}%`;
+      resume.hidden = false;
+
+      const hero = $('.photo-hero');
+      if (hero) {
+        hero.insertAdjacentHTML('beforeend', `<a class="ribbon" href="#" data-resume-go aria-label="Jatka siitä mihin jäit, ${saved.pct} % luettu"></a>`);
+      }
+
+      $$('[data-resume-go]').forEach((link) => link.addEventListener('click', (event) => {
+        event.preventDefault();
+        jumpTo(saved.pct);
+      }));
+      if ('#jatka' === window.location.hash) {
+        jumpTo(saved.pct);
+      }
+    }
+
+    let ticking = false;
+    let lastSave = 0;
+    window.addEventListener('scroll', () => {
+      if (ticking) {
+        return;
+      }
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        const value = progress();
+        const pct = Math.round(value * 100);
+        const footer = $('.site-foot');
+        meter.hidden = pct < METER_FROM || (footer && footer.getBoundingClientRect().top < window.innerHeight);
+        meter.style.setProperty('--progress', pct);
+        $('.pct', meter).textContent = `${pct} %`;
+        meter.setAttribute('aria-label', `Luettu ${pct} %, takaisin alkuun`);
+
+        const now = Date.now();
+        if (now - lastSave < 1000) {
+          return;
+        }
+        lastSave = now;
+        const passed = headings.filter((heading) => heading.getBoundingClientRect().top < window.innerHeight * .3).pop();
+        store.set(key, { pct: Math.round(value * 100), heading: passed ? passed.textContent.trim() : '', at: now });
+      });
     }, { passive: true });
   }
 
-  // Add size class to legacy-era images without one
-  window.addEventListener('load', () => {
-    document.querySelectorAll('.container-article img').forEach((img) => {
-      if (img.clientWidth > 350) img.classList.add('size-large');
+  /**
+   * Copy buttons: the post address for Fediverse replies and sharing
+   */
+  $$('[data-copy]').forEach((button) => button.addEventListener('click', () => {
+    const label = $('span', button);
+    const original = label ? label.textContent : '';
+    navigator.clipboard.writeText(button.dataset.copy).then(() => {
+      if (label) {
+        label.textContent = 'Kopioitu';
+        setTimeout(() => {
+          label.textContent = original;
+        }, 2000);
+      }
     });
+  }));
+
+  /**
+   * Long comments open in full on request
+   */
+  $$('[data-expand]').forEach((button) => button.addEventListener('click', () => {
+    const body = document.getElementById(button.getAttribute('aria-controls'));
+    const expanded = 'true' === button.getAttribute('aria-expanded');
+    body.classList.toggle('is-clamped', expanded);
+    button.setAttribute('aria-expanded', String(!expanded));
+    $('.screen-reader-text', button).textContent = expanded ? 'Näytä koko kommentti' : 'Näytä vähemmän';
+  }));
+
+  /**
+   * Diary entry: the "Mikä lokikirja?" note until it is closed once
+   */
+  const explainer = $('[data-explainer]');
+  if (explainer && !store.raw('rollemaa:explainer-closed')) {
+    explainer.hidden = false;
+    $('[data-dismiss-explainer]', explainer).addEventListener('click', () => {
+      explainer.hidden = true;
+      store.raw('rollemaa:explainer-closed', '1');
+    });
+  }
+
+  /**
+   * The shelf starts from the newest years on narrow screens
+   */
+  $$('.shelf').forEach((shelf) => {
+    shelf.scrollLeft = shelf.scrollWidth;
   });
 
   /**
-   * Mobile navigation
+   * Own ad, with permanent dismiss. Dude's brand: the aurora and the
+   * crawling grain from dude.fi, the logo in the middle.
    */
-  document.querySelectorAll('.nav-burger').forEach((el) => el.addEventListener('click', () => {
-    document.body.classList.toggle('site-head-open');
-  }));
+  const DUDE_URL = 'https://www.dude.fi/yhteystiedot';
+  const DUDE_LOGO = '<svg class="ownad-logo" aria-hidden="true" viewBox="0 0 2267.72 453.54"><path d="M950.26 211.64c0 37.66-12.7 111.12-97.79 111.12-85.61 0-98.4-73.47-98.4-111.12V5.23H590.91v217.92c0 138.73 97.78 221.55 261.55 221.55 163.39 0 260.93-82.82 260.93-221.55V5.23H950.26v206.41zM2264.41 127.17V5.23h-505.2v439.48h505.2V322.76h-345.08v-48.71h286.91v-98.17h-286.91v-48.71zM317.21 5.23H3v439.48h314.21c108.81 0 219.87-87.76 219.87-219.74 0-132.83-111.06-219.74-219.87-219.74zm-39.84 317.53H166.14v-195.4h111.23c57.58 0 97.7 45.79 97.7 97.61 0 52.51-40.12 97.79-97.7 97.79zM1485.51 5.23H1171.3v439.48h314.21c108.81 0 219.87-87.76 219.87-219.74 0-132.83-111.06-219.74-219.87-219.74zm-39.84 317.53h-111.23v-195.4h111.23c57.58 0 97.7 45.79 97.7 97.61 0 52.51-40.12 97.79-97.7 97.79z"/></svg>';
+  const adContent = `
+    <a href="${DUDE_URL}" class="global-link" aria-hidden="true" tabindex="-1"></a>
+    <p class="ownad-note">Sori häiriö, tämä on härski oman firmani mainos. Teksti jatkuu alla.</p>
+    ${DUDE_LOGO}
+    <p class="ownad-title">Tarvitsetko laadukkaat ja helposti päivitettävät verkkosivut?</p>
+    <p class="ownad-text">Teemme kotimaisia WordPress-sivustoja, jotka latautuvat supernopeasti, ovat helppoja päivittää ja naurettavan hyvännäköisiä.</p>
+    <ul class="ownad-facts">
+      <li>Vuodesta 2013</li>
+      <li>Satoja asiakkaita</li>
+      <li>Ylläpito ja tuki</li>
+    </ul>
+    <a class="ownad-cta" href="${DUDE_URL}">Tutustu ja ota yhteyttä <svg class="ic" aria-hidden="true"><use href="${config.sprite}#arrow"></use></svg></a>
+    <button class="hide-forever-ad" type="button"><svg class="ic" aria-hidden="true"><use href="${config.sprite}#close"></use></svg>Ei kiinnosta, piilota mainos pysyvästi</button>`;
 
-  document.querySelectorAll('.menu-item a').forEach((el) => el.addEventListener('click', () => {
-    document.body.classList.remove('site-head-open');
-  }));
+  if (store.raw('hide_dude_ad') !== '1') {
+    const spawnAd = (referenceElement) => {
+      const ownAd = document.createElement('aside');
+      ownAd.innerHTML = adContent;
+      ownAd.classList.add('ownad-unblockable');
+      ownAd.setAttribute('aria-label', 'Mainos: Digitoimisto Dude');
+      referenceElement.after(ownAd);
+    };
 
-  /**
-   * Rain
-   */
-  const makeItRain = () => {
-    document.querySelectorAll('.rain').forEach((el) => { el.innerHTML = ''; });
-
-    let increment = 0;
-    let drops = '';
-    let backDrops = '';
-
-    while (increment < 100) {
-      const randoHundo = Math.floor(Math.random() * 98 + 1);
-      const randoFiver = Math.floor(Math.random() * 4 + 2);
-      increment += randoFiver;
-      const dropStyle = `bottom: ${randoFiver + randoFiver - 1 + 100}%; animation-delay: 0.${randoHundo}s; animation-duration: 0.5${randoHundo}s;`;
-      const innerStyle = `animation-delay: 0.${randoHundo}s; animation-duration: 0.5${randoHundo}s;`;
-      drops += `<div class="drop" style="left: ${increment}%; ${dropStyle}"><div class="stem" style="${innerStyle}"></div><div class="splat" style="${innerStyle}"></div></div>`;
-      backDrops += `<div class="drop" style="right: ${increment}%; ${dropStyle}"><div class="stem" style="${innerStyle}"></div><div class="splat" style="${innerStyle}"></div></div>`;
+    const articleProse = $('.single-post .prose');
+    if (articleProse && articleProse.children.length) {
+      spawnAd(articleProse.children[Math.floor(articleProse.children.length / 3)]);
     }
-
-    const frontRow = document.querySelector('.rain.front-row');
-    const backRow = document.querySelector('.rain.back-row');
-    if (frontRow) frontRow.insertAdjacentHTML('beforeend', drops);
-    if (backRow) backRow.insertAdjacentHTML('beforeend', backDrops);
-  };
-
-  const siteLogo = document.querySelector('.site-head-logo');
-  if (siteLogo) {
-    siteLogo.addEventListener('mouseenter', () => document.body.classList.add('splat-toggle'));
-    siteLogo.addEventListener('mouseleave', () => document.body.classList.remove('splat-toggle'));
   }
 
-  makeItRain();
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.hide-forever-ad')) {
+      return;
+    }
+    const ownAd = $('.ownad-unblockable');
+    ownAd.classList.add('closing');
+    window.setTimeout(() => ownAd.classList.add('dismissed'), 400);
+    store.raw('hide_dude_ad', '1');
+  });
 })();

@@ -6,12 +6,8 @@
  * @package minimalistmadness
  */
 
-$frame_classes = 'site';
-if ( ! is_singular() || has_tag( 'raha' ) ) {
-  $frame_classes .= ' disable-google-ads';
-}
 ?>
 <a class="skip-link screen-reader-text" href="#content"><?php echo esc_html( \Air_Light\get_default_localization( 'Skip to content' ) ); ?></a>
-<div class="<?php echo esc_attr( $frame_classes ); ?>">
+<div class="site">
 <?php echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 </div>

@@ -1,29 +1,37 @@
-/* stylelint-disable a11y/no-display-none, declaration-property-unit-allowed-list */
 /**
- * Typography helpers
+ * Pullquote block: a line from the text in large italic serif.
  */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-@media (max-width: 1000px) {
-  :is(.article-content, .editor-styles-wrapper) .wp-block-pullquote {
-    width: calc(100% - var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal)) * 2);
+:is(.prose, .editor-styles-wrapper) .wp-block-pullquote {
+  margin: 2.4em -120px 2.4em 0;
+  padding: 8px 0;
+  border: 0;
+  text-align: left;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-pullquote blockquote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-pullquote p {
+  margin: 0 0 12px;
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: clamp(32px, 3.3vw, 48px);
+  font-style: italic;
+  line-height: 1.08;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-pullquote cite {
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 15px;
+  font-style: normal;
+}
+
+@media (max-width: 1240px) {
+  :is(.prose, .editor-styles-wrapper) .wp-block-pullquote {
+    margin-right: 0;
   }
-}
-:is(.article-content, .editor-styles-wrapper) .wp-block-pullquote.alignwide,
-:is(.article-content, .editor-styles-wrapper) .wp-block-pullquote.alignfull {
-  padding-left: 0;
-  padding-right: 0;
-}
-@media (max-width: 1000px) {
-  :is(.article-content, .editor-styles-wrapper) .wp-block-pullquote.alignwide,
-  :is(.article-content, .editor-styles-wrapper) .wp-block-pullquote.alignfull {
-    margin-left: var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal));
-    margin-right: var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal));
-  }
-}
-:is(.article-content, .editor-styles-wrapper) .wp-block-pullquote.alignfull {
-  margin-left: var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal));
-  margin-right: var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal));
-  width: calc(100% - var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal)) * 2);
 }

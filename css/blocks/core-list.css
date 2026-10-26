@@ -1,103 +1,57 @@
-@charset "UTF-8";
-/* stylelint-disable a11y/no-display-none, declaration-property-unit-allowed-list */
 /**
- * Typography helpers
+ * List block styles: a todo list with done items, and lavender shades from
+ * strongest to faintest for rankings (no-bullets.css has the third style).
  */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-:is(.article-content, .editor-styles-wrapper) > ul.bandinfo,
-:is(.article-content, .editor-styles-wrapper) > ul:not([class]),
-:is(.article-content, .editor-styles-wrapper) > ol:not([class]),
-:is(.article-content, .editor-styles-wrapper) .wp-block-categories-list,
-:is(.article-content, .editor-styles-wrapper) .wp-block-list,
-:is(.article-content, .editor-styles-wrapper) ul.is-style-default,
-:is(.article-content, .editor-styles-wrapper) ol.is-style-default,
-:is(.article-content, .editor-styles-wrapper) ol:not([class]),
-:is(.article-content, .editor-styles-wrapper) ul:not([class]) :is(.article-content, .editor-styles-wrapper) > ul.is-style-default {
-  list-style: none;
+:is(.prose, .editor-styles-wrapper) .is-style-todo-list {
   padding-left: 0;
-  width: calc(100% - var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal)) * 2);
+  list-style: none;
 }
-:is(.article-content, .editor-styles-wrapper) > ul.bandinfo li,
-:is(.article-content, .editor-styles-wrapper) > ul:not([class]) li,
-:is(.article-content, .editor-styles-wrapper) > ol:not([class]) li,
-:is(.article-content, .editor-styles-wrapper) .wp-block-categories-list li,
-:is(.article-content, .editor-styles-wrapper) .wp-block-list li,
-:is(.article-content, .editor-styles-wrapper) ul.is-style-default li,
-:is(.article-content, .editor-styles-wrapper) ol.is-style-default li,
-:is(.article-content, .editor-styles-wrapper) ol:not([class]) li,
-:is(.article-content, .editor-styles-wrapper) ul:not([class]) :is(.article-content, .editor-styles-wrapper) > ul.is-style-default li {
-  display: table-row;
+
+:is(.prose, .editor-styles-wrapper) .is-style-todo-list li {
+  position: relative;
+  padding-left: 1.7em;
+}
+
+:is(.prose, .editor-styles-wrapper) .is-style-todo-list li::before {
+  position: absolute;
+  top: .3em;
+  left: 0;
+  width: 1.05em;
+  height: 1.05em;
+  border: 1.5px solid var(--rule-strong);
+  border-radius: 4px;
+  content: "";
+}
+
+:is(.prose, .editor-styles-wrapper) .is-style-todo-list li.is-style-checked::before {
+  border-color: var(--deep);
+  background: var(--deep) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 80% no-repeat;
+}
+
+:is(.prose, .editor-styles-wrapper) :is(.is-style-green-shades, .is-style-red-shades) {
+  overflow: hidden;
   padding: 0;
+  border-radius: 6px;
+  list-style: none;
 }
-:is(.article-content, .editor-styles-wrapper) > ul.bandinfo li.block-editor-block-list__block,
-:is(.article-content, .editor-styles-wrapper) > ul:not([class]) li.block-editor-block-list__block,
-:is(.article-content, .editor-styles-wrapper) > ol:not([class]) li.block-editor-block-list__block,
-:is(.article-content, .editor-styles-wrapper) .wp-block-categories-list li.block-editor-block-list__block,
-:is(.article-content, .editor-styles-wrapper) .wp-block-list li.block-editor-block-list__block,
-:is(.article-content, .editor-styles-wrapper) ul.is-style-default li.block-editor-block-list__block,
-:is(.article-content, .editor-styles-wrapper) ol.is-style-default li.block-editor-block-list__block,
-:is(.article-content, .editor-styles-wrapper) ol:not([class]) li.block-editor-block-list__block,
-:is(.article-content, .editor-styles-wrapper) ul:not([class]) :is(.article-content, .editor-styles-wrapper) > ul.is-style-default li.block-editor-block-list__block {
-  align-items: baseline;
-  display: flex;
-  gap: 2px;
+
+:is(.prose, .editor-styles-wrapper) :is(.is-style-green-shades, .is-style-red-shades) li {
+  margin: 0;
+  padding: .45em 1em;
+  font-family: var(--sans);
+  font-size: 16px;
 }
-:is(.article-content, .editor-styles-wrapper) > ul.bandinfo li::before,
-:is(.article-content, .editor-styles-wrapper) > ul:not([class]) li::before,
-:is(.article-content, .editor-styles-wrapper) > ol:not([class]) li::before,
-:is(.article-content, .editor-styles-wrapper) .wp-block-categories-list li::before,
-:is(.article-content, .editor-styles-wrapper) .wp-block-list li::before,
-:is(.article-content, .editor-styles-wrapper) ul.is-style-default li::before,
-:is(.article-content, .editor-styles-wrapper) ol.is-style-default li::before,
-:is(.article-content, .editor-styles-wrapper) ol:not([class]) li::before,
-:is(.article-content, .editor-styles-wrapper) ul:not([class]) :is(.article-content, .editor-styles-wrapper) > ul.is-style-default li::before {
-  display: table-cell;
+
+:is(.prose, .editor-styles-wrapper) .is-style-green-shades li {
+  background: color-mix(in oklab, var(--lavender) calc(100% - var(--i, 0) * 18%), var(--surface));
 }
-:is(.article-content, .editor-styles-wrapper) > ul.bandinfo li::before,
-:is(.article-content, .editor-styles-wrapper) > ul.bandinfo li::marker,
-:is(.article-content, .editor-styles-wrapper) > ul:not([class]) li::before,
-:is(.article-content, .editor-styles-wrapper) > ul:not([class]) li::marker,
-:is(.article-content, .editor-styles-wrapper) > ol:not([class]) li::before,
-:is(.article-content, .editor-styles-wrapper) > ol:not([class]) li::marker,
-:is(.article-content, .editor-styles-wrapper) .wp-block-categories-list li::before,
-:is(.article-content, .editor-styles-wrapper) .wp-block-categories-list li::marker,
-:is(.article-content, .editor-styles-wrapper) .wp-block-list li::before,
-:is(.article-content, .editor-styles-wrapper) .wp-block-list li::marker,
-:is(.article-content, .editor-styles-wrapper) ul.is-style-default li::before,
-:is(.article-content, .editor-styles-wrapper) ul.is-style-default li::marker,
-:is(.article-content, .editor-styles-wrapper) ol.is-style-default li::before,
-:is(.article-content, .editor-styles-wrapper) ol.is-style-default li::marker,
-:is(.article-content, .editor-styles-wrapper) ol:not([class]) li::before,
-:is(.article-content, .editor-styles-wrapper) ol:not([class]) li::marker,
-:is(.article-content, .editor-styles-wrapper) ul:not([class]) :is(.article-content, .editor-styles-wrapper) > ul.is-style-default li::before,
-:is(.article-content, .editor-styles-wrapper) ul:not([class]) :is(.article-content, .editor-styles-wrapper) > ul.is-style-default li::marker {
-  color: var(--color-link-text, var(--wp--custom--color-link-text));
+
+:is(.prose, .editor-styles-wrapper) .is-style-red-shades li {
+  background: color-mix(in oklab, #E5B8C6 calc(100% - var(--i, 0) * 18%), var(--surface));
+  color: #211B27;
 }
-:is(.article-content, .editor-styles-wrapper) > ul:not([class]) li::before,
-:is(.article-content, .editor-styles-wrapper) ul.wp-block-list li::before,
-:is(.article-content, .editor-styles-wrapper) ul.is-style-default li::before,
-:is(.article-content, .editor-styles-wrapper) ul:not([class]) li::before {
-  content: "•";
-  padding-right: 0.8rem;
-}
-:is(.article-content, .editor-styles-wrapper) > ol:not([class]),
-:is(.article-content, .editor-styles-wrapper) ol.wp-block-list,
-:is(.article-content, .editor-styles-wrapper) ol.is-style-default,
-:is(.article-content, .editor-styles-wrapper) ol:not([class]) {
-  counter-reset: ol;
-}
-:is(.article-content, .editor-styles-wrapper) > ol:not([class]) li,
-:is(.article-content, .editor-styles-wrapper) ol.wp-block-list li,
-:is(.article-content, .editor-styles-wrapper) ol.is-style-default li,
-:is(.article-content, .editor-styles-wrapper) ol:not([class]) li {
-  counter-increment: ol;
-}
-:is(.article-content, .editor-styles-wrapper) > ol:not([class]) li::before,
-:is(.article-content, .editor-styles-wrapper) ol.wp-block-list li::before,
-:is(.article-content, .editor-styles-wrapper) ol.is-style-default li::before,
-:is(.article-content, .editor-styles-wrapper) ol:not([class]) li::before {
-  content: counter(ol) ".";
-  padding-right: 0.3rem;
-}
+
+:is(.prose, .editor-styles-wrapper) :is(.is-style-green-shades, .is-style-red-shades) li:nth-child(2) { --i: 1; }
+:is(.prose, .editor-styles-wrapper) :is(.is-style-green-shades, .is-style-red-shades) li:nth-child(3) { --i: 2; }
+:is(.prose, .editor-styles-wrapper) :is(.is-style-green-shades, .is-style-red-shades) li:nth-child(4) { --i: 3; }
+:is(.prose, .editor-styles-wrapper) :is(.is-style-green-shades, .is-style-red-shades) li:nth-child(n+5) { --i: 4; }

@@ -1,0 +1,42 @@
+/**
+ * Media and text block: the picture beside a short text in Geist.
+ */
+:is(.prose, .editor-styles-wrapper) .wp-block-media-text {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  margin-block: 2em;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-media-text.has-media-on-the-right .wp-block-media-text__media {
+  order: 2;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-media-text__media img {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  object-fit: cover;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-media-text__content {
+  padding: 28px;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-media-text__content p {
+  font-family: var(--sans);
+  font-size: 17px;
+}
+
+@media (max-width: 860px) {
+  :is(.prose, .editor-styles-wrapper) .wp-block-media-text {
+    grid-template-columns: 1fr;
+  }
+
+  :is(.prose, .editor-styles-wrapper) .wp-block-media-text.has-media-on-the-right .wp-block-media-text__media {
+    order: 0;
+  }
+}

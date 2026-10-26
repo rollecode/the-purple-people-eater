@@ -4,119 +4,132 @@
   "settings": {
     "appearanceTools": false,
     "layout": {
-      "contentSize": "800px",
-      "wideSize": "1200px"
+      "contentSize": "760px",
+      "wideSize": "1000px"
     },
     "color": {
       "custom": true,
       "defaultPalette": false,
+      "defaultGradients": false,
       "palette": [
         {
-          "slug": "paragraph",
-          "name": "Text",
-          "color": "var(--color-paragraph, #141414)"
+          "slug": "ink",
+          "name": "Teksti",
+          "color": "var(--ink, #211B27)"
         },
         {
-          "slug": "background",
-          "name": "Background",
-          "color": "var(--color-background-default, #f0f0f0)"
+          "slug": "ground",
+          "name": "Pohja",
+          "color": "var(--ground, #F7F6F9)"
+        },
+        {
+          "slug": "surface",
+          "name": "Pinta",
+          "color": "var(--surface, #FFFFFF)"
+        },
+        {
+          "slug": "tint",
+          "name": "Laventelin häivä",
+          "color": "var(--tint, #F2EDF7)"
+        },
+        {
+          "slug": "lavender",
+          "name": "Laventeli",
+          "color": "var(--lavender, #D3C4E3)"
         },
         {
           "slug": "accent",
-          "name": "Accent",
-          "color": "var(--color-accent, #3886e1)"
+          "name": "Korostus",
+          "color": "var(--accent, #573F74)"
         },
         {
-          "slug": "accent-hover",
-          "name": "Accent hover",
-          "color": "var(--color-accent-hover, #17459e)"
+          "slug": "deep",
+          "name": "Syvä violetti",
+          "color": "var(--deep, #503B68)"
         },
         {
-          "slug": "white",
-          "name": "White",
-          "color": "var(--color-white, #fff)"
-        },
-        {
-          "slug": "black",
-          "name": "Black",
-          "color": "var(--color-black, #141414)"
-        },
-        {
-          "slug": "red",
-          "name": "Red",
-          "color": "var(--color-red, #cb3939)"
-        },
-        {
-          "slug": "rain",
-          "name": "Rain blue",
-          "color": "var(--color-rain, #4d5ca1)"
-        },
-        {
-          "slug": "mood-good",
-          "name": "Mood good",
-          "color": "var(--color-mood-good, #4bc435)"
-        },
-        {
-          "slug": "mood-okay",
-          "name": "Mood okay",
-          "color": "var(--color-mood-okay, #fcd23e)"
-        },
-        {
-          "slug": "mood-bad",
-          "name": "Mood bad",
-          "color": "var(--color-mood-bad, #e64239)"
+          "slug": "muted",
+          "name": "Himmeä",
+          "color": "var(--muted, #4F4758)"
         }
       ]
     },
     "typography": {
       "customFontSize": true,
       "fluid": false,
+      "dropCap": true,
       "fontFamilies": [
         {
-          "slug": "sans",
-          "name": "Inter (sans)",
-          "fontFamily": "'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen-Sans', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif",
+          "slug": "display",
+          "name": "Instrument Serif (otsikot)",
+          "fontFamily": "'Instrument Serif', 'Times New Roman', serif",
           "fontFace": [
             {
-              "fontFamily": "Inter",
+              "fontFamily": "Instrument Serif",
               "fontStyle": "normal",
               "fontWeight": "400",
               "fontDisplay": "swap",
               "src": [
-                "file:./fonts/Inter-Regular-latin.woff2"
-              ],
-              "unicodeRange": "U+0000-00FF, U+0100-017F, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD"
+                "file:./fonts/InstrumentSerif-latin.woff2"
+              ]
             },
             {
-              "fontFamily": "Inter",
+              "fontFamily": "Instrument Serif",
               "fontStyle": "italic",
               "fontWeight": "400",
               "fontDisplay": "swap",
               "src": [
-                "file:./fonts/Inter-Italic-latin.woff2"
-              ],
-              "unicodeRange": "U+0000-00FF, U+0100-017F, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD"
-            },
+                "file:./fonts/InstrumentSerif-Italic-latin.woff2"
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "body",
+          "name": "Source Serif 4 (leipäteksti)",
+          "fontFamily": "'Source Serif 4', Georgia, serif",
+          "fontFace": [
             {
-              "fontFamily": "Inter",
+              "fontFamily": "Source Serif 4",
               "fontStyle": "normal",
-              "fontWeight": "500",
+              "fontWeight": "400 700",
               "fontDisplay": "swap",
               "src": [
-                "file:./fonts/Inter-Medium-latin.woff2"
-              ],
-              "unicodeRange": "U+0000-00FF, U+0100-017F, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD"
+                "file:./fonts/SourceSerif4-latin.woff2"
+              ]
             },
             {
-              "fontFamily": "Inter",
-              "fontStyle": "normal",
-              "fontWeight": "600",
+              "fontFamily": "Source Serif 4",
+              "fontStyle": "italic",
+              "fontWeight": "400 700",
               "fontDisplay": "swap",
               "src": [
-                "file:./fonts/Inter-SemiBold-latin.woff2"
-              ],
-              "unicodeRange": "U+0000-00FF, U+0100-017F, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD"
-            },
+                "file:./fonts/SourceSerif4-Italic-latin.woff2"
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "sans",
+          "name": "Geist (pieni teksti)",
+          "fontFamily": "'Geist', system-ui, sans-serif",
+          "fontFace": [
+            {
+              "fontFamily": "Geist",
+              "fontStyle": "normal",
+              "fontWeight": "400 700",
+              "fontDisplay": "swap",
+              "src": [
+                "file:./fonts/Geist-latin.woff2"
+              ]
+            }
+          ]
+        },
+        {
+          "slug": "logo",
+          "name": "Inter (logo)",
+          "fontFamily": "'Inter', system-ui, sans-serif",
+          "fontFace": [
             {
               "fontFamily": "Inter",
               "fontStyle": "normal",
@@ -124,57 +137,41 @@
               "fontDisplay": "swap",
               "src": [
                 "file:./fonts/Inter-Bold-latin.woff2"
-              ],
-              "unicodeRange": "U+0000-00FF, U+0100-017F, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2193, U+2212, U+2215, U+FEFF, U+FFFD"
+              ]
             }
           ]
         },
         {
-          "slug": "serif-old",
-          "name": "Charter (legacy serif)",
-          "fontFamily": "'Charter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen-Sans', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif"
-        },
-        {
           "slug": "monospace",
           "name": "Monospace",
-          "fontFamily": "'SFMono', 'Menlo', 'Consolas', monospace"
+          "fontFamily": "ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace"
         }
       ],
       "fontSizes": [
         {
           "slug": "small",
-          "name": "Small",
-          "size": "15px"
+          "name": "Pieni",
+          "size": "16px"
         },
         {
           "slug": "default",
-          "name": "Default",
-          "size": "18px"
-        },
-        {
-          "slug": "medium",
-          "name": "Medium",
+          "name": "Leipäteksti",
           "size": "20px"
         },
         {
           "slug": "large",
-          "name": "Large (h3)",
+          "name": "Suuri",
           "size": "24px"
         },
         {
           "slug": "x-large",
-          "name": "Extra large (h2)",
-          "size": "30px"
+          "name": "Väliotsikko",
+          "size": "42px"
         },
         {
           "slug": "xx-large",
-          "name": "Huge (h1)",
-          "size": "40px"
-        },
-        {
-          "slug": "hero",
-          "name": "Hero",
-          "size": "52px"
+          "name": "Otsikko",
+          "size": "64px"
         }
       ]
     },
@@ -182,95 +179,61 @@
       "units": [
         "px",
         "rem",
+        "em",
         "%",
         "vh",
         "vw"
-      ],
-      "spacingSizes": [
-        {
-          "slug": "20",
-          "name": "Container",
-          "size": "2rem"
-        },
-        {
-          "slug": "40",
-          "name": "Text gap",
-          "size": "4rem"
-        },
-        {
-          "slug": "48",
-          "name": "Grid gap",
-          "size": "4.8rem"
-        },
-        {
-          "slug": "64",
-          "name": "Section",
-          "size": "6.4rem"
-        },
-        {
-          "slug": "80",
-          "name": "Block",
-          "size": "8rem"
-        }
       ]
-    },
-    "custom": {
-      "border-radius-input-field": "3px",
-      "border-width-input-field": "1px",
-      "color-background-table-cell-even": "#f3f3f3",
-      "color-background-table-cell-odd": "#fff",
-      "color-black": "#141414",
-      "color-black-rgb": "0 0 0",
-      "color-blockquote": "#0049d1",
-      "color-border-light": "#e9e9ec",
-      "color-button": "#fff",
-      "color-button-background": "#232830",
-      "color-button-background-hover": "#141414",
-      "color-button-hover": "#fff",
-      "color-darkgrey": "#4f5964",
-      "color-link-text": "#3886e1",
-      "color-paragraph": "#141414",
-      "color-white": "#fff",
-      "font-monospace": "'SFMono', 'Menlo', 'Consolas', monospace",
-      "font-paragraph": "'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen-Sans', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif",
-      "font-sans": "'Inter', -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen-Sans', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif",
-      "font-size-14": "14px",
-      "font-size-16": "16px",
-      "font-size-18": "18px",
-      "font-size-22": "22px",
-      "font-weight-bold": "700",
-      "font-weight-medium": "500",
-      "font-weight-semibold": "600",
-      "line-height-core-heading": "1.23",
-      "line-height-headings": "1.5",
-      "line-height-paragraphs-blog": "1.77",
-      "margin-between-paragraphs": "2.7rem",
-      "margin-between-text-elements": "4rem",
-      "margin-wp-block-image": "4rem",
-      "padding-container-horizontal": "2rem"
     }
   },
   "styles": {
     "color": {
-      "text": "var:preset|color|paragraph",
-      "background": "var(--color-white-two, #fafafa)"
+      "text": "var:preset|color|ink",
+      "background": "var:preset|color|ground"
     },
     "typography": {
-      "fontFamily": "var:preset|font-family|sans",
+      "fontFamily": "var:preset|font-family|body",
       "fontSize": "var:preset|font-size|default",
-      "fontWeight": "400",
-      "lineHeight": "1.5"
+      "lineHeight": "1.7"
     },
     "elements": {
       "link": {
         "color": {
-          "text": "var(--color-link-text, #3886e1)"
-        },
+          "text": "var:preset|color|accent"
+        }
+      },
+      "heading": {
         "typography": {
-          "textDecoration": "none"
+          "fontFamily": "var:preset|font-family|display",
+          "fontWeight": "400",
+          "lineHeight": "1.1"
+        }
+      },
+      "h4": {
+        "typography": {
+          "fontFamily": "var:preset|font-family|sans",
+          "fontWeight": "700"
+        }
+      },
+      "h5": {
+        "typography": {
+          "fontFamily": "var:preset|font-family|sans",
+          "fontWeight": "700"
+        }
+      },
+      "h6": {
+        "typography": {
+          "fontFamily": "var:preset|font-family|sans",
+          "fontWeight": "700"
+        }
+      },
+      "caption": {
+        "typography": {
+          "fontFamily": "var:preset|font-family|sans",
+          "fontSize": "15px"
         }
       }
     },
-    "css": ".editor-styles-wrapper p > a, .editor-styles-wrapper li > a, .editor-styles-wrapper figcaption > a { color: var(--wp--preset--color--accent); display: inline; font-weight: 500; text-decoration: underline; text-decoration-color: var(--wp--preset--color--accent); text-decoration-thickness: 1px; text-underline-offset: 6px; }\n.title-with-icon { align-items: center; display: grid; font-family: var(--font-sans, inherit); font-size: var(--font-size-16, 16px); font-weight: var(--font-weight-medium, 500); grid-gap: 1.5rem; grid-template-columns: auto 1fr; } .title-with-icon .icon { align-items: center; background-color: var(--color-border-light, #e9e9ec); border-radius: 50%; display: flex; height: 42px; justify-content: center; min-width: 42px; width: 32px; } .title-with-icon .sub-title { color: var(--color-black, #141414); opacity: .8; } .title-with-icon svg { height: 18px; width: 18px; }"
+    "css": ".editor-styles-wrapper { --ground: #F7F6F9; --surface: #FFFFFF; --tint: #F2EDF7; --soft: #EAE3F2; --lavender: #D3C4E3; --ink: #211B27; --ink-2: #3A3442; --muted: #4F4758; --rule: #E8E3ED; --rule-strong: #D1CAD8; --accent: #573F74; --deep: #503B68; --on-deep: #FFFFFF; --code-ground: #16121E; --display: 'Instrument Serif', serif; --body: 'Source Serif 4', Georgia, serif; --sans: 'Geist', system-ui, sans-serif; --mono: ui-monospace, Menlo, Consolas, monospace; }\n.editor-styles-wrapper a { text-decoration-thickness: 1px; text-underline-offset: .22em; }"
   }
 }

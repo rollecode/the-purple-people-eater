@@ -1,18 +1,12 @@
-/* stylelint-disable a11y/no-display-none, declaration-property-unit-allowed-list */
 /**
- * Typography helpers
+ * "Laatikko" paragraph style: a note set apart on a lavender tint.
  */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-:is(.article-content, .editor-styles-wrapper) .wp-block.is-style-boxed,
-:is(.article-content, .editor-styles-wrapper) .is-style-boxed {
-  border: 2px solid var(--color-paragraph, var(--wp--custom--color-paragraph));
-  color: var(--color-paragraph, var(--wp--custom--color-paragraph));
+:is(.prose, .editor-styles-wrapper) .is-style-boxed {
+  padding: 18px 22px;
+  border-radius: 8px;
+  background: var(--tint);
+  color: var(--ink-2);
+  font-family: var(--sans);
   font-size: 17px;
-  font-style: normal;
-  font-weight: var(--font-weight-medium, var(--wp--custom--font-weight-medium));
-  line-height: var(--line-height-paragraphs-blog, var(--wp--custom--line-height-paragraphs-blog));
-  padding: 2rem;
-  width: calc(100% - 4rem);
+  line-height: 1.6;
 }

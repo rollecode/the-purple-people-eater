@@ -1,45 +1,18 @@
 <?php
 /**
- * Who?
+ * Who writes this: photo, a few lines and a link to the about page.
  *
- * @package khonsu
+ * @package minimalistmadness
  */
 
 namespace Air_Light;
 
 ?>
-
-<section class="block block-who">
-
-  <div class="container">
-
-    <div class="cols">
-      <div class="col col-content">
-        <div>
-          <h3>Kuka Rolle?</h3>
-          <p>Rolle Laukkarinen on paljasjalkainen jyväskyläläinen, nörtti, yrittäjä ja perheenisä, joka on blogannut vuodesta 1999.</p>
-        </div>
-
-        <div>
-          <p><a href="<?php echo esc_url( get_page_link( 2768 ) ); ?>">Lue lisää <svg fill="currentColor" width="9" height="9" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45L531 45q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"/></svg></a></p>
-        </div>
-      </div>
-      <div class="col col-images">
-        <div class="instagram instagram-1" style="background-image: url('<?php echo esc_url( esc_url( get_template_directory_uri() ) ); ?>/images/instagram-5.jpg');"><a href="https://www.instagram.com/p/_P_FY3G0Vm" class="global-link" aria-label="Kuva kahvikupista, jonka pinnalle heijastuu koodia. Siirry katselemaan ulkoiselle sivustolle Instagramiin"></a></div>
-      </div>
-
-      <div class="col col-images-multiple">
-        <div class="instagram instagram-1" style="background-image: url('<?php echo esc_url( get_template_directory_uri() ); ?>/images/instagram-2.jpg');"><a href="https://www.instagram.com/p/BWkzo1YH41w" class="global-link" aria-label="Rolle ja Manu-poika hymyilevät. Siirry katselemaan ulkoiselle sivustolle Instagramiin"></a></div>
-
-        <div class="instagram instagram-1" style="background-image: url('<?php echo esc_url( get_template_directory_uri() ); ?>/images/instagram-3.jpg');"><a href="https://www.instagram.com/p/BkvleS7HJWF" class="global-link" aria-label="Rolle ja Veera-vaimo hymyilevät. Siirry katselemaan ulkoiselle sivustolle Instagramiin"></a></div>
-
-        <div class="instagram instagram-1" style="background-image: url('<?php echo esc_url( get_template_directory_uri() ); ?>/images/instagram-4.jpg');"><a href="https://www.instagram.com/p/BD0kbXIm0T3" class="global-link" aria-label="Rolle koodaa läppärillä puiston penkillä. Siirry katselemaan ulkoiselle sivustolle Instagramiin"></a></div>
-
-        <div class="instagram instagram-1" style="background-image: url('<?php echo esc_url( get_template_directory_uri() ); ?>/images/instagram-1.jpg');"><a href="https://www.instagram.com/p/BNL6xgrg3iR" class="global-link" aria-label="Taiteellinen tummataustainen potrettikuva Rollesta. Siirry katselemaan ulkoiselle sivustolle Instagramiin"></a></div>
-
-      </div>
-    </div>
-
+<section class="wrap who" aria-labelledby="who-title">
+  <img src="<?php echo esc_url( get_theme_file_uri( 'images/author-info.jpg' ) ); ?>" alt="Rolle Laukkarinen" width="280" height="280" loading="lazy">
+  <div>
+    <h2 id="who-title">Kuka Rolle?</h2>
+    <?php get_template_part( 'template-parts/author-bio' ); ?>
+    <a class="textlink" href="<?php echo esc_url( get_permalink( ABOUT_PAGE_ID ) ); ?>">Lisää Rollesta <?php the_icon( 'arrow' ); ?></a>
   </div>
-
 </section>

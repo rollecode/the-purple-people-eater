@@ -44,7 +44,8 @@ function count_read( \WP_REST_Request $request ) {
 }
 
 /**
- * Read counts keyed by post ID, most read first. Period: week or alltime.
+ * Read counts keyed by post ID, most read first. Period: week (the last
+ * seven days), lastweek (the seven before those) or alltime.
  */
 function most_read_counts( $period ) {
   global $wpdb;
@@ -55,9 +56,16 @@ function most_read_counts( $period ) {
     return $counts;
   }
 
-  $start  = 'week' === $period ? gmdate( 'Y-m-d', strtotime( '-1 week' ) ) : '1970-01-01';
+  $ranges = [
+    'week'     => [ '-1 week', 'tomorrow' ],
+    'lastweek' => [ '-2 weeks', '-1 week' ],
+    'alltime'  => [ '@0', 'tomorrow' ],
+  ];
+
+  [ $from, $to ] = $ranges[ $period ] ?? $ranges['alltime'];
+
   $table  = most_read_table();
-  $rows   = $wpdb->get_results( $wpdb->prepare( "SELECT post_id, SUM(count) AS total FROM {$table} WHERE time >= %s GROUP BY post_id ORDER BY total DESC LIMIT 100", $start ) ); // phpcs:ignore
+  $rows   = $wpdb->get_results( $wpdb->prepare( "SELECT post_id, SUM(count) AS total FROM {$table} WHERE time >= %s AND time < %s GROUP BY post_id ORDER BY total DESC LIMIT 100", gmdate( 'Y-m-d', strtotime( $from ) ), gmdate( 'Y-m-d', strtotime( $to ) ) ) ); // phpcs:ignore
   $counts = wp_list_pluck( $rows, 'total', 'post_id' );
 
   set_transient( $cache_key, $counts, MOST_READ_CACHE_TTL );
@@ -84,4 +92,23 @@ function most_read_query( $period, $per_page ) {
 
 function most_read_count( $post_id, $period ) {
   return most_read_counts( $period )[ $post_id ] ?? 0;
+}
+
+/**
+ * Direction of a post's reads this week against the week before: up, flat
+ * or down. Within a tenth counts as flat.
+ */
+function most_read_trend( $post_id ) {
+  $now    = most_read_count( $post_id, 'week' );
+  $before = most_read_count( $post_id, 'lastweek' );
+
+  if ( $now > $before * 1.1 ) {
+    return 'up';
+  }
+
+  if ( $now < $before * .9 ) {
+    return 'down';
+  }
+
+  return 'flat';
 }

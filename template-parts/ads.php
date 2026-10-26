@@ -1,46 +1,25 @@
 <?php
 /**
- * Ads
- *
- * Ads for the middle section of the page
- *
- * @Author:		Roni Laukkarinen
- * @Date:   		2021-08-10 09:32:58
- * @Last Modified by:   Roni Laukkarinen
- * @Last Modified time: 2022-04-06 16:19:42
+ * Paid ad slot on the front page: the newest published ad for the
+ * "etusivu" slot, until its expiry date.
  *
  * @package minimalistmadness
- * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  */
 
-if ( is_home() && ! is_paged() || is_front_page() && ! is_paged() ) : ?>
+namespace Air_Light;
 
-<div id="placement">
-<?php $args = array(
-  'post_type' => 'ads',
+$ads = get_posts( [
+  'post_type'      => 'ads',
+  'post_status'    => 'publish',
   'posts_per_page' => 1,
-  'no_found_rows' => true,
-  'post_status' => 'publish',
-);
+  'meta_key'       => 'slotti', // phpcs:ignore WordPress.DB.SlowDBQuery
+  'meta_value'     => 'etusivu', // phpcs:ignore WordPress.DB.SlowDBQuery
+] );
 
-$ad = new WP_Query( $args );
-if ( $ad->have_posts() ) :
-while ( $ad->have_posts() ) :
-$ad->the_post();
-
-if ( 'etusivu' === get_post_meta( get_the_ID(), 'slotti', true ) ) :
-if ( strtotime( get_post_meta( get_the_ID(), 'eraantymispaiva', true ) ) > time() ) : ?>
-
-  <div class="advertisement ad advert textad">
-    <div class="ad-top ad textad">
-      <?php echo get_post_meta( get_the_ID(), 'mainoskoodi', true ); // phpcs:ignore ?>
-    </div><!-- .textad -->
-  </div><!-- .ad -->
-
-<?php
-endif;
-endif;
-endwhile;
-endif; ?>
-</div>
-<?php endif;
+if ( ! $ads || strtotime( get_post_meta( $ads[0]->ID, 'eraantymispaiva', true ) ) <= time() ) {
+  return;
+}
+?>
+<aside class="placement" aria-label="Mainos">
+  <?php echo get_post_meta( $ads[0]->ID, 'mainoskoodi', true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ad code entered by the site owner ?>
+</aside>

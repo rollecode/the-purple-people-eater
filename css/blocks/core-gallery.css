@@ -1,12 +1,44 @@
-/* stylelint-disable a11y/no-display-none, declaration-property-unit-allowed-list */
 /**
- * Typography helpers
+ * Gallery block: square crops in a tight grid.
  */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-:is(.article-content, .editor-styles-wrapper) .blocks-gallery-grid:not(.has-nested-images),
-:is(.article-content, .editor-styles-wrapper) .wp-block-gallery:not(.has-nested-images) {
-  margin-left: auto;
-  margin-right: auto;
+:is(.prose, .editor-styles-wrapper) .wp-block-gallery {
+  display: grid;
+  grid-template-columns: repeat(var(--columns, 3), minmax(0, 1fr));
+  margin-block: 2em;
+  padding: 0;
+  gap: 10px;
+  list-style: none;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-gallery.columns-2 { --columns: 2; }
+:is(.prose, .editor-styles-wrapper) .wp-block-gallery.columns-4 { --columns: 4; }
+
+:is(.prose, .editor-styles-wrapper) .wp-block-gallery .wp-block-image,
+:is(.prose, .editor-styles-wrapper) .wp-block-gallery .blocks-gallery-item {
+  width: auto !important;
+  margin: 0;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-gallery img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-gallery figcaption {
+  margin-top: 6px;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 13.5px;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-gallery > .blocks-gallery-caption {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 860px) {
+  :is(.prose, .editor-styles-wrapper) .wp-block-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

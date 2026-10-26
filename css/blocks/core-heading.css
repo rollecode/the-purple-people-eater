@@ -1,22 +1,7 @@
-/* stylelint-disable a11y/no-display-none, declaration-property-unit-allowed-list */
 /**
- * Typography helpers
+ * Heading block: headings keep the prose rhythm; anchors leave room for
+ * the top of the screen.
  */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-:is(.article-content, .editor-styles-wrapper) h1,
-:is(.article-content, .editor-styles-wrapper) h2,
-:is(.article-content, .editor-styles-wrapper) h3,
-:is(.article-content, .editor-styles-wrapper) h4,
-:is(.article-content, .editor-styles-wrapper) h5 {
-  line-height: var(--line-height-core-heading, var(--wp--custom--line-height-core-heading));
-}
-:is(.article-content, .editor-styles-wrapper) h1:first-child,
-:is(.article-content, .editor-styles-wrapper) h2:first-child,
-:is(.article-content, .editor-styles-wrapper) h3:first-child,
-:is(.article-content, .editor-styles-wrapper) h4:first-child,
-:is(.article-content, .editor-styles-wrapper) h5:first-child,
-:is(.article-content, .editor-styles-wrapper) h6:first-child {
-  margin-top: 0;
+:is(.prose, .editor-styles-wrapper) .wp-block-heading {
+  scroll-margin-top: 32px;
 }

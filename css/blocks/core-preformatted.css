@@ -1,14 +1,14 @@
-/* stylelint-disable a11y/no-display-none, declaration-property-unit-allowed-list */
 /**
- * Typography helpers
+ * Preformatted block: plain monospace on a tint, unlike code.
  */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-@media (max-width: 1000px) {
-  :is(.article-content, .editor-styles-wrapper) .wp-block-preformatted {
-    margin-left: var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal));
-    margin-right: var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal));
-    width: calc(100% - var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal)) * 4);
-  }
+:is(.prose, .editor-styles-wrapper) .wp-block-preformatted {
+  margin-block: 1.8em;
+  padding: 18px 20px;
+  overflow-x: auto;
+  border-radius: 8px;
+  background: var(--tint);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 14.5px;
+  white-space: pre-wrap;
 }

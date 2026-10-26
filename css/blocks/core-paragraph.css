@@ -1,26 +1,12 @@
-/* stylelint-disable a11y/no-display-none, declaration-property-unit-allowed-list */
 /**
- * Typography helpers
+ * Paragraph block: lead sizes from the editor's font size picker.
  */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-:is(.article-content, .editor-styles-wrapper) .has-larger-font-size,
-:is(.article-content, .editor-styles-wrapper) .has-large-font-size {
-  line-height: var(--line-height-headings, var(--wp--custom--line-height-headings));
+:is(.prose, .editor-styles-wrapper) p.has-large-font-size {
+  font-size: 24px;
+  line-height: 1.5;
 }
-@media (max-width: 480px) {
-  :is(.article-content, .editor-styles-wrapper) .has-large-font-size {
-    font-size: var(--font-size-18, var(--wp--custom--font-size-18));
-  }
-}
-@media (max-width: 480px) {
-  :is(.article-content, .editor-styles-wrapper) .has-larger-font-size {
-    font-size: var(--font-size-22, var(--wp--custom--font-size-22));
-  }
-}
-@media (max-width: 1000px) {
-  :is(.article-content, .editor-styles-wrapper) .has-background {
-    width: calc(100% - var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal)) * 2);
-  }
+
+:is(.prose, .editor-styles-wrapper) p.has-small-font-size {
+  font-family: var(--sans);
+  font-size: 16px;
 }

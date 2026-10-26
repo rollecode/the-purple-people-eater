@@ -53,7 +53,7 @@ function algolia_settings() {
     'attributeForDistinct'  => 'post_id',
     'distinct'              => 1,
     'customRanking'         => [ 'desc(date)' ],
-    'attributesToRetrieve'  => [ 'title', 'url', 'type_label', 'date_readable' ],
+    'attributesToRetrieve'  => [ 'title', 'url', 'type_label', 'date_readable', 'date', 'post_type', 'image' ],
     'attributesToHighlight' => [ 'title' ],
     'attributesToSnippet'   => [ 'content:30' ],
     'highlightPreTag'       => '<mark>',
@@ -103,6 +103,7 @@ function algolia_records( \WP_Post $post ) {
     'type_label'    => algolia_type_label( $post->post_type ),
     'title'         => html_entity_decode( get_the_title( $post ), ENT_QUOTES, 'UTF-8' ),
     'url'           => get_permalink( $post ),
+    'image'         => (string) get_the_post_thumbnail_url( $post, 'thumbnail' ),
     'date'          => (int) get_post_time( 'U', true, $post ),
     'date_readable' => 'Kirjoitettu ' . get_the_time( 'l', $post ) . 'na, ' . get_the_time( 'j.', $post ) . ' ' . get_the_time( 'F', $post ) . 'ta ' . get_the_time( 'Y', $post ),
   ];

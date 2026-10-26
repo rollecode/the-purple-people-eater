@@ -1,7 +1,6 @@
 /**
- * Writing heatmap for the diary archive: a GitHub-style contribution
- * calendar of daily word counts for the past year. Vanilla replacement for
- * frappe-charts + moment (the old bundle shipped ~160 KB for this grid).
+ * Writing heatmap on the lokikirja front: a year of daily word counts, one
+ * square per day, darker for more words.
  *
  * Data comes from the `heatmapdata` global (localized on the diary archive
  * only): { <unix timestamp of local midnight>: <word count> }.
@@ -11,11 +10,15 @@
   'use strict';
 
   const el = document.getElementById('heatmap');
-  if (!el || typeof window.heatmapdata === 'undefined') return;
+  if (!el || typeof window.heatmapdata === 'undefined') {
+    return;
+  }
 
+  const MONTHS = [ 'tammi', 'helmi', 'maalis', 'huhti', 'touko', 'kesä', 'heinä', 'elo', 'syys', 'loka', 'marras', 'joulu' ];
+  const CELL = 18; // 14px square and a 4px gap
   const localIso = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
-  // Bucket word counts per local calendar day
+  // Word counts per local calendar day
   const counts = {};
   Object.entries(window.heatmapdata).forEach(([ ts, words ]) => {
     const key = localIso(new Date(ts * 1000));
@@ -25,42 +28,40 @@
   const max = Math.max(...Object.values(counts), 1);
   const level = (value) => (value ? Math.min(4, Math.ceil(value / (max / 4))) : 0);
 
-  // One year back from today, snapped to the previous Sunday
-  const end = new Date();
-  end.setHours(0, 0, 0, 0);
-  const start = new Date(end);
+  // One year back from today, starting on a Monday
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const start = new Date(today);
   start.setFullYear(start.getFullYear() - 1);
-  start.setDate(start.getDate() - start.getDay());
+  start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
 
-  const MONTHS = [ 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC' ];
   let cells = '';
-  let monthSpans = '';
-  let column = 0;
-  let labeledMonth = -1;
+  let months = '';
+  let week = -1;
+  let labeled = -1;
 
-  for (let day = new Date(start); day <= end; day.setDate(day.getDate() + 1)) {
-    if (day.getDay() === 0) {
-      column += 1;
-      // Label each month at its first Sunday; the partial first week is
-      // skipped so the leading label does not collide with the next one.
-      if (day.getMonth() !== labeledMonth && day.getDate() <= 7) {
-        labeledMonth = day.getMonth();
-        monthSpans += `<span style="grid-column: ${column}">${MONTHS[labeledMonth]}</span>`;
+  for (let day = new Date(start); day <= today; day.setDate(day.getDate() + 1)) {
+    if (1 === day.getDay() || week < 0) {
+      week += 1;
+      if (day.getMonth() !== labeled && day.getDate() <= 7) {
+        labeled = day.getMonth();
+        months += `<span style="left: ${week * CELL}px">${MONTHS[labeled]}</span>`;
       }
     }
     const value = counts[localIso(day)] || 0;
-    const title = value ? ` title="${value} sanaa ${day.getDate()}.${day.getMonth() + 1}.${day.getFullYear()}"` : '';
-    cells += `<div class="hm hm-l${level(value)}"${title}></div>`;
+    const title = `${day.getDate()}.${day.getMonth() + 1}.${day.getFullYear()}: ${value ? `${value} sanaa` : 'ei merkintää'}`;
+    const isToday = day.getTime() === today.getTime() ? ' class="is-today"' : '';
+    cells += `<i data-l="${level(value)}" title="${title}"${isToday}></i>`;
   }
 
-  el.innerHTML = `<div class="chart-container heatmap-chart">
-    <div class="heatmap-inner">
-      <div class="heatmap-days" aria-hidden="true"><span></span><span>Mon</span><span></span><span>Wed</span><span></span><span>Fri</span><span></span></div>
-      <div class="heatmap-weeks">
-        <div class="heatmap-months" aria-hidden="true" style="grid-template-columns: repeat(${column}, var(--hm-cell))">${monthSpans}</div>
-        <div class="heatmap-cells">${cells}</div>
-      </div>
-    </div>
-    <div class="heatmap-legend" aria-hidden="true"><span class="heatmap-legend-label">Less</span><span class="hm hm-l0"></span><span class="hm hm-l1"></span><span class="hm hm-l2"></span><span class="hm hm-l3"></span><span class="hm hm-l4"></span><span class="heatmap-legend-label">More</span></div>
-  </div>`;
+  el.innerHTML = `<div class="heat-months" aria-hidden="true">${months}</div>
+    <div class="heat-days" aria-hidden="true"><span>ma</span><span></span><span>ke</span><span></span><span>pe</span><span></span><span></span></div>
+    <div class="heat-grid">${cells}</div>
+    <div class="heat-legend" aria-hidden="true"><span>Vähemmän</span><i style="background: var(--h0)"></i><i style="background: var(--h1)"></i><i style="background: var(--h2)"></i><i style="background: var(--h3)"></i><i style="background: var(--h4)"></i><span>Enemmän</span></div>`;
+
+  // Start from the newest weeks on narrow screens
+  const scroller = el.closest('.heat-scroll');
+  if (scroller) {
+    scroller.scrollLeft = scroller.scrollWidth;
+  }
 })();

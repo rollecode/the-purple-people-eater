@@ -20,7 +20,30 @@ namespace Air_Light;
  */
 require get_theme_file_path( 'inc/hooks/general.php' );
 add_action( 'widgets_init', __NAMESPACE__ . '\widgets_init' );
-add_action( 'template_redirect', __NAMESPACE__ . '\serve_random_posts', 0 );
+add_action( 'template_redirect', __NAMESPACE__ . '\redirect_to_random_post', 0 );
+
+// Comments arrive only as fediverse replies, so WordPress' own form stays shut
+add_filter( 'comments_open', '__return_false' );
+
+/**
+ * Site-wide counts and the main navigation
+ */
+require get_theme_file_path( 'inc/hooks/site-stats.php' );
+require get_theme_file_path( 'inc/hooks/navigation.php' );
+
+/**
+ * Names for unnamed frames and image links in content
+ */
+require get_theme_file_path( 'inc/hooks/accessibility.php' );
+add_filter( 'embed_oembed_html', __NAMESPACE__ . '\title_embed_frames' );
+add_filter( 'the_content', __NAMESPACE__ . '\title_embed_frames', 30 );
+add_filter( 'the_content', __NAMESPACE__ . '\name_image_links', 30 );
+
+/**
+ * Side notes in the margin of long articles
+ */
+require get_theme_file_path( 'inc/hooks/side-notes.php' );
+add_filter( 'the_content', __NAMESPACE__ . '\add_side_notes', 20 );
 
 /**
  * Scripts and styles associated hooks
@@ -34,12 +57,11 @@ add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_theme_scripts' );
 require get_theme_file_path( 'inc/hooks/performance.php' );
 
 /**
- * Theme blocks and shared head/body scripts
+ * Theme blocks and the shared head script
  */
 require get_theme_file_path( 'inc/hooks/blocks.php' );
 add_action( 'init', __NAMESPACE__ . '\register_theme_blocks' );
 add_action( 'wp_head', __NAMESPACE__ . '\print_theme_prepaint_script', 0 );
-add_action( 'wp_body_open', __NAMESPACE__ . '\print_theme_toggle_script', 1 );
 
 /**
  * Diary metadata (core-native replacement for ACF)
@@ -64,9 +86,12 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\register_block_edit
 add_filter( 'wp_theme_json_data_theme', __NAMESPACE__ . '\diary_editor_theme_json' );
 
 /**
- * Rest API hooks
+ * Front page endpoints: more cards, random picks, the "Nyt" panel
  */
 require get_theme_file_path( 'inc/hooks/rest-api.php' );
+require get_theme_file_path( 'inc/hooks/now.php' );
+add_action( 'rest_api_init', __NAMESPACE__ . '\register_feed_api' );
+add_action( 'rest_api_init', __NAMESPACE__ . '\register_now_api' );
 
 /**
  * Most read posts

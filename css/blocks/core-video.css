@@ -1,25 +1,19 @@
-/* stylelint-disable a11y/no-display-none, declaration-property-unit-allowed-list */
 /**
- * Typography helpers
+ * Video block.
  */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-:is(.article-content, .editor-styles-wrapper) .wp-block-video video {
-  max-width: 100%;
-  width: 100%;
+:is(.prose, .editor-styles-wrapper) .wp-block-video {
+  margin-block: 2em;
 }
-@media (max-width: 1000px) {
-  :is(.article-content, .editor-styles-wrapper) .wp-block-video.alignwide,
-  :is(.article-content, .editor-styles-wrapper) .wp-block-video.alignfull {
-    width: calc(100% - var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal)) * 2);
-  }
-}
-:is(.article-content, .editor-styles-wrapper) .wp-block-video.alignfull {
-  margin-left: 0;
-  margin-right: 0;
-  max-width: 100%;
-  padding-left: 0;
-  padding-right: 0;
+
+:is(.prose, .editor-styles-wrapper) .wp-block-video video {
   width: 100%;
+  border-radius: 4px;
+  background: #000;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-video figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 14.5px;
 }

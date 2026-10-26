@@ -1,36 +1,91 @@
 <?php
 /**
- * Main content for the single-diary view. Included by both the classic
- * single-diary.php template and the minimalistmadness/loop-single-diary block (FSE path).
+ * One lokikirja day: a short note on what the diary is, the entry in the
+ * article layout, the day's data, the same day a year ago, the days
+ * before and after, and the comments. Included by single-diary.php and the
+ * minimalistmadness/loop-single-diary block.
  *
  * @package minimalistmadness
  */
 
 namespace Air_Light;
+
+// On the block template path core has already consumed the singular main
+// loop, so rewind before iterating; harmless on the classic path.
+rewind_posts();
 ?>
+<main class="site-main" id="content">
+  <aside class="explainer read" aria-label="Mikä lokikirja?" data-explainer hidden>
+    <p><b>Mikä lokikirja?</b> Rollemaan kapteenin lokikirja on Rollen kevyt päiväkirja ja päivittäinen kirjoitushaaste. Tavoitteena on kehittää mielenterveyttä, kirjoittamisharrastusta ja madaltaa kynnystä itseilmaisuun. <a href="<?php echo esc_url( get_post_type_archive_link( 'diary' ) ); ?>">Kaikki päivät</a></p>
+    <button class="x-btn" type="button" aria-label="Sulje selitys" data-dismiss-explainer><?php the_icon( 'close' ); ?></button>
+  </aside>
 
-<div id="primary" class="content-area">
-  <main id="main" class="site-main">
-
-    <p class="back-to-link">
-      <a href="<?php echo esc_url( get_post_type_archive_link( 'diary' ) ); ?>">
-        <svg width="22" height="12" viewBox="0 0 22 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.469669 5.46967C0.176777 5.76257 0.176777 6.23744 0.469669 6.53033L5.24264 11.3033C5.53553 11.5962 6.01041 11.5962 6.3033 11.3033C6.59619 11.0104 6.59619 10.5355 6.3033 10.2426L2.06066 6L6.3033 1.75736C6.59619 1.46447 6.59619 0.989594 6.3033 0.696701C6.01041 0.403807 5.53553 0.403807 5.24264 0.696701L0.469669 5.46967ZM22 5.25L1 5.25L1 6.75L22 6.75L22 5.25Z" fill="currentColor"/></svg>
-        Takaisin päiväkirjamerkintöihin
-      </a>
-    </p>
-
-    <?php get_template_part( 'template-parts/log-header' ); ?>
-
-    <?php
-    // On the block template path core has already consumed the singular
-    // main loop (get_the_block_template_html wraps do_blocks in the loop),
-    // so rewind before iterating; harmless on the classic path.
-    rewind_posts();
-    while ( have_posts() ) :
+  <?php
+  while ( have_posts() ) :
     the_post();
-      get_template_part( 'template-parts/content-diary' );
-    endwhile; ?>
+    $responses = post_responses( get_the_ID() );
+    $likes     = $responses['likes'] + $responses['boosts'];
+    $previous  = get_previous_post();
+    $next      = get_next_post();
+    ?>
+    <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+      <header class="read art-head">
+        <h1 class="cover-title"><?php the_title(); ?></h1>
+      </header>
 
-  </main><!-- #main -->
-</div><!-- #primary -->
+      <div class="read">
+        <div class="byline">
+          <img src="<?php echo esc_url( get_theme_file_uri( 'images/author-info.jpg' ) ); ?>" alt="" width="60" height="60">
+          <div>
+            <p class="who-line">Kirjoittanut <strong>Rolle Laukkarinen</strong></p>
+            <p class="meta">
+              <span><?php the_icon( 'cal', 'ic-sm' ); ?><time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( diary_long_date() ); ?></time></span>
+              <span><?php the_icon( 'clock', 'ic-sm' ); ?><?php echo esc_html( diary_time() ); ?></span>
+              <span><?php echo esc_html( fi_number( post_words() ) ); ?> sanaa</span>
+              <?php if ( $likes ) : ?>
+                <span><?php the_icon( 'heart', 'ic-sm' ); ?><?php echo esc_html( fi_count( $likes, 'reaktio', 'reaktiota' ) ); ?></span>
+              <?php endif; ?>
+            </p>
+          </div>
+        </div>
 
+        <div class="prose">
+          <?php the_content(); ?>
+        </div>
+
+        <?php
+        get_template_part( 'template-parts/diary-data' );
+
+        if ( $likes ) {
+          echo do_blocks( '<!-- wp:activitypub/reactions /-->' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- block markup
+        }
+
+        edit_post_link( 'Muokkaa', '<p class="edit-link">', '</p>' );
+        get_template_part( 'template-parts/year-since-now' );
+        ?>
+
+        <nav class="prevnext" aria-label="Edellinen ja seuraava päivä">
+          <?php if ( $previous ) : ?>
+            <a href="<?php echo esc_url( get_permalink( $previous ) ); ?>" rel="prev">
+              <span class="meta-text">Edellinen · <?php echo esc_html( get_the_time( 'l j.n.', $previous ) ); ?></span>
+              <strong><?php echo esc_html( get_the_title( $previous ) ); ?></strong>
+            </a>
+          <?php endif; ?>
+
+          <?php if ( $next ) : ?>
+            <a href="<?php echo esc_url( get_permalink( $next ) ); ?>" rel="next">
+              <span class="meta-text">Seuraava · <?php echo esc_html( get_the_time( 'l j.n.', $next ) ); ?></span>
+              <strong><?php echo esc_html( get_the_title( $next ) ); ?></strong>
+            </a>
+          <?php endif; ?>
+        </nav>
+      </div>
+
+      <?php
+      if ( is_federated() || $responses['comments'] ) {
+        comments_template();
+      }
+      ?>
+    </article>
+  <?php endwhile; ?>
+</main>

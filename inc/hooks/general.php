@@ -11,6 +11,14 @@
 
 namespace Air_Light;
 
+// "Kuka Rolle?", the about page
+const ABOUT_PAGE_ID = 2768;
+
+const AUTHOR_BORN = '1988-11-01';
+
+// Articles older than this get the "Arkistomatskua" note
+const ARCHIVE_NOTE_AFTER_YEARS = 2;
+
 /**
  * Enable all views
  */
@@ -44,348 +52,17 @@ function widgets_init() {
 } // end widgets_init
 
 /**
- * Count all words
- */
-function get_word_count_from_posts() {
-
-	$count = 0;
-	$posts = get_posts( array(
-			'numberposts' => -1,
-			'post_type' => 'any',
-	));
-
-	foreach ( $posts as $post ) {
-		$count += str_word_count( strip_tags( get_post_field( 'post_content', $post->ID ) ) ); // phpcs:ignore
-	}
-
-	$num = number_format_i18n( $count );
-
-	return $num;
-}
-
-/**
- * Count the number of words in post content
- * @param string $content The post content
- * @return integer $count Number of words in the content
+ * Number of words in post content: runs of letters and digits, 0,5 being
+ * one. str_word_count() knows only ASCII, so it split every word with ä or ö.
+ *
+ * @param string $content The post content.
+ * @return int Number of words in the content.
  */
 function post_word_count( $content ) {
-  $decode_content = html_entity_decode( $content );
-  $filter_shortcode = do_shortcode( $decode_content );
-  $strip_tags = wp_strip_all_tags( $filter_shortcode, true );
-  $count = str_word_count( $strip_tags );
-  return $count;
-}
+  // Tags out before entities are decoded, or a written &lt; would eat text
+  $text = html_entity_decode( wp_strip_all_tags( strip_shortcodes( $content ), true ), ENT_QUOTES, 'UTF-8' );
 
-/**
- * Random image url function
- */
-function khonsu_get_random_image_url() {
-  $query = get_posts(
-    array(
-      'post_status'     => 'inherit',
-      'post_type'       => 'attachment',
-      'post_mime_type'  => 'image/jpeg,image/gif,image/jpg,image/png',
-      'posts_per_page'  => 1,
-      'category_name'   => 'kuvituskuva',
-      'no_found_rows'   => true,
-      'orderby'         => 'rand',
-    )
-  );
-
-  if ( ! empty( $query ) ) {
-    $return = '';
-
-    foreach ( $query as $attachment ) {
-      $return = wp_get_attachment_url( $attachment->ID );
-    }
-  }
-  return $return;
-}
-
-function khonsu_get_random_image_id() {
-  $query = get_posts(
-    array(
-      'post_status'     => 'inherit',
-      'post_type'       => 'attachment',
-      'post_mime_type'  => 'image/jpeg,image/gif,image/jpg,image/png',
-      'posts_per_page'  => 1,
-      'category_name'   => 'kuvituskuva',
-      'no_found_rows'   => true,
-      'orderby'         => 'rand',
-    )
-  );
-
-  if ( ! empty( $query ) ) {
-    $return = '';
-
-    foreach ( $query as $attachment ) {
-      $return = $attachment->ID;
-    }
-  }
-  return $return;
-}
-
-/**
- * Estimate time required to read the article
- *
- * @return string
- */
-function khonsu_estimated_reading_time() {
-
-  $post = get_post();
-  $words = str_word_count( strip_tags( $post->post_content ) ); // phpcs:ignore
-  $minutes = floor( $words / 120 );
-  $seconds = floor( $words % 120 / ( 120 / 60 ) );
-
-  if ( 1 <= $minutes ) :
-    if ( 1 === $minutes ) :
-      $estimated_time = $minutes . ' min';
-    else :
-      $estimated_time = $minutes . ' min';
-    endif;
-  else :
-    $estimated_time = 'Alle 1 min';
-  endif;
-
-  return '<span class="time-to-read">' . $estimated_time . ' lukukokemus</span>';
-}
-
-/**
- * Image lazyload helpers.
- *
- * @Author:             Timi Wahalahti, Digitoimisto Dude Oy (https://dude.fi)
- * @Date:               2019-08-07 14:38:34
- * @Last Modified by:   Roni Laukkarinen
- * @Last Modified time: 2020-05-12 16:17:30
- *
- * @package air-helper
- */
-
-/**
- * Echo image in lazyloading divs.
- *
- * @param  integer $image_id Image attachment id to lazyload.
- * @param  array   $sizes    Custom sizes for lazyloading. Optional.
- * @since  1.11.0
- */
-if ( ! function_exists( 'image_lazyload_div' ) ) {
-  function image_lazyload_div( $image_id = 0, $sizes = [], $fallback = false ) {
-    echo get_image_lazyload_div( $image_id, $sizes, $fallback ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-  } // end image_lazyload_div
-} // end if
-
-/**
- * Get image lazyloading divs.
- *
- * @param  integer $image_id Image attachment id to lazyload.
- * @param  array   $sizes    Custom sizes for lazyloading. Optional.
- * @return string            String containing lazyloading divs.
- * @since  1.11.0
- */
-if ( ! function_exists( 'get_image_lazyload_div' ) ) {
-  function get_image_lazyload_div( $image_id = 0, $sizes = [], $fallback = false ) {
-    // Get image
-    $image_urls = air_helper_get_image_lazyload_sizes( $image_id, $sizes );
-
-    // Check if we have image
-    if ( ! $image_urls || ! is_array( $image_urls ) ) {
-      if ( $fallback ) {
-        return get_image_lazyload_div_fallback( $fallback );
-      }
-
-      return;
-    }
-
-    // Do preg match and check if we need to do browser hack
-    $browser_hack = false;
-    if ( ! empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
-      if ( preg_match( '/Windows Phone|Lumia|iPad|Safari/i', sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) ) ) {
-        $browser_hack = true;
-      }
-    }
-
-    ob_start();
-
-// Div for preview image and data for js to use ?>
-<div aria-hidden="true" class="background-image preview lazyload" style="background-image: url('<?php echo esc_url( $image_urls['tiny'] ); ?>');" data-src="<?php echo esc_url( $image_urls['big'] ); ?>" data-src-mobile="<?php echo esc_url( $image_urls['mobile'] ); ?>"></div>
-
-<?php // Div for full image, hack for browsers that don't support our js well ?>
-<div aria-hidden="true" class="background-image full-image" <?php if ( $browser_hack ) : ?> style="background-image: url('<?php echo esc_url( $image_urls['big'] ); ?>');" <?php endif; ?>></div>
-
-<?php // Div with full image for browsers without js ?>
-<noscript>
-  <div aria-hidden="true" class="background-image full-image" style="background-image: url('<?php echo esc_url( $image_urls['big'] ); ?>');"></div>
-</noscript>
-
-<?php
-
-    return ob_get_clean();
-  } // end get_image_lazyload_div
-} // end if
-
-if ( ! function_exists( 'get_image_lazyload_div_fallback' ) ) {
-  function get_image_lazyload_div_fallback( $fallback = false ) {
-    if ( empty( $fallback ) ) {
-      return;
-    }
-
-    // Do preg match and check if we need to do browser hack
-    $browser_hack = false;
-    if ( ! empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
-      if ( preg_match( '/Windows Phone|Lumia|iPad|Safari/i', sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) ) ) {
-        $browser_hack = true;
-      }
-    }
-
-    ob_start();
-
-// Div for preview image and data for js to use ?>
-<div aria-hidden="true" class="background-image preview lazyload" style="background-image: url('<?php echo esc_url( $fallback ); ?>');" data-src="<?php echo esc_url( $fallback ); ?>" data-src-mobile="<?php echo esc_url( $fallback ); ?>"></div>
-
-<?php // Div for full image, hack for browsers that don't support our js well ?>
-<div aria-hidden="true" class="background-image full-image" <?php if ( $browser_hack ) : ?> style="background-image: url('<?php echo esc_url( $fallback ); ?>');" <?php endif; ?>></div>
-
-<?php // Div with full image for browsers without js ?>
-<noscript>
-  <div aria-hidden="true" class="background-image full-image" style="background-image: url('<?php echo esc_url( $fallback ); ?>');"></div>
-</noscript>
-
-<?php
-
-    return ob_get_clean();
-  } // end get_image_lazyload_div_fallback
-} // end if
-
-
-
-/**
- * Echo image in lazyloading tag.
- *
- * @param  integer $image_id Image attachment id to lazyload.
- * @param  array   $sizes    Custom sizes for lazyloading. Optional.
- * @since  1.11.0
- */
-if ( ! function_exists( 'image_lazyload_tag' ) ) {
-  function image_lazyload_tag( $image_id = 0, $sizes = [], $fallback = false ) {
-    echo get_image_lazyload_tag( $image_id, $sizes, $fallback ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-  } // end image_lazyload_tag
-} // end if
-
-/**
- * Get image lazyloading tag.
- *
- * @param  integer $image_id Image attachment id to lazyload.
- * @param  array   $sizes    Custom sizes for lazyloading. Optional.
- * @return string            String containing lazyloading divs.
- * @since  1.11.0
- */
-if ( ! function_exists( 'get_image_lazyload_tag' ) ) {
-  function get_image_lazyload_tag( $image_id = 0, $sizes = [], $fallback = false ) {
-    // Get image
-    $image_urls = air_helper_get_image_lazyload_sizes( $image_id, $sizes );
-
-    // Check if we have image
-    if ( ! $image_urls || ! is_array( $image_urls ) ) {
-      if ( $fallback ) {
-        return get_image_lazyload_tag_fallback( $fallback );
-      }
-
-      return;
-    }
-
-    // Get dimensions
-    $dimensions = air_helper_get_image_lazyload_dimensions( $image_id, $sizes );
-
-    if ( ! $dimensions ) {
-      return;
-    }
-
-    // Get the img tag
-    ob_start(); ?>
-<img aria-hidden="true" class="lazyload" src="<?php echo esc_url( $image_urls['tiny'] ); ?>" data-src="<?php echo esc_url( $image_urls['big'] ); ?>" data-src-mobile="<?php echo esc_url( $image_urls['mobile'] ); ?>" width="<?php echo esc_attr( $dimensions['width'] ); ?>" height="<?php echo esc_attr( $dimensions['height'] ); ?>" alt="" />
-<?php
-
-    return ob_get_clean();
-  } // end get_image_lazyload_tag
-} // end if
-
-if ( ! function_exists( 'get_image_lazyload_tag_fallback' ) ) {
-  function get_image_lazyload_tag_fallback( $fallback = false ) {
-    if ( empty( $fallback ) ) {
-      return;
-    }
-
-    // Get the img tag
-    ob_start(); ?>
-<img aria-hidden="true" class="lazyload" src="<?php echo esc_url( $fallback ); ?>" data-src="<?php echo esc_url( $fallback ); ?>" data-src-mobile="<?php echo esc_url( $fallback ); ?>" alt="" />
-<?php
-
-    return ob_get_clean();
-  } // end get_image_lazyload_tag_fallback
-} // end if
-
-/**
- * Get dimensions of attachment image.
- *
- * @param  integer $image_id Image attachment id to lazyload.
- * @param  array   $sizes    Custom sizes for lazyloading. Optional.
- * @return mixed             Boolean false if image do not exist, otherwise array with width and height.
- * @since  1.11.0
- */
-function air_helper_get_image_lazyload_dimensions( $image_id = 0, $sizes = [] ) {
-  $image_id = intval( $image_id );
-
-  if ( ! $image_id ) {
-    return false;
-  }
-
-  // Bail if ID is not attachment
-  if ( 'attachment' !== get_post_type( $image_id ) ) {
-    return false;
-  }
-
-  // Default image sizes for use cases
-  $default_sizes = [
-    'tiny'    => 'tiny-lazyload-thumbnail',
-    'mobile'  => 'large',
-    'big'     => 'full',
-  ];
-
-  $sizes = wp_parse_args( $sizes, $default_sizes );
-
-  // Get image data
-  $dimensions = wp_get_attachment_image_src( $image_id, $sizes['big'] );
-
-  if ( ! $dimensions ) {
-    return false;
-  }
-
-  return [
-    'width'   => $dimensions[1],
-    'height'  => $dimensions[2],
-  ];
-} // end air_helper_get_image_lazyload_dimension
-
-/**
- * Custom pagination
- */
-function khonsu_pagination() {
-  global $wp_query;
-
-  $big = 999999999; // Need an unlikely integer
-
-  $paginate_links = paginate_links(
-    array(
-      'base'        => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
-      'format'      => '?paged=%#%',
-      'current'     => max( 1, get_query_var( 'paged' ) ),
-      'total'       => $wp_query->max_num_pages,
-      'prev_text'   => __( '&larr; uudempia' ),
-      'next_text'   => __( 'vanhempia &rarr;' ),
-    )
-  );
-
-  echo '<p class="custom-pagination">' . $paginate_links . '</p>'; // phpcs:ignore
+  return (int) preg_match_all( '/[\p{L}\p{N}](?:[\p{L}\p{N}\'’-]|(?<=\p{N})[.,](?=\p{N}))*/u', $text );
 }
 
 /**
@@ -424,33 +101,29 @@ add_action( 'save_post_ap_actor', function( $post_id ) {
 }, 5 );
 
 /**
- * Calculate age function
+ * Rolle's age in whole years, now or at a given moment.
  *
- * @param birthdate $birthdate Birthdate.
+ * @param \DateTimeInterface|null $at Moment, now by default.
  */
-function khonsu_calculate_age( $birthdate ) {
-  list( $year, $month, $day ) = explode( '/', $birthdate );
-  $yeardiff = date( 'Y' ) - $year;
+function author_age( $at = null ) {
+  $born = new \DateTimeImmutable( AUTHOR_BORN, wp_timezone() );
 
-  if ( date( 'm' ) < $month || ( date( 'm' ) === $month && date( 'd' ) < $day ) ) {
-    $yeardiff--;
-  }
-
-  return $yeardiff;
+  return $born->diff( $at ?? current_datetime() )->y;
 }
 
 /**
- * Serve the random posts fragment at /random-dynamic/. The server blocks
- * direct requests to theme PHP files, and nginx already skips its page
- * cache for this path.
+ * /?satunnainen sends the visitor to a random article. The query string
+ * keeps the page cache out of it, so every visit draws again.
  */
-function serve_random_posts() {
-  if ( '/random-dynamic/' !== wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ) ) {
+function redirect_to_random_post() {
+  if ( ! isset( $_GET['satunnainen'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
     return;
   }
 
-  status_header( 200 );
+  $query = random_query();
+  $url   = $query->have_posts() ? get_permalink( $query->posts[0] ) : home_url( '/' );
+
   nocache_headers();
-  get_template_part( 'template-parts/random-dynamic' );
+  wp_safe_redirect( $url, 302 );
   exit;
 }

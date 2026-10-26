@@ -8,12 +8,12 @@
 
 namespace Air_Light;
 
-const RELATED_POSTS_COUNT = 4;
+const RELATED_POSTS_COUNT = 3;
 
 function related_post_ids( $post_id ) {
   global $wpdb;
 
-  $cache_key = 'related_posts_' . $post_id;
+  $cache_key = 'related_posts_' . RELATED_POSTS_COUNT . '_' . $post_id;
   $ids       = get_transient( $cache_key );
   if ( false !== $ids ) {
     return $ids;

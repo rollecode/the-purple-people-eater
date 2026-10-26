@@ -1,17 +1,33 @@
-/* stylelint-disable a11y/no-display-none, declaration-property-unit-allowed-list */
 /**
- * Typography helpers
+ * File block: the file name, and a download button.
  */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-:is(.article-content, .editor-styles-wrapper) .wp-block-file .wp-block-file__button {
-  font-size: var(--font-size-16, var(--wp--custom--font-size-16));
-  line-height: 20.9091px;
-  padding-bottom: calc(10px - var(--border-width-input-field, var(--wp--custom--border-width-input-field)) * 2);
-  padding-left: calc(21px - var(--border-width-input-field, var(--wp--custom--border-width-input-field)) * 2);
-  padding-right: calc(21px - var(--border-width-input-field, var(--wp--custom--border-width-input-field)) * 2);
-  padding-top: calc(10px - var(--border-width-input-field, var(--wp--custom--border-width-input-field)) * 2);
-  font-size: 0.8em;
-  padding: 0.3em 0.8em;
+:is(.prose, .editor-styles-wrapper) .wp-block-file {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-block: 1.8em;
+  padding: 16px 18px;
+  gap: 16px;
+  border-radius: 10px;
+  background: var(--tint);
+  font-family: var(--sans);
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-file > a:first-child {
+  flex: 1;
+  min-width: 160px;
+  font-weight: 500;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-file__button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
 }

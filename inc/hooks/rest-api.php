@@ -1,118 +1,94 @@
 <?php
 /**
- * Rest API hooks.
+ * Endpoints the front page asks for more of. They return HTML rendered by
+ * the same template parts as the page, so a loaded card is the same card.
  *
  * @package minimalistmadness
- * @Author: Niku Hietanen
- * @Date: 2020-02-20 13:46:50
- * @Last Modified by:   Roni Laukkarinen
- * @Last Modified time: 2022-05-22 11:32:10
  */
 
+namespace Air_Light;
+
+const CARDS_PER_PAGE = 6;
+const RANDOM_PICKS   = 4;
+
 /**
- * Vue times
+ * Articles for the front page feed. The newest is the lead card, so the
+ * grid starts from the second.
+ *
+ * @param int $offset How many grid posts are already shown.
  */
-register_rest_field( array( 'post' ), 'time_custom', array(
-  'get_callback'    => 'air_get_custom_time_for_rest_api',
-  'schema'          => null,
-) );
-
-function air_get_custom_time_for_rest_api( $object ) {
-  $post_id = $object['id'];
-
-  $post_time = '<time datetime="' . get_the_time( 'c' ) . '">' . get_the_time( 'j.' ) . ' ' . get_the_time( 'F' ) . 'ta ' . get_the_time( 'Y' ) . '</time>';
-
-  return $post_time;
+function feed_query( $offset ) {
+  return new \WP_Query( [
+    'post_type'           => 'post',
+    'post_status'         => 'publish',
+    'posts_per_page'      => CARDS_PER_PAGE,
+    'offset'              => 1 + $offset,
+    'ignore_sticky_posts' => true,
+  ] );
 }
 
 /**
-  * Vue reading times
-*/
-register_rest_field( array( 'post' ), 'reading_time_custom', array(
-  'get_callback'    => 'air_get_custom_reading_time_for_rest_api',
-  'schema'          => null,
-) );
-
-function air_get_custom_reading_time_for_rest_api( $object ) {
-  $post_id = $object['id'];
-
-    // Reading time
-    $post = get_post( $object['id'] );
-    $words = str_word_count( strip_tags( $post->post_content ) );
-    $minutes = floor( $words / 120 );
-    $seconds = floor( $words % 120 / ( 120 / 60 ) );
-
-    if ( 1 <= $minutes ) :
-      if ( 1 === $minutes ) :
-        $estimated_time = $minutes . ' min';
-      else :
-        $estimated_time = $minutes . ' min';
-      endif;
-    else :
-      $estimated_time = 'Alle 1 min';
-    endif;
-
-  return $estimated_time;
+ * Random older articles. Skips the everyday tags kuulumiset and elämä,
+ * whose posts say little out of context, and the first two years.
+ */
+function random_query() {
+  return new \WP_Query( [
+    'post_type'      => 'post',
+    'post_status'    => 'publish',
+    'posts_per_page' => RANDOM_PICKS,
+    'orderby'        => 'rand',
+    'no_found_rows'  => true,
+    'tag__not_in'    => [ 79, 7 ],
+    'date_query'     => [
+      [
+        'after'     => '2007-01-01',
+        'inclusive' => true,
+      ],
+    ],
+  ] );
 }
 
-/**
-  * Vue excerpt
-*/
-register_rest_field( array( 'post' ), 'excerpt', array(
-  'get_callback'    => 'air_get_excerpt_for_rest_api',
-  'schema'          => null,
-) );
+function register_feed_api() {
+  register_rest_route( 'rollemaa/v1', '/cards', [
+    'methods'             => 'GET',
+    'permission_callback' => '__return_true',
+    'args'                => [
+      'offset' => [
+        'type'    => 'integer',
+        'minimum' => 0,
+        'default' => 0,
+      ],
+    ],
+    'callback'            => function ( \WP_REST_Request $request ) {
+      $query  = feed_query( (int) $request['offset'] );
+      $shown  = (int) $request['offset'] + $query->post_count;
+      $total  = max( 0, $query->found_posts - 1 );
 
-function air_get_excerpt_for_rest_api( $object ) {
-  $post_id = $object['id'];
+      ob_start();
+      while ( $query->have_posts() ) {
+        $query->the_post();
+        get_template_part( 'template-parts/card' );
+      }
+      wp_reset_postdata();
 
-    if ( has_excerpt( $post_id ) ) :
-      $excerpt = get_the_excerpt( $post_id ); // phpcs:ignore
-    else :
-      $sentence = preg_match( '/^([^.!?]*[\.!?]+){0,2}/', strip_tags( get_the_content( $post_id ) ), $summary );
-      $excerpt = strip_shortcodes( $summary[0] ); // phpcs:ignore
-    endif;
+      return new \WP_REST_Response( [
+        'html' => trim( ob_get_clean() ),
+        'done' => $shown >= $total,
+      ] );
+    },
+  ] );
 
-  return $excerpt;
-}
+  register_rest_route( 'rollemaa/v1', '/random', [
+    'methods'             => 'GET',
+    'permission_callback' => '__return_true',
+    'callback'            => function () {
+      ob_start();
+      get_template_part( 'template-parts/random-picks' );
 
-/**
-  * Vue bg image
-*/
-register_rest_field( array( 'post' ), 'featured_image_custom', array(
-  'get_callback'    => 'air_get_featured_image_custom_for_rest_api',
-  'schema'          => null,
-) );
+      $response = new \WP_REST_Response( [ 'html' => trim( ob_get_clean() ) ] );
+      $response->header( 'Cache-Control', 'no-store' );
 
-function air_get_featured_image_custom_for_rest_api( $object ) {
-  $post_id = $object['id'];
-
-  // Random image
-  $query = get_posts(
-    array(
-      'post_status'     => 'inherit',
-      'post_type'       => 'attachment',
-      'post_mime_type'  => 'image/jpeg,image/gif,image/jpg,image/png',
-      'posts_per_page'  => 1,
-      'category_name'   => 'kuvituskuva',
-      'no_found_rows'   => true,
-      'orderby'         => 'rand',
-    )
-  );
-
-  if ( ! empty( $query ) ) {
-    $random_image = '';
-
-    foreach ( $query as $attachment ) {
-      $random_image = wp_get_attachment_image_url( $attachment->ID, 'large' );
-    }
-  }
-
-  if ( has_post_thumbnail( $post_id ) ) {
-    $featured_image_url = wp_get_attachment_image_url( get_post_thumbnail_id( $post_id ), 'large' );
-  } else {
-    $featured_image_url = $random_image;
-  }
-
-  return $featured_image_url;
+      return $response;
+    },
+  ] );
 }

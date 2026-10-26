@@ -1,124 +1,81 @@
-/* stylelint-disable a11y/no-display-none, declaration-property-unit-allowed-list */
 /**
- * Typography helpers
+ * Rain over the page while the pointer rests on the logo. The drops are
+ * written by front-end.js; this only shows and animates them.
  */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable no-unknown-animations, property-disallowed-list, a11y/no-display-none */
-html,
-.site {
-  min-height: 100vh;
-}
-
 .rain-wrapper {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  width: 100%;
   height: 500px;
   opacity: 0;
-  position: absolute;
-  top: 0;
-  transition: all 0.55s;
+  pointer-events: none;
+  transition: opacity .55s, visibility .55s;
   visibility: hidden;
-  width: 100%;
-  z-index: -1;
 }
 
 .splat-toggle .rain-wrapper {
+  z-index: 22;
   opacity: 1;
   visibility: visible;
-  z-index: 22;
 }
 
 .rain {
-  height: 100%;
-  left: 0;
   position: absolute;
-  width: 100%;
   z-index: 2;
-}
-
-.rain.back-row {
-  bottom: 60px;
-  display: none;
-  opacity: 0.5;
-  z-index: 1;
-}
-
-body.back-row-toggle .rain.back-row {
-  display: block;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .drop {
-  animation: drop 0.5s linear infinite;
-  bottom: 100%;
-  height: 120px;
-  pointer-events: none;
   position: absolute;
+  bottom: 100%;
   width: 15px;
+  height: 120px;
+  animation: drop .5s linear infinite;
 }
 
-@keyframes drop {
-  0% {
-    transform: translateY(0);
-  }
-  75% {
-    transform: translateY(90vh);
-  }
-  100% {
-    transform: translateY(90vh);
-  }
-}
 .stem {
-  animation: stem 0.5s linear infinite;
-  background: linear-gradient(to bottom, rgba(0, 73, 209, 0), rgba(0, 73, 209, 0.25));
+  width: 2px;
   height: 60%;
   margin-left: 7px;
-  width: 2px;
+  animation: stem .5s linear infinite;
+  background: linear-gradient(to bottom, transparent, color-mix(in oklab, var(--accent) 35%, transparent));
 }
 
-@keyframes stem {
-  0% {
-    opacity: 1;
-  }
-  65% {
-    opacity: 1;
-  }
-  75% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
-}
 .splat {
-  animation: splat 0.5s linear infinite;
-  border-radius: 50%;
-  border-top: 2px dotted #0049d1;
   display: none;
-  height: 10px;
-  opacity: 1;
-  transform: scale(0);
   width: 15px;
+  height: 10px;
+  border-top: 2px dotted var(--accent);
+  border-radius: 50%;
+  animation: splat .5s linear infinite;
+  transform: scale(0);
 }
 
-body.splat-toggle .splat {
+.splat-toggle .splat {
   display: block;
 }
 
+@keyframes drop {
+  0% { transform: translateY(0); }
+  75%, 100% { transform: translateY(90vh); }
+}
+
+@keyframes stem {
+  0%, 65% { opacity: 1; }
+  75%, 100% { opacity: 0; }
+}
+
 @keyframes splat {
-  0% {
-    opacity: 1;
-    transform: scale(0);
-  }
-  80% {
-    opacity: 1;
-    transform: scale(0);
-  }
-  90% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.5);
+  0%, 80% { opacity: 1; transform: scale(0); }
+  90% { opacity: .5; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rain-wrapper {
+    display: none;
   }
 }

@@ -1,26 +1,30 @@
-/* stylelint-disable a11y/no-display-none, declaration-property-unit-allowed-list */
 /**
- * Typography helpers
+ * Embed block: videos fill the column at 16:9, social posts keep their own
+ * size, captions as everywhere else.
  */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-:is(.article-content, .editor-styles-wrapper) .wp-block-embed iframe,
-:is(.article-content, .editor-styles-wrapper) .wp-block-embed video {
-  max-width: 100%;
-  width: 100%;
+:is(.prose, .editor-styles-wrapper) .wp-block-embed {
+  margin-block: 2em;
 }
-@media (max-width: 1000px) {
-  :is(.article-content, .editor-styles-wrapper) .wp-block-embed.alignwide,
-  :is(.article-content, .editor-styles-wrapper) .wp-block-embed.alignfull {
-    width: calc(100% - var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal)) * 2);
-  }
+
+:is(.prose, .editor-styles-wrapper) .wp-block-embed__wrapper {
+  position: relative;
 }
-:is(.article-content, .editor-styles-wrapper) .wp-block-embed.alignfull {
-  margin-left: 0;
-  margin-right: 0;
-  max-width: 100%;
-  padding-left: 0;
-  padding-right: 0;
+
+:is(.prose, .editor-styles-wrapper) .wp-embed-aspect-16-9 .wp-block-embed__wrapper iframe,
+:is(.prose, .editor-styles-wrapper) .is-type-video .wp-block-embed__wrapper iframe {
   width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-embed.is-type-rich iframe {
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-embed figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 14.5px;
 }

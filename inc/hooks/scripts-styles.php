@@ -116,76 +116,58 @@ function heatmap_data() {
 }
 
 /**
- * Front page post feed query for the load-more button.
+ * The stylesheets a view needs, in cascade order. Every page gets the shell
+ * (base, header, rain, footer, search); the rest load only where their
+ * markup renders.
  */
-function front_page_paged_query() {
-  global $post;
+function view_stylesheets() {
+  $chunks = [ 'base', 'nav', 'rain', 'footer', 'search-overlay' ];
 
-  // Posts to exclude from the front-page feed (formerly an ACF options field,
-  // now a plain option; empty by default).
-  $selected_posts = (array) get_option( 'rollemaa_selected_posts', [] );
-  $args = array(
-    'post_type' => 'post',
-    'posts_per_page' => 6, // NB! When you change this, change also posts_per_page option
-    'cache_results' => true,
-    'update_post_term_cache' => true,
-    'update_post_meta_cache' => true,
-    'no_found_rows' => true,
-    'post_status' => 'publish',
-    'post__not_in' => $selected_posts,
-  );
+  $template     = is_page() ? get_page_template_slug( get_queried_object_id() ) : '';
+  $archive_page = in_array( $template, [ 'page-archive.php', 'page-all.php' ], true );
+  $diary        = is_singular( 'diary' ) || is_post_type_archive( 'diary' );
+  $listing      = ( is_archive() || is_search() || is_home() ) && ! $diary;
 
-  $query = new \WP_Query( $args );
-
-  // Check if we should event show load more button
-  // in the first place and save query to js variable for later use.
-  if ( $query->found_posts !== $query->post_count ) {
-    $query->query['paged'] = 1;
-    $posts_query_original = $query->query; // phpcs:ignore
-    $posts_query = $query->query; // phpcs:ignore
-
-    $queries = array(
-      'posts_query_original' => $posts_query_original,
-      'posts_query' => $posts_query,
-    );
-
-    return $queries;
+  if ( is_front_page() ) {
+    array_push( $chunks, 'shelf', 'front' );
   }
+
+  if ( 'page-archive.php' === $template ) {
+    $chunks[] = 'shelf';
+  }
+
+  if ( $listing || $archive_page ) {
+    $chunks[] = 'archive';
+  }
+
+  if ( ( is_singular() && ! is_front_page() ) || $diary ) {
+    array_push( $chunks, 'article', 'content' );
+  }
+
+  if ( $diary ) {
+    $chunks[] = 'diary';
+  }
+
+  if ( ( is_page() && ! is_front_page() ) || is_404() ) {
+    $chunks[] = 'page';
+  }
+
+  if ( is_singular() || is_search() || is_404() ) {
+    $chunks[] = 'forms';
+  }
+
+  if ( is_front_page() || is_singular( 'post' ) ) {
+    $chunks[] = 'ads';
+  }
+
+  return array_unique( $chunks );
 }
 
 /**
  * Enqueue scripts and styles.
  */
 function enqueue_theme_scripts() {
-  // The theme itself no longer uses jQuery anywhere. Core still registers
-  // it, so plugin scripts that declare it as a dependency keep working,
-  // and pages without such plugins load no jQuery at all.
-
-  // Site shell, split into purpose-sized files: base (reset, variables,
-  // typography, dark mode) plus one small file per shell component. The
-  // enqueue order mirrors the old single-bundle source order. View chunks
-  // below load only where their markup renders.
-  $shell = [ 'base', 'nav', 'rain', 'footer', 'forms', 'search-overlay' ];
-
-  $chunks = $shell;
-  if ( is_archive() || is_home() || is_search() ) {
-    $chunks[] = 'pagination';
-    $chunks[] = 'archive';
-  }
-  if ( is_front_page() || is_singular() ) {
-    $chunks[] = 'hero';
-    $chunks[] = 'cards'; // front page feed + related posts
-  }
-  if ( is_singular( 'page' ) && ! is_front_page() ) {
-    $chunks[] = 'page';
-  }
-  // Slot ads render on front/blog index; front-end.js injects the own-ad
-  // on singles (#article-text-content) and the archive page (#spawn-slot).
-  if ( is_front_page() || is_home() || is_singular() ) {
-    $chunks[] = 'ads';
-  }
-
-  foreach ( $chunks as $chunk ) {
+  foreach ( view_stylesheets() as $chunk ) {
     // The base chunk keeps the historical 'styles' handle: every other
     // stylesheet in the theme declares it as its dependency.
     $handle = 'base' === $chunk ? 'styles' : 'styles-' . $chunk;
@@ -197,55 +179,6 @@ function enqueue_theme_scripts() {
       filemtime( get_theme_file_path( get_asset_file( $chunk . '.css' ) ) )
     );
   }
-
-  // front.css: front page blocks (feed, upsell, who, ads) and the front
-  // page view. The blog index shows the same ads block.
-  if ( is_front_page() || is_home() ) {
-    wp_enqueue_style( 'styles-front',
-      get_theme_file_uri( get_asset_file( 'front.css' ) ),
-      [ 'styles' ],
-      filemtime( get_theme_file_path( get_asset_file( 'front.css' ) ) )
-    );
-  }
-
-  // Diary contexts: diary singles and archive, plus 404/no-results pages
-  // where template-parts/content-none.php reuses the diary card markup.
-  $no_results    = ! is_singular() && isset( $GLOBALS['wp_query'] ) && 0 === (int) $GLOBALS['wp_query']->found_posts;
-  $diary_context = is_singular( 'diary' ) || is_post_type_archive( 'diary' ) || is_404() || $no_results;
-
-  // diary.css: the (large) diary/lokikirja view. Enqueued before content.css
-  // on purpose: the pre-split bundle had views/diary before the gutenberg
-  // partials, so gutenberg content rules must stay later in the cascade.
-  if ( $diary_context ) {
-    wp_enqueue_style( 'styles-diary',
-      get_theme_file_uri( get_asset_file( 'diary.css' ) ),
-      [ 'styles' ],
-      filemtime( get_theme_file_path( get_asset_file( 'diary.css' ) ) )
-    );
-  }
-
-  // content.css: full article body (post/page/diary single layout, comments,
-  // code highlighting, Gutenberg block content). Loaded wherever full block
-  // content renders: singulars and diary contexts (the lokikirja archive
-  // prints complete entries, not excerpts). Front page and other archives
-  // show plain excerpts, so they never load it. The front page is a static
-  // page here (show_on_front=page) but front-page.php renders excerpts, not
-  // the page body, so it is excluded too.
-  if ( ( is_singular() && ! is_front_page() ) || $diary_context ) {
-    wp_enqueue_style( 'styles-content',
-      get_theme_file_uri( get_asset_file( 'content.css' ) ),
-      [ 'styles' ],
-      filemtime( get_theme_file_path( get_asset_file( 'content.css' ) ) )
-    );
-  }
-
-  // Front-end JS: vanilla and buildless, served as-is from js/front-end.js
-  wp_enqueue_script( 'scripts',
-    get_theme_file_uri( 'js/front-end.js' ),
-    [],
-    filemtime( get_theme_file_path( 'js/front-end.js' ) ),
-    true
-  );
 
   // Element-level content styles for pre-Gutenberg posts. Block-era posts
   // get the same rules per block, just-in-time and inlined (performance.php);
@@ -273,9 +206,20 @@ function enqueue_theme_scripts() {
     );
   }
 
+  // Front-end JS: vanilla and buildless, served as-is from js/front-end.js
+  wp_enqueue_script( 'scripts',
+    get_theme_file_uri( 'js/front-end.js' ),
+    [],
+    filemtime( get_theme_file_path( 'js/front-end.js' ) ),
+    [
+      'in_footer' => true,
+      'strategy'  => 'defer',
+    ]
+  );
+
   // Writing heatmap only on the diary archive. This also keeps the heavy
   // heatmap_data() query (380 posts + remote feeds) off every other page.
-  if ( is_post_type_archive( 'diary' ) ) {
+  if ( is_post_type_archive( 'diary' ) && ! is_date() && ! is_paged() ) {
     wp_enqueue_script( 'heatmap',
       get_theme_file_uri( 'js/heatmap.js' ),
       [],
@@ -285,56 +229,22 @@ function enqueue_theme_scripts() {
     wp_localize_script( 'heatmap', 'heatmapdata', heatmap_data() );
   }
 
-  // Required comment-reply script
-  if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-		wp_enqueue_script( 'comment-reply' );
-  }
-
-  // Load-more query is only used by the front page post feed
-  if ( is_front_page() ) {
-    wp_localize_script( 'scripts', 'paged_query', front_page_paged_query() );
-  }
-
-  wp_localize_script( 'scripts', 'minimalistmadness_screenReaderText', [
-    'expand'          => get_default_localization( 'Open child menu' ),
-    'collapse'        => get_default_localization( 'Close child menu' ),
-    'expand_for'      => get_default_localization( 'Open child menu for' ),
-    'collapse_for'    => get_default_localization( 'Close child menu for' ),
-    'expand_toggle'   => get_default_localization( 'Open main menu' ),
-    'collapse_toggle' => get_default_localization( 'Close main menu' ),
-    'external_link'   => get_default_localization( 'External site:' ),
-    'target_blank'    => get_default_localization( 'opens in a new window' ),
-  ] );
-
-  // Add domains/hosts to disable external link indicators
-  wp_localize_script( 'scripts', 'minimalistmadness_externalLinkDomains', [
-      'localhost:3000',
-      'rollemaa.test',
-      'rollemaa.fi',
-      'www.rollemaa.fi',
-      'rollemaa.org',
-      'www.rollemaa.org',
-  ] );
-
-  wp_localize_script( 'scripts', 'air', array(
-    'nonce'           => wp_create_nonce( 'wp_rest' ),
-    'posts_per_page'  => 6,
-    'baseurl'         => get_rest_url(),
-  ) );
-
-  wp_localize_script( 'scripts', 'algolia', [
-    'appId'     => ALGOLIA_APP_ID,
-    'searchKey' => ALGOLIA_SEARCH_KEY,
-    'index'     => ALGOLIA_INDEX,
-  ] );
+  $config = [
+    'rest'    => esc_url_raw( rest_url( 'rollemaa/v1/' ) ),
+    'algolia' => [
+      'appId'     => ALGOLIA_APP_ID,
+      'searchKey' => ALGOLIA_SEARCH_KEY,
+      'index'     => ALGOLIA_INDEX,
+    ],
+    'localDomains' => [ 'rollemaa.test', 'rollemaa.fi', 'www.rollemaa.fi' ],
+    'sprite'       => get_theme_file_uri( 'svg/icons.svg' ),
+  ];
 
   if ( is_singular( 'post' ) ) {
-    wp_localize_script( 'scripts', 'mostRead', [
-      'url' => rest_url( 'rollemaa/v1/read/' . get_the_ID() ),
-      'id'  => get_the_ID(),
-    ] );
+    $config['post'] = get_the_ID();
   }
 
+  wp_add_inline_script( 'scripts', 'window.rollemaa = ' . wp_json_encode( $config ) . ';', 'before' );
 }
 
 /**
@@ -360,4 +270,3 @@ function get_asset_file( $filename ) {
 
   return "{$filetype}/{$filename}";
 } // end get_asset_file
-

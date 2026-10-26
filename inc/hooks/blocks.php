@@ -1,7 +1,7 @@
 <?php
 /**
- * Theme blocks and the head/body scripts shared by classic and block
- * template rendering paths.
+ * Theme blocks and the head script shared by classic and block template
+ * rendering paths.
  *
  * @package minimalistmadness
  */
@@ -27,7 +27,10 @@ function print_theme_prepaint_script() {
   ?>
   <script>
     (function () {
-      var theme = localStorage.getItem('theme');
+      var theme = null;
+      try {
+        theme = localStorage.getItem('theme');
+      } catch (error) {}
       if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         theme = 'theme-dark';
       }
@@ -35,68 +38,5 @@ function print_theme_prepaint_script() {
     })();
   </script>
   <script defer data-domain="rollemaa.fi" src="https://analytics.dude.fi/js/plausible.js"></script>
-  <?php
-}
-
-/**
- * Dark/light toggle helpers, bound to the footer radio group. Printed right
- * after <body> opens on both rendering paths.
- */
-function print_theme_toggle_script() {
-  ?>
-  <script>
-    function setTheme(themeName) {
-      localStorage.setItem('theme', themeName);
-      document.documentElement.className = themeName;
-    }
-
-    function toggleTheme() {
-      if (localStorage.getItem('theme') === 'theme-dark') {
-        setTheme('theme-light');
-      } else {
-        setTheme('theme-dark');
-      }
-    }
-
-    function themeSetup() {
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && localStorage.getItem('theme') !== 'theme-light') {
-        setTheme('theme-dark');
-      }
-
-      if (localStorage.getItem('theme') === 'theme-dark') {
-        setTheme('theme-dark');
-        document.getElementById('color-scheme-toggle-dark').checked = true;
-        document.getElementById('color-scheme-toggle-light').checked = false;
-        document.getElementById('color-scheme-toggle-auto').checked = false;
-      } else {
-        setTheme('theme-light');
-        document.getElementById('color-scheme-toggle-dark').checked = false;
-        document.getElementById('color-scheme-toggle-light').checked = true;
-        document.getElementById('color-scheme-toggle-auto').checked = false;
-      }
-
-      document.querySelectorAll('#dark-mode-footer-toggle input').forEach(function(el) {
-        el.addEventListener('change', function() {
-          if (this.value === 'light') {
-            setTheme('theme-light');
-          } else if (this.value === 'dark') {
-            setTheme('theme-dark');
-          } else {
-            localStorage.removeItem('theme');
-
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-              setTheme('theme-dark');
-            } else {
-              setTheme('theme-light');
-            }
-          }
-        });
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      themeSetup();
-    });
-  </script>
   <?php
 }

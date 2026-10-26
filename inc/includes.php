@@ -35,6 +35,3 @@ require get_theme_file_path( '/inc/diary-entry.php' );
 
 // Shortcodes etc.
 require get_theme_file_path( '/inc/includes/rollemaa-legacy.php' );
-
-// From Air-helper
-require get_theme_file_path( '/inc/hooks/image-lazyload-native.php' );

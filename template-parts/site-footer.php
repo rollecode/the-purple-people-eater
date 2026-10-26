@@ -1,55 +1,61 @@
 <?php
 /**
- * Site footer: social links, credits, dark mode toggle. Included by the
- * classic footer.php and the minimalistmadness/site-footer block (FSE path).
+ * Site footer: the umbrella and a line about the site with the two ways to
+ * follow it, then the copyright, every other place Rolle is active and the
+ * theme switch. Included by the classic footer.php and the
+ * minimalistmadness/site-footer block.
  *
  * @package minimalistmadness
  */
 
 namespace Air_Light;
+
+$stats     = site_stats();
+$elsewhere = [
+  [ 'Bluesky', 'https://bsky.app/profile/rolle.social', 'bluesky' ],
+  [ 'Threads', 'https://www.threads.net/@rolle_', 'threads' ],
+  [ 'Instagram', 'https://www.instagram.com/rolle_', 'insta' ],
+  [ 'GitHub', 'https://github.com/rollecode', 'github' ],
+  [ 'LinkedIn', 'https://www.linkedin.com/in/rolaukka/', 'linkedin' ],
+  [ 'Strava', 'https://www.strava.com/athletes/16582440', 'strava' ],
+  [ 'Last.fm', 'https://www.last.fm/user/rolle-', 'lastfm' ],
+  [ 'Trakt', 'https://trakt.tv/users/rolle', 'trakt' ],
+  [ 'Rollekino', 'https://www.rollekino.fi', 'rollekino' ],
+];
 ?>
-<footer role="contentinfo" id="colophon" class="site-footer">
-
-    <div class="container">
-      <div class="footer-space">
-        <div class="footer-choices">
-          <ul class="social-media">
-            <li><a class="no-external-link-indicator" href="https://twitter.com/rolle"><span class="screen-reader-text">Twitter</span><?php include get_theme_file_path( '/svg/twitter.svg' ); ?></a></li>
-            <li><a class="no-external-link-indicator" href="https://github.com/ronilaukkarinen"><span class="screen-reader-text">GitHub</span><?php include get_theme_file_path( '/svg/github.svg' ); ?></a></li>
-            <li><a class="no-external-link-indicator" href="https://www.instagram.com/rolle_"><span class="screen-reader-text">Twitter</span><?php include get_theme_file_path( '/svg/instagram.svg' ); ?></a></li>
-            <li><a class="no-external-link-indicator" href="https://www.last.fm/user/rolle-"><span class="screen-reader-text">Last.fm</span><?php include get_theme_file_path( '/svg/lastfm.svg' ); ?></a></li>
-            <li><a class="no-external-link-indicator" href="https://untappd.com/user/rolle"><span class="screen-reader-text">Untappd</span><?php include get_theme_file_path( '/svg/untappd.svg' ); ?></a></li>
-            <li><a class="no-external-link-indicator" href="https://retroachievements.org/user/rolle"><span class="screen-reader-text">Retro Achievements</span><?php include get_theme_file_path( '/svg/joystick.svg' ); ?></a></li>
-            <li><a class="no-external-link-indicator" href="https://www.overbuff.com/players/pc/Qllervo-2545"><span class="screen-reader-text">Overwatch</span><?php include get_theme_file_path( '/svg/overwatch.svg' ); ?></a></li>
-            <li><a class="no-external-link-indicator" href="https://rawg.io/@rolle"><span class="screen-reader-text">Rawg.io</span><?php include get_theme_file_path( '/svg/rawg.svg' ); ?></a></li>
-            <li><a class="no-external-link-indicator" href="http://trakt.tv/users/rolle"><span class="screen-reader-text">Trakt</span><?php include get_theme_file_path( '/svg/trakt.svg' ); ?></a></li>
-            <li><a class="no-external-link-indicator" href="https://keybase.io/ronilaukkarinen"><span class="screen-reader-text">Keybase</span><?php include get_theme_file_path( '/svg/keybase.svg' ); ?></a></li>
-            <li><a class="no-external-link-indicator" href="https://profiles.wordpress.org/rolle"><span class="screen-reader-text">WordPress</span><?php include get_theme_file_path( '/svg/wordpress.svg' ); ?></a></li>
-            <li><a class="no-external-link-indicator" href="https://www.linkedin.com/in/rolaukka/"><span class="screen-reader-text">WordPress</span><?php include get_theme_file_path( '/svg/linkedin.svg' ); ?></a></li>
-            <li><a class="no-external-link-indicator" href="https://www.strava.com/athletes/16582440"><span class="screen-reader-text">Strava</span><?php include get_theme_file_path( '/svg/strava.svg' ); ?></a></li>
-            <li><a class="no-external-link-indicator" href="https://goodreads.com/rolle"><span class="screen-reader-text">Goodreads</span><?php include get_theme_file_path( '/svg/goodreads.svg' ); ?></a></li>
-            <li><a class="no-external-link-indicator" rel="me" href="https://mementomori.social/@rolle"><span class="screen-reader-text">Mastodon</span><?php include get_theme_file_path( '/svg/mastodon.svg' ); ?></a></li>
-          </ul>
+<footer class="site-foot" id="colophon">
+  <div class="inner">
+    <div class="foot-top">
+      <div class="sign">
+        <a class="foot-mark" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="Rollemaa, etusivu"><?php the_umbrella(); ?></a>
+        <div>
+          <p class="foot-line">Rollen blogi ja lokikirja. Kirjoituksia vuodesta 2005, päiväkirjaa vuodesta 2021.</p>
+          <p class="foot-stats meta-text"><?php echo esc_html( sprintf( '%s kirjoitusta · %s lokikirjan päivää · %s sanaa', fi_number( $stats['posts'] ), fi_number( $stats['diary'] ), fi_number( $stats['words'] ) ) ); ?></p>
         </div>
+      </div>
 
-        <div class="footer-credits">
-          <p>Oikeudet omistaa Rolle Laukkarinen, 1999-<?php echo esc_attr( date( 'Y' ) ); ?>.</p>
-
-          <div role="radiogroup" aria-label="Valitse väriteema" id="dark-mode-footer-toggle" class="dark-mode-footer-toggle">
-
-            <input id="color-scheme-toggle-light" type="radio" name="colorModeToggle" value="light">
-            <label tabindex="-1" for="color-scheme-toggle-light" class="dark-mode-footer-label">Vaalea</label>
-
-            <input id="color-scheme-toggle-dark" type="radio" name="colorModeToggle" value="dark">
-            <label tabindex="-1" for="color-scheme-toggle-dark" class="dark-mode-footer-label">Tumma</label>
-
-            <input id="color-scheme-toggle-auto" type="radio" name="colorModeToggle" value="auto" checked>
-            <label tabindex="0" for="color-scheme-toggle-auto" class="dark-mode-footer-label">Automaattinen</label>
-
-          </div>
-
-        </div>
+      <div class="foot-follow">
+        <a class="btn" href="https://mementomori.social/@rolle" rel="me"><?php the_icon( 'masto' ); ?>Seuraa Mastodonissa</a>
+        <a class="btn btn-ghost" href="<?php echo esc_url( get_feed_link() ); ?>"><?php the_icon( 'rss' ); ?>RSS-syöte</a>
       </div>
     </div>
 
-	</footer><!-- #colophon -->
+    <div class="foot-base">
+      <p>Oikeudet omistaa Rolle Laukkarinen, 1999–<?php echo esc_html( wp_date( 'Y' ) ); ?>.</p>
+
+      <nav class="foot-elsewhere" aria-label="Rolle muualla">
+        <ul>
+          <?php foreach ( $elsewhere as [ $name, $url, $icon ] ) : ?>
+            <li><a href="<?php echo esc_url( $url ); ?>" aria-label="<?php echo esc_attr( $name ); ?>" title="<?php echo esc_attr( $name ); ?>"><?php the_icon( $icon ); ?></a></li>
+          <?php endforeach; ?>
+        </ul>
+      </nav>
+
+      <div class="themesw" role="group" aria-label="Väriteema">
+        <button type="button" aria-pressed="false" data-theme-set="light"><?php the_icon( 'sun', 'ic-sm' ); ?>Vaalea</button>
+        <button type="button" aria-pressed="false" data-theme-set="dark"><?php the_icon( 'moon', 'ic-sm' ); ?>Tumma</button>
+        <button type="button" aria-pressed="false" data-theme-set="auto"><?php the_icon( 'auto', 'ic-sm' ); ?>Automaattinen</button>
+      </div>
+    </div>
+  </div>
+</footer>

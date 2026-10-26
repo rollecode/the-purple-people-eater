@@ -30,7 +30,7 @@ namespace Air_Light;
 
   <a class="skip-link screen-reader-text" href="#content"><?php echo esc_html( get_default_localization( 'Skip to content' ) ); ?></a>
   <?php wp_body_open(); ?>
-  <div class="site<?php if ( ! is_singular() || has_tag( 'raha' ) ) : ?> disable-google-ads<?php endif; ?>">
+  <div class="site">
 
     <?php get_template_part( 'template-parts/site-header' ); ?>
 

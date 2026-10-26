@@ -1,22 +1,18 @@
 <?php
 /**
- * Template part for displaying a message that posts cannot be found.
+ * Nothing found: in a search, an archive or a diary date.
  *
- * @Date:   2019-10-15 12:30:02
- * @Last Modified by:   Roni Laukkarinen
- * @Last Modified time: 2020-03-17 10:17:21
  * @package minimalistmadness
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
  */
 
-?>
+namespace Air_Light;
 
-<article class="diary type-diary status-publish hentry">
-  <h2 class="prefix">Tyhjää täynnä</h2>
-  <p class="diary-title">Menit liian kauas</p>
-  <div class="container container-article">
-    <div class="entry-content article-content">
-      <p>Ajan rakenne on muuttunut. Kiva tietää näin kolmelta aamuyöstä. Eli siis mitään ei löydy tästä arkistosta. Kokeilepa uudestaan?</p>
-    </div>
-  </div>
-</article>
+?>
+<div class="nothing">
+  <h2>Tyhjää täynnä</h2>
+  <?php if ( is_search() ) : ?>
+    <p>Haulla ”<?php echo esc_html( get_search_query() ); ?>” ei löytynyt mitään. Kokeile toista sanaa tai lyhyempää hakua.</p>
+  <?php else : ?>
+    <p>Täältä ei löydy kirjoituksia. Kokeile hakua tai selaa <a href="<?php echo esc_url( get_permalink( get_page_by_path( 'arkisto' ) ) ); ?>">arkistoa</a>.</p>
+  <?php endif; ?>
+</div>

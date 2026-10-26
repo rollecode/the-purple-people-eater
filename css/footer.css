@@ -1,144 +1,205 @@
-/* stylelint-disable a11y/no-display-none, declaration-property-unit-allowed-list */
 /**
- * Typography helpers
+ * Site footer: the umbrella and the ways to follow, a row of every other
+ * place Rolle is, then the copyright and the theme switch.
  */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-.site-footer .container {
-  margin-bottom: 8rem;
-  margin-top: 8rem;
-  padding-bottom: 0;
-  padding-top: 0;
+.site-foot {
+  margin-top: 96px;
+  padding: 72px var(--pad) 36px;
+  border-top: 1px solid var(--rule);
+  background: var(--tint);
+  color: var(--ink);
 }
-.site-footer .container .footer-space {
-  border-top: 1px solid var(--color-border-light);
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 0;
-  padding-top: 5rem;
+
+/* The comments band already closes the page */
+.site:has(.comments) .site-foot {
+  margin-top: 0;
 }
-@media (max-width: 890px) {
-  .site-footer .container .footer-space {
-    display: block;
-  }
+
+.site-foot .inner {
+  width: min(100%, var(--wrap));
+  margin: 0 auto;
 }
-.site-footer .container a,
-.site-footer .container p {
-  color: var(--color-light-blue);
-  margin: 0;
-}
-.site-footer .container ul,
-.site-footer .container p {
-  flex: 1;
-}
-.site-footer .container p {
-  text-align: right;
-}
-@media (max-width: 950px) {
-  .site-footer .container p {
-    font-size: 15px;
-  }
-}
-@media (max-width: 890px) {
-  .site-footer .container p {
-    text-align: center;
-  }
-}
-.site-footer .container a:hover,
-.site-footer .container a:focus {
-  opacity: 0.6;
-}
-.site-footer .container ul,
-.site-footer .container li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.site-footer .container ul {
+
+.foot-top {
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
-}
-.site-footer .container ul li {
-  margin-right: 15px;
-}
-@media (max-width: 450px) {
-  .site-footer .container ul li {
-    margin-bottom: 5px;
-    margin-left: 7.5px;
-    margin-right: 7.5px;
-  }
-}
-.site-footer .container ul svg {
-  height: 19px;
-  width: 19px;
-}
-@media (max-width: 450px) {
-  .site-footer .container ul {
-    margin: 0 auto;
-    max-width: 70%;
-  }
-}
-@media (max-width: 890px) {
-  .site-footer .container ul {
-    font-size: 15px;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-    text-align: center;
-  }
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px 56px;
 }
 
-.footer-credits {
+.sign {
   display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
 }
 
-.dark-mode-footer-toggle {
-  margin-top: 15px;
-  --toggle-border-radius-outer: 12px;
-  --toggle-border-radius-inner: 10px;
-  --toggle-color-fill: var(--color-light-blue);
-  --toggle-color-text: var(--color-light-blue);
-  border: 1px solid var(--toggle-color-fill);
-  border-radius: var(--toggle-border-radius-outer, 2px);
-  display: inline-flex;
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 1.3;
-  padding: 1px;
-  justify-self: flex-end;
+.foot-mark {
+  display: inline-block;
+  color: var(--accent);
 }
-@media (max-width: 890px) {
-  .dark-mode-footer-toggle {
-    justify-self: center;
+
+/* Umbrella top on the first line's cap height */
+.foot-mark svg {
+  display: block;
+  width: 44px;
+  height: 44px;
+  margin-top: -4px;
+}
+
+.foot-line {
+  max-width: 34em;
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.foot-stats {
+  margin: 6px 0 0;
+  color: var(--muted);
+}
+
+.foot-follow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Every other place: logos only, named for screen readers */
+/* Every other place: small muted logos, named for screen readers */
+.foot-elsewhere ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.foot-elsewhere a {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--muted);
+  place-items: center;
+}
+
+.foot-elsewhere a:hover {
+  background: var(--soft);
+  color: var(--accent);
+}
+
+.foot-elsewhere .ic {
+  width: 17px;
+  height: 17px;
+}
+
+/* Three equal columns, so the logos sit in the exact middle */
+.foot-base {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-top: 56px;
+  padding-top: 28px;
+  gap: 16px;
+  border-top: 1px solid var(--rule-strong);
+  color: var(--muted);
+  font-size: 14.5px;
+}
+
+.foot-base p {
+  margin: 0;
+}
+
+.foot-base .themesw {
+  justify-self: end;
+}
+
+.themesw {
+  display: inline-flex;
+  position: relative;
+  padding: 3px;
+  gap: 2px;
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+/* The pressed highlight, moved by front-end.js; it stretches as it goes */
+.themesw::before {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  width: var(--pill-w, 0);
+  border-radius: 999px;
+  background: var(--soft);
+  content: "";
+  transform: translateX(var(--pill-x, 0));
+}
+
+.themesw.is-ready::before {
+  transition: transform .45s cubic-bezier(.65, 0, .35, 1), width .6s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .themesw.is-ready::before {
+    transition: none;
   }
 }
-.dark-mode-footer-toggle input[type=radio] {
-  appearance: none;
+
+.themesw button {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  padding: 7px 12px;
+  gap: 7px;
   border: 0;
-  clip: rect(1px, 1px, 1px, 1px);
-  clip-path: inset(0 0 99.9% 99.9%);
-  height: 1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
+  border-radius: 999px;
+  background: none;
+  color: var(--ink);
+  font-size: 14.5px;
 }
-.dark-mode-footer-toggle .dark-mode-footer-label {
-  border: 1px solid transparent;
-  border-radius: var(--toggle-border-radius-inner, 2px);
-  box-sizing: border-box;
-  color: var(--toggle-color-text);
-  display: inline-block;
-  min-width: 42px;
-  padding: 1px 6px;
-  text-align: center;
+
+/* Same weight in both states, so choosing a theme never shifts the text */
+.themesw button[aria-pressed="true"] {
+  color: var(--deep);
 }
-.dark-mode-footer-toggle .dark-mode-footer-label:focus, .dark-mode-footer-toggle .dark-mode-footer-label:hover {
-  cursor: pointer;
+
+@media (max-width: 1100px) {
+  .foot-base {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .foot-base .themesw {
+    justify-self: start;
+  }
+
+  .foot-elsewhere ul {
+    justify-content: flex-start;
+    margin-left: -11px;
+  }
 }
-.dark-mode-footer-toggle input[type=radio]:checked + .dark-mode-footer-label {
-  --toggle-color-text: var(--color-white-two);
-  background-color: var(--toggle-color-fill);
+
+@media (max-width: 860px) {
+  .site-foot {
+    margin-top: 72px;
+    padding: 56px var(--pad) 32px;
+  }
+
+  .sign {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .themesw button {
+    padding: 8px 10px;
+    gap: 6px;
+    font-size: 14px;
+  }
 }

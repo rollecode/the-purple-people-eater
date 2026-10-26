@@ -75,6 +75,11 @@ add_action( 'init', function () {
     'core/verse'            => [ 'core-verse' ],
     'core/video'            => [ 'core-video' ],
     'core/list'             => [ 'core-list', 'no-bullets' ],
+    'core/group'            => [ 'core-group' ],
+    'core/media-text'       => [ 'core-media-text' ],
+    'core/details'          => [ 'core-details' ],
+    'core/footnotes'        => [ 'core-footnotes' ],
+    'core/audio'            => [ 'core-audio' ],
     'core/button'           => [ 'button' ],
     'core/file'             => [ 'button-file' ],
     'activitypub/reactions' => [ 'activitypub' ],
@@ -95,14 +100,23 @@ add_action( 'init', function () {
 } );
 
 /**
- * Preload the two body font weights used above the fold so text paints
- * without waiting for the CSS to discover the @font-face rules.
+ * Preload the faces the first screen paints with, so text does not wait for
+ * the CSS to discover the @font-face rules: the display serif and Geist
+ * everywhere, the logo face, and the body serif where a text opens the page.
  */
 add_action( 'wp_head', function () {
-  foreach ( [ 'Inter-Regular', 'Inter-SemiBold', 'Inter-Bold' ] as $font ) {
+  $fonts = [ 'InstrumentSerif-latin', 'Geist-latin', 'Inter-Bold-latin' ];
+
+  if ( is_front_page() ) {
+    $fonts[] = 'InstrumentSerif-Italic-latin';
+  } elseif ( is_singular() ) {
+    $fonts[] = 'SourceSerif4-latin';
+  }
+
+  foreach ( $fonts as $font ) {
     printf(
       '<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n",
-      esc_url( get_theme_file_uri( 'fonts/' . $font . '-latin.woff2' ) )
+      esc_url( get_theme_file_uri( 'fonts/' . $font . '.woff2' ) )
     );
   }
 }, 2 );
@@ -110,10 +124,10 @@ add_action( 'wp_head', function () {
 /**
  * Stylesheets nothing above the fold needs load without blocking the first
  * paint: the JS-filled rain effect, forms and the footer everywhere, and on
- * singles the related-post cards and the JS-injected own ad too.
+ * singles the JS-injected own ad too.
  */
 const NON_BLOCKING_STYLES          = [ 'styles-rain', 'styles-forms', 'styles-footer' ];
-const NON_BLOCKING_SINGULAR_STYLES = [ 'styles-cards', 'styles-ads' ];
+const NON_BLOCKING_SINGULAR_STYLES = [ 'styles-ads' ];
 
 add_filter( 'style_loader_tag', function ( $tag, $handle ) {
   $short_page = is_404() || is_search();

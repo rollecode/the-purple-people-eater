@@ -1,33 +1,36 @@
 <?php
 /**
- * Main loop for the 404 view. Included by both the classic 404.php
- * template and the minimalistmadness/loop-404 block (FSE path).
+ * Page not found: say so plainly, offer search, and a few random texts
+ * from the archive. Included by 404.php and the minimalistmadness/loop-404 block.
  *
  * @package minimalistmadness
  */
 
 namespace Air_Light;
+
 ?>
+<main class="site-main" id="content">
+  <div class="nf">
+    <div>
+      <p class="big" aria-hidden="true">404</p>
+      <h1>Sivua ei löytynyt</h1>
+      <p>Hakemaasi sivua ei ole olemassa, tai sen osoite on muuttunut. Kokeile hakua tai valitse jokin kirjoitus arkistosta.</p>
+      <form class="bigsearch" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+        <label class="screen-reader-text" for="not-found-search">Hae Rollemaasta</label>
+        <input id="not-found-search" type="search" name="s" placeholder="Hae Rollemaasta">
+        <button class="btn" type="submit"><?php the_icon( 'search' ); ?>Hae</button>
+      </form>
+      <p class="meta-text muted">Virhe 404 · <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Etusivulle</a></p>
+    </div>
 
-<div  class="content-area">
-	<main role="main" id="main" class="site-main">
-
-    <section class="block block-page block-not-found">
-
-      <div class="container container-article">
-        <div>
-
-          <div class="container container-article article-content">
-            <h1 id="content">Sivua ei löydy</h1>
-            <p>Vaikuttaisi siltä, että sivu on siirretty tai poistettu. <a href="<?php echo esc_url( get_home_url() ); ?>">Tästä takaisin etusivulle</a>.</p>
-          </div>
-
-        </div>
+    <section class="right" aria-labelledby="not-found-random">
+      <h2 class="h-sec" id="not-found-random">Satunnaisia kirjoituksia arkistosta</h2>
+      <ul class="picks picks-stack" id="random-picks" aria-live="polite">
+        <?php get_template_part( 'template-parts/random-picks' ); ?>
+      </ul>
+      <div>
+        <button class="btn btn-ghost" type="button" data-shuffle aria-controls="random-picks"><?php the_icon( 'shuffle' ); ?>Arvo uudet</button>
       </div>
-
-   </section><!-- .error-404 -->
-
- </div><!-- .container -->
-</main><!-- #main -->
-</div><!-- #primary -->
-
+    </section>
+  </div>
+</main>

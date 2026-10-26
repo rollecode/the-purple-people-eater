@@ -1,62 +1,40 @@
-/* stylelint-disable a11y/no-display-none, declaration-property-unit-allowed-list */
 /**
- * Typography helpers
+ * Table block: scrolls sideways on its own when it does not fit; the
+ * striped style tints every other row.
  */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-/* stylelint-disable number-max-precision */
-:is(.article-content, .editor-styles-wrapper) th {
-  backface-visibility: hidden;
-  background-color: var(--color-scorpion);
-  color: var(--color-white, var(--wp--custom--color-white));
-  font-weight: var(--font-weight-bold, var(--wp--custom--font-weight-bold));
-  overflow: hidden;
-  text-align: left;
+:is(.prose, .editor-styles-wrapper) .wp-block-table {
+  margin-block: 2em;
+  overflow-x: auto;
 }
-:is(.article-content, .editor-styles-wrapper) td {
-  color: var(--color-black, var(--wp--custom--color-black));
+
+:is(.prose, .editor-styles-wrapper) .wp-block-table table {
+  margin: 0;
 }
-:is(.article-content, .editor-styles-wrapper) td,
-:is(.article-content, .editor-styles-wrapper) th,
-:is(.article-content, .editor-styles-wrapper) .wp-block-table td,
-:is(.article-content, .editor-styles-wrapper) .wp-block-table th {
+
+:is(.prose, .editor-styles-wrapper) .wp-block-table :is(td, th) {
   border: 0;
-  font-family: var(--font-paragraph, var(--wp--custom--font-paragraph));
-  font-size: var(--font-size-14, var(--wp--custom--font-size-14));
-  height: 2rem;
-  padding: 0.6rem 1.5rem;
+  border-bottom: 1px solid var(--rule);
 }
-:is(.article-content, .editor-styles-wrapper) tr:nth-child(even) {
-  background-color: var(--color-background-table-cell-even, var(--wp--custom--color-background-table-cell-even));
+
+:is(.prose, .editor-styles-wrapper) .wp-block-table thead {
+  border-bottom: 1px solid var(--rule-strong);
 }
-:is(.article-content, .editor-styles-wrapper) tr:nth-child(odd) {
-  background-color: var(--color-background-table-cell-odd, var(--wp--custom--color-background-table-cell-odd));
-}
-:is(.article-content, .editor-styles-wrapper) thead,
-:is(.article-content, .editor-styles-wrapper) .wp-block-table thead {
+
+:is(.prose, .editor-styles-wrapper) .wp-block-table.is-style-stripes {
   border: 0;
 }
-:is(.article-content, .editor-styles-wrapper) thead th:first-child,
-:is(.article-content, .editor-styles-wrapper) .wp-block-table thead th:first-child {
-  border-top-left-radius: 8px;
+
+:is(.prose, .editor-styles-wrapper) .wp-block-table.is-style-stripes tbody tr:nth-child(odd) {
+  background: color-mix(in oklab, var(--soft) 55%, transparent);
 }
-:is(.article-content, .editor-styles-wrapper) thead th:last-child,
-:is(.article-content, .editor-styles-wrapper) .wp-block-table thead th:last-child {
-  border-top-right-radius: 8px;
+
+:is(.prose, .editor-styles-wrapper) .wp-block-table.is-style-stripes :is(td, th) {
+  padding-left: 12px;
+  border: 0;
 }
-:is(.article-content, .editor-styles-wrapper) table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-:is(.article-content, .editor-styles-wrapper) .wp-block-table.alignfull {
-  margin-left: 0;
-  margin-right: 0;
-  width: calc(100% - var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal)) * 2);
-}
-@media (max-width: 1000px) {
-  :is(.article-content, .editor-styles-wrapper) .wp-block-table.alignwide {
-    margin-left: 0;
-    margin-right: 0;
-    width: calc(100% - var(--padding-container-horizontal, var(--wp--custom--padding-container-horizontal)) * 2);
-  }
+
+:is(.prose, .editor-styles-wrapper) .wp-block-table figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 14px;
 }

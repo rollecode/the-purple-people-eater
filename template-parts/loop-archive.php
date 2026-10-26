@@ -1,99 +1,100 @@
 <?php
 /**
- * Main loop for the archive view. Included by both the classic archive.php
- * template and the minimalistmadness/loop-archive block (FSE path).
+ * Listings: keyword, category, year, month, day and author archives, and
+ * search results. A heading that says what is listed, the texts as rows,
+ * page numbers. Included by archive.php, search.php, index.php and their
+ * blocks.
  *
  * @package minimalistmadness
  */
 
 namespace Air_Light;
+
+global $wp_query;
+
+$total = (int) $wp_query->found_posts;
+$term  = get_search_query();
+
+if ( is_search() ) {
+  $count_type = function ( $type ) use ( $term ) {
+    $query = new \WP_Query( [
+      's'              => $term,
+      'post_type'      => $type,
+      'post_status'    => 'publish',
+      'posts_per_page' => 1,
+      'fields'         => 'ids',
+    ] );
+
+    return (int) $query->found_posts;
+  };
+
+  $current = get_query_var( 'post_type' );
+  $current = in_array( $current, [ 'post', 'diary' ], true ) ? $current : '';
+  $filters = [
+    ''      => [ 'Kaikki', $count_type( 'any' ) ],
+    'post'  => [ 'Artikkelit', $count_type( 'post' ) ],
+    'diary' => [ 'Lokikirja', $count_type( 'diary' ) ],
+  ];
+}
 ?>
+<main class="site-main" id="content">
+  <div class="wrap">
+    <header class="results-head">
+      <?php if ( is_search() ) : ?>
+        <h1>Haku: <em><?php echo esc_html( $term ); ?></em></h1>
 
-<div class="content-area">
-	<main role="main" id="main" class="site-main block block-page">
+        <form class="bigsearch" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+          <label class="screen-reader-text" for="search-page-input">Hakusana</label>
+          <input id="search-page-input" type="search" name="s" value="<?php echo esc_attr( $term ); ?>">
+          <button class="btn" type="submit"><?php the_icon( 'search' ); ?>Hae</button>
+        </form>
 
-    <div class="container container-archive container-article">
-      <div class="article">
+        <nav class="filters" aria-label="Rajaa hakutuloksia">
+          <?php foreach ( $filters as $type => [ $label, $count ] ) : ?>
+            <a href="<?php echo esc_url( add_query_arg( array_filter( [ 's' => $term, 'post_type' => $type ] ), home_url( '/' ) ) ); ?>"<?php echo $type === $current ? ' aria-current="page"' : ''; ?>>
+              <?php echo esc_html( $label ); ?> <span class="meta-text"><?php echo esc_html( fi_number( $count ) ); ?></span>
+            </a>
+          <?php endforeach; ?>
+        </nav>
+      <?php else : ?>
+        <h1>
+          <?php
+          if ( is_tag() ) {
+            echo 'Avainsana: <em>' . esc_html( single_tag_title( '', false ) ) . '</em>';
+          } elseif ( is_category() ) {
+            echo 'Kategoria: <em>' . esc_html( single_cat_title( '', false ) ) . '</em>';
+          } elseif ( is_day() ) {
+            echo esc_html( get_the_time( 'j.n.Y' ) );
+          } elseif ( is_month() ) {
+            echo esc_html( ucfirst( get_the_time( 'F' ) ) ) . ' <em>' . esc_html( get_the_time( 'Y' ) ) . '</em>';
+          } elseif ( is_year() ) {
+            echo 'Vuosi <em>' . esc_html( get_the_time( 'Y' ) ) . '</em>';
+          } elseif ( is_author() ) {
+            echo 'Kirjoittaja: <em>' . esc_html( get_the_author() ) . '</em>';
+          } else {
+            echo 'Kirjoitukset';
+          }
+          ?>
+        </h1>
+        <p class="intro meta-text"><?php echo esc_html( fi_count( $total, 'kirjoitus', 'kirjoitusta' ) ); ?></p>
+        <?php if ( is_tag() || is_category() ) : ?>
+          <?php the_archive_description( '<div class="archive-description">', '</div>' ); ?>
+        <?php endif; ?>
+      <?php endif; ?>
+    </header>
 
-      <?php if ( have_posts() ) :
-        $count = 0; ?>
-
-          <?php if ( is_tag() ) : ?>
-            <div class="notification-box old">
-              <h2 id="content">Arkisto avainsanalle &quot;<?php echo single_tag_title( '', false ); ?>&quot;</h2>
-
-              <p>Avainsanalla &quot;<?php echo single_tag_title( '', false ); ?>&quot; tägättyjä artikkeleja Rollemaassa on tällä hetkellä yhteensä huimat <?php $tag = $wp_query->get_queried_object(); echo esc_attr( $tag->count ); ?> kpl.</strong></p>
-            </div>
-          <?php endif; ?>
-
-          <?php if ( is_category() ) : ?>
-
-            <div class="notification-box old">
-              <h2 id="content">Kirjoitukset kategoriassa &quot;<?php echo single_cat_title(); ?>&quot;</h2>
-              <p>Aihealueeseen &quot;<?php echo single_cat_title(); ?>&quot; liittyvää on kirjoiteltu yhteensä <?php $cat = get_the_category(); $cat = $cat[0]; echo esc_attr( $cat->category_count ); ?> kpl.</p>
-            </div>
-
-          <?php elseif ( is_day() ) : ?>
-
-            <?php
-            $current_month = get_the_time( 'm' );
-            $current_year = get_the_time( 'Y' );
-            $current_day = get_the_time( 'j' );
-            $countposts = get_posts( 'year=$current_year&monthnum=$current_month&day=$current_day' );
-            ?>
-
-            <div class="notification-box old">
-              <h2 id="content"><?php echo esc_attr( ucfirst( get_the_time( 'l' ) ) ); ?>, <?php the_time( 'j.' ); ?> <?php the_time( 'F' ); ?>ta <?php the_time( 'Y' ); ?></h2>
-              <p>Kaikki <?php echo esc_attr( ucfirst( get_the_time( 'l' ) ) ); ?>na, <?php the_time( 'j.' ); ?> <?php the_time( 'F' ); ?>ta <?php the_time( 'Y' ); ?> julkaisemani kirjoitukset näet tällä sivulla. Kirjoituksia kertyi yhteensä <?php echo count( $countposts ); ?>.</p>
-            </div>
-
-          <?php elseif ( is_month() ) : ?>
-
-            <?php
-            $current_month = get_the_time( 'm' );
-            $current_year = get_the_time( 'Y' );
-            $countposts = get_posts( 'year=$current_year&monthnum=$current_month' );
-            ?>
-
-            <div class="notification-box old">
-              <h2 id="content"><?php echo esc_attr( ucfirst( get_the_time( 'F' ) ) ); ?>, <?php the_time( 'Y' ); ?></h2>
-              <p><?php echo esc_attr( ucfirst( get_the_time( 'F' ) ) ); ?>ssa vuonna <?php the_time( 'Y' ); ?> naputtelin kirjoituksia yhteensä huimat <?php echo count( $countposts ); ?> kpl. Tällä sivulla näet ne kaikki kätevästi listattuna.</p>
-            </div>
-
-          <?php elseif ( is_year() ) : ?>
-
-            <div class="notification-box old">
-              <h2 id="content">Anno domini <?php the_time( 'Y' ); ?></h2>
-              <p>Herran vuonna <?php the_time( 'Y' ); ?> kirjoitetut artikkelit.</p>
-            </div>
-
-          <?php elseif ( is_search() ) : ?>
-
-            <div class="notification-box old">
-              <h1 id="content">Hakutulokset</h1>
-              <h3><?php $cat = get_the_category();
-              $cat = $cat[0];
-              echo esc_attr( $cat->category_count ); ?> löytyi!</h3>
-            </div>
-
-          <?php elseif ( is_author() ) : ?>
-            <br>
-          <?php endif; ?>        
-
-        <?php while ( have_posts() ) :
+    <?php if ( have_posts() ) : ?>
+      <ol class="rows">
+        <?php
+        while ( have_posts() ) {
           the_post();
-          get_template_part( 'template-parts/content' );
-        endwhile;
-
-        khonsu_pagination();
-
-        else :
-          get_template_part( 'template-parts/content', 'none' );
-        endif; ?>
-
-      </div>
-    </div><!-- .container -->
-
-  </main><!-- #main -->
-</div><!-- #primary -->
-
+          get_template_part( 'template-parts/row' );
+        }
+        ?>
+      </ol>
+      <?php the_pager(); ?>
+    <?php else : ?>
+      <?php get_template_part( 'template-parts/content', 'none' ); ?>
+    <?php endif; ?>
+  </div>
+</main>
