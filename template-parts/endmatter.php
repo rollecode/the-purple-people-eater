@@ -35,7 +35,7 @@ $share_url = 'https://share.joinmastodon.org/#text=' . rawurlencode( get_the_tit
     <?php endif; ?>
   </div>
 
-  <?php if ( is_singular( 'post' ) ) : ?>
+  <?php if ( is_text_view( 'post' ) ) : ?>
     <section aria-labelledby="reactions-title">
       <h2 id="reactions-title">Reaktiot fediversumissa</h2>
       <?php get_template_part( 'template-parts/reactions' ); ?>

@@ -55,27 +55,27 @@
 /* Articles keep the page quiet: the sections appear when the pointer
    comes to the top, and always on keyboard focus */
 @media (hover: hover) {
-  .single-post:not(.overlay-head) .site-head .nav {
+  .single-post .site-head:not(.on-photo) .nav {
     opacity: 0;
     transition: opacity .3s var(--ease);
   }
 
-  .single-post:not(.overlay-head) .site-head:hover .nav,
-  .single-post:not(.overlay-head) .site-head:focus-within .nav {
+  .single-post .site-head:not(.on-photo):hover .nav,
+  .single-post .site-head:not(.on-photo):focus-within .nav {
     opacity: 1;
   }
 }
 
 /* On a photo the whole head sleeps until the mouse moves (front-end.js) */
 @media (hover: hover) and (scripting: enabled) {
-  .overlay-head .site-head .bar > * {
+  .on-photo .bar > * {
     opacity: 0;
     pointer-events: none;
     transition: opacity .6s ease-in-out;
   }
 
-  .overlay-head.head-awake .site-head .bar > *,
-  .overlay-head .site-head:has(:focus-visible) .bar > * {
+  .head-awake .on-photo .bar > *,
+  .on-photo:has(:focus-visible) .bar > * {
     opacity: 1;
     pointer-events: auto;
     transition-duration: .9s;
@@ -135,32 +135,32 @@
 }
 
 /* On the photo */
-.overlay-head .site-head {
+.site-head.on-photo {
   position: absolute;
   inset: 0 0 auto;
   color: #fff;
 }
 
-.overlay-head .nav a {
+.on-photo .nav a {
   color: rgb(255 255 255 / .9);
 }
 
-.overlay-head .nav a:hover,
-.overlay-head .nav a[aria-current="page"] {
+.on-photo .nav a:hover,
+.on-photo .nav a[aria-current="page"] {
   color: #fff;
 }
 
-.overlay-head .brand:hover svg {
+.on-photo .brand:hover svg {
   color: #E9DCF3;
 }
 
-.overlay-head .search-btn kbd {
+.on-photo .search-btn kbd {
   border-color: rgb(255 255 255 / .45);
   background: transparent;
   color: #fff;
 }
 
-.overlay-head .site-head :focus-visible {
+.on-photo :focus-visible {
   outline-color: #fff;
 }
 

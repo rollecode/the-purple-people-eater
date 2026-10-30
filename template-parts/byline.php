@@ -34,7 +34,7 @@ $author    = '' === $full_name ? get_the_author() : $full_name;
     </p>
   </div>
 
-  <?php if ( is_singular( 'post' ) ) : ?>
+  <?php if ( is_text_view( 'post' ) ) : ?>
     <div class="resume" data-resume hidden>
       <span class="resume-flag" aria-hidden="true"></span>
       <div class="resume-text">

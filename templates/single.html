@@ -1,9 +1,37 @@
 <!-- wp:minimalistmadness/site-frame -->
-<!-- wp:minimalistmadness/site-header /-->
+<!-- wp:template-part {"slug":"header","tagName":"div","className":"site-header-part"} /-->
 
 <!-- wp:group {"tagName":"div","className":"site-content","layout":{"type":"default"}} -->
-<div class="wp-block-group site-content"><!-- wp:minimalistmadness/loop-single /--></div>
+<div class="wp-block-group site-content"><!-- wp:group {"tagName":"main","anchor":"content","className":"site-main","layout":{"type":"default"}} -->
+<main id="content" class="wp-block-group site-main"><!-- wp:minimalistmadness/article -->
+<!-- wp:minimalistmadness/article-head -->
+<!-- wp:post-featured-image {"sizeSlug":"full"} /-->
+
+<!-- wp:group {"className":"ph-text","layout":{"type":"default"}} -->
+<div class="wp-block-group ph-text"><!-- wp:post-title {"level":1,"className":"cover-title"} /-->
+
+<!-- wp:minimalistmadness/excerpt {"className":"standfirst"} /-->
+
+<!-- wp:minimalistmadness/hero-meta /--></div>
 <!-- /wp:group -->
 
-<!-- wp:minimalistmadness/site-footer /-->
+<!-- wp:minimalistmadness/hero-credit /-->
+<!-- /wp:minimalistmadness/article-head -->
+
+<!-- wp:group {"className":"read","layout":{"type":"default"}} -->
+<div class="wp-block-group read"><!-- wp:minimalistmadness/byline /-->
+
+<!-- wp:minimalistmadness/archive-note /-->
+
+<!-- wp:post-content {"className":"prose","layout":{"type":"default"}} /-->
+
+<!-- wp:minimalistmadness/endmatter /--></div>
+<!-- /wp:group -->
+
+<!-- wp:minimalistmadness/comments /-->
+<!-- /wp:minimalistmadness/article --></main>
+<!-- /wp:group --></div>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"div","className":"site-footer-part"} /-->
 <!-- /wp:minimalistmadness/site-frame -->

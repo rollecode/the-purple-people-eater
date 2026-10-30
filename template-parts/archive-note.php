@@ -7,7 +7,7 @@
 
 namespace Air_Light;
 
-if ( ! is_singular( 'post' ) ) {
+if ( ! is_text_view( 'post' ) ) {
   return;
 }
 

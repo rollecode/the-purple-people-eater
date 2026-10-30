@@ -53,6 +53,11 @@ function register_block_editor_assets() {
     'wp-i18n',      // Provides localization functions
     'wp-element',   // Provides React.Component
     'wp-components', // Provides many prebuilt components and controls
+    'wp-block-editor',
+    'wp-server-side-render',
+    'wp-data',
+    'wp-core-data',
+    'wp-hooks',
   ];
 
   // Enqueue the block editor JS file (buildless, served as-is)

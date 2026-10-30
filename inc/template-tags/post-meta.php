@@ -124,14 +124,29 @@ function the_meta_line( $post = null ) {
  * @param int|\WP_Post|null $post Post, current post by default.
  */
 function the_display_title( $post = null ) {
+  echo wp_kses_post( display_title( $post ) );
+}
+
+function display_title( $post = null ) {
   $parts = preg_split( '/\s(?:–|&#8211;)\s/u', get_the_title( $post ), 2 );
 
-  if ( 2 === count( $parts ) ) {
-    echo wp_kses_post( $parts[0] . ' – <em>' . $parts[1] . '</em>' );
-    return;
-  }
+  return 2 === count( $parts ) ? $parts[0] . ' – <em>' . $parts[1] . '</em>' : $parts[0];
+}
 
-  echo wp_kses_post( $parts[0] );
+/**
+ * Whether the view is this post type's text, also in the editor's preview.
+ *
+ * @param string $post_type Post type.
+ */
+function is_text_view( $post_type ) {
+  return is_singular( $post_type ) || ( wp_is_serving_rest_request() && get_post_type() === $post_type );
+}
+
+/**
+ * Whether a page's content opens with its own h1.
+ */
+function page_has_own_title() {
+  return false !== stripos( get_post_field( 'post_content' ), '<h1' );
 }
 
 /**

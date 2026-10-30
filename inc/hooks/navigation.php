@@ -40,13 +40,5 @@ add_filter( 'nav_menu_link_attributes', __NAMESPACE__ . '\mark_current_section',
  * top of it in white.
  */
 function has_photo_hero() {
-  return is_singular( 'post' ) && has_post_thumbnail( get_queried_object_id() );
+  return is_text_view( 'post' ) && has_post_thumbnail();
 }
-
-add_filter( 'body_class', function ( $classes ) {
-  if ( has_photo_hero() ) {
-    $classes[] = 'overlay-head';
-  }
-
-  return $classes;
-} );

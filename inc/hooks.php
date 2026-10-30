@@ -93,6 +93,10 @@ add_filter( 'use_block_editor_for_post_type', __NAMESPACE__ . '\use_block_editor
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\register_block_editor_assets' );
 add_filter( 'wp_theme_json_data_theme', __NAMESPACE__ . '\diary_editor_theme_json' );
 add_action( 'after_setup_theme', __NAMESPACE__ . '\add_editor_stylesheets' );
+add_filter( 'block_editor_settings_all', __NAMESPACE__ . '\show_template_in_editor', 10, 2 );
+add_filter( 'render_block_core/post-title', __NAMESPACE__ . '\render_display_title' );
+add_filter( 'render_block_core/post-content', __NAMESPACE__ . '\render_text' );
+add_filter( 'render_block_core/post-featured-image', __NAMESPACE__ . '\render_hero_image' );
 
 /**
  * Front page endpoints: more cards, random picks, the "Nyt" panel

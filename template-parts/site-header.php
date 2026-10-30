@@ -1,8 +1,7 @@
 <?php
 /**
  * Site head: the rain behind the logo, navigation, logo and search button,
- * then the search dialog. Included by the classic header.php and the
- * minimalistmadness/site-header block.
+ * then the search dialog.
  *
  * @package minimalistmadness
  */
@@ -15,7 +14,7 @@ namespace Air_Light;
   <div class="rain back-row"></div>
 </div>
 
-<header class="site-head">
+<header class="site-head<?php echo has_photo_hero() ? ' on-photo' : ''; ?>">
   <div class="bar">
     <nav class="nav" aria-label="Päävalikko">
       <?php

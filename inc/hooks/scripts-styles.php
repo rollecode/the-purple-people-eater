@@ -148,7 +148,7 @@ function view_stylesheets() {
   $chunks = [ 'base', 'nav', 'rain', 'footer', 'search-overlay' ];
 
   $template     = is_page() ? get_page_template_slug( get_queried_object_id() ) : '';
-  $archive_page = in_array( $template, [ 'page-archive.php', 'page-all.php' ], true );
+  $archive_page = in_array( $template, [ 'page-archive', 'page-all' ], true );
   $diary        = is_singular( 'diary' ) || is_post_type_archive( 'diary' );
   $listing      = ( is_archive() || is_search() || is_home() ) && ! $diary;
 
@@ -156,7 +156,7 @@ function view_stylesheets() {
     array_push( $chunks, 'shelf', 'front' );
   }
 
-  if ( 'page-archive.php' === $template ) {
+  if ( 'page-archive' === $template ) {
     $chunks[] = 'shelf';
   }
 

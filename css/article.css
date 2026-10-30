@@ -15,10 +15,14 @@
   isolation: isolate;
 }
 
-.photo-hero > img {
+.photo-hero .wp-block-post-featured-image {
   position: absolute;
   z-index: -1;
   inset: 0;
+  margin: 0;
+}
+
+.photo-hero .wp-block-post-featured-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -49,7 +53,7 @@
   }
 
   .head-awake .photo-hero::before,
-  .overlay-head:has(.site-head :focus-visible) .photo-hero::before {
+  body:has(.on-photo :focus-visible) .photo-hero::before {
     opacity: 1;
     transition-duration: .9s;
   }
@@ -73,6 +77,16 @@
   width: 100vw;
   background: linear-gradient(to bottom, rgb(18 10 24 / 0) 0px, rgb(18 10 24 / .01) 56px, rgb(18 10 24 / .038) 112px, rgb(18 10 24 / .081) 169px, rgb(18 10 24 / .138) 225px, rgb(18 10 24 / .204) 281px, rgb(18 10 24 / .278) 338px, rgb(18 10 24 / .358) 394px, rgb(18 10 24 / .44) 450px, rgb(18 10 24 / .522) 506px, rgb(18 10 24 / .602) 562px, rgb(18 10 24 / .676) 619px, rgb(18 10 24 / .743) 675px, rgb(18 10 24 / .799) 731px, rgb(18 10 24 / .842) 788px, rgb(18 10 24 / .87) 844px, rgb(18 10 24 / .88) 900px);
   content: "";
+}
+
+/* Without a photo the text just opens the reading column */
+.art-head .ph-text {
+  width: auto;
+  padding: 0;
+}
+
+.art-head .ph-text::before {
+  display: none;
 }
 
 .cover-title {

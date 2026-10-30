@@ -19,6 +19,69 @@ function register_theme_blocks() {
 }
 
 /**
+ * Core post blocks carry the text in the templates, so the post editor shows
+ * the real page. These keep their output the same as the site's own markup.
+ */
+function render_display_title( $html ) {
+  return preg_replace_callback( '#(<h1[^>]*>).*?(</h1>)#s', function ( $match ) {
+    return $match[1] . wp_kses_post( display_title() ) . $match[2];
+  }, $html );
+}
+
+/**
+ * Legacy class and page links for the text.
+ *
+ * @param string $html Block output.
+ */
+function render_text( $html ) {
+  if ( ! has_blocks() ) {
+    $tags = new \WP_HTML_Tag_Processor( $html );
+    $tags->next_tag();
+    $tags->add_class( 'legacy' );
+    $html = $tags->get_updated_html();
+  }
+
+  return $html . wp_link_pages( [
+    'before' => '<nav class="page-links meta-text" aria-label="Kirjoituksen sivut">',
+    'after'  => '</nav>',
+    'echo'   => false,
+  ] );
+}
+
+/**
+ * The hero photo is the first thing on the page and decorative: the title
+ * lies on it.
+ *
+ * @param string $html Block output.
+ */
+function render_hero_image( $html ) {
+  $tags = new \WP_HTML_Tag_Processor( $html );
+
+  if ( $tags->next_tag( 'img' ) ) {
+    $tags->set_attribute( 'alt', '' );
+    $tags->set_attribute( 'loading', 'eager' );
+    $tags->set_attribute( 'fetchpriority', 'high' );
+    $tags->set_attribute( 'sizes', '100vw' );
+  }
+
+  return $tags->get_updated_html();
+}
+
+/**
+ * Open posts in the editor with their template around them.
+ *
+ * @param array                    $settings Editor settings.
+ * @param \WP_Block_Editor_Context $context  Editor context.
+ */
+function show_template_in_editor( $settings, $context ) {
+  if ( ! empty( $context->post ) && in_array( $context->post->post_type, [ 'post', 'page', 'diary' ], true ) ) {
+    $settings['defaultRenderingMode'] = 'template-locked';
+  }
+
+  return $settings;
+}
+
+/**
  * Apply the dark/light theme class before first paint to avoid a flash of
  * the wrong theme. Printed at the very top of <head> on both rendering
  * paths (classic header.php and the block template canvas).
