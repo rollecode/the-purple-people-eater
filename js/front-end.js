@@ -258,7 +258,7 @@
       }
     });
 
-    const render = (term, response) => {
+    const render = (term, response, took) => {
       const hits = response.hits || [];
       const facets = (response.facets && response.facets.post_type) || {};
       const total = response.nbHits || 0;
@@ -277,31 +277,27 @@
 
       results.innerHTML = Object.keys(groups).filter((type) => byType[type]).map((type) => {
         const items = byType[type].map((hit) => {
-          const day = 'diary' === type && /^Päivä \d+$/.test(hit.title);
-          let thumb = `<svg aria-hidden="true"><use href="${config.sprite}#logo"></use></svg>`;
-          if (hit.image) {
-            thumb = `<img src="${escapeHtml(hit.image)}" alt="">`;
-          } else if (day) {
-            thumb = `<span>${escapeHtml(hit.title).replace(' ', '<br>')}</span>`;
-          }
+          const thumb = hit.image ? `<span class="sq" aria-hidden="true"><img src="${escapeHtml(hit.image)}" alt="" loading="lazy"></span>` : '';
           const snippet = hit._snippetResult ? hit._snippetResult.content.value : '';
-          return `<li><a href="${escapeHtml(hit.url)}"><span class="sq" aria-hidden="true">${thumb}</span><span><span class="t">${hit._highlightResult.title.value}</span><span class="x">${snippet}</span></span><span class="meta-text">${dateFi(hit.date)} <span class="enter" aria-hidden="true">↵</span></span></a></li>`;
+          return `<li><a href="${escapeHtml(hit.url)}"><span><span class="t">${hit._highlightResult.title.value}</span><span class="x">${snippet}</span></span><span class="meta-text">${dateFi(hit.date)} <span class="enter" aria-hidden="true">↵</span></span>${thumb}</a></li>`;
         }).join('');
         const count = facets[type] || byType[type].length;
         return `<section class="s-group"><h2><span>${groups[type]}</span><span>${byType[type].length} / ${count}</span></h2><ul class="s-list">${items}</ul></section>`;
       }).join('');
 
       const counts = Object.keys(groups).filter((type) => facets[type]).map((type) => `${groups[type]} ${facets[type]}`).join(' · ');
-      status.textContent = `${total} osumaa${counts ? `. ${counts}` : ''}`;
+      status.textContent = `${total} osumaa${counts ? `. ${counts}` : ''} · ${took} ms`;
       allLink.href = `/?s=${encodeURIComponent(term)}`;
       allLink.textContent = `Kaikki ${total} osumaa`;
     };
 
     const search = (term) => {
       if (cache.has(term)) {
-        render(term, cache.get(term));
+        render(term, ...cache.get(term));
         return;
       }
+
+      const started = performance.now();
 
       const { appId, searchKey, index } = config.algolia;
       fetch(`https://${appId}-dsn.algolia.net/1/indexes/${index}/query`, {
@@ -316,9 +312,10 @@
       })
         .then((response) => response.json())
         .then((response) => {
-          cache.set(term, response);
+          const took = Math.round(performance.now() - started);
+          cache.set(term, [ response, took ]);
           if (input.value.trim() === term) {
-            render(term, response);
+            render(term, response, took);
             remember(term);
           }
         })
