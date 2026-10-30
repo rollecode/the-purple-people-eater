@@ -22,12 +22,27 @@
   object-fit: cover;
 }
 
+/* Two soft shades instead of one band over the photo, each dark enough for
+   7:1 on a white photo: this one behind the site head... */
 .photo-hero::after {
   position: absolute;
-  inset: 0;
-  /* Dark enough behind the text for 7:1 even on a white photo */
-  background: linear-gradient(to top, rgb(18 10 24 / .9) 0%, rgb(18 10 24 / .74) 48%, rgb(18 10 24 / .2) 70%, rgb(18 10 24 / .8) 90%, rgb(18 10 24 / .84) 100%);
+  inset: 0 0 auto;
+  height: 260px;
+  background: linear-gradient(to bottom, rgb(18 10 24 / .8) 0, rgb(18 10 24 / .74) 90px, rgb(18 10 24 / .62) 120px, rgb(18 10 24 / .44) 150px, rgb(18 10 24 / .26) 180px, rgb(18 10 24 / .12) 210px, rgb(18 10 24 / .04) 235px, rgb(18 10 24 / 0) 260px);
   content: "";
+}
+
+@media (hover: hover) and (scripting: enabled) {
+  .photo-hero::after {
+    opacity: 0;
+    transition: opacity .6s ease-in-out;
+  }
+
+  .head-awake .photo-hero::after,
+  .overlay-head:has(.site-head :focus-visible) .photo-hero::after {
+    opacity: 1;
+    transition-duration: .9s;
+  }
 }
 
 .ph-text {
@@ -36,6 +51,18 @@
   width: min(100% - 2 * var(--pad), var(--read));
   margin: 0 auto;
   padding: 160px 0 44px;
+}
+
+/* ...and this one behind the text, as tall as the text is */
+.ph-text::before {
+  position: absolute;
+  z-index: -1;
+  top: -120px;
+  bottom: 0;
+  left: calc(50% - 50vw);
+  width: 100vw;
+  background: linear-gradient(to bottom, rgb(18 10 24 / 0) 0, rgb(18 10 24 / .03) 40px, rgb(18 10 24 / .09) 80px, rgb(18 10 24 / .19) 120px, rgb(18 10 24 / .33) 160px, rgb(18 10 24 / .5) 200px, rgb(18 10 24 / .64) 240px, rgb(18 10 24 / .74) 280px, rgb(18 10 24 / .9) 100%);
+  content: "";
 }
 
 .cover-title {
@@ -838,11 +865,6 @@
 @media (max-width: 860px) {
   .photo-hero {
     min-height: 100svh;
-  }
-
-  /* On a phone the text covers most of the photo */
-  .photo-hero::after {
-    background: linear-gradient(to top, rgb(18 10 24 / .92) 0%, rgb(18 10 24 / .8) 62%, rgb(18 10 24 / .62) 82%, rgb(18 10 24 / .74) 100%);
   }
 
   .ph-text {
