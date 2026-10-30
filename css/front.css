@@ -386,10 +386,34 @@
   gap: clamp(28px, 4vw, 64px);
 }
 
+/* Floats like the pictures in the articles (content.css) */
 .who img {
+  --tilt: -1.2deg;
+
   width: 100%;
+  border-radius: 22px;
   aspect-ratio: 1;
+  box-shadow: var(--float-shadow);
   object-fit: cover;
+  transform: rotate(var(--tilt));
+}
+
+@supports (corner-shape: squircle) {
+  .who img {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .who img {
+    transition: transform .7s var(--ease), box-shadow .7s var(--ease);
+  }
+
+  .who img:hover {
+    box-shadow: var(--float-shadow-hover);
+    transform: translateY(-4px) rotate(calc(var(--tilt) * .4));
+  }
 }
 
 .who h2 {
