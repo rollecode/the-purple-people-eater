@@ -647,6 +647,32 @@
   });
 
   /**
+   * Article with a photo: the head sleeps until the mouse moves over the
+   * hero. It stays awake under a resting pointer, so no link vanishes from
+   * under it. Keyboard focus is handled in nav.css.
+   */
+  const HEAD_AWAKE_MS = 2000;
+  const photoHero = $('.photo-hero');
+  const siteHead = $('.site-head');
+  if (photoHero && siteHead && window.matchMedia('(hover: hover)').matches) {
+    let sleepTimer;
+    const sleep = () => {
+      if ($('a:hover, button:hover', siteHead)) {
+        sleepTimer = window.setTimeout(sleep, HEAD_AWAKE_MS);
+        return;
+      }
+      document.body.classList.remove('head-awake');
+    };
+    const wake = () => {
+      document.body.classList.add('head-awake');
+      window.clearTimeout(sleepTimer);
+      sleepTimer = window.setTimeout(sleep, HEAD_AWAKE_MS);
+    };
+
+    [ photoHero, siteHead ].forEach((element) => element.addEventListener('mousemove', wake));
+  }
+
+  /**
    * Own ad, with permanent dismiss. Dude's brand: the aurora and the
    * crawling grain from dude.fi, the logo in the middle.
    */

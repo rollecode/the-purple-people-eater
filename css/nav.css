@@ -55,13 +55,26 @@
 /* Articles keep the page quiet: the sections appear when the pointer
    comes to the top, and always on keyboard focus */
 @media (hover: hover) {
-  .single-post .site-head .nav {
+  .single-post:not(.overlay-head) .site-head .nav {
     opacity: 0;
     transition: opacity .3s var(--ease);
   }
 
-  .single-post .site-head:hover .nav,
-  .single-post .site-head:focus-within .nav {
+  .single-post:not(.overlay-head) .site-head:hover .nav,
+  .single-post:not(.overlay-head) .site-head:focus-within .nav {
+    opacity: 1;
+  }
+}
+
+/* On a photo the whole head sleeps until the mouse moves (front-end.js) */
+@media (hover: hover) and (scripting: enabled) {
+  .overlay-head .site-head .bar > * {
+    opacity: 0;
+    transition: opacity .3s var(--ease);
+  }
+
+  .overlay-head.head-awake .site-head .bar > *,
+  .overlay-head .site-head:has(:focus-visible) .bar > * {
     opacity: 1;
   }
 }
