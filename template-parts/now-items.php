@@ -36,3 +36,17 @@ if ( ! empty( $now['watched'] ) ) :
   </li>
   <?php
 endif;
+
+if ( ! empty( $now['reading'] ) ) :
+  $book = $now['reading'];
+  ?>
+  <li>
+    <?php the_icon( 'book' ); ?>
+    <div>
+      <span class="label meta-text">Luettua</span>
+      <a class="what" href="<?php echo esc_url( $book['url'] ); ?>"><?php echo esc_html( $book['title'] ); ?></a>
+      <span class="src">Luku</span>
+    </div>
+  </li>
+  <?php
+endif;

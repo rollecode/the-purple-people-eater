@@ -1,9 +1,10 @@
 <?php
 /**
- * "Nyt" on the front page: the latest scrobble from Last.fm and the latest
+ * "Nyt" on the front page: the latest scrobble from Last.fm, the latest
  * watched film or episode from Trakt, or the latest Rollekino film when
- * Trakt does not answer. Pages render whatever is cached and never wait
- * for the outside services; the browser asks the endpoint for a fresh copy.
+ * Trakt does not answer, and the book on Rolle's public Luku profile. Pages
+ * render whatever is cached and never wait for the outside services; the
+ * browser asks the endpoint for a fresh copy.
  *
  * @package minimalistmadness
  */
@@ -14,12 +15,14 @@ const NOW_CACHE_KEY = 'rollemaa_now';
 const NOW_CACHE_TTL = 5 * MINUTE_IN_SECONDS;
 const NOW_ROLLEKINO = 'https://www.rollekino.fi/wp-json/wp/v2/movie?per_page=1&_fields=title,link,date';
 const NOW_TRAKT     = 'https://api.trakt.tv/users/rolle/history?limit=1';
+const NOW_LUKU      = 'https://luku.app/api/profile/rolle';
+const LUKU_PROFILE  = 'https://luku.app/u/rolle';
 
 /**
  * What Rolle listens to and last watched.
  *
  * @param bool $fetch Ask the services when the cache is empty.
- * @return array{listening?:array, watched?:array}|null Null when nothing is cached and $fetch is false.
+ * @return array{listening?:array, watched?:array, reading?:array}|null Null when nothing is cached and $fetch is false.
  */
 function now_data( $fetch ) {
   $now = get_transient( NOW_CACHE_KEY );
@@ -40,6 +43,11 @@ function now_data( $fetch ) {
   $watched = trakt_watched() ?? rollekino_watched();
   if ( $watched ) {
     $now['watched'] = $watched;
+  }
+
+  $reading = luku_reading();
+  if ( $reading ) {
+    $now['reading'] = $reading;
   }
 
   set_transient( NOW_CACHE_KEY, $now, NOW_CACHE_TTL );
@@ -115,6 +123,26 @@ function rollekino_watched() {
     'url'    => $movies[0]['link'],
     'date'   => strtotime( $movies[0]['date'] ),
     'source' => 'Rollekino',
+  ];
+}
+
+/**
+ * The book Rolle touched last. Luku's public profile lists them newest first.
+ *
+ * @return array{title:string, url:string}|null
+ */
+function luku_reading() {
+  $response = wp_remote_get( NOW_LUKU, [ 'timeout' => 3 ] );
+  $profile  = is_wp_error( $response ) ? null : json_decode( wp_remote_retrieve_body( $response ), true );
+  $book     = $profile['reading'][0] ?? null;
+
+  if ( empty( $book['title'] ) ) {
+    return null;
+  }
+
+  return [
+    'title' => $book['title'] . ' – ' . $book['author'],
+    'url'   => LUKU_PROFILE,
   ];
 }
 
