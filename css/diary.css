@@ -180,7 +180,6 @@ a.heat-day:hover {
   color: var(--ink);
   font-family: var(--display);
   font-size: 30px;
-  font-style: italic;
   line-height: 1.2;
 }
 
