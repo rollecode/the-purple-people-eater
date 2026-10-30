@@ -113,13 +113,17 @@ function side_note( $url, $number ) {
     return '';
   }
 
+  // A bare address says nothing the link doesn't, so wait for the page's title
   $preview = link_preview( $url );
+  if ( empty( $preview['title'] ) ) {
+    return '';
+  }
 
   return side_note_markup(
     $number,
     $preview['site'] ?? $host,
     $url,
-    $preview['title'] ?? $host,
+    $preview['title'],
     $preview['text'] ?? ''
   );
 }
