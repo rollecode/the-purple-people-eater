@@ -30,7 +30,7 @@ $elsewhere = [
       <div class="sign">
         <a class="foot-mark" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="Rollemaa, etusivu"><?php the_umbrella(); ?></a>
         <div>
-          <p class="foot-line">Rollen blogi ja lokikirja. Kirjoituksia vuodesta 2005, päiväkirjaa vuodesta 2021.</p>
+          <p class="foot-line">Rollen blogi ja lokikirja. Kirjoituksia vuodesta 2005,<br>päivittäinen päiväkirja vuodesta 2021.</p>
           <p class="foot-stats meta-text"><?php echo esc_html( sprintf( '%s kirjoitusta · %s lokikirjan päivää · %s sanaa', fi_number( $stats['posts'] ), fi_number( $stats['diary'] ), fi_number( $stats['words'] ) ) ); ?></p>
 
           <nav class="foot-elsewhere" aria-label="Rolle muualla">
