@@ -647,10 +647,10 @@
   });
 
   /**
-   * Article with a photo: the head appears a moment after the mouse starts
-   * moving over the hero and sleeps again once it stops. It stays awake under
-   * a resting pointer, so no link vanishes from under it. Keyboard focus is
-   * handled in nav.css.
+   * Article with a photo: the head appears at once when the mouse moves over
+   * it, a moment later when it moves elsewhere on the hero, and sleeps again
+   * once it stops. It stays awake under a resting pointer, so no link vanishes
+   * from under it. Keyboard focus is handled in nav.css.
    */
   const HEAD_WAKE_MS = 2000;
   const HEAD_AWAKE_MS = 2000;
@@ -670,21 +670,21 @@
     };
 
     const wake = () => {
+      window.clearTimeout(wakeTimer);
+      window.clearTimeout(sleepTimer);
       wakeTimer = null;
       classList.add('head-awake');
       sleepTimer = window.setTimeout(sleep, HEAD_AWAKE_MS);
     };
 
-    const onMove = () => {
+    siteHead.addEventListener('mousemove', wake);
+    photoHero.addEventListener('mousemove', () => {
       if (classList.contains('head-awake')) {
-        window.clearTimeout(sleepTimer);
-        sleepTimer = window.setTimeout(sleep, HEAD_AWAKE_MS);
+        wake();
         return;
       }
       wakeTimer ??= window.setTimeout(wake, HEAD_WAKE_MS);
-    };
-
-    [ photoHero, siteHead ].forEach((element) => element.addEventListener('mousemove', onMove));
+    });
   }
 
   /**
