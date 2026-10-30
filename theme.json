@@ -86,27 +86,25 @@
         },
         {
           "slug": "body",
-          "name": "Libre Caslon Text (leipäteksti)",
-          "fontFamily": "'Libre Caslon Text', Georgia, serif",
+          "name": "Manuale (leipäteksti)",
+          "fontFamily": "'Manuale', Georgia, serif",
           "fontFace": [
             {
-              "fontFamily": "Libre Caslon Text",
+              "fontFamily": "Manuale",
               "fontStyle": "normal",
               "fontWeight": "400 700",
               "fontDisplay": "swap",
-              "sizeAdjust": "90%",
               "src": [
-                "file:./fonts/LibreCaslonText-latin.woff2"
+                "file:./fonts/Manuale-latin.woff2"
               ]
             },
             {
-              "fontFamily": "Libre Caslon Text",
+              "fontFamily": "Manuale",
               "fontStyle": "italic",
               "fontWeight": "400 700",
               "fontDisplay": "swap",
-              "sizeAdjust": "90%",
               "src": [
-                "file:./fonts/LibreCaslonText-Italic-latin.woff2"
+                "file:./fonts/Manuale-Italic-latin.woff2"
               ]
             }
           ]
@@ -236,6 +234,6 @@
         }
       }
     },
-    "css": ".editor-styles-wrapper { --ground: #F7F6F9; --surface: #FFFFFF; --tint: #F2EDF7; --soft: #EAE3F2; --lavender: #D3C4E3; --ink: #211B27; --ink-2: #3A3442; --muted: #4F4758; --rule: #E8E3ED; --rule-strong: #D1CAD8; --accent: #573F74; --deep: #503B68; --on-deep: #FFFFFF; --code-ground: #16121E; --display: 'Instrument Serif', serif; --body: 'Libre Caslon Text', Georgia, serif; --sans: 'Geist', system-ui, sans-serif; --mono: ui-monospace, Menlo, Consolas, monospace; }\n.editor-styles-wrapper a { text-decoration-thickness: 1px; text-underline-offset: .22em; }"
+    "css": ".editor-styles-wrapper { --ground: #F7F6F9; --surface: #FFFFFF; --tint: #F2EDF7; --soft: #EAE3F2; --lavender: #D3C4E3; --ink: #211B27; --ink-2: #3A3442; --muted: #4F4758; --rule: #E8E3ED; --rule-strong: #D1CAD8; --accent: #573F74; --deep: #503B68; --on-deep: #FFFFFF; --code-ground: #16121E; --display: 'Instrument Serif', serif; --body: 'Manuale', Georgia, serif; --sans: 'Geist', system-ui, sans-serif; --mono: ui-monospace, Menlo, Consolas, monospace; }\n.editor-styles-wrapper a { text-decoration-thickness: 1px; text-underline-offset: .22em; }"
   }
 }
