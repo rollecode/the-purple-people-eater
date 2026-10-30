@@ -259,7 +259,7 @@ function enqueue_theme_scripts() {
     'algolia' => [
       'appId'     => ALGOLIA_APP_ID,
       'searchKey' => ALGOLIA_SEARCH_KEY,
-      'index'     => ALGOLIA_INDEX,
+      'index'     => algolia_index(),
     ],
     'localDomains' => [ 'rollemaa.test', 'rollemaa.fi', 'www.rollemaa.fi' ],
     'sprite'       => get_theme_file_uri( 'svg/icons.svg' ),

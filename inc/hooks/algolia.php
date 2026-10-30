@@ -12,10 +12,22 @@ namespace Air_Light;
 
 const ALGOLIA_APP_ID       = 'T5LUJPIHVH';
 const ALGOLIA_SEARCH_KEY   = 'b54edbc9a6779fe3bf83d7e2f33aeae1';
-const ALGOLIA_INDEX        = 'rollemaa';
 const ALGOLIA_POST_TYPES   = [ 'post', 'diary', 'page' ];
 const ALGOLIA_CHUNK_BYTES  = 6000; // Free plan caps a record at 10 KB; JSON-escaped ä/ö grow it
 const ALGOLIA_BATCH_SIZE   = 500;
+
+/**
+ * Production has the live index. Elsewhere a site with the admin key gets its
+ * own index, so local saves never write local addresses into the live search;
+ * without the key nothing is written and the live index is safe to read.
+ */
+function algolia_index() {
+  if ( 'production' === wp_get_environment_type() || ! getenv( 'ALGOLIA_ADMIN_KEY' ) ) {
+    return 'rollemaa';
+  }
+
+  return 'rollemaa_dev';
+}
 
 function algolia_request( $method, $path, $body = null ) {
   $key = getenv( 'ALGOLIA_ADMIN_KEY' );
@@ -23,7 +35,7 @@ function algolia_request( $method, $path, $body = null ) {
     return new \WP_Error( 'algolia_no_key', 'ALGOLIA_ADMIN_KEY missing from .env' );
   }
 
-  $response = wp_remote_request( 'https://' . ALGOLIA_APP_ID . '.algolia.net/1/indexes/' . ALGOLIA_INDEX . $path, [
+  $response = wp_remote_request( 'https://' . ALGOLIA_APP_ID . '.algolia.net/1/indexes/' . algolia_index() . $path, [
     'method'  => $method,
     'timeout' => 30,
     'headers' => [
