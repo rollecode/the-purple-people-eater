@@ -182,3 +182,11 @@
     font-size: 14px;
   }
 }
+
+/* Ten icons don't fit one line on a phone, so two even rows */
+@media (max-width: 440px) {
+  .foot-elsewhere ul {
+    display: grid;
+    grid-template-columns: repeat(5, 40px);
+  }
+}
