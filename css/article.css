@@ -12,34 +12,44 @@
   min-height: min(92vh, 880px);
   background: #1A1220;
   color: #fff;
+  isolation: isolate;
 }
 
 .photo-hero > img {
   position: absolute;
+  z-index: -1;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* Two soft shades instead of one band over the photo, each dark enough for
-   7:1 on a white photo: this one behind the site head... */
+/* Three layers, so no shade ever has an edge: a steady tint over the whole
+   photo, and two long S-curves. Together they give 7:1 on a white photo
+   behind the text and the site head. */
 .photo-hero::after {
   position: absolute;
+  inset: 0;
+  background: rgb(18 10 24 / .34);
+  content: "";
+}
+
+.photo-hero::before {
+  position: absolute;
   inset: 0 0 auto;
-  height: 260px;
-  background: linear-gradient(to bottom, rgb(18 10 24 / .8) 0, rgb(18 10 24 / .74) 90px, rgb(18 10 24 / .62) 120px, rgb(18 10 24 / .44) 150px, rgb(18 10 24 / .26) 180px, rgb(18 10 24 / .12) 210px, rgb(18 10 24 / .04) 235px, rgb(18 10 24 / 0) 260px);
+  height: 700px;
+  background: linear-gradient(to bottom, rgb(18 10 24 / .6) 90px, rgb(18 10 24 / .593) 128px, rgb(18 10 24 / .574) 166px, rgb(18 10 24 / .545) 204px, rgb(18 10 24 / .506) 242px, rgb(18 10 24 / .461) 281px, rgb(18 10 24 / .41) 319px, rgb(18 10 24 / .356) 357px, rgb(18 10 24 / .3) 395px, rgb(18 10 24 / .244) 433px, rgb(18 10 24 / .19) 471px, rgb(18 10 24 / .139) 509px, rgb(18 10 24 / .094) 548px, rgb(18 10 24 / .055) 586px, rgb(18 10 24 / .026) 624px, rgb(18 10 24 / .007) 662px, rgb(18 10 24 / 0) 700px);
   content: "";
 }
 
 @media (hover: hover) and (scripting: enabled) {
-  .photo-hero::after {
+  .photo-hero::before {
     opacity: 0;
     transition: opacity .6s ease-in-out;
   }
 
-  .head-awake .photo-hero::after,
-  .overlay-head:has(.site-head :focus-visible) .photo-hero::after {
+  .head-awake .photo-hero::before,
+  .overlay-head:has(.site-head :focus-visible) .photo-hero::before {
     opacity: 1;
     transition-duration: .9s;
   }
@@ -53,15 +63,15 @@
   padding: 160px 0 44px;
 }
 
-/* ...and this one behind the text, as tall as the text is */
+/* Follows the text: 570px down the curve is the top of the text */
 .ph-text::before {
   position: absolute;
   z-index: -1;
-  top: -120px;
+  top: -410px;
   bottom: 0;
   left: calc(50% - 50vw);
   width: 100vw;
-  background: linear-gradient(to bottom, rgb(18 10 24 / 0) 0, rgb(18 10 24 / .03) 40px, rgb(18 10 24 / .09) 80px, rgb(18 10 24 / .19) 120px, rgb(18 10 24 / .33) 160px, rgb(18 10 24 / .5) 200px, rgb(18 10 24 / .64) 240px, rgb(18 10 24 / .74) 280px, rgb(18 10 24 / .9) 100%);
+  background: linear-gradient(to bottom, rgb(18 10 24 / 0) 0px, rgb(18 10 24 / .01) 56px, rgb(18 10 24 / .038) 112px, rgb(18 10 24 / .081) 169px, rgb(18 10 24 / .138) 225px, rgb(18 10 24 / .204) 281px, rgb(18 10 24 / .278) 338px, rgb(18 10 24 / .358) 394px, rgb(18 10 24 / .44) 450px, rgb(18 10 24 / .522) 506px, rgb(18 10 24 / .602) 562px, rgb(18 10 24 / .676) 619px, rgb(18 10 24 / .743) 675px, rgb(18 10 24 / .799) 731px, rgb(18 10 24 / .842) 788px, rgb(18 10 24 / .87) 844px, rgb(18 10 24 / .88) 900px);
   content: "";
 }
 
