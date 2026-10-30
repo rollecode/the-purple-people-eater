@@ -2,7 +2,7 @@
 /**
  * Template tags and helpers
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

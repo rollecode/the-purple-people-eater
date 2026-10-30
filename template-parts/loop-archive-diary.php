@@ -2,9 +2,9 @@
 /**
  * Lokikirja: what it is, a year of writing as a heatmap, then the days,
  * newest first. Date archives (/lokikirja/2025/10/) list just those days.
- * Included by archive-diary.php and the minimalistmadness/loop-archive-diary block.
+ * Included by archive-diary.php and the the-purple-people-eater/loop-archive-diary block.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

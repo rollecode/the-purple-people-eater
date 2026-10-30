@@ -2,7 +2,7 @@
 /**
  * General hooks.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  * @Author: Niku Hietanen
  * @Date: 2020-02-20 13:46:50
  * @Last Modified by:   Roni Laukkarinen
@@ -41,9 +41,9 @@ remove_filter( 'rest_endpoints', __NAMESPACE__ . '\air_helper_disable_rest_endpo
  */
 function widgets_init() {
   register_sidebar( array(
-    'name'          => esc_html__( 'Sidebar', 'minimalistmadness' ),
+    'name'          => esc_html__( 'Sidebar', 'the-purple-people-eater' ),
     'id'            => 'sidebar-1',
-    'description'   => esc_html__( 'Add widgets here.', 'minimalistmadness' ),
+    'description'   => esc_html__( 'Add widgets here.', 'the-purple-people-eater' ),
     'before_widget' => '<section id="%1$s" class="widget %2$s">',
     'after_widget'  => '</section>',
     'before_title'  => '<h2 class="widget-title">',

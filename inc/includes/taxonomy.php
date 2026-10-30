@@ -1,6 +1,6 @@
 <?php
 /**
- * @package minimalistmadness
+ * @package the-purple-people-eater
  * @Author: Niku Hietanen
  * @Date: 2020-02-18 15:06:23
  * @Last Modified by: Niku Hietanen

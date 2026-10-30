@@ -3,7 +3,7 @@
  * One comment in the thread. Fediverse replies show the handle and where
  * they came from; Rolle's own replies are marked as the writer's.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

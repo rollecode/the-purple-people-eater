@@ -4,7 +4,7 @@
  * measures as bars, the conditions it was written in and, on the entry's
  * own page ($args['reactions']), the likes and boosts it got.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

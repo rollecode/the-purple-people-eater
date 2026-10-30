@@ -3,7 +3,7 @@
  * What follows an article: when it was published and how long it is, the
  * keywords, reactions from the Fediverse, sharing and related articles.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

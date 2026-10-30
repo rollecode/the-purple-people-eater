@@ -3,7 +3,7 @@
  * Arkisto: the shelf of years, every year with its counts, the most used
  * keywords and the most read and most commented texts of all time.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

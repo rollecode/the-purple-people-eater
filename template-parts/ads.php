@@ -3,7 +3,7 @@
  * Paid ad slot on the front page: the newest published ad for the
  * "etusivu" slot, until its expiry date.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

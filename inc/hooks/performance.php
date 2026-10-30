@@ -2,7 +2,7 @@
 /**
  * Performance related hooks
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

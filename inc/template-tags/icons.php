@@ -3,7 +3,7 @@
  * Line icons from the svg/icons.svg sprite. The sprite is one cached file,
  * so a page carries only <use> references.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

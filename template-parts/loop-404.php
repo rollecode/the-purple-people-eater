@@ -1,9 +1,9 @@
 <?php
 /**
  * Page not found: say so plainly, offer search, and a few random texts
- * from the archive. Included by 404.php and the minimalistmadness/loop-404 block.
+ * from the archive. Included by 404.php and the the-purple-people-eater/loop-404 block.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

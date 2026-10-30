@@ -7,7 +7,7 @@
  * @Last Modified by:   Roni Laukkarinen
  * @Last Modified time: 2022-02-09 11:04:24
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

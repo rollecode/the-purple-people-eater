@@ -2,7 +2,7 @@
 /**
  * Every article on one page.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

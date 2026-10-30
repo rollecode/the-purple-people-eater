@@ -1,9 +1,9 @@
 <?php
 /**
  * Search results share the listing layout. Included by search.php and the
- * minimalistmadness/loop-search block.
+ * the-purple-people-eater/loop-search block.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

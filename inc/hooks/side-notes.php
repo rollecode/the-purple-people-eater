@@ -5,7 +5,7 @@
  * an outside page its title, site and description. When the text has few
  * links, notes point to older texts on the same subject.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

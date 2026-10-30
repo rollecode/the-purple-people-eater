@@ -3,7 +3,7 @@
  * Site head shell. Renders the shared template part so the classic PHP templates
  * and the block templates output identical markup.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 get_template_part( 'template-parts/site-header' );

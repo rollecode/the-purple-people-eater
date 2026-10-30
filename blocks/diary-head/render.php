@@ -2,7 +2,7 @@
 /**
  * A day's head: the diary's mark and the date.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

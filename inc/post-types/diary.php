@@ -2,7 +2,7 @@
 /**
  * Advertisement post type
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;
@@ -16,33 +16,33 @@ class Diary extends Post_Type {
 
     // Modify all the i18ized strings here.
     $generated_labels = [
-      'name'                  => _x( 'Lokikirja', 'Post Type General Name', 'minimalistmadness' ),
-      'singular_name'         => _x( 'Lokikirja', 'Post Type Singular Name', 'minimalistmadness' ),
-      'menu_name'             => __( 'Lokikirja', 'minimalistmadness' ),
-      'name_admin_bar'        => __( 'Lokikirja', 'minimalistmadness' ),
-      'archives'              => __( 'Lokikirja', 'minimalistmadness' ),
-      'attributes'            => __( 'Lokikirjan attribuutit', 'minimalistmadness' ),
-      'parent_item_colon'     => __( 'Pääasiallinen merkintä:', 'minimalistmadness' ),
-      'all_items'             => __( 'Kaikki merkinnät', 'minimalistmadness' ),
-      'add_new_item'          => __( 'Lisää merkintä', 'minimalistmadness' ),
-      'add_new'               => __( 'Lisää merkintä', 'minimalistmadness' ),
-      'new_item'              => __( 'Uusi merkintä', 'minimalistmadness' ),
-      'edit_item'             => __( 'Muokkaa merkintää', 'minimalistmadness' ),
-      'update_item'           => __( 'Päivitä merkintää', 'minimalistmadness' ),
-      'view_item'             => __( 'Katso merkintä', 'minimalistmadness' ),
-      'view_items'            => __( 'Katso lokikirjamerkintöjä', 'minimalistmadness' ),
-      'search_items'          => __( 'Etsi lokikirjamerkintöjä', 'minimalistmadness' ),
-      'not_found'             => __( 'Merkintöjä ei löytynyt.', 'minimalistmadness' ),
-      'not_found_in_trash'    => __( 'Merkintöjä ei löytynyt.', 'minimalistmadness' ),
-      'featured_image'        => __( 'Artikkelikuva', 'minimalistmadness' ),
-      'set_featured_image'    => __( 'Aseta artikkelikuva', 'minimalistmadness' ),
-      'remove_featured_image' => __( 'Poista artikkelikuva', 'minimalistmadness' ),
-      'use_featured_image'    => __( 'Käytä artikkelikuvana', 'minimalistmadness' ),
-      'insert_into_item'      => __( 'Lisää kohteeseen', 'minimalistmadness' ),
-      'uploaded_to_this_item' => __( 'Lisätty kohteeseen', 'minimalistmadness' ),
-      'items_list'            => __( 'merkinnät', 'minimalistmadness' ),
-      'items_list_navigation' => __( 'Merkintöjen selaus', 'minimalistmadness' ),
-      'filter_items_list'     => __( 'Suodata merkintöjä', 'minimalistmadness' ),
+      'name'                  => _x( 'Lokikirja', 'Post Type General Name', 'the-purple-people-eater' ),
+      'singular_name'         => _x( 'Lokikirja', 'Post Type Singular Name', 'the-purple-people-eater' ),
+      'menu_name'             => __( 'Lokikirja', 'the-purple-people-eater' ),
+      'name_admin_bar'        => __( 'Lokikirja', 'the-purple-people-eater' ),
+      'archives'              => __( 'Lokikirja', 'the-purple-people-eater' ),
+      'attributes'            => __( 'Lokikirjan attribuutit', 'the-purple-people-eater' ),
+      'parent_item_colon'     => __( 'Pääasiallinen merkintä:', 'the-purple-people-eater' ),
+      'all_items'             => __( 'Kaikki merkinnät', 'the-purple-people-eater' ),
+      'add_new_item'          => __( 'Lisää merkintä', 'the-purple-people-eater' ),
+      'add_new'               => __( 'Lisää merkintä', 'the-purple-people-eater' ),
+      'new_item'              => __( 'Uusi merkintä', 'the-purple-people-eater' ),
+      'edit_item'             => __( 'Muokkaa merkintää', 'the-purple-people-eater' ),
+      'update_item'           => __( 'Päivitä merkintää', 'the-purple-people-eater' ),
+      'view_item'             => __( 'Katso merkintä', 'the-purple-people-eater' ),
+      'view_items'            => __( 'Katso lokikirjamerkintöjä', 'the-purple-people-eater' ),
+      'search_items'          => __( 'Etsi lokikirjamerkintöjä', 'the-purple-people-eater' ),
+      'not_found'             => __( 'Merkintöjä ei löytynyt.', 'the-purple-people-eater' ),
+      'not_found_in_trash'    => __( 'Merkintöjä ei löytynyt.', 'the-purple-people-eater' ),
+      'featured_image'        => __( 'Artikkelikuva', 'the-purple-people-eater' ),
+      'set_featured_image'    => __( 'Aseta artikkelikuva', 'the-purple-people-eater' ),
+      'remove_featured_image' => __( 'Poista artikkelikuva', 'the-purple-people-eater' ),
+      'use_featured_image'    => __( 'Käytä artikkelikuvana', 'the-purple-people-eater' ),
+      'insert_into_item'      => __( 'Lisää kohteeseen', 'the-purple-people-eater' ),
+      'uploaded_to_this_item' => __( 'Lisätty kohteeseen', 'the-purple-people-eater' ),
+      'items_list'            => __( 'merkinnät', 'the-purple-people-eater' ),
+      'items_list_navigation' => __( 'Merkintöjen selaus', 'the-purple-people-eater' ),
+      'filter_items_list'     => __( 'Suodata merkintöjä', 'the-purple-people-eater' ),
     ];
 
     // Definition of the post type arguments. For full list see:
@@ -55,8 +55,8 @@ class Diary extends Post_Type {
         'feeds'      => true,
       ],
       'paged'                 => ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1,
-      'label'                 => __( 'Lokikirja', 'minimalistmadness' ),
-      'description'           => __( 'Merkinnät', 'minimalistmadness' ),
+      'label'                 => __( 'Lokikirja', 'the-purple-people-eater' ),
+      'description'           => __( 'Merkinnät', 'the-purple-people-eater' ),
       'labels'                => $generated_labels,
       'supports'              => array( 'title', 'editor', 'author', 'revisions', 'post-formats', 'thumbnail', 'custom-fields' ),
       'hierarchical'          => false,

@@ -2,7 +2,7 @@
 /**
  * The diary entry written on this day a year ago, if there is one.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

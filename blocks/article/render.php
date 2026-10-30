@@ -2,7 +2,7 @@
 /**
  * The article element around a post, with its post classes.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

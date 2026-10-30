@@ -3,7 +3,7 @@
  * Most read posts: daily read counts per post, kept in the table the old
  * Dude Most Read Posts plugin created so the history since 2017 stays.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

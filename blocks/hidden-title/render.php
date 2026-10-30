@@ -2,7 +2,7 @@
 /**
  * The title for screen readers on a page that hides it.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

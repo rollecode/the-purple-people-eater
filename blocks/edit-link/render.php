@@ -2,7 +2,7 @@
 /**
  * Edit link for logged-in authors.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

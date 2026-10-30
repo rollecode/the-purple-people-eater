@@ -4,7 +4,7 @@
  * received, the whole entry and the day's data. Read in the same column
  * and type as the articles.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

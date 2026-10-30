@@ -6,7 +6,7 @@
  *
  * $args['height'] is the tallest spine in pixels.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

@@ -3,7 +3,7 @@
  * Site head: the rain behind the logo, navigation, logo and search button,
  * then the search dialog.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

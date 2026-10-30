@@ -2,7 +2,7 @@
 /**
  * Items of the "Nyt" panel from $args['now'] (see inc/hooks/now.php).
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

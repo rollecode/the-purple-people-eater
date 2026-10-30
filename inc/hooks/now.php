@@ -6,7 +6,7 @@
  * render whatever is cached and never wait for the outside services; the
  * browser asks the endpoint for a fresh copy.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

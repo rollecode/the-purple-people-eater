@@ -4,7 +4,7 @@
  * title and the excerpt. Without an image the card is all type. Front page grid, the load-more endpoint and the lead
  * card ($args['lead']) all render through this file.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

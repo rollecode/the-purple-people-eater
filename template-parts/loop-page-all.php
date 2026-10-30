@@ -3,7 +3,7 @@
  * Every article on one page, by year and month, newest first, with the
  * years in a rail that stays in view.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

@@ -12,7 +12,7 @@
  * @Last Modified by:   Roni Laukkarinen
  * @Last Modified time: 2019-12-30 21:58:07
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;
@@ -31,7 +31,7 @@ class Nav_Walker extends \Walker_Nav_Menu {
     $icon = ob_get_clean();
 
     $output .= '<button class="dropdown-toggle" aria-expanded="false">';
-    $output .= '<span class="screen-reader-text">' . esc_html__( 'Open child menu', 'minimalistmadness' ) . '</span>';
+    $output .= '<span class="screen-reader-text">' . esc_html__( 'Open child menu', 'the-purple-people-eater' ) . '</span>';
     $output .= $icon . '</button>';
     $output .= "\n$indent<ul class=\"sub-menu\">\n";
   }
@@ -58,7 +58,7 @@ class Nav_Walker extends \Walker_Nav_Menu {
     } else {
       $class_names = $value = '';
       $classes     = empty( $item->classes ) ? array() : (array) $item->classes;
-      $classes[]   = 'minimalistmadness-menu-item menu-item-' . $item->ID;
+      $classes[]   = 'the-purple-people-eater-menu-item menu-item-' . $item->ID;
       $class_names = join( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item, $args ) );
 
       if ( $args->has_children ) {

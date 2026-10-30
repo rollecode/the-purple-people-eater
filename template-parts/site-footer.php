@@ -3,9 +3,9 @@
  * Site footer: the umbrella, a line about the site and every other place
  * Rolle is active, the two ways to follow it, then the copyright and the
  * theme switch. Included by the classic footer.php and the
- * minimalistmadness/site-footer block.
+ * the-purple-people-eater/site-footer block.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

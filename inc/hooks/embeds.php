@@ -3,7 +3,7 @@
  * Tweets stay as the quotes WordPress saved, styled by the theme: no script
  * from X, so nothing tracks the reader and deleted tweets still read.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

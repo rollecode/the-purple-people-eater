@@ -3,7 +3,7 @@
  * "Lue myös": the articles that share the most keywords with this one.
  * $related_posts comes from the_related_posts().
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

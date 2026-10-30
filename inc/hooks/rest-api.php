@@ -3,7 +3,7 @@
  * Endpoints the front page asks for more of. They return HTML rendered by
  * the same template parts as the page, so a loaded card is the same card.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

@@ -3,7 +3,7 @@
  * Search dialog. Results come from Algolia as you type (front-end.js); the
  * form itself still works without JavaScript and lands on the search page.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

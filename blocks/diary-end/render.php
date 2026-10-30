@@ -2,7 +2,7 @@
 /**
  * The day's data, the same day a year ago, the days around it.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

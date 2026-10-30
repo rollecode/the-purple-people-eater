@@ -92,7 +92,7 @@
 
     return el(
       PluginDocumentSettingPanel,
-      { name: 'rollemaa-diary-meta', title: __( 'Päivän metatiedot', 'minimalistmadness' ) },
+      { name: 'rollemaa-diary-meta', title: __( 'Päivän metatiedot', 'the-purple-people-eater' ) },
       el( VStack, { spacing: 4 },
       text( 'gratitude', 'Kiitollisuus' ),
       select( 'mood', 'Mieliala kirjoittamishetkellä' ),

@@ -2,7 +2,7 @@
 /**
  * Arkisto: the shelf of years and the ranked lists.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

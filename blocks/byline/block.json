@@ -1,11 +1,11 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "minimalistmadness/byline",
+  "name": "the-purple-people-eater/byline",
   "title": "Byline",
   "category": "theme",
   "description": "Part of the theme's templates.",
-  "textdomain": "minimalistmadness",
+  "textdomain": "the-purple-people-eater",
   "usesContext": [
     "postId",
     "postType"

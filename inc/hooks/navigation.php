@@ -3,7 +3,7 @@
  * Main navigation: mark the section the visitor is in, not only the exact
  * page. An article belongs to Blogi, a diary entry to Lokikirja.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

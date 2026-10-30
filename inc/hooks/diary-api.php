@@ -7,7 +7,7 @@
  * creating an entry exactly as quick-post.php does, through the same helpers
  * in inc/diary-entry.php.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

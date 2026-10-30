@@ -2,7 +2,7 @@
 /**
  * The base for a post type object
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  * @Author: Niku Hietanen
  * @Date: 2020-02-20 13:45:26
  * @Last Modified by: Niku Hietanen

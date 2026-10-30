@@ -8,7 +8,7 @@
  * js/diary-meta-panel.js can read/write them) and expose the select/button
  * choice labels used both by the front end and the editor panel.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

@@ -2,7 +2,7 @@
 /**
  * Small facts about a text: date, word count, reading time, excerpt.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

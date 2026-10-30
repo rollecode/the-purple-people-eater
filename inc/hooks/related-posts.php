@@ -3,7 +3,7 @@
  * Related posts under an article: the articles sharing the most tags,
  * newest first on ties. Cached per post for a week.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

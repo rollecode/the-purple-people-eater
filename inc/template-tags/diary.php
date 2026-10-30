@@ -3,7 +3,7 @@
  * Lokikirja: the day's date in words, the day's measures and conditions,
  * and the icons for them.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

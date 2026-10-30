@@ -2,7 +2,7 @@
 /**
  * The written excerpt, nothing when there is none.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

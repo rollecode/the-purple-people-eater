@@ -1,5 +1,5 @@
 /**
- * Kansi: tokens, reset, type and the small parts every view shares.
+ * Tokens, reset, type and the small parts every view shares.
  *
  * Colours are light-dark() pairs, so one list covers both themes. The
  * prepaint script sets .theme-light or .theme-dark on <html> from the

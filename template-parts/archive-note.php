@@ -2,7 +2,7 @@
 /**
  * Note on old articles: when it was written and how old Rolle was then.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

@@ -1,11 +1,11 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "minimalistmadness/site-footer",
+  "name": "the-purple-people-eater/site-footer",
   "title": "Site footer",
   "category": "theme",
   "description": "Theme shell block, used by the block templates.",
-  "textdomain": "minimalistmadness",
+  "textdomain": "the-purple-people-eater",
   "supports": {
     "html": false,
     "inserter": false

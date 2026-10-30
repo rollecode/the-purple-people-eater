@@ -3,7 +3,7 @@
  * Byline: who wrote it, when, how long it takes, how it was received. The
  * resume box is filled by front-end.js when this text was left unfinished.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

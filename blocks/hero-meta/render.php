@@ -2,7 +2,7 @@
 /**
  * Date, reading time and length on the featured image.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

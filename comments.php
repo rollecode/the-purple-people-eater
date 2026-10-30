@@ -3,7 +3,7 @@
  * Comments: the conversation, then how to join it with a reply from your
  * own fediverse account. WordPress' own comment form is closed.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

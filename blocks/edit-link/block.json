@@ -1,11 +1,11 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "minimalistmadness/edit-link",
+  "name": "the-purple-people-eater/edit-link",
   "title": "Edit link",
   "category": "theme",
   "description": "Part of the theme's templates.",
-  "textdomain": "minimalistmadness",
+  "textdomain": "the-purple-people-eater",
   "usesContext": [
     "postId",
     "postType"

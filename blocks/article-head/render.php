@@ -2,7 +2,7 @@
 /**
  * Article head: on the featured image when there is one, otherwise plain.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

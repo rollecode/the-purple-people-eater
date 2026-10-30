@@ -2,7 +2,7 @@
 /**
  * The note about the diary until it is closed once.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

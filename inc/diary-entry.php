@@ -5,7 +5,7 @@
  * Secrets and private hosts never live here: callers pass them in, the API
  * reads them from the environment.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 /**

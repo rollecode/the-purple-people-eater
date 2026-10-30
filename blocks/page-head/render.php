@@ -2,7 +2,7 @@
 /**
  * A page's title large, unless the content opens with its own.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

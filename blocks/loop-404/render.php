@@ -3,7 +3,7 @@
  * Main loop for the 404 view. Renders the shared template part so the classic PHP templates
  * and the block templates output identical markup.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 get_template_part( 'template-parts/loop-404' );

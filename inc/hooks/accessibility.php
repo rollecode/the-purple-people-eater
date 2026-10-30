@@ -3,7 +3,7 @@
  * Names for things the content leaves unnamed: embedded frames and images
  * that are links but have no alt text.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

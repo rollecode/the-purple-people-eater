@@ -1,6 +1,6 @@
-# Minimalist Madness for Rollemaa.fi
+# The Purple People Eater for Rollemaa.fi
 
-A repository for 25th design, approximately 7th WordPress theme for [Rollemaa.fi](https://www.rollemaa.fi), code name *Minimalist Madness*.
+A repository for 25th design, approximately 7th WordPress theme for [Rollemaa.fi](https://www.rollemaa.fi), code name *The Purple People Eater*.
 
 Obviously, this theme is **not for the public to use**, since this is **my** website and the theme contains some custom functions that just will not work elsewhere. Would feel awkward to see this in somewhere else. If you are interested in using this in some way, please be in touch. The theme is in here solely for backup purposes, and releasing in sake of open source, versioning and for you to see how I did this thing.
 
@@ -8,7 +8,7 @@ The theme is completely in Finnish and contains hardcoded strings and some of my
 
 #### Etymology
 
-The goal for this theme was to be minimal as possible yet retaining some functionality and wow-effect. Also as OCD as I am I thought many times "this is madness" to code for 20 hours straight. Hence, 'Minimalist Madness'.
+The goal for this theme was to be minimal as possible yet retaining some functionality and wow-effect. Also as OCD as I am I thought many times "this is madness" to code for 20 hours straight. Hence, 'The Purple People Eater'.
 
 ![](https://i.imgur.com/60Yahxr.jpg "Screenshot")
 

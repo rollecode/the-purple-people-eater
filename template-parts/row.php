@@ -4,7 +4,7 @@
  * length, the title and opening lines, and the image on the right when the
  * post has one.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

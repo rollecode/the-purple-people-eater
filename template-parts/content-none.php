@@ -2,7 +2,7 @@
 /**
  * Nothing found: in a search, an archive or a diary date.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

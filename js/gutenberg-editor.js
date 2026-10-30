@@ -38,7 +38,7 @@ wp.blocks.registerBlockStyle('core/list', {
  * markup from the block renderer.
  */
 (() => {
-  const NS = 'minimalistmadness';
+  const NS = 'the-purple-people-eater';
   const { registerBlockType } = wp.blocks;
   const { useBlockProps, useInnerBlocksProps, InnerBlocks, RichText } = wp.blockEditor;
   const { createElement: el } = wp.element;

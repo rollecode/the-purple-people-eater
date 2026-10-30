@@ -1,6 +1,6 @@
 <?php
 /**
- * @package minimalistmadness
+ * @package the-purple-people-eater
  * @Author: Niku Hietanen
  * @Date: 2020-02-18 15:06:45
  * @Last Modified by: Niku Hietanen
@@ -18,20 +18,20 @@ class Your_Post_Type extends Post_Type {
 
     // Modify all the i18ized strings here.
     $generated_labels = [
-      'menu_name'          => __( 'Your Post Type', 'minimalistmadness' ),
-      'name'               => _x( 'Your Post Types', 'post type general name', 'minimalistmadness' ),
-      'singular_name'      => _x( 'Your Post Type', 'post type singular name', 'minimalistmadness' ),
-      'name_admin_bar'     => _x( 'Your Post Type', 'add new on admin bar', 'minimalistmadness' ),
-      'add_new'            => _x( 'Add New', 'thing', 'minimalistmadness' ),
-      'add_new_item'       => __( 'Add New Your Post Type', 'minimalistmadness' ),
-      'new_item'           => __( 'New Your Post Type', 'minimalistmadness' ),
-      'edit_item'          => __( 'Edit Your Post Type', 'minimalistmadness' ),
-      'view_item'          => __( 'View Your Post Type', 'minimalistmadness' ),
-      'all_items'          => __( 'All Your Post Types', 'minimalistmadness' ),
-      'search_items'       => __( 'Search Your Post Types', 'minimalistmadness' ),
-      'parent_item_colon'  => __( 'Parent Your Post Types:', 'minimalistmadness' ),
-      'not_found'          => __( 'No your post types found.', 'minimalistmadness' ),
-      'not_found_in_trash' => __( 'No your post types found in Trash.', 'minimalistmadness' ),
+      'menu_name'          => __( 'Your Post Type', 'the-purple-people-eater' ),
+      'name'               => _x( 'Your Post Types', 'post type general name', 'the-purple-people-eater' ),
+      'singular_name'      => _x( 'Your Post Type', 'post type singular name', 'the-purple-people-eater' ),
+      'name_admin_bar'     => _x( 'Your Post Type', 'add new on admin bar', 'the-purple-people-eater' ),
+      'add_new'            => _x( 'Add New', 'thing', 'the-purple-people-eater' ),
+      'add_new_item'       => __( 'Add New Your Post Type', 'the-purple-people-eater' ),
+      'new_item'           => __( 'New Your Post Type', 'the-purple-people-eater' ),
+      'edit_item'          => __( 'Edit Your Post Type', 'the-purple-people-eater' ),
+      'view_item'          => __( 'View Your Post Type', 'the-purple-people-eater' ),
+      'all_items'          => __( 'All Your Post Types', 'the-purple-people-eater' ),
+      'search_items'       => __( 'Search Your Post Types', 'the-purple-people-eater' ),
+      'parent_item_colon'  => __( 'Parent Your Post Types:', 'the-purple-people-eater' ),
+      'not_found'          => __( 'No your post types found.', 'the-purple-people-eater' ),
+      'not_found_in_trash' => __( 'No your post types found in Trash.', 'the-purple-people-eater' ),
     ];
 
     // Definition of the post type arguments. For full list see:

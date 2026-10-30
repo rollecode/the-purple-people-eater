@@ -2,7 +2,7 @@
 /**
  * Who wrote the text, when and how it was received.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

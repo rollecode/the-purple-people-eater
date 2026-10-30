@@ -2,7 +2,7 @@
 /**
  * The current version of the theme.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 /**

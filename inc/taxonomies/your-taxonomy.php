@@ -1,6 +1,6 @@
 <?php
 /**
- * @package minimalistmadness
+ * @package the-purple-people-eater
  * @Author: Niku Hietanen
  * @Date: 2020-02-18 15:05:35
  * @Last Modified by: Niku Hietanen
@@ -21,20 +21,20 @@ class Your_Taxonomy extends Taxonomy {
   public function register( array $post_types = [] ) {
     // Taxonomy labels.
     $labels = [
-      'name'                  => _x( 'Your Taxonomies', 'Taxonomy plural name', 'minimalistmadness' ),
-      'singular_name'         => _x( 'Your Taxonomy', 'Taxonomy singular name', 'minimalistmadness' ),
-      'search_items'          => __( 'Search Your Taxonomies', 'minimalistmadness' ),
-      'popular_items'         => __( 'Popular Your Taxonomies', 'minimalistmadness' ),
-      'all_items'             => __( 'All Your Taxonomies', 'minimalistmadness' ),
-      'parent_item'           => __( 'Parent Your Taxonomy', 'minimalistmadness' ),
-      'parent_item_colon'     => __( 'Parent Your Taxonomy', 'minimalistmadness' ),
-      'edit_item'             => __( 'Edit Your Taxonomy', 'minimalistmadness' ),
-      'update_item'           => __( 'Update Your Taxonomy', 'minimalistmadness' ),
-      'add_new_item'          => __( 'Add New Your Taxonomy', 'minimalistmadness' ),
-      'new_item_name'         => __( 'New Your Taxonomy', 'minimalistmadness' ),
-      'add_or_remove_items'   => __( 'Add or remove Your Taxonomies', 'minimalistmadness' ),
-      'choose_from_most_used' => __( 'Choose from most used Taxonomies', 'minimalistmadness' ),
-      'menu_name'             => __( 'Your Taxonomy', 'minimalistmadness' ),
+      'name'                  => _x( 'Your Taxonomies', 'Taxonomy plural name', 'the-purple-people-eater' ),
+      'singular_name'         => _x( 'Your Taxonomy', 'Taxonomy singular name', 'the-purple-people-eater' ),
+      'search_items'          => __( 'Search Your Taxonomies', 'the-purple-people-eater' ),
+      'popular_items'         => __( 'Popular Your Taxonomies', 'the-purple-people-eater' ),
+      'all_items'             => __( 'All Your Taxonomies', 'the-purple-people-eater' ),
+      'parent_item'           => __( 'Parent Your Taxonomy', 'the-purple-people-eater' ),
+      'parent_item_colon'     => __( 'Parent Your Taxonomy', 'the-purple-people-eater' ),
+      'edit_item'             => __( 'Edit Your Taxonomy', 'the-purple-people-eater' ),
+      'update_item'           => __( 'Update Your Taxonomy', 'the-purple-people-eater' ),
+      'add_new_item'          => __( 'Add New Your Taxonomy', 'the-purple-people-eater' ),
+      'new_item_name'         => __( 'New Your Taxonomy', 'the-purple-people-eater' ),
+      'add_or_remove_items'   => __( 'Add or remove Your Taxonomies', 'the-purple-people-eater' ),
+      'choose_from_most_used' => __( 'Choose from most used Taxonomies', 'the-purple-people-eater' ),
+      'menu_name'             => __( 'Your Taxonomy', 'the-purple-people-eater' ),
     ];
 
     $args = [

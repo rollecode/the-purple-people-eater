@@ -5,7 +5,7 @@
  * comes from ALGOLIA_ADMIN_KEY in .env; the app ID and search-only key are
  * public by design and go to the browser.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

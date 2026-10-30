@@ -5,7 +5,7 @@
  * page numbers. Included by archive.php, search.php, index.php and their
  * blocks.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

@@ -9,7 +9,7 @@
  * @Last Modified by:   Roni Laukkarinen
  * @Last Modified time: 2022-11-01 11:21:48
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  */
 

@@ -1,9 +1,9 @@
 <?php
 /**
  * Fallback listing for views without a template of their own. Included by
- * index.php and the minimalistmadness/loop-index block.
+ * index.php and the the-purple-people-eater/loop-index block.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

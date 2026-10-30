@@ -2,7 +2,7 @@
 /**
  * "Kuka Rolle?": a few words and photos from Instagram.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

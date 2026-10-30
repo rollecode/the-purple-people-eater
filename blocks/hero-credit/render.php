@@ -2,7 +2,7 @@
 /**
  * The featured image's caption as a credit.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

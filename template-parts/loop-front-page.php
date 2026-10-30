@@ -3,9 +3,9 @@
  * Front page: the word count and the shelf on the plain page, the newest
  * article, the ones before it, the week's most read, what Rolle listens to
  * and watches, random finds from the archive and who writes all this.
- * Included by front-page.php and the minimalistmadness/loop-front-page block.
+ * Included by front-page.php and the the-purple-people-eater/loop-front-page block.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

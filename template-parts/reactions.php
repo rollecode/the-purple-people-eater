@@ -3,7 +3,7 @@
  * Likes and boosts from the fediverse: the faces of the people and the
  * counts, in the theme's own type instead of the plugin's block.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

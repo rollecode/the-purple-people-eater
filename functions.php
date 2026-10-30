@@ -9,7 +9,7 @@
  * @Last Modified by:   Timi Wahalahti
  * @Last Modified time: 2021-05-20 18:19:49
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;
@@ -30,7 +30,7 @@ add_action( 'after_setup_theme', function() {
     /**
      * Theme textdomain
      */
-    'textdomain' => 'minimalistmadness',
+    'textdomain' => 'the-purple-people-eater',
 
     /**
      * Image and content sizes
@@ -68,7 +68,7 @@ add_action( 'after_setup_theme', function() {
      * Menu locations
      */
     'menu_locations' => [
-      'primary' => __( 'Primary Menu', 'minimalistmadness' ),
+      'primary' => __( 'Primary Menu', 'the-purple-people-eater' ),
     ],
 
     /**
@@ -108,7 +108,7 @@ add_action( 'after_setup_theme', function() {
     'my_custom_setting' => true,
   ];
 
-  $theme_settings = apply_filters( 'minimalistmadness_theme_settings', $theme_settings );
+  $theme_settings = apply_filters( 'the_purple_people_eater_theme_settings', $theme_settings );
 
   define( 'THEME_SETTINGS', $theme_settings );
 } ); // end action after_setup_theme

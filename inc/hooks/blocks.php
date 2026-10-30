@@ -3,7 +3,7 @@
  * Theme blocks and the head script shared by classic and block template
  * rendering paths.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

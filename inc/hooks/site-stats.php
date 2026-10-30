@@ -4,7 +4,7 @@
  * takes seconds, so the result is kept until something is published,
  * changed or removed, and then rebuilt in the background.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

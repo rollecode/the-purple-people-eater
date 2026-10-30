@@ -3,7 +3,7 @@
  * Site frame: skip link and the .site wrapper around the whole page.
  * $content is the rendered inner blocks (header, content, footer).
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 ?>

@@ -3,7 +3,7 @@
  * Random articles from the archive as list items. The front page renders
  * the first ones; "Arvo uudet" fetches more through rollemaa/v1/random.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;

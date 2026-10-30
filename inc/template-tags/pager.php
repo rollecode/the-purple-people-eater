@@ -3,7 +3,7 @@
  * Page numbers for archives, search and the diary, with the way back to
  * newer and on to older texts.
  *
- * @package minimalistmadness
+ * @package the-purple-people-eater
  */
 
 namespace Air_Light;
