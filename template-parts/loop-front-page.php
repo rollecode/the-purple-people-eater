@@ -106,7 +106,7 @@ $now   = now_data( false );
 
     <aside class="now" aria-labelledby="now-title" data-now<?php echo empty( $now ) ? ' hidden' : ''; ?>>
       <h2 id="now-title">Nyt</h2>
-      <p class="sub">Mitä Rolle kuuntelee ja katsoo.</p>
+      <p class="sub">Viimeksi kuunneltu ja katsottu.</p>
       <ul data-now-items>
         <?php get_template_part( 'template-parts/now-items', null, [ 'now' => $now ] ); ?>
       </ul>

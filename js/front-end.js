@@ -621,7 +621,7 @@
   }));
 
   /**
-   * Diary entry: the "Mikä lokikirja?" note until it is closed once
+   * Diary entry: the note about the diary until it is closed once
    */
   const explainer = $('[data-explainer]');
   if (explainer && !store.raw('rollemaa:explainer-closed')) {
