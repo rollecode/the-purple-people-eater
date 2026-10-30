@@ -20,7 +20,7 @@ $types    = [
   <div>
     <p class="meta-line meta-text">
       <?php if ( $is_diary ) : ?>
-        <span class="type-diary"><?php the_icon( 'logbook', 'ic-sm' ); ?>Lokikirja</span>
+        <span class="diary-mark"><?php the_icon( 'logbook', 'ic-sm' ); ?>Lokikirja</span>
       <?php elseif ( is_search() ) : ?>
         <span><?php echo esc_html( $types[ get_post_type() ] ?? '' ); ?></span>
       <?php endif; ?>

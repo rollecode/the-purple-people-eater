@@ -19,6 +19,18 @@ function register_theme_blocks() {
 }
 
 /**
+ * Listing blocks read the main query, which the editor's preview request
+ * doesn't have.
+ *
+ * @param string $post_type Post type to list.
+ */
+function preview_main_query( $post_type ) {
+  if ( wp_is_serving_rest_request() ) {
+    $GLOBALS['wp_query'] = new \WP_Query( [ 'post_type' => $post_type, 'posts_per_page' => 10 ] );
+  }
+}
+
+/**
  * Core post blocks carry the text in the templates, so the post editor shows
  * the real page. These keep their output the same as the site's own markup.
  */

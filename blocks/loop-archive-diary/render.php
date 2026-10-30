@@ -6,4 +6,6 @@
  * @package minimalistmadness
  */
 
+\Air_Light\preview_main_query( 'diary' );
+
 get_template_part( 'template-parts/loop-archive-diary' );

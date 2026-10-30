@@ -82,19 +82,3 @@ function add_editor_stylesheets() {
     return 'css/' . $chunk . '.css';
   }, $chunks ) );
 }
-
-/**
- * Diary entries are narrower and set in a smaller size than articles. The
- * editor canvas gets that from theme.json data, not from an editor stylesheet.
- */
-function diary_editor_theme_json( $theme_json ) {
-  if ( ! is_admin() || 'diary' !== ( $GLOBALS['typenow'] ?? '' ) ) {
-    return $theme_json;
-  }
-
-  return $theme_json->update_with( [
-    'version'  => 3,
-    'settings' => [ 'layout' => [ 'contentSize' => '600px' ] ],
-    'styles'   => [ 'typography' => [ 'fontSize' => '17px' ] ],
-  ] );
-}

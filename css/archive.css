@@ -70,7 +70,7 @@
 }
 
 /* Diary days in a listing carry the diary's mark */
-.type-diary {
+.diary-mark {
   display: inline-flex;
   align-items: center;
   gap: 6px;

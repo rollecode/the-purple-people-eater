@@ -6,4 +6,6 @@
  * @package minimalistmadness
  */
 
+\Air_Light\preview_main_query( 'post' );
+
 get_template_part( 'template-parts/loop-archive' );
