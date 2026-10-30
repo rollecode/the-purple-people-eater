@@ -169,7 +169,6 @@
 
 .card-lead .excerpt {
   font-size: 20px;
-  font-style: italic;
 }
 
 /* Where the reader left off (front-end.js, from localStorage) */
