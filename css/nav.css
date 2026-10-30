@@ -66,40 +66,6 @@
   }
 }
 
-/* With the sections hidden the logo waits at the left, and moves to the
-   middle out of their way when they appear */
-@media (hover: hover) and (min-width: 861px) {
-  .single-post .site-head .bar {
-    container-type: inline-size;
-  }
-
-  .single-post .site-head .brand {
-    transform: translateX(calc(-50cqw + 50%));
-    transition: transform .6s var(--ease);
-  }
-
-  .single-post .site-head:hover .brand,
-  .single-post .site-head:focus-within .brand {
-    transform: none;
-  }
-}
-
-@media (hover: hover) and (min-width: 861px) and (prefers-reduced-motion: reduce) {
-  .single-post .site-head .brand {
-    transition: opacity .3s;
-  }
-
-  .single-post .site-head:hover .brand,
-  .single-post .site-head:focus-within .brand {
-    opacity: 0;
-    transform: translateX(calc(-50cqw + 50%));
-  }
-
-  .single-post .site-head .brand:focus-visible {
-    opacity: 1;
-  }
-}
-
 /* The Rollemaa logo as it has always been: umbrella and ROLLEMAA */
 .brand {
   display: inline-flex;
