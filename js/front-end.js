@@ -647,29 +647,44 @@
   });
 
   /**
-   * Article with a photo: the head sleeps until the mouse moves over the
-   * hero. It stays awake under a resting pointer, so no link vanishes from
-   * under it. Keyboard focus is handled in nav.css.
+   * Article with a photo: the head appears a moment after the mouse starts
+   * moving over the hero and sleeps again once it stops. It stays awake under
+   * a resting pointer, so no link vanishes from under it. Keyboard focus is
+   * handled in nav.css.
    */
+  const HEAD_WAKE_MS = 2000;
   const HEAD_AWAKE_MS = 2000;
   const photoHero = $('.photo-hero');
   const siteHead = $('.site-head');
   if (photoHero && siteHead && window.matchMedia('(hover: hover)').matches) {
+    const { classList } = document.body;
+    let wakeTimer = null;
     let sleepTimer;
+
     const sleep = () => {
       if ($('a:hover, button:hover', siteHead)) {
         sleepTimer = window.setTimeout(sleep, HEAD_AWAKE_MS);
         return;
       }
-      document.body.classList.remove('head-awake');
+      classList.remove('head-awake');
     };
+
     const wake = () => {
-      document.body.classList.add('head-awake');
-      window.clearTimeout(sleepTimer);
+      wakeTimer = null;
+      classList.add('head-awake');
       sleepTimer = window.setTimeout(sleep, HEAD_AWAKE_MS);
     };
 
-    [ photoHero, siteHead ].forEach((element) => element.addEventListener('mousemove', wake));
+    const onMove = () => {
+      if (classList.contains('head-awake')) {
+        window.clearTimeout(sleepTimer);
+        sleepTimer = window.setTimeout(sleep, HEAD_AWAKE_MS);
+        return;
+      }
+      wakeTimer ??= window.setTimeout(wake, HEAD_WAKE_MS);
+    };
+
+    [ photoHero, siteHead ].forEach((element) => element.addEventListener('mousemove', onMove));
   }
 
   /**

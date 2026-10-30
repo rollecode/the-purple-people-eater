@@ -70,12 +70,14 @@
 @media (hover: hover) and (scripting: enabled) {
   .overlay-head .site-head .bar > * {
     opacity: 0;
+    pointer-events: none;
     transition: opacity .3s var(--ease);
   }
 
   .overlay-head.head-awake .site-head .bar > *,
   .overlay-head .site-head:has(:focus-visible) .bar > * {
     opacity: 1;
+    pointer-events: auto;
   }
 }
 
