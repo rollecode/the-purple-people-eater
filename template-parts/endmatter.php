@@ -11,7 +11,7 @@ namespace Air_Light;
 $responses = $args['responses'];
 $permalink = get_permalink();
 $tags      = get_the_tags();
-$share_url = add_query_arg( 'text', rawurlencode( get_the_title() . ' ' . $permalink ), 'https://toot.kytta.dev/' );
+$share_url = 'https://share.joinmastodon.org/#text=' . rawurlencode( get_the_title() . ' ' . $permalink );
 ?>
 <footer class="endmatter">
   <div class="colophon">
