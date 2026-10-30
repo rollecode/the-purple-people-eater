@@ -215,11 +215,21 @@
       allLink.innerHTML = randomLink.html;
     };
 
-    const open = () => {
+    // The field's focus line is for keyboard users only. A click reports
+    // detail 0 when it comes from Enter or Space.
+    const open = (event) => {
+      dialog.toggleAttribute('data-keyboard', !event || 0 === event.detail);
       showRecent();
       dialog.showModal();
       input.focus();
     };
+
+    dialog.addEventListener('pointerdown', () => dialog.removeAttribute('data-keyboard'));
+    dialog.addEventListener('keydown', (event) => {
+      if ('Tab' === event.key) {
+        dialog.setAttribute('data-keyboard', '');
+      }
+    });
 
     const close = () => dialog.close();
 
