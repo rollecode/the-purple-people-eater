@@ -54,6 +54,7 @@ function qp_lastfm( $user, $key ) {
       'track'   => $t['name'] ?? '',
       'url'     => $t['url'] ?? '',
       'playing' => isset( $t['@attr']['nowplaying'] ),
+      'date'    => (int) ( $t['date']['uts'] ?? 0 ),
     ];
   } );
 }

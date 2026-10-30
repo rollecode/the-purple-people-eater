@@ -183,6 +183,48 @@ function fi_number_words( $number ) {
 }
 
 /**
+ * How long ago in Finnish: 20 minuuttia sitten, eilen, kolme päivää sitten.
+ * Calendar days decide, so last night is "eilen" even a few hours later.
+ *
+ * @param int $timestamp Unix time.
+ */
+function fi_time_ago( $timestamp ) {
+  $seconds = max( 0, time() - $timestamp );
+  $then    = ( new \DateTimeImmutable( '@' . $timestamp ) )->setTimezone( wp_timezone() );
+  $days    = current_datetime()->setTime( 0, 0 )->diff( $then->setTime( 0, 0 ) )->days;
+
+  if ( 0 === $days ) {
+    if ( $seconds < HOUR_IN_SECONDS ) {
+      return fi_ago_unit( max( 1, intdiv( $seconds, MINUTE_IN_SECONDS ) ), 'minuutti', 'minuuttia' );
+    }
+
+    return fi_ago_unit( intdiv( $seconds, HOUR_IN_SECONDS ), 'tunti', 'tuntia' );
+  }
+
+  if ( 1 === $days ) {
+    return 'eilen';
+  }
+
+  if ( $days < WEEK_IN_SECONDS / DAY_IN_SECONDS ) {
+    return fi_ago_unit( $days, 'päivä', 'päivää' );
+  }
+
+  if ( $days < MONTH_IN_SECONDS / DAY_IN_SECONDS ) {
+    return fi_ago_unit( intdiv( $days, 7 ), 'viikko', 'viikkoa' );
+  }
+
+  if ( $days < YEAR_IN_SECONDS / DAY_IN_SECONDS ) {
+    return fi_ago_unit( intdiv( $days, 30 ), 'kuukausi', 'kuukautta' );
+  }
+
+  return fi_ago_unit( intdiv( $days, 365 ), 'vuosi', 'vuotta' );
+}
+
+function fi_ago_unit( $number, $singular, $plural ) {
+  return ( 1 === $number ? $singular : fi_number_words( $number ) . ' ' . $plural ) . ' sitten';
+}
+
+/**
  * Finnish count with the right form: 1 kommentti, 2 kommenttia.
  *
  * @param int    $number   Count.

@@ -17,7 +17,7 @@ if ( ! empty( $now['listening'] ) ) :
     <div>
       <span class="label meta-text"><?php echo esc_html( $track['playing'] ? 'Soi nyt' : 'Kuunneltua' ); ?></span>
       <a class="what" href="<?php echo esc_url( $track['url'] ); ?>"><?php echo esc_html( $track['artist'] . ' – ' . $track['track'] ); ?></a>
-      <span class="src">Last.fm</span>
+      <span class="src"><?php echo esc_html( empty( $track['date'] ) ? 'Last.fm' : 'Last.fm, ' . fi_time_ago( $track['date'] ) ); ?></span>
     </div>
   </li>
   <?php
@@ -31,7 +31,7 @@ if ( ! empty( $now['watched'] ) ) :
     <div>
       <span class="label meta-text">Katsottua</span>
       <a class="what" href="<?php echo esc_url( $movie['url'] ); ?>"><?php echo esc_html( $movie['title'] ); ?></a>
-      <span class="src"><?php echo esc_html( ( $movie['source'] ?? 'Rollekino' ) . ', ' . wp_date( 'j.n.Y', $movie['date'] ) ); ?></span>
+      <span class="src"><?php echo esc_html( ( $movie['source'] ?? 'Rollekino' ) . ', ' . fi_time_ago( $movie['date'] ) ); ?></span>
     </div>
   </li>
   <?php
