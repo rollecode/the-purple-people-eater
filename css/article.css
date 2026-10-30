@@ -212,8 +212,10 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
+  width: fit-content;
+  max-width: 100%;
   margin: -20px 0 40px;
-  padding: 16px 20px;
+  padding: 16px 24px 16px 20px;
   gap: 4px 20px;
   border-radius: 4px;
   background: var(--soft);
@@ -228,6 +230,7 @@
 }
 
 .archive-note p {
+  max-width: 46ch;
   margin: 0;
   color: var(--ink-2);
   font-family: var(--sans);
