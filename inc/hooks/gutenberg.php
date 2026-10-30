@@ -67,6 +67,18 @@ function register_block_editor_assets() {
 } // end register_block_editor_assets
 
 /**
+ * The editor canvas gets the site's own stylesheets, so a text looks there
+ * as it does on the site. theme.json turns the canvas dark.
+ */
+function add_editor_stylesheets() {
+  $chunks = [ 'base', 'nav', 'footer', 'front', 'shelf', 'archive', 'article', 'content', 'diary', 'page', 'forms' ];
+
+  add_editor_style( array_map( function ( $chunk ) {
+    return 'css/' . $chunk . '.css';
+  }, $chunks ) );
+}
+
+/**
  * Diary entries are narrower and set in a smaller size than articles. The
  * editor canvas gets that from theme.json data, not from an editor stylesheet.
  */
