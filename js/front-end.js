@@ -258,6 +258,8 @@
       }
     });
 
+    const hitCount = (count) => (1 === count ? '1 osuma' : `${count} osumaa`);
+
     const render = (term, response, took) => {
       const hits = response.hits || [];
       const facets = (response.facets && response.facets.post_type) || {};
@@ -277,16 +279,14 @@
 
       results.innerHTML = Object.keys(groups).filter((type) => byType[type]).map((type) => {
         const items = byType[type].map((hit) => {
-          const thumb = hit.image ? `<span class="sq" aria-hidden="true"><img src="${escapeHtml(hit.image)}" alt="" loading="lazy"></span>` : '';
-          const snippet = hit._snippetResult ? hit._snippetResult.content.value : '';
-          return `<li><a href="${escapeHtml(hit.url)}"><span><span class="t">${hit._highlightResult.title.value}</span><span class="x">${snippet}</span></span><span class="meta-text">${dateFi(hit.date)} <span class="enter" aria-hidden="true">↵</span></span>${thumb}</a></li>`;
+          const thumb = hit.image ? `<img class="s-thumb" src="${escapeHtml(hit.image)}" alt="" loading="lazy">` : '';
+          const snippet = hit._snippetResult ? `<span class="x">${hit._snippetResult.content.value}</span>` : '';
+          return `<li><a href="${escapeHtml(hit.url)}"><span class="s-text"><span class="t">${hit._highlightResult.title.value}</span>${snippet}<span class="d meta-text">${dateFi(hit.date)}</span></span>${thumb}</a></li>`;
         }).join('');
-        const count = facets[type] || byType[type].length;
-        return `<section class="s-group"><h2><span>${groups[type]}</span><span>${byType[type].length} / ${count}</span></h2><ul class="s-list">${items}</ul></section>`;
+        return `<section class="s-group"><h2><span>${groups[type]}</span><span>${hitCount(facets[type] || byType[type].length)}</span></h2><ul class="s-list">${items}</ul></section>`;
       }).join('');
 
-      const counts = Object.keys(groups).filter((type) => facets[type]).map((type) => `${groups[type]} ${facets[type]}`).join(' · ');
-      status.textContent = `${total} osumaa${counts ? `. ${counts}` : ''} · ${took} ms`;
+      status.textContent = `${hitCount(total)} · ${took} ms`;
       allLink.href = `/?s=${encodeURIComponent(term)}`;
       allLink.textContent = `Kaikki ${total} osumaa`;
     };

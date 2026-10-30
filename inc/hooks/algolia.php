@@ -96,7 +96,7 @@ function algolia_chunks( $text ) {
 }
 
 function algolia_records( \WP_Post $post ) {
-  $text = html_entity_decode( wp_strip_all_tags( strip_shortcodes( $post->post_content ) ), ENT_QUOTES, 'UTF-8' );
+  $text = html_entity_decode( plain_text( $post->post_content ), ENT_QUOTES, 'UTF-8' );
   $base = [
     'post_id'       => $post->ID,
     'post_type'     => $post->post_type,

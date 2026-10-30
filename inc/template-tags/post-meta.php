@@ -69,6 +69,18 @@ function reading_minutes( $post = null ) {
 }
 
 /**
+ * Post content as one line of plain text.
+ *
+ * @param string $content Post content.
+ */
+function plain_text( $content ) {
+  // A space after each block, so list items and paragraphs don't run together.
+  $html = preg_replace( '#(</(?:p|li|h[1-6]|div|blockquote|figcaption)>|<br\s*/?>)#i', '$1 ', strip_shortcodes( $content ) );
+
+  return trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $html ) ) );
+}
+
+/**
  * The excerpt if one was written, otherwise the first sentences of the text.
  *
  * @param int|\WP_Post|null $post      Post, current post by default.
@@ -84,9 +96,7 @@ function post_excerpt_text( $post = null, $sentences = EXCERPT_SENTENCES ) {
     return wp_strip_all_tags( get_the_excerpt( $post ) );
   }
 
-  // A space after each block, so list items and paragraphs don't run together.
-  $html = preg_replace( '#(</(?:p|li|h[1-6]|div|blockquote|figcaption)>|<br\s*/?>)#i', '$1 ', strip_shortcodes( $post->post_content ) );
-  $text = trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $html ) ) );
+  $text = plain_text( $post->post_content );
   preg_match( '/^(?:.*?[.!?]+(?=\s|$)){1,' . (int) $sentences . '}/u', $text, $match );
 
   return $match[0] ?? wp_trim_words( $text, 40 );
