@@ -35,7 +35,7 @@
   --wrap: 1312px;
   --read: 760px;
   --display: "Instrument Serif", "Times New Roman", serif;
-  --body: "Newsreader", Georgia, serif;
+  --body: "Libre Caslon Text", Georgia, serif;
   --sans: "Geist", system-ui, sans-serif;
   --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --ease: cubic-bezier(.16, 1, .3, 1);

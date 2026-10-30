@@ -86,25 +86,27 @@
         },
         {
           "slug": "body",
-          "name": "Newsreader (leipäteksti)",
-          "fontFamily": "'Newsreader', Georgia, serif",
+          "name": "Libre Caslon Text (leipäteksti)",
+          "fontFamily": "'Libre Caslon Text', Georgia, serif",
           "fontFace": [
             {
-              "fontFamily": "Newsreader",
+              "fontFamily": "Libre Caslon Text",
               "fontStyle": "normal",
               "fontWeight": "400 700",
               "fontDisplay": "swap",
+              "sizeAdjust": "90%",
               "src": [
-                "file:./fonts/Newsreader-latin.woff2"
+                "file:./fonts/LibreCaslonText-latin.woff2"
               ]
             },
             {
-              "fontFamily": "Newsreader",
+              "fontFamily": "Libre Caslon Text",
               "fontStyle": "italic",
               "fontWeight": "400 700",
               "fontDisplay": "swap",
+              "sizeAdjust": "90%",
               "src": [
-                "file:./fonts/Newsreader-Italic-latin.woff2"
+                "file:./fonts/LibreCaslonText-Italic-latin.woff2"
               ]
             }
           ]
@@ -234,6 +236,6 @@
         }
       }
     },
-    "css": ".editor-styles-wrapper { --ground: #F7F6F9; --surface: #FFFFFF; --tint: #F2EDF7; --soft: #EAE3F2; --lavender: #D3C4E3; --ink: #211B27; --ink-2: #3A3442; --muted: #4F4758; --rule: #E8E3ED; --rule-strong: #D1CAD8; --accent: #573F74; --deep: #503B68; --on-deep: #FFFFFF; --code-ground: #16121E; --display: 'Instrument Serif', serif; --body: 'Newsreader', Georgia, serif; --sans: 'Geist', system-ui, sans-serif; --mono: ui-monospace, Menlo, Consolas, monospace; }\n.editor-styles-wrapper a { text-decoration-thickness: 1px; text-underline-offset: .22em; }"
+    "css": ".editor-styles-wrapper { --ground: #F7F6F9; --surface: #FFFFFF; --tint: #F2EDF7; --soft: #EAE3F2; --lavender: #D3C4E3; --ink: #211B27; --ink-2: #3A3442; --muted: #4F4758; --rule: #E8E3ED; --rule-strong: #D1CAD8; --accent: #573F74; --deep: #503B68; --on-deep: #FFFFFF; --code-ground: #16121E; --display: 'Instrument Serif', serif; --body: 'Libre Caslon Text', Georgia, serif; --sans: 'Geist', system-ui, sans-serif; --mono: ui-monospace, Menlo, Consolas, monospace; }\n.editor-styles-wrapper a { text-decoration-thickness: 1px; text-underline-offset: .22em; }"
   }
 }

@@ -1,5 +1,5 @@
 /**
- * Verse block: italic Newsreader, line breaks kept.
+ * Verse block: italic body serif, line breaks kept.
  */
 :is(.prose, .editor-styles-wrapper) .wp-block-verse {
   margin-block: 1.8em;
