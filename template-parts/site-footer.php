@@ -12,6 +12,7 @@ namespace Air_Light;
 
 $stats     = site_stats();
 $elsewhere = [
+  [ 'Mastodon', 'https://mementomori.social/@rolle', 'masto' ],
   [ 'Bluesky', 'https://bsky.app/profile/rolle.social', 'bluesky' ],
   [ 'Threads', 'https://www.threads.net/@rolle_', 'threads' ],
   [ 'Instagram', 'https://www.instagram.com/rolle_', 'insta' ],
