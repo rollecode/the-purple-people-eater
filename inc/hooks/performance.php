@@ -110,7 +110,7 @@ add_action( 'wp_head', function () {
   if ( is_front_page() ) {
     $fonts[] = 'InstrumentSerif-Italic-latin';
   } elseif ( is_singular() ) {
-    $fonts[] = 'Manuale-latin';
+    $fonts[] = 'AtkinsonHyperlegibleNext-latin';
   }
 
   foreach ( $fonts as $font ) {

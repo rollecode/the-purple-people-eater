@@ -86,25 +86,25 @@
         },
         {
           "slug": "body",
-          "name": "Manuale (leipäteksti)",
-          "fontFamily": "'Manuale', Georgia, serif",
+          "name": "Atkinson Hyperlegible Next (leipäteksti)",
+          "fontFamily": "'Atkinson Hyperlegible Next', system-ui, sans-serif",
           "fontFace": [
             {
-              "fontFamily": "Manuale",
+              "fontFamily": "Atkinson Hyperlegible Next",
               "fontStyle": "normal",
               "fontWeight": "400 700",
               "fontDisplay": "swap",
               "src": [
-                "file:./fonts/Manuale-latin.woff2"
+                "file:./fonts/AtkinsonHyperlegibleNext-latin.woff2"
               ]
             },
             {
-              "fontFamily": "Manuale",
+              "fontFamily": "Atkinson Hyperlegible Next",
               "fontStyle": "italic",
               "fontWeight": "400 700",
               "fontDisplay": "swap",
               "src": [
-                "file:./fonts/Manuale-Italic-latin.woff2"
+                "file:./fonts/AtkinsonHyperlegibleNext-Italic-latin.woff2"
               ]
             }
           ]
@@ -234,6 +234,6 @@
         }
       }
     },
-    "css": ".editor-styles-wrapper { --ground: #F7F6F9; --surface: #FFFFFF; --tint: #F2EDF7; --soft: #EAE3F2; --lavender: #D3C4E3; --ink: #211B27; --ink-2: #3A3442; --muted: #4F4758; --rule: #E8E3ED; --rule-strong: #D1CAD8; --accent: #573F74; --deep: #503B68; --on-deep: #FFFFFF; --code-ground: #16121E; --display: 'Instrument Serif', serif; --body: 'Manuale', Georgia, serif; --sans: 'Geist', system-ui, sans-serif; --mono: ui-monospace, Menlo, Consolas, monospace; }\n.editor-styles-wrapper a { text-decoration-thickness: 1px; text-underline-offset: .22em; }"
+    "css": ".editor-styles-wrapper { --ground: #F7F6F9; --surface: #FFFFFF; --tint: #F2EDF7; --soft: #EAE3F2; --lavender: #D3C4E3; --ink: #211B27; --ink-2: #3A3442; --muted: #4F4758; --rule: #E8E3ED; --rule-strong: #D1CAD8; --accent: #573F74; --deep: #503B68; --on-deep: #FFFFFF; --code-ground: #16121E; --display: 'Instrument Serif', serif; --body: 'Atkinson Hyperlegible Next', system-ui, sans-serif; --sans: 'Geist', system-ui, sans-serif; --mono: ui-monospace, Menlo, Consolas, monospace; }\n.editor-styles-wrapper a { text-decoration-thickness: 1px; text-underline-offset: .22em; }"
   }
 }
