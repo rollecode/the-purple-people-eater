@@ -33,6 +33,27 @@
   font-size: 13.5px;
 }
 
+/* Captions under the pictures, not over them as core places them */
+:is(.prose, .editor-styles-wrapper) .wp-block-gallery.has-nested-images figure.wp-block-image figcaption {
+  position: static;
+  max-height: none;
+  padding: 0;
+  overflow: visible;
+  background: none;
+  color: var(--muted);
+  text-align: left;
+  text-shadow: none;
+}
+
+:is(.prose, .editor-styles-wrapper) .wp-block-gallery.has-nested-images figure.wp-block-image {
+  flex-direction: column;
+}
+
+/* Two pictures side by side get room to breathe */
+:is(.prose, .editor-styles-wrapper) .wp-block-gallery.columns-2 img {
+  aspect-ratio: 4 / 3;
+}
+
 :is(.prose, .editor-styles-wrapper) .wp-block-gallery > .blocks-gallery-caption {
   grid-column: 1 / -1;
 }
