@@ -688,6 +688,11 @@
     body: JSON.stringify(body),
   }).then((response) => (response.ok ? response.json() : null)).catch(() => null);
 
+  // Selections are compared as the server compares them (rollemaa-site readers.php)
+  const QUOTES = { '”': '"', '“': '"', '’': "'", '‘': "'", '–': '-', '—': '-', '…': '...' };
+  const evenOut = (char) => (/\s/.test(char) ? ' ' : QUOTES[char] ?? char);
+  const evenText = (text) => [ ...text ].map(evenOut).join('').replace(/ +/g, ' ').trim();
+
   // Claps: the count moves at once, the server gets them in batches
   const CLAP_BATCH_MS = 700;
   const CLAP_BATCH_MAX = 50;
@@ -808,9 +813,88 @@
     render();
   }
 
+  // Highlights: what a reader selects in the text counts once for that reader
+  const HIGHLIGHT_MIN = 15;
+  const HIGHLIGHT_MAX = 400;
+  const HIGHLIGHT_SETTLE_MS = 1500;
+  const HIGHLIGHTS_REMEMBERED = 50;
+  const highlightProse = responsesFor && $('.prose');
+
+  if (highlightProse) {
+    const savedKey = `rollemaa:highlights:${responsesFor}`;
+    let settleTimer;
+
+    document.addEventListener('selectionchange', () => {
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(() => {
+        const selection = document.getSelection();
+        if (!selection || selection.isCollapsed || !highlightProse.contains(selection.anchorNode) || !highlightProse.contains(selection.focusNode)) {
+          return;
+        }
+
+        const text = evenText(selection.toString());
+        const saved = store.get(savedKey) || [];
+        if (text.length < HIGHLIGHT_MIN || text.length > HIGHLIGHT_MAX || saved.includes(text)) {
+          return;
+        }
+
+        store.set(savedKey, [ ...saved, text ].slice(-HIGHLIGHTS_REMEMBERED));
+        postJson(`highlight/${responsesFor}`, { text });
+      }, HIGHLIGHT_SETTLE_MS);
+    });
+  }
+
+  // The most highlighted passage, found in the text nodes as evened-out text
+  const showTopHighlight = ({ text, count }) => {
+    const walker = document.createTreeWalker(highlightProse, NodeFilter.SHOW_TEXT, {
+      acceptNode: (node) => (node.parentElement.closest('.mnote, .hl-label') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
+    });
+    const positions = [];
+    let flat = '';
+
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      [ ...node.data ].forEach((char, offset) => {
+        const even = evenOut(char);
+        if (' ' === even && (!flat || flat.endsWith(' '))) {
+          return;
+        }
+        flat += even;
+        [ ...even ].forEach(() => positions.push([ node, offset ]));
+      });
+    }
+
+    const start = flat.indexOf(evenText(text));
+    if (start < 0) {
+      return;
+    }
+
+    const [ startNode, startOffset ] = positions[start];
+    const [ endNode, endOffset ] = positions[start + evenText(text).length - 1];
+    const range = document.createRange();
+    range.setStart(startNode, startOffset);
+    range.setEnd(endNode, endOffset + 1);
+
+    if (window.CSS?.highlights && window.Highlight) {
+      CSS.highlights.set('top-highlight', new Highlight(range));
+    } else {
+      try {
+        const mark = document.createElement('mark');
+        mark.className = 'top-highlight';
+        range.surroundContents(mark);
+      } catch (error) {
+        return;
+      }
+    }
+
+    startNode.parentElement.closest('.prose > *')?.insertAdjacentHTML('beforebegin', `<div class="hl-label">Eniten korostettu · ${fiCount(count, 'lukija', 'lukijaa')}</div>`);
+  };
+
   if (responsesFor) {
-    getJson(`responses/${responsesFor}`).then(({ comments, fediverse, likes, boosts, people, claps }) => {
+    getJson(`responses/${responsesFor}`).then(({ comments, fediverse, likes, boosts, people, claps, highlight }) => {
       showClaps(claps);
+      if (highlight && highlightProse) {
+        showTopHighlight(highlight);
+      }
 
       const reactions = likes + boosts;
       const line = $('.count-line');

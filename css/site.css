@@ -3203,6 +3203,35 @@ body:has(.comments) .site-foot {
   }
 }
 
+/* The passage most readers highlighted */
+::highlight(top-highlight) {
+  background-color: color-mix(in oklab, var(--accent) 22%, transparent);
+}
+
+.prose mark.top-highlight {
+  background: color-mix(in oklab, var(--accent) 22%, transparent);
+  color: inherit;
+}
+
+.prose .hl-label {
+  display: flex;
+  align-items: center;
+  margin: 0 0 6px;
+  gap: 6px;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 13.5px;
+}
+
+.prose .hl-label::before {
+  width: 14px;
+  height: 14px;
+  background: var(--accent);
+  content: "";
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 11l-5 5v4h4l5-5M14 6l4 4M12.5 7.5l4-4 4 4-4 4'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 11l-5 5v4h4l5-5M14 6l4 4M12.5 7.5l4-4 4 4-4 4'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
 /* AI summary (rollemaa-site summary.php): closed by default, the article stays the opening */
 .ai-summary {
   margin: -24px 0 44px;
@@ -4010,8 +4039,8 @@ body:has(.comments) .site-foot {
 
 /* Drop cap: an article's opening paragraph, three lines deep. Diary days
    start plain, like a page in a notebook */
-.single-post .prose > p:nth-child(1 of :not(.mnote))::first-letter,
-.editor-styles-wrapper.post-type-post .prose > p:nth-child(1 of :not(.mnote))::first-letter,
+.single-post .prose > p:nth-child(1 of :not(.mnote, .hl-label))::first-letter,
+.editor-styles-wrapper.post-type-post .prose > p:nth-child(1 of :not(.mnote, .hl-label))::first-letter,
 .prose .has-drop-cap::first-letter {
   float: left;
   margin: .07em .08em 0 -.02em;
@@ -4024,8 +4053,8 @@ body:has(.comments) .site-foot {
 }
 
 @supports (initial-letter: 3) or (-webkit-initial-letter: 3) {
-  .single-post .prose > p:nth-child(1 of :not(.mnote))::first-letter,
-  .editor-styles-wrapper.post-type-post .prose > p:nth-child(1 of :not(.mnote))::first-letter,
+  .single-post .prose > p:nth-child(1 of :not(.mnote, .hl-label))::first-letter,
+  .editor-styles-wrapper.post-type-post .prose > p:nth-child(1 of :not(.mnote, .hl-label))::first-letter,
   .prose .has-drop-cap::first-letter {
     float: none;
     margin: 0 .12em 0 0;
