@@ -16,13 +16,7 @@ $icons = get_theme_file_uri( 'svg/icons.svg' );
 
 <!-- wp:group {"tagName":"header","className":"site-head"} -->
 <header class="wp-block-group site-head"><!-- wp:group {"className":"bar"} -->
-<div class="wp-block-group bar"><!-- wp:navigation {"overlayMenu":"never","ariaLabel":"Päävalikko","className":"nav"} -->
-<!-- wp:navigation-link {"label":"Blogi","url":"/","kind":"custom"} /-->
-<!-- wp:navigation-link {"label":"Lokikirja","url":"/lokikirja/","kind":"custom"} /-->
-<!-- wp:navigation-link {"label":"Arkisto","url":"/arkisto/","kind":"custom"} /-->
-<!-- wp:navigation-link {"label":"Tietoa","url":"/info/","kind":"custom"} /-->
-<!-- wp:navigation-link {"label":"Kirja","url":"/kirja/","kind":"custom"} /-->
-<!-- /wp:navigation -->
+<div class="wp-block-group bar"><!-- wp:navigation {"ref":33456,"overlayMenu":"never","ariaLabel":"Päävalikko","className":"nav"} /-->
 
 <!-- wp:html -->
 <a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" aria-label="Rollemaa, etusivu"><svg class="ic" aria-hidden="true"><use href="<?php echo esc_url( $icons ); ?>#logo"></use></svg>Rollemaa</a>
