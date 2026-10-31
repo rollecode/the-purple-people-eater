@@ -534,7 +534,7 @@ kbd {
   padding: 10px 0;
   color: inherit;
   font-family: Muli, "Inter", system-ui, sans-serif;
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: 1px;
   line-height: 1;
@@ -546,7 +546,7 @@ kbd {
 .brand svg {
   width: 24px;
   height: 24px;
-  margin-right: 3px;
+  margin-right: 8px;
   transform-origin: left;
   transition: transform .33s, color .33s;
 }
