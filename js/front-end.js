@@ -1,18 +1,29 @@
 /**
  * Front-end JavaScript, vanilla and buildless. Every part checks for its
- * markup first, so one file serves all views. Settings come from
- * window.rollemaa (scripts-styles.php).
+ * markup first, so one file serves all views. What the templates cannot
+ * know comes from the rollemaa/v1 REST routes of the rollemaa-site mu-plugin.
  *
- * Conditional extras live in their own files: heatmap.js (diary archive)
- * and prism.js (singulars with code blocks).
+ * Conditional extras load from their own files: heatmap.js (diary archive)
+ * and prism.js (pages with code blocks).
  */
 
 (() => {
   'use strict';
 
-  const config = window.rollemaa || {};
+  const THEME_URL = document.currentScript.src.replace(/js\/front-end\.js.*$/, '');
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+  const REST_URL = $('link[rel="https://api.w.org/"]').href;
+  const config = {
+    rest: `${REST_URL}rollemaa/v1/`,
+    sprite: `${THEME_URL}svg/icons.svg`,
+    localDomains: [ 'rollemaa.test', 'rollemaa.fi', 'www.rollemaa.fi' ],
+  };
+  const { classList: bodyClasses } = document.body;
+  const postId = (document.body.className.match(/\bpostid-(\d+)/) || [])[1];
+  const articleId = bodyClasses.contains('single-post') ? postId : null;
+  const postIdOf = (element) => (element.closest('.wp-block-post').className.match(/\bpost-(\d+)/) || [])[1];
+  const permalink = ($('link[rel="canonical"]') || window.location).href.split('#')[0];
 
   // localStorage can be missing or full; nothing here is worth an error
   const store = {
@@ -54,6 +65,57 @@
     }
     return response.json();
   });
+
+  const escapeHtml = (text) => String(text).replace(/[&<>"']/g, (char) => `&#${char.charCodeAt(0)};`);
+  const icon = (name, classes = '') => `<svg class="ic ${classes}" aria-hidden="true"><use href="${config.sprite}#${name}"></use></svg>`;
+  const fiNumber = (number) => (number < 10000 ? String(number) : number.toLocaleString('fi-FI'));
+  const fiCount = (number, one, many) => `${fiNumber(number)} ${1 === number ? one : many}`;
+  const fiWord = (number) => [ 'nolla', 'yksi', 'kaksi', 'kolme', 'neljä', 'viisi', 'kuusi', 'seitsemän', 'kahdeksan', 'yhdeksän', 'kymmenen' ][number] ?? fiNumber(number);
+  const textItem = ({ title, link, date, minutes }) => `<li><span class="meta-text">${date} · ${minutes} min</span><a href="${escapeHtml(link)}">${escapeHtml(title)}</a></li>`;
+
+  // How long ago, by calendar days: last night is "eilen" even a few hours later
+  const fiAgo = (unix) => {
+    const DAY = 86400000;
+    const then = new Date(unix * 1000);
+    const midnight = (date) => new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const seconds = Math.max(0, Date.now() - then) / 1000;
+    const days = Math.round((midnight(new Date()) - midnight(then)) / DAY);
+    const unit = (number, one, many) => `${1 === number ? one : `${fiWord(number)} ${many}`} sitten`;
+
+    if (0 === days) {
+      return seconds < 3600 ? unit(Math.max(1, Math.floor(seconds / 60)), 'minuutti', 'minuuttia') : unit(Math.floor(seconds / 3600), 'tunti', 'tuntia');
+    }
+    if (1 === days) {
+      return 'eilen';
+    }
+    if (days < 7) {
+      return unit(days, 'päivä', 'päivää');
+    }
+    if (days < 30) {
+      return unit(Math.floor(days / 7), 'viikko', 'viikkoa');
+    }
+    if (days < 365) {
+      return unit(Math.floor(days / 30), 'kuukausi', 'kuukautta');
+    }
+    return unit(Math.floor(days / 365), 'vuosi', 'vuotta');
+  };
+
+  // Counts, years and the search keys, kept for an hour on this device
+  const SITE_KEY = 'rollemaa:site';
+  const SITE_MAX_AGE = 3600000;
+  let sitePromise;
+  const siteData = () => {
+    if (!sitePromise) {
+      const saved = store.get(SITE_KEY);
+      sitePromise = saved && Date.now() - saved.at < SITE_MAX_AGE
+        ? Promise.resolve(saved.data)
+        : getJson('site').then((data) => {
+          store.set(SITE_KEY, { at: Date.now(), data });
+          return data;
+        });
+    }
+    return sitePromise;
+  };
 
   /**
    * Theme switch: light, dark or follow the system. The prepaint script in
@@ -130,12 +192,12 @@
   /**
    * Most read posts counter, one count per post per hour per tab
    */
-  if (config.post) {
-    const key = `mostread_${config.post}`;
+  if (articleId) {
+    const key = `mostread_${articleId}`;
     const now = Date.now();
     if (now - Number(sessionStorage.getItem(key)) > 3600000) {
       sessionStorage.setItem(key, now);
-      fetch(`${config.rest}read/${config.post}`, { method: 'POST', keepalive: true });
+      fetch(`${config.rest}read/${articleId}`, { method: 'POST', keepalive: true });
     }
   }
 
@@ -193,7 +255,6 @@
     const MIN_LENGTH = 3;
     const cache = new Map();
     const groups = { post: 'Artikkelit', diary: 'Lokikirja', page: 'Sivut' };
-    const escapeHtml = (text) => String(text).replace(/[&<>"']/g, (char) => `&#${char.charCodeAt(0)};`);
     const dateFi = (unix) => {
       const date = new Date(unix * 1000);
       return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
@@ -299,17 +360,17 @@
 
       const started = performance.now();
 
-      const { appId, searchKey, index } = config.algolia;
-      fetch(`https://${appId}-dsn.algolia.net/1/indexes/${index}/query`, {
-        method: 'POST',
-        headers: { 'X-Algolia-Application-Id': appId, 'X-Algolia-API-Key': searchKey },
-        body: JSON.stringify({
-          query: term,
-          facets: [ 'post_type' ],
-          facetingAfterDistinct: true,
-          attributesToRetrieve: [ 'title', 'url', 'date', 'post_type', 'image' ],
-        }),
-      })
+      siteData()
+        .then(({ search: { appId, searchKey, index } }) => fetch(`https://${appId}-dsn.algolia.net/1/indexes/${index}/query`, {
+          method: 'POST',
+          headers: { 'X-Algolia-Application-Id': appId, 'X-Algolia-API-Key': searchKey },
+          body: JSON.stringify({
+            query: term,
+            facets: [ 'post_type' ],
+            facetingAfterDistinct: true,
+            attributesToRetrieve: [ 'title', 'url', 'date', 'post_type', 'image' ],
+          }),
+        }))
         .then((response) => response.json())
         .then((response) => {
           const took = Math.round(performance.now() - started);
@@ -374,62 +435,416 @@
   }
 
   /**
-   * Front page: more cards
+   * Counts, the shelf and the lists under it
    */
-  const loadMore = $('[data-load-more]');
-  const feed = $('[data-feed]');
-  if (loadMore && feed) {
-    const counter = $('[data-feed-count]');
-    loadMore.addEventListener('click', () => {
-      loadMore.disabled = true;
-      const shown = $$('.card', feed).length;
+  const SHELF_TONES = [ 'L', 'D', 'S', 'L', 'S', 'D', 'L', 'S' ];
+  const yearUrl = (year, count) => (count.posts ? `/${year}/` : `/lokikirja/${year}/`);
 
-      getJson(`cards?offset=${shown}`)
-        .then(({ html, done }) => {
-          const first = feed.children.length;
-          feed.insertAdjacentHTML('beforeend', html);
-          markResumable(feed);
-          if (counter) {
-            counter.textContent = counter.textContent.replace(/^\d+/, String(1 + $$('.card', feed).length));
-          }
-          // Keyboard users continue from the first new card
-          const firstNew = feed.children[first];
-          if (firstNew) {
-            $('.card-title a', firstNew).focus();
-          }
-          loadMore.closest('.loadmore').hidden = done;
+  const shelfHtml = (years, maxHeight) => {
+    const most = Math.max(1, ...Object.values(years).map(({ posts }) => posts));
+    let spines = 0;
+
+    return Object.entries(years).map(([ year, count ]) => {
+      if (!count.posts && !count.diary) {
+        return '';
+      }
+
+      const tone = count.posts ? SHELF_TONES[spines % SHELF_TONES.length] : 'S';
+      const height = Math.round(count.posts ? maxHeight * .38 + count.posts / most * maxHeight * .62 : maxHeight * .6);
+      const words = count.posts ? count.post_words : count.diary_words;
+      const label = count.posts ? `${year}: ${count.posts} kirjoitusta` : `${year}: lokikirjassa ${count.diary} päivää`;
+      spines += 1;
+
+      return `<li class="vol" style="--w: ${40 + Math.round(words / 1000)}; --h: ${height}px"><a href="${yearUrl(year, count)}" aria-label="${label}"><span class="sp ${tone}"><span class="n">${count.posts || count.diary}</span></span><span class="pl"></span><span class="y">${year}</span></a></li>`;
+    }).join('');
+  };
+
+  const yearRow = ([ year, count ]) => {
+    const parts = [
+      count.posts ? fiCount(count.posts, 'kirjoitus', 'kirjoitusta') : '',
+      count.diary ? `${fiCount(count.diary, 'päivä', 'päivää')} lokikirjassa` : '',
+    ].filter(Boolean).join(' · ');
+
+    return `<li><a href="${yearUrl(year, count)}">${year}</a><span class="meta-text muted">${parts}</span><b>${fiCount(count.post_words + count.diary_words, 'sana', 'sanaa')}</b></li>`;
+  };
+
+  siteData().then((site) => {
+    const stats = { ...site, texts: site.posts + site.diary };
+
+    $$('[data-stat]').forEach((element) => {
+      element.textContent = fiNumber(stats[element.dataset.stat]);
+    });
+
+    $$('[data-shelf]').forEach((shelf) => {
+      shelf.innerHTML = shelfHtml(site.years, Number(shelf.dataset.shelf));
+      // Starts from the newest years on narrow screens
+      shelf.scrollLeft = shelf.scrollWidth;
+    });
+
+    const years = $('[data-years]');
+    if (years) {
+      years.innerHTML = Object.entries(site.years).reverse().map(yearRow).join('');
+    }
+  });
+
+  /**
+   * Front page: most read and the "Nyt" panel
+   */
+  const chart = $('[data-most-read]');
+  if (chart) {
+    const TREND_LABELS = { up: 'nousussa', flat: 'ennallaan', down: 'laskussa' };
+
+    getJson('most-read?period=week&limit=4').then((posts) => {
+      if (!posts.length) {
+        chart.closest('.wp-block-group').hidden = true;
+        return;
+      }
+
+      chart.innerHTML = posts.map(({ title, link, reads, trend }, index) => `<li><span class="pos" aria-hidden="true">${index + 1}</span><a href="${escapeHtml(link)}">${escapeHtml(title)}</a><span class="reads meta-text"><svg class="ic ic-sm" role="img" aria-label="${TREND_LABELS[trend]}"><use href="${config.sprite}#${trend}"></use></svg>${fiNumber(reads)}<span class="screen-reader-text"> lukukertaa</span></span></li>`).join('');
+    });
+  }
+
+  const nowItem = (iconName, label, url, what, source) => `<li>${icon(iconName)}<div><span class="label meta-text">${label}</span><a class="what" href="${escapeHtml(url)}">${escapeHtml(what)}</a><span class="src">${escapeHtml(source)}</span></div></li>`;
+  const nowList = $('[data-now]');
+  if (nowList) {
+    const nowPanel = nowList.closest('.now');
+    nowPanel.hidden = true;
+
+    getJson('now').then(({ listening, watched, reading }) => {
+      const items = [];
+
+      if (listening) {
+        items.push(nowItem('lastfm', listening.playing ? 'Soi nyt' : 'Kuunneltua', listening.url, `${listening.artist} – ${listening.track}`, listening.date ? `Last.fm, ${fiAgo(listening.date)}` : 'Last.fm'));
+      }
+      if (watched) {
+        const source = watched.source || 'Rollekino';
+        items.push(nowItem('Trakt' === watched.source ? 'trakt' : 'rollekino', 'Katsottua', watched.url, watched.title, `${source}, ${fiAgo(watched.date)}`));
+      }
+      if (reading) {
+        items.push(nowItem('book', 'Luettua', reading.url, reading.title, 'Luku'));
+      }
+
+      nowList.innerHTML = items.join('');
+      nowPanel.hidden = !items.length;
+    }).catch(() => {});
+  }
+
+  /**
+   * Random finds: one draw on arrival, more on request
+   */
+  const picks = $('[data-picks]');
+  if (picks) {
+    const draw = () => {
+      picks.classList.add('is-loading');
+      getJson('random')
+        .then((posts) => {
+          picks.innerHTML = posts.map(textItem).join('');
         })
-        .finally(() => {
-          loadMore.disabled = false;
-        });
+        .finally(() => picks.classList.remove('is-loading'));
+    };
+
+    draw();
+    $$('[data-shuffle]').forEach((button) => button.addEventListener('click', draw));
+  }
+
+  /**
+   * Archive page: tags and the most read and discussed lists
+   */
+  const ARCHIVE_TAGS = 18;
+  const ARCHIVE_RANKED = 30;
+  const ARCHIVE_RANK_OPEN = 10;
+  const NOISE_TAG = 'twitter-tilapaivitys';
+
+  const tagBars = $('[data-tagbars]');
+  if (tagBars) {
+    fetch(`${REST_URL}wp/v2/tags?orderby=count&order=desc&per_page=${ARCHIVE_TAGS + 1}&_fields=name,link,count,slug`)
+      .then((response) => response.json())
+      .then((tags) => {
+        const shown = tags.filter(({ slug }) => NOISE_TAG !== slug).slice(0, ARCHIVE_TAGS);
+        const top = Math.max(1, ...shown.map(({ count }) => count));
+
+        tagBars.innerHTML = shown.map(({ name, link, count }) => `<li><a href="${escapeHtml(link)}"><span class="nm">${name}</span><span class="meta-text">${count}</span><span class="b" aria-hidden="true"><i style="width: ${(count / top * 100).toFixed(1)}%"></i></span></a></li>`).join('');
+      });
+  }
+
+  const rankedList = (items, start) => `<ol class="ranked" start="${start}">${items.map(({ link, title, count }, index) => `<li><span class="pos" aria-hidden="true">${String(start + index).padStart(2, '0')}</span><a href="${escapeHtml(link)}">${escapeHtml(title)}</a><span class="num"><b>${fiNumber(count)}</b></span></li>`).join('')}</ol>`;
+
+  const fillRanked = (element, items, unit) => {
+    const more = items.slice(ARCHIVE_RANK_OPEN);
+
+    element.innerHTML = rankedList(items.slice(0, ARCHIVE_RANK_OPEN), 1)
+      + (more.length ? `<details class="more-ranked"><summary>Koko lista, ${items.length} kirjoitusta</summary>${rankedList(more, ARCHIVE_RANK_OPEN + 1)}</details>` : '')
+      + `<p class="ranked-unit meta-text">${unit}</p>`;
+  };
+
+  const mostRead = $('[data-ranked="read"]');
+  if (mostRead) {
+    getJson(`most-read?period=alltime&limit=${ARCHIVE_RANKED}`).then((posts) => fillRanked(mostRead, posts.map((post) => ({ ...post, count: post.reads })), 'Lukukerrat kaikkien aikojen.'));
+  }
+
+  const discussed = $('[data-ranked="discussed"]');
+  if (discussed) {
+    getJson(`discussed?limit=${ARCHIVE_RANKED}`).then((posts) => fillRanked(discussed, posts, 'Kommentit kaikkien aikojen.'));
+  }
+
+  /**
+   * All posts page. PHP's newest-first order does not survive JSON's numeric keys.
+   */
+  const allPosts = $('[data-all-posts]');
+  if (allPosts) {
+    const monthName = (month) => {
+      const name = new Date(2000, month - 1).toLocaleString('fi', { month: 'long' });
+      return name[0].toUpperCase() + name.slice(1);
+    };
+    const newestFirst = (object) => Object.entries(object).sort(([ a ], [ b ]) => b - a);
+
+    getJson('all-posts').then((data) => {
+      const years = newestFirst(data);
+      const rail = years.map(([ year, months ]) => `<li><a href="#year-${year}">${year} <span class="meta-text">${Object.values(months).flat().length}</span></a></li>`).join('');
+      const body = years.map(([ year, months ]) => `<section class="all-year" id="year-${year}" aria-labelledby="year-title-${year}"><h2 class="all-year-title" id="year-title-${year}">${year}</h2>${newestFirst(months).map(([ month, items ]) => `<h3 class="all-month">${monthName(month)}</h3><ul class="all-list">${items.map(({ day, link, title }) => `<li><span class="meta-text">${day}</span><a href="${escapeHtml(link)}">${escapeHtml(title)}</a></li>`).join('')}</ul>`).join('')}</section>`).join('');
+
+      allPosts.innerHTML = `<nav class="all-years" aria-label="Vuodet"><ol>${rail}</ol></nav><div class="all-body">${body}</div>`;
+      watchYears();
     });
   }
 
   /**
-   * Front page: draw new random finds
+   * Article parts the template cannot know: side notes, related texts,
+   * the age note, the byline icons and counts
    */
-  const picks = $('#random-picks');
-  $$('[data-shuffle]').forEach((button) => button.addEventListener('click', () => {
-    picks.classList.add('is-loading');
-    getJson('random')
-      .then(({ html }) => {
-        picks.innerHTML = html;
-      })
-      .finally(() => picks.classList.remove('is-loading'));
-  }));
+  const prose = $('.single-post .prose');
+
+  const placeNotes = (notes) => {
+    const paragraphs = $$('p', prose);
+
+    notes.forEach(({ label, url, title, about, text, paragraph, href }, index) => {
+      const target = paragraphs[paragraph];
+      if (!target) {
+        return;
+      }
+
+      const link = href && $$('a', target).find((anchor) => anchor.getAttribute('href') === href);
+      if (link) {
+        link.insertAdjacentHTML('afterend', `<sup class="ref" aria-hidden="true">${index + 1}</sup>`);
+      }
+
+      target.insertAdjacentHTML('beforebegin', `<div class="mnote" role="note"><span class="n" aria-hidden="true">${index + 1}</span><b>${escapeHtml(label)}</b> <a href="${escapeHtml(url)}">${escapeHtml(title)}</a>${about ? `<span class="about">${escapeHtml(about)}</span>` : ''}${text ? `<span class="snippet">${escapeHtml(text)}</span>` : ''}</div>`);
+    });
+  };
+
+  if (articleId) {
+    getJson(`notes/${articleId}`).then(placeNotes);
+
+    const related = $('[data-related]');
+    getJson(`related/${articleId}`).then((posts) => {
+      if (!posts.length) {
+        related.closest('.wp-block-group').hidden = true;
+        return;
+      }
+      related.innerHTML = posts.map(textItem).join('');
+    });
+
+    const META_ICONS = { 'wp-block-post-date': 'cal', 'wp-block-post-time-to-read': 'clock', 'wp-block-post-comments-link': 'comment' };
+    $$('.byline .meta > *').forEach((part) => {
+      const name = Object.keys(META_ICONS).find((className) => part.classList.contains(className));
+      if (name) {
+        part.insertAdjacentHTML('afterbegin', icon(META_ICONS[name], 'ic-sm'));
+      }
+    });
+
+    // Reactions are comments to WordPress, so only this route tells them apart
+    const AUTHOR_BORN = new Date(1988, 10, 1);
+    const ARCHIVE_NOTE_AFTER_YEARS = 2;
+    const YEAR_MS = 31557600000;
+    const note = $('[data-archive-note]');
+    const written = new Date($('.byline time').dateTime);
+    const yearsAgo = Math.floor((Date.now() - written) / YEAR_MS);
+
+    if (note && yearsAgo >= ARCHIVE_NOTE_AFTER_YEARS) {
+      const month = written.toLocaleString('fi', { month: 'long' });
+      note.innerHTML = `<span class="yr" aria-hidden="true">${written.getFullYear()}</span><p><b>Arkistomatskua.</b> Kirjoitettu ${month}ssa ${written.getFullYear()}, ${fiWord(yearsAgo)} vuotta sitten. Olin kirjoittamishetkellä ${Math.floor((written - AUTHOR_BORN) / YEAR_MS)}-vuotias.</p>`;
+      note.hidden = false;
+    }
+
+    // The photo's caption is its credit
+    const hero = $('.article-head:has(> figure)');
+    if (hero) {
+      fetch(`${REST_URL}wp/v2/posts/${articleId}?_embed=wp:featuredmedia&_fields=_links,_embedded`)
+        .then((response) => response.json())
+        .then(({ _embedded: embedded }) => {
+          const caption = embedded?.['wp:featuredmedia']?.[0]?.caption?.rendered;
+          if (caption) {
+            hero.insertAdjacentHTML('beforeend', `<span class="credit">${caption.replace(/<[^>]+>/g, '').trim()}</span>`);
+          }
+        });
+    }
+  }
+
+  // One face per person, however many ways they reacted
+  const reactionsHtml = ({ faces, counts }) => (faces.length ? `<div class="rx"><ul class="rx-faces" aria-label="Reagoineet">${faces.map(({ url, name, avatar }) => `<li><a href="${escapeHtml(url)}" title="${escapeHtml(name)}"><img src="${escapeHtml(avatar)}" alt="${escapeHtml(name)}" width="32" height="32" loading="lazy"></a></li>`).join('')}</ul><p class="rx-count meta-text">${icon('heart', 'ic-sm')}${counts}</p></div>` : '');
+
+  const responsesFor = articleId || (bodyClasses.contains('single-diary') ? postId : null);
+  if (responsesFor) {
+    getJson(`responses/${responsesFor}`).then(({ comments, fediverse, likes, boosts, people }) => {
+      const reactions = likes + boosts;
+      const line = $('.count-line');
+      const meta = $('.byline .meta');
+
+      if (reactions && meta) {
+        meta.insertAdjacentHTML('beforeend', `<span>${icon('heart', 'ic-sm')}${fiCount(reactions, 'reaktio', 'reaktiota')}</span>`);
+      }
+
+      const faces = $('[data-reactions]');
+      if (faces) {
+        faces.innerHTML = reactionsHtml(people);
+      }
+
+      if (line) {
+        line.innerHTML = comments
+          ? `${fiCount(comments, 'kommentti', 'kommenttia')}${fediverse ? ` · ${icon('fedi', 'ic-sm')}${fiNumber(fediverse)} fediversumista` : ''}`
+          : 'Ei vielä kommentteja';
+      }
+    });
+  }
+
+  // A subtitle after the dash sets in italics
+  const coverTitle = $('.cover-title');
+  if (coverTitle) {
+    const [ main, subtitle, extra ] = coverTitle.innerHTML.split(' – ');
+    if (subtitle && !extra) {
+      coverTitle.innerHTML = `${main} – <em>${subtitle}</em>`;
+    }
+  }
 
   /**
-   * Front page: refresh the "Nyt" panel; the page shows the cached copy
+   * Comments: Rolle's own, fediverse handles and long ones folded
    */
-  const nowPanel = $('[data-now]');
-  if (nowPanel) {
-    getJson('now').then(({ html }) => {
-      if (html) {
-        $('[data-now-items]', nowPanel).innerHTML = html;
-        nowPanel.hidden = false;
-      }
-    }).catch(() => {});
+  const AUTHOR_URL = 'https://mementomori.social/@rolle';
+  const COMMENT_CLAMP_CHARS = 900;
+
+  $$('.comment-list .cmt').forEach((comment, index) => {
+    const link = $('.name a', comment);
+    const url = link ? link.href.replace(/\/$/, '') : '';
+    const handle = url.match(/^https?:\/\/([^/]+)\/@([^/?]+)/);
+    const body = $('.cmt-body', comment);
+
+    if (AUTHOR_URL === url || comment.closest('.bypostauthor')) {
+      comment.classList.add('is-author');
+      $('.name', comment).insertAdjacentHTML('beforeend', '<span class="role">Kirjoittaja</span>');
+    } else if (handle) {
+      $('.name', comment).insertAdjacentHTML('beforeend', `<a class="handle" href="${escapeHtml(url)}">@${handle[2]}@${handle[1]}</a>`);
+    }
+
+    if (handle) {
+      $('.when', comment).insertAdjacentHTML('beforeend', `<span class="via">${icon('masto')}fediversumista</span>`);
+    }
+
+    if (body.textContent.length > COMMENT_CLAMP_CHARS) {
+      body.id = `comment-body-${index}`;
+      body.classList.add('is-clamped');
+      body.insertAdjacentHTML('afterend', `<button class="expand" type="button" aria-expanded="false" aria-controls="${body.id}" data-expand><span class="screen-reader-text">Näytä koko kommentti</span>${icon('chev')}</button>`);
+    }
+  });
+
+  $$('[data-permalink]').forEach((field) => {
+    field.value = permalink;
+  });
+
+  const heading = $('.wp-block-post-title');
+  $$('[data-share]').forEach((link) => {
+    link.href = `https://share.joinmastodon.org/#text=${encodeURIComponent(`${heading.textContent} ${permalink}`)}`;
+  });
+
+  /**
+   * Listings: diary days are marked, and the image link adds nothing to
+   * the title link for keyboards and screen readers
+   */
+  $$('.row').forEach((row) => {
+    if (row.closest('.type-diary')) {
+      $('.meta-line', row).insertAdjacentHTML('afterbegin', `<span class="diary-mark">${icon('logbook', 'ic-sm')}Lokikirja</span>`);
+    }
+  });
+
+  $$('.row-thumb a, .card-img a, .card .wp-block-read-more').forEach((link) => {
+    link.tabIndex = -1;
+    link.setAttribute('aria-hidden', 'true');
+  });
+
+  $$('.card .wp-block-read-more').forEach((link) => link.insertAdjacentHTML('beforeend', ` ${icon('arrow')}`));
+
+  /**
+   * Lokikirja: the day's numbers and the same day a year ago
+   */
+  const dayHtml = ({ gratitude, scales, conditions, people }) => [
+    gratitude ? `<div class="day-grat"><p class="day-label meta-text">Tänään olen kiitollinen</p><p class="day-grat-text">${gratitude}</p></div>` : '',
+    scales.length ? `<ul class="day-scales">${scales.map(({ label, value, tone }) => `<li class="is-${tone}"><span class="meta-text">${escapeHtml(label)}</span><b>${value} %</b><span class="day-bar" aria-hidden="true"><i style="width: ${Math.min(100, value)}%"></i></span></li>`).join('')}</ul>` : '',
+    conditions.length ? `<p class="day-conds meta-text">${conditions.map(({ icon: svg, text, url }) => `<span>${svg}${url ? `<a href="${escapeHtml(url)}">${escapeHtml(text)}</a>` : escapeHtml(text)}</span>`).join('')}</p>` : '',
+    postId ? reactionsHtml(people) : '',
+  ].join('');
+
+  const days = $$('[data-day]');
+  if (days.length) {
+    const idOf = (day) => postId || postIdOf(day);
+
+    getJson(`days?ids=${days.map(idOf).join(',')}`).then((data) => {
+      days.forEach((day) => {
+        const entry = data[idOf(day)];
+        if (entry) {
+          day.innerHTML = dayHtml(entry);
+        }
+
+        // Each day of the archive needs a name of its own
+        const entryRow = day.closest('.dentry');
+        if (entryRow) {
+          day.closest('.day').setAttribute('aria-label', `${$('.wp-block-post-title', entryRow).textContent}, päivän tiedot`);
+        }
+      });
+    });
   }
+
+  const yearAgo = $('[data-year-ago]');
+  if (yearAgo) {
+    getJson(`year-ago/${postId}`).then((entry) => {
+      if (!entry) {
+        return;
+      }
+
+      const more = entry.long ? `<button class="btn btn-ghost yearago-more" type="button" aria-expanded="false" aria-controls="year-ago-text" data-expand data-more="Näytä koko päivä" data-less="Näytä vähemmän"><span class="lbl">Näytä koko päivä</span>${icon('chev')}</button>` : '';
+
+      yearAgo.innerHTML = `<aside class="yearago" aria-labelledby="year-ago-title"><p class="yearago-label meta-text">${icon('clock', 'ic-sm')}Vuosi sitten tänä päivänä</p><h2 id="year-ago-title"><a href="${escapeHtml(entry.link)}">${escapeHtml(entry.title)}</a></h2><p class="dmeta meta-text">${escapeHtml(entry.date)}</p><div class="prose yearago-text${entry.long ? ' is-clamped' : ''}" id="year-ago-text">${entry.content}</div>${more}</aside>`;
+    });
+  }
+
+  // The writing calendar belongs to the first page of the whole diary
+  const heatmap = $('[data-heatmap]');
+  if (heatmap) {
+    if (bodyClasses.contains('paged') || bodyClasses.contains('date')) {
+      heatmap.hidden = true;
+    } else {
+      document.head.append(Object.assign(document.createElement('script'), { src: `${THEME_URL}js/heatmap.js`, async: true }));
+    }
+  }
+
+  // Code highlighting only where there is code
+  if ($('.prose pre')) {
+    document.head.append(
+      Object.assign(document.createElement('link'), { rel: 'stylesheet', href: `${THEME_URL}css/prism.css` }),
+      Object.assign(document.createElement('script'), { src: `${THEME_URL}js/prism.js`, async: true })
+    );
+  }
+
+  /**
+   * The header marks the section, not only the exact page: an article
+   * belongs to Blogi, a diary day to Lokikirja
+   */
+  const sectionPath = [ 'single-diary', 'post-type-archive-diary' ].some((name) => bodyClasses.contains(name))
+    ? '/lokikirja/'
+    : [ 'single-post', 'home', 'front-page', 'category', 'tag', 'date' ].some((name) => bodyClasses.contains(name)) && '/';
+  $$('.nav a').forEach((link) => {
+    if (sectionPath && new URL(link.href).pathname === sectionPath) {
+      link.setAttribute('aria-current', 'page');
+    }
+  });
 
   /**
    * Long texts remember how far you got. The byline offers to continue,
@@ -459,8 +874,8 @@
   };
 
   function markResumable(root) {
-    $$('.card[data-post-id]', root).forEach((card) => {
-      const saved = store.get(`${READ_PREFIX}${card.dataset.postId}`);
+    $$('.card', root).forEach((card) => {
+      const saved = store.get(`${READ_PREFIX}${postIdOf(card)}`);
       if (!saved || saved.pct < RESUME_MIN || saved.pct > RESUME_MAX || $('.resume-chip', card)) {
         return;
       }
@@ -475,9 +890,8 @@
 
   markResumable(document);
 
-  const prose = $('.single-post .prose');
-  if (prose && config.post) {
-    const key = `${READ_PREFIX}${config.post}`;
+  if (prose && articleId) {
+    const key = `${READ_PREFIX}${articleId}`;
 
     // How far the reader is, in a corner; pressing it goes back to the top
     const meter = document.createElement('button');
@@ -517,7 +931,7 @@
       $('.resume-bar i', resume).style.width = `${saved.pct}%`;
       resume.hidden = false;
 
-      const hero = $('.photo-hero');
+      const hero = $('.article-head:has(> figure)');
       if (hero) {
         hero.insertAdjacentHTML('beforeend', `<a class="ribbon" href="#" data-resume-go aria-label="Jatka siitä, mihin jäit (${saved.pct} % luettu)"></a>`);
       }
@@ -583,8 +997,8 @@
   /**
    * All posts page: the year rail marks the year in view
    */
-  const yearLinks = $$('.all-years a');
-  if (yearLinks.length && 'IntersectionObserver' in window) {
+  function watchYears() {
+    const yearLinks = $$('.all-years a');
     const yearObserver = new IntersectionObserver((entries) => {
       entries.filter((entry) => entry.isIntersecting).forEach((entry) => {
         yearLinks.forEach((link) => {
@@ -606,7 +1020,7 @@
   $$('[data-copy]').forEach((button) => button.addEventListener('click', () => {
     const label = $('span', button);
     const original = label ? label.textContent : '';
-    navigator.clipboard.writeText(button.dataset.copy).then(() => {
+    navigator.clipboard.writeText(permalink).then(() => {
       if (label) {
         label.textContent = 'Kopioitu';
         setTimeout(() => {
@@ -619,13 +1033,18 @@
   /**
    * Long comments open in full on request
    */
-  $$('[data-expand]').forEach((button) => button.addEventListener('click', () => {
+  document.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-expand]');
+    if (!button) {
+      return;
+    }
+
     const body = document.getElementById(button.getAttribute('aria-controls'));
     const expanded = 'true' === button.getAttribute('aria-expanded');
     body.classList.toggle('is-clamped', expanded);
     button.setAttribute('aria-expanded', String(!expanded));
     $('.screen-reader-text, .lbl', button).textContent = expanded ? (button.dataset.more || 'Näytä koko kommentti') : (button.dataset.less || 'Näytä vähemmän');
-  }));
+  });
 
   /**
    * Diary entry: the note about the diary until it is closed once
@@ -640,21 +1059,14 @@
   }
 
   /**
-   * The shelf starts from the newest years on narrow screens
-   */
-  $$('.shelf').forEach((shelf) => {
-    shelf.scrollLeft = shelf.scrollWidth;
-  });
-
-  /**
    * Article with a photo: the head appears at once when the mouse moves over
    * it, a moment later when it moves elsewhere on the hero, and sleeps again
    * once it stops. It stays awake under a resting pointer, so no link vanishes
-   * from under it. Keyboard focus is handled in nav.css.
+   * from under it. Keyboard focus is handled in the stylesheet.
    */
   const HEAD_WAKE_MS = 2000;
   const HEAD_AWAKE_MS = 2000;
-  const photoHero = $('.photo-hero');
+  const photoHero = $('.article-head:has(> figure)');
   const siteHead = $('.site-head');
   if (photoHero && siteHead && window.matchMedia('(hover: hover)').matches) {
     const { classList } = document.body;
@@ -714,6 +1126,7 @@
       ownAd.innerHTML = adContent;
       ownAd.classList.add('ownad-unblockable');
       ownAd.setAttribute('aria-label', 'Mainos: Digitoimisto Dude');
+      document.head.append(Object.assign(document.createElement('link'), { rel: 'stylesheet', href: `${THEME_URL}css/ads.css` }));
       referenceElement.after(ownAd);
     };
 

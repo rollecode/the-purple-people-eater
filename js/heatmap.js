@@ -2,31 +2,22 @@
  * Writing heatmap on the lokikirja front: a year of daily word counts, one
  * square per day, darker for more words.
  *
- * Data comes from the `heatmapdata` global (localized on the diary archive
- * only): { <unix timestamp of local midnight>: <word count> }, and the
- * days with a diary entry from `heatmapdays`: { 'Y-m-d': <address> }.
- * Those days are links: one tab stop, arrow keys between days.
+ * Data comes from the rollemaa/v1/heatmap route: word counts per day, and
+ * the addresses of days with a diary entry: { words: { 'Y-m-d': <count> },
+ * links: { 'Y-m-d': <address> } }. Those days are links: one tab stop,
+ * arrow keys between days.
  */
 
 (() => {
   'use strict';
 
   const el = document.getElementById('heatmap');
-  if (!el || typeof window.heatmapdata === 'undefined') {
-    return;
-  }
+  const rest = document.querySelector('link[rel="https://api.w.org/"]').href;
 
-  const days = window.heatmapdays || {};
+  const draw = ({ words: counts, links: days }) => {
   const MONTHS = [ 'tammi', 'helmi', 'maalis', 'huhti', 'touko', 'kesä', 'heinä', 'elo', 'syys', 'loka', 'marras', 'joulu' ];
   const CELL = 18; // 14px square and a 4px gap
   const localIso = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-
-  // Word counts per local calendar day
-  const counts = {};
-  Object.entries(window.heatmapdata).forEach(([ ts, words ]) => {
-    const key = localIso(new Date(ts * 1000));
-    counts[key] = (counts[key] || 0) + Number(words);
-  });
 
   const max = Math.max(...Object.values(counts), 1);
   const level = (value) => (value ? Math.min(4, Math.ceil(value / (max / 4))) : 0);
@@ -137,4 +128,7 @@
   if (scroller) {
     scroller.addEventListener('scroll', hideTip, { passive: true });
   }
+  };
+
+  fetch(`${rest}rollemaa/v1/heatmap`).then((response) => response.json()).then(draw);
 })();
