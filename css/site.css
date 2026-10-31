@@ -1653,12 +1653,14 @@ body:has(.comments) .site-foot {
 /* The lead: the picture across the page, a headline as big as a cover's */
 .lead-badge {
   display: inline-flex;
-  position: absolute;
+  position: relative;
   z-index: 2;
-  top: 24px;
-  left: 24px;
+  grid-row: 1;
+  grid-column: 6 / -1;
   align-items: center;
-  margin: 0;
+  align-self: start;
+  justify-self: start;
+  margin: 24px;
   padding: 9px 16px 9px 12px;
   gap: 8px;
   border-radius: 999px;
@@ -1684,50 +1686,37 @@ body:has(.comments) .site-foot {
 }
 
 .card-lead {
-  position: relative;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 40px 32px;
+  align-items: center;
+  gap: 32px;
+}
+
+/* Headline on the left, the picture beside it, both within one screen */
+.card-lead .card-body {
+  display: flex;
+  grid-row: 1;
+  grid-column: 1 / span 5;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
 }
 
 .card-lead .card-img {
-  grid-column: 1 / -1;
-  aspect-ratio: 21 / 10;
-}
-
-.card-lead .card-body {
-  display: contents;
+  grid-row: 1;
+  grid-column: 6 / -1;
+  max-height: 72vh;
+  aspect-ratio: 4 / 3;
 }
 
 .card-lead .card-title {
-  grid-column: 1 / span 8;
-  grid-row: 2 / span 3;
-  align-self: start;
-  font-size: clamp(56px, 7.4vw, 116px);
-  line-height: .94;
+  font-size: clamp(44px, 4.8vw, 80px);
+  line-height: .96;
   letter-spacing: -.01em;
 }
 
-.card-lead .meta-line,
-.card-lead .excerpt,
-.card-lead .wp-block-read-more {
-  grid-column: 9 / -1;
-}
-
-.card-lead .meta-line {
-  padding-top: 14px;
-}
-
 .card-lead .excerpt {
-  font-size: 20px;
-}
-
-.card-lead .wp-block-read-more {
-  justify-self: start;
-}
-
-.card-lead .card-body > .resume-chip {
-  grid-column: 9 / -1;
+  font-size: 19px;
 }
 
 /* The feed, six at a time */
@@ -2168,21 +2157,15 @@ body:has(.comments) .site-foot {
     grid-template-columns: 1fr;
   }
 
-  .card-lead .card-title {
-    grid-column: 1 / -1;
-    grid-row: auto;
-  }
-
-  .card-lead .meta-line,
-  .card-lead .excerpt,
-  .card-lead .wp-block-read-more,
-  .card-lead .card-body > .resume-chip {
+  .card-lead .card-img,
+  .card-lead .lead-badge {
+    grid-row: 1;
     grid-column: 1 / -1;
   }
 
-  .card-lead .meta-line {
+  .card-lead .card-body {
     grid-row: 2;
-    padding-top: 0;
+    grid-column: 1 / -1;
   }
 
   .cards > li:nth-child(6n + 4),
