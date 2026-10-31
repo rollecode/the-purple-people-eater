@@ -4433,6 +4433,20 @@ a.heat-day:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin-top: 56px;
+  gap: 24px;
+}
+
+/* Arrow on the outer side, and the whole half is the link */
+.prevnext .wp-block-post-navigation-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.prevnext .post-navigation-link-next {
+  justify-content: flex-end;
+  text-align: right;
 }
 
 .prevnext a {
@@ -4440,28 +4454,48 @@ a.heat-day:hover {
   padding: 24px 0;
   gap: 4px;
   color: inherit;
-  font-family: var(--display);
-  font-size: 34px;
-  line-height: 1;
   text-decoration: none;
 }
 
-.prevnext .post-navigation-link-next {
-  grid-column: 2;
-  padding-left: 24px;
-  text-align: right;
+.prevnext a::after {
+  position: absolute;
+  inset: 0;
+  content: "";
 }
 
-.prevnext a:hover {
+.prevnext .is-arrow-arrow {
+  display: grid;
+  flex: none;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--rule-strong);
+  color: var(--accent);
+  font-size: 24px;
+  line-height: 1;
+  transition: background-color .2s var(--ease), color .2s var(--ease);
+}
+
+.prevnext .wp-block-post-navigation-link:hover .is-arrow-arrow {
+  background: var(--accent);
+  color: var(--on-deep);
+}
+
+.prevnext .post-navigation-link__label {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.prevnext .post-navigation-link__title {
+  font-family: var(--display);
+  font-size: 34px;
+  line-height: 1;
+}
+
+.prevnext a:hover .post-navigation-link__title {
   text-decoration: underline;
   text-decoration-thickness: 1px;
-}
-
-.prevnext .wp-block-post-navigation-link__label {
-  color: var(--muted);
-  font-family: var(--sans);
-  font-size: 14px;
-  line-height: 1.5;
 }
 
 @media (max-width: 860px) {
@@ -4482,8 +4516,18 @@ a.heat-day:hover {
     gap: 16px 20px;
   }
 
-  .prevnext a {
-    font-size: 28px;
+  .prevnext .post-navigation-link__title {
+    font-size: 24px;
+    white-space: nowrap;
+  }
+
+  .prevnext .is-arrow-arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .prevnext .wp-block-post-navigation-link {
+    gap: 12px;
   }
 }
 
