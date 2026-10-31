@@ -23,10 +23,12 @@
 <div class="wp-block-group read dentries"><!-- wp:query {"query":{"inherit":true}} -->
 <div class="wp-block-query"><!-- wp:post-template -->
 <!-- wp:group {"className":"dentry"} -->
-<div class="wp-block-group dentry"><!-- wp:post-title {"level":2,"isLink":true} /-->
+<div class="wp-block-group dentry"><!-- wp:post-title {"level":0,"className":"dentry-day"} /-->
+
+<!-- wp:post-date {"format":"l j. F Y","isLink":true,"className":"diary-date"} /-->
 
 <!-- wp:group {"className":"dmeta meta-text"} -->
-<div class="wp-block-group dmeta meta-text"><!-- wp:post-date {"format":"l j.n.Y \\k\\l\\o G.i"} /--><!-- wp:post-time-to-read {"displayMode":"words"} /--><!-- wp:post-comments-link /--></div>
+<div class="wp-block-group dmeta meta-text"><!-- wp:post-date {"format":"\\K\\e\\l\\l\\o G.i"} /--><!-- wp:post-time-to-read {"displayMode":"words"} /--><!-- wp:post-comments-link /--></div>
 <!-- /wp:group -->
 
 <!-- wp:post-content {"className":"prose","metadata":{"ignoredHookedBlocks":["activitypub/reactions"]}} /-->

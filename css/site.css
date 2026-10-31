@@ -4175,8 +4175,22 @@ a.heat-day:hover {
   margin-top: 32px;
 }
 
+.dentry .dmeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+}
+
+.dentry-day {
+  margin: 0 0 10px;
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 600;
+}
+
 .dentry h2 {
   font-size: clamp(40px, 4vw, 56px);
+  font-style: italic;
   line-height: 1;
 }
 

@@ -796,7 +796,7 @@
         // Each day of the archive needs a name of its own
         const entryRow = day.closest('.dentry');
         if (entryRow) {
-          day.closest('.day').setAttribute('aria-label', `${$('.wp-block-post-title', entryRow).textContent}, päivän tiedot`);
+          day.closest('.day').setAttribute('aria-label', `${$('.diary-date', entryRow).textContent}, päivän tiedot`);
         }
       });
     });
