@@ -649,14 +649,6 @@
       related.innerHTML = posts.map(textItem).join('');
     });
 
-    const META_ICONS = { 'wp-block-post-date': 'cal', 'wp-block-post-time-to-read': 'clock', 'wp-block-post-comments-link': 'comment' };
-    $$('.byline .meta > *').forEach((part) => {
-      const name = Object.keys(META_ICONS).find((className) => part.classList.contains(className));
-      if (name) {
-        part.insertAdjacentHTML('afterbegin', icon(META_ICONS[name], 'ic-sm'));
-      }
-    });
-
     // Reactions are comments to WordPress, so only this route tells them apart
     const AUTHOR_BORN = new Date(1988, 10, 1);
     const ARCHIVE_NOTE_AFTER_YEARS = 2;
