@@ -1576,8 +1576,8 @@ body:has(.comments) .site-foot {
   padding-top: 104px;
 }
 
-.sec-title-next {
-  margin-top: 128px;
+.posts > .wp-block-query + .wp-block-query {
+  margin-top: 88px;
 }
 
 .card {
@@ -2192,6 +2192,10 @@ body:has(.comments) .site-foot {
 
   .cards {
     gap: 64px;
+  }
+
+  .posts > .wp-block-query + .wp-block-query {
+    margin-top: 64px;
   }
 
   .cards > li,
