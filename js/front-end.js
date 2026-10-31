@@ -527,7 +527,7 @@
         items.push(nowItem('Trakt' === source ? 'trakt' : 'rollekino', 'Katsottua', watched.url, watched.title, source, fiAgo(watched.date)));
       }
       if (reading) {
-        items.push(nowItem('book', 'Luettua', reading.url, reading.title, 'Luku'));
+        items.push(nowItem('book', 'Luettua', reading.url, reading.title, 'Luku', reading.date && fiAgo(reading.date)));
       }
 
       nowList.innerHTML = items.join('');
