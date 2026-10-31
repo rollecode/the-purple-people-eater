@@ -1932,6 +1932,18 @@ body:has(.comments) .site-foot {
   font-size: 15px;
 }
 
+.now .src a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: .2em;
+}
+
+.now .src a:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
 /* Random finds */
 .shuffle {
   padding-block: 72px 24px;

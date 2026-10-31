@@ -504,7 +504,13 @@
     });
   }
 
-  const nowItem = (iconName, label, url, what, source) => `<li>${icon(iconName)}<div><span class="label meta-text">${label}</span><a class="what" href="${escapeHtml(url)}">${escapeHtml(what)}</a><span class="src">${escapeHtml(source)}</span></div></li>`;
+  const PROFILES = {
+    'Last.fm': 'https://www.last.fm/user/rolle-',
+    Trakt: 'https://trakt.tv/users/rolle',
+    Rollekino: 'https://www.rollekino.fi',
+    Luku: 'https://luku.app/u/rolle',
+  };
+  const nowItem = (iconName, label, url, what, service, when) => `<li>${icon(iconName)}<div><span class="label meta-text">${label}</span><a class="what" href="${escapeHtml(url)}">${escapeHtml(what)}</a><span class="src"><a href="${PROFILES[service]}">${service}</a>${when ? `, ${when}` : ''}</span></div></li>`;
   const nowList = $('[data-now]');
   if (nowList) {
     const nowPanel = nowList.closest('.now');
@@ -514,11 +520,11 @@
       const items = [];
 
       if (listening) {
-        items.push(nowItem('lastfm', listening.playing ? 'Soi nyt' : 'Kuunneltua', listening.url, `${listening.artist} – ${listening.track}`, listening.date ? `Last.fm, ${fiAgo(listening.date)}` : 'Last.fm'));
+        items.push(nowItem('lastfm', listening.playing ? 'Soi nyt' : 'Kuunneltua', listening.url, `${listening.artist} – ${listening.track}`, 'Last.fm', listening.date && fiAgo(listening.date)));
       }
       if (watched) {
         const source = watched.source || 'Rollekino';
-        items.push(nowItem('Trakt' === watched.source ? 'trakt' : 'rollekino', 'Katsottua', watched.url, watched.title, `${source}, ${fiAgo(watched.date)}`));
+        items.push(nowItem('Trakt' === source ? 'trakt' : 'rollekino', 'Katsottua', watched.url, watched.title, source, fiAgo(watched.date)));
       }
       if (reading) {
         items.push(nowItem('book', 'Luettua', reading.url, reading.title, 'Luku'));
