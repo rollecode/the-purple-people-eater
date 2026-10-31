@@ -1,9 +1,49 @@
-<!-- wp:the-purple-people-eater/site-frame -->
-<!-- wp:template-part {"slug":"header","tagName":"div","className":"site-header-part"} /-->
+<!-- wp:template-part {"slug":"header","tagName":"div"} /-->
 
-<!-- wp:group {"tagName":"div","className":"site-content","layout":{"type":"default"}} -->
-<div class="wp-block-group site-content"><!-- wp:the-purple-people-eater/loop-archive-diary /--></div>
+<!-- wp:group {"tagName":"main","anchor":"content","className":"site-main"} -->
+<main id="content" class="wp-block-group site-main"><!-- wp:group {"tagName":"header","className":"read art-head"} -->
+<header class="wp-block-group read art-head"><!-- wp:html -->
+<h1 class="cover-title">Lokikirja</h1>
+<!-- /wp:html -->
+
+<!-- wp:paragraph {"className":"standfirst"} -->
+<p class="standfirst">Rollemaan kapteenin lokikirja on Rollen kevyt päiväkirja ja päivittäinen kirjoitushaaste. Tavoitteena on kehittää mielenterveyttä, kirjoittamisharrastusta ja madaltaa kynnystä itseilmaisuun.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"className":"dmeta meta-text"} -->
+<p class="dmeta meta-text"><span data-stat="diary">1690</span> merkintää · 8.11.2021 alkaen</p>
+<!-- /wp:paragraph --></header>
 <!-- /wp:group -->
 
-<!-- wp:template-part {"slug":"footer","tagName":"div","className":"site-footer-part"} /-->
-<!-- /wp:the-purple-people-eater/site-frame -->
+<!-- wp:html -->
+<div class="diary-heat" data-heatmap><div class="heat-scroll" tabindex="0" role="region" aria-label="Kirjoituskalenteri: sanat päivittäin viimeisen vuoden ajalta. Päivien numerot ovat linkkejä lokikirjaan."><div class="heat" id="heatmap"></div></div></div>
+<!-- /wp:html -->
+
+<!-- wp:group {"className":"read dentries"} -->
+<div class="wp-block-group read dentries"><!-- wp:query {"query":{"inherit":true}} -->
+<div class="wp-block-query"><!-- wp:post-template -->
+<!-- wp:group {"className":"dentry"} -->
+<div class="wp-block-group dentry"><!-- wp:post-title {"level":2,"isLink":true} /-->
+
+<!-- wp:group {"className":"dmeta meta-text"} -->
+<div class="wp-block-group dmeta meta-text"><!-- wp:post-date {"format":"l j.n.Y \\k\\l\\o G.i"} /--><!-- wp:post-time-to-read {"displayMode":"words"} /--><!-- wp:post-comments-link /--></div>
+<!-- /wp:group -->
+
+<!-- wp:post-content {"className":"prose","metadata":{"ignoredHookedBlocks":["activitypub/reactions"]}} /-->
+
+<!-- wp:group {"tagName":"section","ariaLabel":"Päivän tiedot","className":"day"} -->
+<section aria-label="Päivän tiedot" class="wp-block-group day"><!-- wp:html -->
+<div data-day></div>
+<!-- /wp:html --></section>
+<!-- /wp:group --></div>
+<!-- /wp:group -->
+<!-- /wp:post-template --><!-- wp:query-pagination {"paginationArrow":"none","className":"pager"} -->
+<!-- wp:query-pagination-previous {"label":"Uudemmat päivät"} /-->
+<!-- wp:query-pagination-numbers /-->
+<!-- wp:query-pagination-next {"label":"Vanhemmat päivät"} /-->
+<!-- /wp:query-pagination --></div>
+<!-- /wp:query --></div>
+<!-- /wp:group --></main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"div"} /-->

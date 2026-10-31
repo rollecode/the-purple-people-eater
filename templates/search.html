@@ -1,9 +1,43 @@
-<!-- wp:the-purple-people-eater/site-frame -->
-<!-- wp:template-part {"slug":"header","tagName":"div","className":"site-header-part"} /-->
+<!-- wp:template-part {"slug":"header","tagName":"div"} /-->
 
-<!-- wp:group {"tagName":"div","className":"site-content","layout":{"type":"default"}} -->
-<div class="wp-block-group site-content"><!-- wp:the-purple-people-eater/loop-search /--></div>
+<!-- wp:group {"tagName":"main","anchor":"content","className":"site-main"} -->
+<main id="content" class="wp-block-group site-main"><!-- wp:group {"className":"wrap"} -->
+<div class="wp-block-group wrap"><!-- wp:query {"query":{"inherit":true}} -->
+<div class="wp-block-query"><!-- wp:group {"tagName":"header","className":"results-head"} -->
+<header class="wp-block-group results-head"><!-- wp:query-title {"type":"search","showSearchTerm":true} /-->
+
+<!-- wp:search {"label":"Hae Rollemaasta","showLabel":false,"buttonText":"Hae","className":"bigsearch"} /-->
+
+<!-- wp:query-total {"className":"intro meta-text"} /--></header>
 <!-- /wp:group -->
 
-<!-- wp:template-part {"slug":"footer","tagName":"div","className":"site-footer-part"} /-->
-<!-- /wp:the-purple-people-eater/site-frame -->
+<!-- wp:post-template {"className":"rows"} -->
+<!-- wp:group {"className":"row"} -->
+<div class="wp-block-group row"><!-- wp:group -->
+<div class="wp-block-group"><!-- wp:group {"className":"meta-line meta-text"} -->
+<div class="wp-block-group meta-line meta-text"><!-- wp:post-date {"format":"j.n.Y"} /--><!-- wp:post-time-to-read {"displayAsRange":false,"averageReadingSpeed":200} /--><!-- wp:post-time-to-read {"displayMode":"words"} /--></div>
+<!-- /wp:group -->
+
+<!-- wp:post-title {"level":2,"isLink":true,"className":"row-title"} /-->
+
+<!-- wp:post-excerpt {"className":"excerpt","excerptLength":60,"moreText":"","showMoreOnNewLine":false} /--></div>
+<!-- /wp:group -->
+
+<!-- wp:post-featured-image {"isLink":true,"sizeSlug":"medium","className":"row-thumb"} /--></div>
+<!-- /wp:group -->
+<!-- /wp:post-template --><!-- wp:query-no-results -->
+<!-- wp:paragraph {"className":"none"} -->
+<p class="none">Täältä ei löytynyt mitään. Kokeile hakua tai selaa arkistoa.</p>
+<!-- /wp:paragraph -->
+<!-- /wp:query-no-results -->
+
+<!-- wp:query-pagination {"paginationArrow":"none","className":"pager"} -->
+<!-- wp:query-pagination-previous {"label":"Uudemmat"} /-->
+<!-- wp:query-pagination-numbers /-->
+<!-- wp:query-pagination-next {"label":"Vanhemmat"} /-->
+<!-- /wp:query-pagination --></div>
+<!-- /wp:query --></div>
+<!-- /wp:group --></main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"div"} /-->

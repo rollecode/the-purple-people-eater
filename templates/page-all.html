@@ -1,9 +1,17 @@
-<!-- wp:the-purple-people-eater/site-frame -->
-<!-- wp:template-part {"slug":"header","tagName":"div","className":"site-header-part"} /-->
+<!-- wp:template-part {"slug":"header","tagName":"div"} /-->
 
-<!-- wp:group {"tagName":"div","className":"site-content","layout":{"type":"default"}} -->
-<div class="wp-block-group site-content"><!-- wp:the-purple-people-eater/loop-page-all /--></div>
+<!-- wp:group {"tagName":"main","anchor":"content","className":"site-main"} -->
+<main id="content" class="wp-block-group site-main"><!-- wp:group {"tagName":"header","className":"page-hero"} -->
+<header class="wp-block-group page-hero"><!-- wp:group {"className":"inner"} -->
+<div class="wp-block-group inner"><!-- wp:html -->
+<h1>Kaikki <em data-stat="posts">1629</em> kirjoitusta</h1>
+<!-- /wp:html --></div>
+<!-- /wp:group --></header>
 <!-- /wp:group -->
 
-<!-- wp:template-part {"slug":"footer","tagName":"div","className":"site-footer-part"} /-->
-<!-- /wp:the-purple-people-eater/site-frame -->
+<!-- wp:html -->
+<div class="wrap all-posts" data-all-posts></div>
+<!-- /wp:html --></main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"div"} /-->

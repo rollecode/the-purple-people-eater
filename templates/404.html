@@ -1,9 +1,31 @@
-<!-- wp:the-purple-people-eater/site-frame -->
-<!-- wp:template-part {"slug":"header","tagName":"div","className":"site-header-part"} /-->
+<!-- wp:template-part {"slug":"header","tagName":"div"} /-->
 
-<!-- wp:group {"tagName":"div","className":"site-content","layout":{"type":"default"}} -->
-<div class="wp-block-group site-content"><!-- wp:the-purple-people-eater/loop-404 /--></div>
+<!-- wp:group {"tagName":"main","anchor":"content","className":"site-main"} -->
+<main id="content" class="wp-block-group site-main"><!-- wp:group {"className":"nf"} -->
+<div class="wp-block-group nf"><!-- wp:group -->
+<div class="wp-block-group"><!-- wp:html -->
+<p class="big" aria-hidden="true">404</p>
+<!-- /wp:html -->
+
+<!-- wp:heading {"level":1} -->
+<h1 class="wp-block-heading">Sivua ei löytynyt</h1>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Hakemaasi sivua ei ole olemassa, tai sen osoite on muuttunut. Kokeile hakua tai valitse jokin kirjoitus arkistosta.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:search {"label":"Hae Rollemaasta","showLabel":false,"buttonText":"Hae","className":"bigsearch"} /-->
+
+<!-- wp:paragraph {"className":"meta-text muted"} -->
+<p class="meta-text muted">Virhe 404 · <a href="/">Etusivulle</a></p>
+<!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:template-part {"slug":"footer","tagName":"div","className":"site-footer-part"} /-->
-<!-- /wp:the-purple-people-eater/site-frame -->
+<!-- wp:group {"className":"right"} -->
+<div class="wp-block-group right"><!-- wp:pattern {"slug":"the-purple-people-eater/picks"} /--></div>
+<!-- /wp:group --></div>
+<!-- /wp:group --></main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"div"} /-->
