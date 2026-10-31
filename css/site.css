@@ -4982,3 +4982,9 @@ article:has(.prose h1) > .page-hero {
   }
 }
 
+/* The opening's RSS link is in the footer too, phones keep only the handle */
+@media (max-width: 600px) {
+  .follow-row a[href$="/feed/"] {
+    display: none;
+  }
+}
