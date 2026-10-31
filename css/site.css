@@ -1651,7 +1651,40 @@ body:has(.comments) .site-foot {
 }
 
 /* The lead: the picture across the page, a headline as big as a cover's */
+.lead-badge {
+  display: inline-flex;
+  position: absolute;
+  z-index: 2;
+  top: 24px;
+  left: 24px;
+  align-items: center;
+  margin: 0;
+  padding: 9px 16px 9px 12px;
+  gap: 8px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--ground) 82%, transparent);
+  color: var(--ink);
+  font: 600 15px / 1.2 var(--sans);
+  letter-spacing: normal;
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  backdrop-filter: blur(12px) saturate(1.4);
+}
+
+.lead-badge svg {
+  width: 17px;
+  height: 17px;
+  color: var(--accent);
+}
+
+/* Without a picture the pill sits above the headline */
+.card-lead:not(:has(.card-img)) .lead-badge {
+  position: static;
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
 .card-lead {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 40px 32px;
