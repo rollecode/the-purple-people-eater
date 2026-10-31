@@ -508,7 +508,7 @@
     'Last.fm': 'https://www.last.fm/user/rolle-',
     Trakt: 'https://trakt.tv/users/rolle',
     Rollekino: 'https://www.rollekino.fi',
-    Luku: 'https://luku.app/u/rolle',
+    Luku: 'https://luku.app/@rolle',
   };
   const nowItem = (iconName, label, url, what, service, when) => `<li>${icon(iconName)}<div><span class="label meta-text">${label}</span><a class="what" href="${escapeHtml(url)}">${escapeHtml(what)}</a><span class="src"><a href="${PROFILES[service]}">${service}</a>${when ? `, ${when}` : ''}</span></div></li>`;
   const nowList = $('[data-now]');
