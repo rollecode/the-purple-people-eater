@@ -1127,6 +1127,73 @@
   }
 
   /**
+   * Phone menu sheet: a finger drags it, a pull up or a tap outside closes it,
+   * and it slides away before the core menu closes for real
+   */
+  const SHEET_CLOSE_PX = 60;
+  const SHEET_LEAVE_MS = 300;
+  const SHEET_PULL_DOWN = .25;
+  const sheet = $('.site-head .wp-block-navigation__responsive-container');
+  const sheetClose = sheet && $('.wp-block-navigation__responsive-container-close', sheet);
+  if (sheet && sheetClose) {
+    let leaving = false;
+    let startY = null;
+
+    const leave = () => {
+      if (leaving) {
+        return;
+      }
+      leaving = true;
+      sheet.style.transform = '';
+      sheet.classList.add('is-leaving');
+      window.setTimeout(() => {
+        sheetClose.click();
+        sheet.classList.remove('is-leaving');
+        leaving = false;
+      }, reducedMotion.matches ? 0 : SHEET_LEAVE_MS);
+    };
+
+    // Runs before the core handler, so the close can wait for the slide
+    document.addEventListener('click', (event) => {
+      if (!sheet.classList.contains('is-menu-open') || leaving) {
+        return;
+      }
+      if (event.target.closest('.wp-block-navigation__responsive-container-close') || !sheet.contains(event.target)) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        leave();
+      }
+    }, true);
+
+    sheet.addEventListener('touchstart', (event) => {
+      startY = event.touches[0].clientY;
+      sheet.style.transition = 'none';
+    }, { passive: true });
+
+    sheet.addEventListener('touchmove', (event) => {
+      if (null === startY) {
+        return;
+      }
+      const moved = event.touches[0].clientY - startY;
+      sheet.style.transform = `translateY(${moved < 0 ? moved : moved * SHEET_PULL_DOWN}px)`;
+    }, { passive: true });
+
+    sheet.addEventListener('touchend', (event) => {
+      if (null === startY) {
+        return;
+      }
+      const moved = event.changedTouches[0].clientY - startY;
+      startY = null;
+      sheet.style.transition = '';
+      if (moved < -SHEET_CLOSE_PX) {
+        leave();
+        return;
+      }
+      sheet.style.transform = '';
+    });
+  }
+
+  /**
    * The head comes back whenever the reader scrolls up, anywhere on the page,
    * and fades out by itself or on the way down. Away from the top it floats
    * over the text. On an article with a photo it also sleeps at the top: the
