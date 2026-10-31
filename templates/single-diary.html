@@ -5,12 +5,16 @@
 
 <!-- wp:group {"tagName":"article"} -->
 <article class="wp-block-group"><!-- wp:group {"tagName":"header","className":"read diary-head"} -->
-<header class="wp-block-group read diary-head"><!-- wp:pattern {"slug":"the-purple-people-eater/diary-kicker"} /-->
+<header class="wp-block-group read diary-head"><!-- wp:group {"className":"diary-kicker"} -->
+<div class="wp-block-group diary-kicker"><!-- wp:pattern {"slug":"the-purple-people-eater/diary-kicker"} /-->
 
-<!-- wp:post-title {"level":1} /-->
+<!-- wp:post-title {"level":0} /--></div>
+<!-- /wp:group -->
+
+<!-- wp:post-date {"format":"l j. F Y","className":"diary-date"} /-->
 
 <!-- wp:group {"className":"meta-line meta-text"} -->
-<div class="wp-block-group meta-line meta-text"><!-- wp:post-date {"format":"l j.n.Y \\k\\l\\o G.i"} /--><!-- wp:post-time-to-read {"displayMode":"words"} /--></div>
+<div class="wp-block-group meta-line meta-text"><!-- wp:post-date {"format":"\\K\\e\\l\\l\\o G.i"} /--><!-- wp:post-time-to-read {"displayMode":"words"} /--></div>
 <!-- /wp:group --></header>
 <!-- /wp:group -->
 
@@ -28,7 +32,7 @@
 <!-- /wp:html -->
 
 <!-- wp:group {"tagName":"nav","ariaLabel":"Edellinen ja seuraava päivä","className":"prevnext"} -->
-<nav aria-label="Edellinen ja seuraava päivä" class="wp-block-group prevnext"><!-- wp:post-navigation-link {"type":"previous","label":"Edellinen","showTitle":true,"linkLabel":true} /--><!-- wp:post-navigation-link {"type":"next","label":"Seuraava","showTitle":true,"linkLabel":true} /--></nav>
+<nav aria-label="Edellinen ja seuraava päivä" class="wp-block-group prevnext"><!-- wp:post-navigation-link {"type":"previous","label":"Edellinen","showTitle":true,"linkLabel":true,"arrow":"arrow"} /--><!-- wp:post-navigation-link {"type":"next","label":"Seuraava","showTitle":true,"linkLabel":true,"arrow":"arrow"} /--></nav>
 <!-- /wp:group --></div>
 <!-- /wp:group -->
 

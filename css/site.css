@@ -4328,6 +4328,14 @@ a.heat-day:hover {
   text-decoration: underline;
 }
 
+.diary-kicker > * {
+  margin: 0;
+}
+
+.diary-kicker .wp-block-post-title {
+  font: inherit;
+}
+
 .diary-head h1 {
   color: var(--ink);
   font-size: clamp(40px, 4.4vw, 62px);

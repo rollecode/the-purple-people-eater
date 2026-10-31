@@ -688,7 +688,7 @@
     getJson(`responses/${responsesFor}`).then(({ comments, fediverse, likes, boosts, people }) => {
       const reactions = likes + boosts;
       const line = $('.count-line');
-      const meta = $('.byline .meta');
+      const meta = $('.byline .meta, .diary-head .meta-line');
 
       if (reactions && meta) {
         meta.insertAdjacentHTML('beforeend', `<span>${icon('heart', 'ic-sm')}${fiCount(reactions, 'reaktio', 'reaktiota')}</span>`);
