@@ -23,13 +23,7 @@ $icons = get_theme_file_uri( 'svg/icons.svg' );
 <!-- /wp:group -->
 
 <!-- wp:group {"className":"wrap shelf-wrap shelf-big"} -->
-<div class="wp-block-group wrap shelf-wrap shelf-big"><!-- wp:group {"className":"shelf-meta"} -->
-<div class="wp-block-group shelf-meta"><!-- wp:heading -->
-<h2 class="wp-block-heading">Kirjoitukset vuosittain</h2>
-<!-- /wp:heading --></div>
-<!-- /wp:group -->
-
-<!-- wp:html -->
+<div class="wp-block-group wrap shelf-wrap shelf-big"><!-- wp:html -->
 <ol class="shelf" aria-label="Kirjoitukset vuosittain" data-shelf="210"></ol>
 <!-- /wp:html --></div>
 <!-- /wp:group -->
