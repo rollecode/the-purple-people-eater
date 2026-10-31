@@ -1690,11 +1690,6 @@ body:has(.comments) .site-foot {
   color: var(--accent);
 }
 
-/* Clear of the "left off here" ribbon in the image's corner */
-.card-lead:has(.ribbon) .lead-badge {
-  margin-right: 74px;
-}
-
 /* Without a picture the pill sits above the headline */
 .card-lead:not(:has(.card-img)) .lead-badge {
   position: static;

@@ -939,7 +939,8 @@
       if (!saved || saved.pct < RESUME_MIN || saved.pct > RESUME_MAX || $('.resume-chip', card)) {
         return;
       }
-      const image = $('.card-img', card);
+      // The newest article already invites back with its own line
+      const image = card.classList.contains('card-lead') ? null : $('.card-img', card);
       if (image) {
         image.insertAdjacentHTML('beforeend', '<span class="ribbon" title="Lukeminen kesken"></span>');
       }
