@@ -4851,7 +4851,7 @@ a.heat-day:hover {
  * Pages: a large title over the reading column, and the 404 page.
  */
 .page-hero {
-  padding: 64px var(--pad) 48px;
+  padding: clamp(104px, 14vh, 168px) var(--pad) 56px;
 }
 
 .page-hero .inner {
@@ -4890,7 +4890,7 @@ a.heat-day:hover {
 /* Pages that open with their own heading in the content */
 .page-body .prose > h1:first-child,
 .page-template-template-no-title .page-body .prose > :first-child > h2:first-child {
-  margin: 24px 0 .5em;
+  margin: clamp(64px, 10vh, 120px) 0 .5em;
   font-size: clamp(56px, 8vw, 104px);
   letter-spacing: -.02em;
   line-height: .92;
