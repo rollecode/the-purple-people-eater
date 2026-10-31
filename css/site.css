@@ -455,8 +455,9 @@ kbd {
   }
 }
 
-/* On a photo the whole head sleeps until the mouse moves (front-end.js) */
-@media (hover: hover) and (scripting: enabled) {
+/* On a photo the whole head sleeps until the mouse moves or the reader
+   pulls back up (front-end.js) */
+@media (scripting: enabled) {
   :root:has(.article-head > figure) .site-head .bar > * {
     opacity: 0;
     pointer-events: none;
@@ -2767,7 +2768,7 @@ body:has(.comments) .site-foot {
   content: "";
 }
 
-@media (hover: hover) and (scripting: enabled) {
+@media (scripting: enabled) {
   .article-head:has(> figure)::before {
     opacity: 0;
     transition: opacity .6s ease-in-out;
@@ -4986,5 +4987,52 @@ article:has(.prose h1) > .page-hero {
 @media (max-width: 600px) {
   .follow-row a[href$="/feed/"] {
     display: none;
+  }
+}
+
+/* Phones: one row, the sections behind a menu button (core navigation's own overlay) */
+@media (max-width: 599px) {
+  .site-head .bar {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 4px;
+  }
+
+  .site-head .nav {
+    grid-column: 3;
+    grid-row: 1;
+    overflow: visible;
+  }
+
+  .nav .wp-block-navigation__responsive-container-open {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    color: inherit;
+  }
+
+  .nav .wp-block-navigation__responsive-container.is-menu-open {
+    padding: 24px var(--pad);
+    background: var(--ground);
+    color: var(--ink);
+  }
+
+  .nav .wp-block-navigation__responsive-container-close {
+    top: 20px;
+    right: var(--pad);
+    width: 44px;
+    height: 44px;
+  }
+
+  .nav .is-menu-open .wp-block-navigation__container {
+    gap: 8px;
+  }
+
+  .nav .is-menu-open .wp-block-navigation-item__content {
+    padding: 6px 0;
+    font-family: var(--display);
+    font-size: 44px;
+    line-height: 1.1;
+    text-underline-offset: .12em;
   }
 }

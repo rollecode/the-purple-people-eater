@@ -1130,20 +1130,26 @@
    * Article with a photo: the head appears at once when the mouse moves over
    * it, a moment later when it moves elsewhere on the hero, and sleeps again
    * once it stops. It stays awake under a resting pointer, so no link vanishes
-   * from under it. Keyboard focus is handled in the stylesheet.
+   * from under it. On touch screens it wakes when the reader pulls or scrolls
+   * back up and sleeps on the way down. Keyboard focus is handled in the
+   * stylesheet.
    */
   const HEAD_WAKE_MS = 2000;
   const HEAD_AWAKE_MS = 2000;
+  const HEAD_TOUCH_AWAKE_MS = 4000;
+  const HEAD_PULL_PX = 12;
   const photoHero = $('.article-head:has(> figure)');
   const siteHead = $('.site-head');
-  if (photoHero && siteHead && window.matchMedia('(hover: hover)').matches) {
+  if (photoHero && siteHead) {
     const { classList } = document.body;
+    const touch = !window.matchMedia('(hover: hover)').matches;
+    const awakeFor = touch ? HEAD_TOUCH_AWAKE_MS : HEAD_AWAKE_MS;
     let wakeTimer = null;
     let sleepTimer;
 
     const sleep = () => {
-      if ($('a:hover, button:hover', siteHead)) {
-        sleepTimer = window.setTimeout(sleep, HEAD_AWAKE_MS);
+      if ($('a:hover, button:hover, .is-menu-open', siteHead)) {
+        sleepTimer = window.setTimeout(sleep, awakeFor);
         return;
       }
       classList.remove('head-awake');
@@ -1154,17 +1160,42 @@
       window.clearTimeout(sleepTimer);
       wakeTimer = null;
       classList.add('head-awake');
-      sleepTimer = window.setTimeout(sleep, HEAD_AWAKE_MS);
+      sleepTimer = window.setTimeout(sleep, awakeFor);
     };
 
-    siteHead.addEventListener('mousemove', wake);
-    photoHero.addEventListener('mousemove', () => {
-      if (classList.contains('head-awake')) {
-        wake();
-        return;
-      }
-      wakeTimer ??= window.setTimeout(wake, HEAD_WAKE_MS);
-    });
+    if (touch) {
+      let touchY = 0;
+      let lastScroll = window.scrollY;
+
+      document.addEventListener('touchstart', (event) => {
+        touchY = event.touches[0].clientY;
+      }, { passive: true });
+
+      // A finger moving down asks for what is above, also at the very top
+      document.addEventListener('touchmove', (event) => {
+        if (event.touches[0].clientY - touchY > HEAD_PULL_PX) {
+          wake();
+        }
+      }, { passive: true });
+
+      window.addEventListener('scroll', () => {
+        const down = window.scrollY > lastScroll;
+        lastScroll = window.scrollY;
+        if (down && !$('.is-menu-open', siteHead)) {
+          window.clearTimeout(sleepTimer);
+          classList.remove('head-awake');
+        }
+      }, { passive: true });
+    } else {
+      siteHead.addEventListener('mousemove', wake);
+      photoHero.addEventListener('mousemove', () => {
+        if (classList.contains('head-awake')) {
+          wake();
+          return;
+        }
+        wakeTimer ??= window.setTimeout(wake, HEAD_WAKE_MS);
+      });
+    }
   }
 
   /**
