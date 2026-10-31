@@ -36,7 +36,7 @@ $icons = get_theme_file_uri( 'svg/icons.svg' );
 
 <!-- wp:group {"className":"wrap years"} -->
 <div class="wp-block-group wrap years"><!-- wp:heading {"className":"sec-title"} -->
-<h2 class="wp-block-heading sec-title">Kaikki vuodet</h2>
+<h2 class="wp-block-heading sec-title">Vuodet vierivät</h2>
 <!-- /wp:heading -->
 
 <!-- wp:html -->
