@@ -1511,33 +1511,46 @@ body:has(.comments) .site-foot {
   text-decoration: underline;
 }
 
-/* Post cards: image-led, like the old site, in the new type */
+/**
+ * Kokopitkät as a magazine: a lead across the page, then a rhythm of six
+ * that repeats with each Lataa lisää, a wide feature, a pair, a row of
+ * three. No boxes, the type and the pictures carry it.
+ */
 .posts {
   padding-top: 104px;
 }
 
 .sec-title-next {
-  margin-top: 96px;
+  margin-top: 128px;
 }
 
 .card {
   display: flex;
   position: relative;
   flex-direction: column;
-  overflow: hidden;
-  border-radius: 6px;
-  background: var(--surface);
+  min-width: 0;
+  gap: 24px;
 }
 
 .card-img {
-  display: block;
   position: relative;
+  margin: 0;
   overflow: hidden;
   aspect-ratio: 4 / 3;
+  border-radius: 22px;
   background: var(--soft);
 }
 
+@supports (corner-shape: squircle) {
+  .card-img {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+}
+
+.card-img a,
 .card-img img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1546,13 +1559,18 @@ body:has(.comments) .site-foot {
 .card-body {
   display: grid;
   justify-items: start;
-  padding: 28px 32px 32px;
+  align-content: start;
   gap: 14px;
 }
 
+.card-body > * {
+  margin: 0;
+}
+
 .card-title {
-  font-size: clamp(28px, 2.4vw, 34px);
-  line-height: 1.08;
+  font-size: clamp(30px, 2.6vw, 38px);
+  line-height: 1.04;
+  text-wrap: balance;
 }
 
 .card-title a {
@@ -1565,67 +1583,167 @@ body:has(.comments) .site-foot {
 }
 
 .card .excerpt {
-  margin: 0;
+  max-width: 62ch;
   color: var(--ink-2);
   font-family: var(--body);
   font-size: 18px;
   line-height: 1.65;
 }
 
-/* Without an image the card is all type, as tall as its neighbour */
-.card:not(:has(.card-img)) .card-body {
-  flex: 1;
-  align-content: start;
-  padding-top: 36px;
+.card .excerpt p {
+  margin: 0;
 }
 
-.card:not(:has(.card-img)) .card-title {
-  font-size: clamp(36px, 3.2vw, 48px);
-  line-height: 1.02;
-}
-
-.card:not(:has(.card-img)) .excerpt {
-  display: -webkit-box;
-  overflow: hidden;
-  font-size: 20px;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 9;
-}
-
-.card-lead:not(:has(.card-img)) {
-  grid-template-columns: 1fr;
-}
-
-.cards {
+/* The lead: the picture across the page, a headline as big as a cover's */
+.card-lead {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 40px 32px;
 }
 
-.card-lead {
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  align-items: stretch;
-}
-
 .card-lead .card-img {
-  min-height: 460px;
-  aspect-ratio: auto;
+  grid-column: 1 / -1;
+  aspect-ratio: 21 / 10;
 }
 
 .card-lead .card-body {
-  align-content: center;
-  padding: 48px;
-  gap: 18px;
+  display: contents;
 }
 
 .card-lead .card-title {
-  font-size: clamp(40px, 4vw, 60px);
-  line-height: 1.02;
+  grid-column: 1 / span 8;
+  grid-row: 2 / span 3;
+  align-self: start;
+  font-size: clamp(56px, 7.4vw, 116px);
+  line-height: .94;
+  letter-spacing: -.01em;
+}
+
+.card-lead .meta-line,
+.card-lead .excerpt,
+.card-lead .wp-block-read-more {
+  grid-column: 9 / -1;
+}
+
+.card-lead .meta-line {
+  padding-top: 14px;
 }
 
 .card-lead .excerpt {
   font-size: 20px;
+}
+
+.card-lead .wp-block-read-more {
+  justify-self: start;
+}
+
+.card-lead .card-body > .resume-chip {
+  grid-column: 9 / -1;
+}
+
+/* The feed, six at a time */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  gap: 88px 32px;
+  list-style: none;
+}
+
+.cards > li {
+  grid-column: span 4;
+  min-width: 0;
+}
+
+.cards > li:nth-child(6n + 1) {
+  grid-column: 1 / -1;
+}
+
+.cards > li:nth-child(6n + 2),
+.cards > li:nth-child(6n + 3) {
+  grid-column: span 6;
+}
+
+/* Feature: picture and headline side by side, the side changing every other time */
+.cards > li:nth-child(6n + 1) .card {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: center;
+  gap: 48px;
+}
+
+.cards > li:nth-child(12n + 7) .card-img {
+  order: 2;
+}
+
+.cards > li:nth-child(6n + 1) .card-img {
+  aspect-ratio: 5 / 4;
+}
+
+.cards > li:nth-child(6n + 1) .card-title {
+  font-size: clamp(44px, 4.6vw, 72px);
+  line-height: .98;
+}
+
+.cards > li:nth-child(6n + 1) .excerpt {
+  font-size: 20px;
+}
+
+.cards > li:nth-child(6n + 2) .card-img,
+.cards > li:nth-child(6n + 3) .card-img {
+  aspect-ratio: 3 / 2;
+}
+
+.cards > li:nth-child(6n + 2) .card-title,
+.cards > li:nth-child(6n + 3) .card-title {
+  font-size: clamp(36px, 3.4vw, 50px);
+  line-height: 1;
+}
+
+.cards > li:nth-child(6n + 4) .excerpt,
+.cards > li:nth-child(6n + 5) .excerpt,
+.cards > li:nth-child(6n + 6) .excerpt {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+/* Without a picture the headline becomes the picture */
+.card:not(:has(.card-img)) {
+  justify-content: center;
+  padding: clamp(32px, 4vw, 64px);
+  border-radius: 22px;
+  background: var(--tint);
+}
+
+@supports (corner-shape: squircle) {
+  .card:not(:has(.card-img)) {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+}
+
+.cards > li:nth-child(6n + 1) .card:not(:has(.card-img)) {
+  display: flex;
+  min-height: 420px;
+}
+
+.card:not(:has(.card-img)) .card-title {
+  font-size: clamp(38px, 3.6vw, 56px);
+  font-style: italic;
+  line-height: 1;
+}
+
+.cards > li:nth-child(6n + 1) .card:not(:has(.card-img)) .card-title {
+  max-width: 18ch;
+  font-size: clamp(52px, 6vw, 96px);
+  line-height: .96;
+}
+
+.card-lead:not(:has(.card-img)) .card-title {
+  font-style: italic;
 }
 
 /* Where the reader left off (front-end.js, from localStorage) */
@@ -1914,13 +2032,31 @@ body:has(.comments) .site-foot {
     grid-template-columns: 1fr;
   }
 
-  .card-lead {
-    grid-template-columns: 1fr;
+  .card-lead .card-title {
+    grid-column: 1 / -1;
+    grid-row: auto;
   }
 
-  .card-lead .card-img {
-    min-height: 0;
-    aspect-ratio: 4 / 3;
+  .card-lead .meta-line,
+  .card-lead .excerpt,
+  .card-lead .wp-block-read-more,
+  .card-lead .card-body > .resume-chip {
+    grid-column: 1 / -1;
+  }
+
+  .card-lead .meta-line {
+    grid-row: 2;
+    padding-top: 0;
+  }
+
+  .cards > li:nth-child(6n + 4),
+  .cards > li:nth-child(6n + 5),
+  .cards > li:nth-child(6n + 6) {
+    grid-column: span 6;
+  }
+
+  .cards > li:nth-child(6n + 6) {
+    grid-column: 1 / -1;
   }
 }
 
@@ -1946,35 +2082,59 @@ body:has(.comments) .site-foot {
     padding-top: 72px;
   }
 
+  .cards,
+  .card-lead {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .cards {
-    grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 64px;
   }
 
-  .card-body {
-    padding: 22px 22px 26px;
+  .cards > li,
+  .cards > li:nth-child(n) {
+    grid-column: 1 / -1;
   }
 
-  .card-lead .card-body {
-    padding: 26px 22px 30px;
+  .cards > li:nth-child(6n + 1) .card {
+    display: flex;
+    gap: 24px;
+  }
+
+  .cards > li:nth-child(12n + 7) .card-img {
+    order: 0;
+  }
+
+  .card-lead {
+    gap: 24px;
+  }
+
+  .card-lead .card-img,
+  .card .card-img,
+  .cards > li:nth-child(n) .card-img {
+    aspect-ratio: 4 / 3;
   }
 
   .card-lead .card-title {
-    font-size: 38px;
+    font-size: 48px;
+  }
+
+  .cards > li:nth-child(n) .card-title {
+    font-size: 34px;
+  }
+
+  .cards > li:nth-child(6n + 1) .card:not(:has(.card-img)) {
+    min-height: 0;
+  }
+
+  .cards > li:nth-child(n) .card:not(:has(.card-img)) .card-title {
+    font-size: 40px;
   }
 
   .card .excerpt,
   .card-lead .excerpt,
-  .card:not(:has(.card-img)) .excerpt {
+  .cards > li:nth-child(n) .excerpt {
     font-size: 17.5px;
-  }
-
-  .card:not(:has(.card-img)) .excerpt {
-    -webkit-line-clamp: 6;
-  }
-
-  .card:not(:has(.card-img)) .card-title {
-    font-size: 34px;
   }
 
   .chart li {

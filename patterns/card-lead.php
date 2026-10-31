@@ -9,7 +9,7 @@
 
 ?>
 <!-- wp:group {"className":"card card-lead"} -->
-<div class="wp-block-group card card-lead"><!-- wp:post-featured-image {"isLink":true,"sizeSlug":"large","className":"card-img"} /-->
+<div class="wp-block-group card card-lead"><!-- wp:post-featured-image {"isLink":true,"sizeSlug":"full","className":"card-img"} /-->
 
 <!-- wp:group {"className":"card-body"} -->
 <div class="wp-block-group card-body"><!-- wp:group {"className":"meta-line meta-text"} -->
