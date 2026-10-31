@@ -2418,7 +2418,7 @@ body:has(.comments) .site-foot {
 
 .all-list li {
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
+  grid-template-columns: 9.5em minmax(0, 1fr);
   align-items: baseline;
   padding: 7px 0;
   gap: 12px;
@@ -2427,11 +2427,21 @@ body:has(.comments) .site-foot {
 .all-list time {
   color: var(--muted);
   font-variant-numeric: tabular-nums;
+  font-weight: 600;
 }
 
 .all-list a {
   color: var(--ink);
+  overflow-wrap: anywhere;
   text-decoration: none;
+}
+
+/* On a phone the day sits above its title */
+@media (max-width: 600px) {
+  .all-list li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
 }
 
 .all-list a:hover {

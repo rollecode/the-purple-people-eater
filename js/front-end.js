@@ -601,7 +601,7 @@
     getJson('all-posts').then((data) => {
       const years = newestFirst(data);
       const rail = years.map(([ year, months ]) => `<li><a href="#year-${year}">${year} <span class="meta-text">${Object.values(months).flat().length}</span></a></li>`).join('');
-      const body = years.map(([ year, months ]) => `<section class="all-year" id="year-${year}" aria-labelledby="year-title-${year}"><h2 class="all-year-title" id="year-title-${year}">${year}</h2>${newestFirst(months).map(([ month, items ]) => `<h3 class="all-month">${monthName(month)}</h3><ul class="all-list">${items.map(({ day, link, title }) => `<li><span class="meta-text">${day}</span><a href="${escapeHtml(link)}">${escapeHtml(title)}</a></li>`).join('')}</ul>`).join('')}</section>`).join('');
+      const body = years.map(([ year, months ]) => `<section class="all-year" id="year-${year}" aria-labelledby="year-title-${year}"><h2 class="all-year-title" id="year-title-${year}">${year}</h2>${newestFirst(months).map(([ month, items ]) => `<h3 class="all-month">${monthName(month)}</h3><ul class="all-list">${items.map(({ day, date, link, title }) => `<li><time class="meta-text" datetime="${date}">${day}</time><a href="${escapeHtml(link)}">${escapeHtml(title)}</a></li>`).join('')}</ul>`).join('')}</section>`).join('');
 
       allPosts.innerHTML = `<nav class="all-years" aria-label="Vuodet"><ol>${rail}</ol></nav><div class="all-body">${body}</div>`;
       watchYears();
