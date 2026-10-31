@@ -33,6 +33,29 @@ add_action( 'init', function () {
   }
 } );
 
+const BLOCK_STYLES = [
+  'core/paragraph' => [ 'boxed' => 'Laatikko' ],
+  'core/list'      => [
+    'no-bullets'   => 'Ilman listamerkkejä',
+    'todo-list'    => 'Todo-lista',
+    'green-shades' => 'Vihreät tasot',
+    'red-shades'   => 'Punaiset tasot',
+  ],
+  'core/list-item' => [ 'checked' => 'Tehty tehtävä' ],
+];
+
+// Registered here, not in the editor script, so the REST API lists them too
+add_action( 'init', function () {
+  foreach ( BLOCK_STYLES as $block => $styles ) {
+    foreach ( $styles as $name => $label ) {
+      register_block_style( $block, [
+        'name'  => $name,
+        'label' => $label,
+      ] );
+    }
+  }
+} );
+
 add_filter( 'wp_preload_resources', function ( $resources ) {
   foreach ( PRELOADED_FONTS as $font ) {
     $resources[] = [
