@@ -255,6 +255,12 @@ kbd {
   color: var(--muted);
 }
 
+/* The editor's flow layout spaces block wrappers apart; meta stays one row */
+.meta-line.meta-line > *,
+.byline .meta.meta > * {
+  margin: 0;
+}
+
 .muted {
   color: var(--muted);
 }
