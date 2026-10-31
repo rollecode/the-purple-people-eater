@@ -4388,22 +4388,27 @@ a.heat-day:hover {
 .dentry-day {
   margin: 0 0 10px;
   color: var(--accent);
-  font-size: 15px;
-  font-weight: 600;
+  font: 600 15px / 1.6 var(--sans);
+  letter-spacing: normal;
 }
 
-.dentry h2 {
+/* The date reads as the heading; the day's title is the h2 above it */
+.dentry .diary-date {
+  margin: 0;
+  font-family: var(--display);
   font-size: clamp(40px, 4vw, 56px);
   font-style: italic;
+  font-weight: 400;
+  letter-spacing: -.005em;
   line-height: 1;
 }
 
-.dentry h2 a {
+.dentry .diary-date a {
   color: var(--ink);
   text-decoration: none;
 }
 
-.dentry h2 a:hover {
+.dentry .diary-date a:hover {
   color: var(--accent);
 }
 
@@ -4561,13 +4566,19 @@ a.heat-day:hover {
 }
 
 .diary-kicker .wp-block-post-title {
+  color: inherit;
   font: inherit;
+  letter-spacing: normal;
 }
 
-.diary-head h1 {
+.diary-head .diary-date {
+  margin: 0;
   color: var(--ink);
+  font-family: var(--display);
   font-size: clamp(40px, 4.4vw, 62px);
   font-style: italic;
+  font-weight: 400;
+  letter-spacing: -.005em;
   line-height: 1.04;
 }
 
@@ -4619,22 +4630,28 @@ a.heat-day:hover {
   font-weight: 600;
 }
 
-.yearago h2 {
+.yearago-date {
+  margin: 0;
+  font-family: var(--display);
   font-size: 30px;
+  letter-spacing: -.005em;
+  line-height: 1.08;
 }
 
-.yearago h2 a {
+.yearago-date a {
   color: var(--ink);
   text-decoration: none;
 }
 
-.yearago h2 a:hover {
+.yearago-date a:hover {
   text-decoration: underline;
   text-decoration-thickness: 1px;
 }
 
 .yearago .dmeta {
   margin: 8px 0 18px;
+  font: 400 14.5px / 1.45 var(--sans);
+  letter-spacing: normal;
 }
 
 .yearago-text {
