@@ -1127,28 +1127,30 @@
   }
 
   /**
-   * Article with a photo: the head appears at once when the mouse moves over
-   * it, a moment later when it moves elsewhere on the hero, and sleeps again
-   * once it stops. It stays awake under a resting pointer, so no link vanishes
-   * from under it. On touch screens it wakes when the reader pulls or scrolls
-   * back up and sleeps on the way down. Keyboard focus is handled in the
-   * stylesheet.
+   * The head comes back whenever the reader scrolls up, anywhere on the page,
+   * and fades out by itself or on the way down. Away from the top it floats
+   * over the text. On an article with a photo it also sleeps at the top: the
+   * mouse wakes it at once over the head and a moment later elsewhere on the
+   * hero, a touch on the hero wakes it too. A resting pointer, an open menu
+   * or keyboard focus keep it awake.
    */
   const HEAD_WAKE_MS = 2000;
   const HEAD_AWAKE_MS = 2000;
   const HEAD_TOUCH_AWAKE_MS = 4000;
-  const HEAD_PULL_PX = 12;
-  const photoHero = $('.article-head:has(> figure)');
+  const HEAD_SCROLL_PX = 4;
   const siteHead = $('.site-head');
-  if (photoHero && siteHead) {
+  if (siteHead) {
     const { classList } = document.body;
+    const photoHero = $('.article-head:has(> figure)');
     const touch = !window.matchMedia('(hover: hover)').matches;
     const awakeFor = touch ? HEAD_TOUCH_AWAKE_MS : HEAD_AWAKE_MS;
+    const held = () => $('a:hover, button:hover, :focus-visible, .is-menu-open', siteHead);
     let wakeTimer = null;
     let sleepTimer;
+    let lastScroll = window.scrollY;
 
     const sleep = () => {
-      if ($('a:hover, button:hover, .is-menu-open', siteHead)) {
+      if (held()) {
         sleepTimer = window.setTimeout(sleep, awakeFor);
         return;
       }
@@ -1163,30 +1165,32 @@
       sleepTimer = window.setTimeout(sleep, awakeFor);
     };
 
-    if (touch) {
-      let touchY = 0;
-      let lastScroll = window.scrollY;
+    // Floating takes the head out of the page, so its place is kept
+    const float = () => {
+      const floating = window.scrollY > siteHead.offsetHeight;
+      if (floating !== classList.contains('head-floating')) {
+        document.documentElement.style.setProperty('--head-h', `${siteHead.offsetHeight}px`);
+        classList.toggle('head-floating', floating);
+      }
+    };
 
-      document.addEventListener('touchstart', (event) => {
-        touchY = event.touches[0].clientY;
-      }, { passive: true });
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y < lastScroll - HEAD_SCROLL_PX) {
+        wake();
+      } else if (y > lastScroll + HEAD_SCROLL_PX && !held()) {
+        window.clearTimeout(sleepTimer);
+        classList.remove('head-awake');
+      }
+      lastScroll = y;
+      float();
+    }, { passive: true });
+    float();
 
-      // A finger moving down asks for what is above, also at the very top
-      document.addEventListener('touchmove', (event) => {
-        if (event.touches[0].clientY - touchY > HEAD_PULL_PX) {
-          wake();
-        }
-      }, { passive: true });
-
-      window.addEventListener('scroll', () => {
-        const down = window.scrollY > lastScroll;
-        lastScroll = window.scrollY;
-        if (down && !$('.is-menu-open', siteHead)) {
-          window.clearTimeout(sleepTimer);
-          classList.remove('head-awake');
-        }
-      }, { passive: true });
-    } else {
+    if (photoHero && touch) {
+      photoHero.addEventListener('touchstart', wake, { passive: true });
+      siteHead.addEventListener('touchstart', wake, { passive: true });
+    } else if (photoHero) {
       siteHead.addEventListener('mousemove', wake);
       photoHero.addEventListener('mousemove', () => {
         if (classList.contains('head-awake')) {
@@ -1194,6 +1198,12 @@
           return;
         }
         wakeTimer ??= window.setTimeout(wake, HEAD_WAKE_MS);
+      });
+    } else {
+      siteHead.addEventListener('mousemove', () => {
+        if (classList.contains('head-awake')) {
+          wake();
+        }
       });
     }
   }

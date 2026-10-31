@@ -472,6 +472,61 @@ kbd {
   }
 }
 
+/* Away from the top the head floats over the page while awake (front-end.js) */
+@media (scripting: enabled) {
+  .head-floating:not(:has(.article-head > figure)) .wp-site-blocks {
+    padding-top: var(--head-h);
+  }
+
+  :root .head-floating .site-head.site-head {
+    position: fixed;
+    inset: 0 0 auto;
+    border-bottom: 1px solid var(--rule);
+    background: var(--ground);
+    color: var(--ink);
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: opacity .5s ease-in-out, transform .5s ease-in-out, visibility 0s .5s;
+    visibility: hidden;
+  }
+
+  :root .head-floating.head-awake .site-head,
+  :root .head-floating .site-head.site-head:has(:focus-visible, .is-menu-open) {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0s;
+    visibility: visible;
+  }
+
+  :root .head-floating .site-head.site-head .bar {
+    padding-block: 14px;
+  }
+
+  :root:has(.article-head > figure) .head-floating .site-head .bar > * {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  :root:has(.article-head > figure) .head-floating .site-head .nav a {
+    color: var(--muted);
+  }
+
+  :root:has(.article-head > figure) .head-floating .site-head .nav a:hover,
+  :root:has(.article-head > figure) .head-floating .site-head .nav a[aria-current="page"] {
+    color: var(--ink);
+  }
+
+  :root:has(.article-head > figure) .head-floating .site-head .search-btn kbd {
+    border-color: var(--rule-strong);
+    background: var(--field);
+    color: var(--ink);
+  }
+
+  :root:has(.article-head > figure) .head-floating .site-head :focus-visible {
+    outline-color: var(--accent);
+  }
+}
+
 /* The Rollemaa logo as it has always been: umbrella and ROLLEMAA */
 .brand {
   display: inline-flex;
