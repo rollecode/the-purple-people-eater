@@ -3002,7 +3002,7 @@ body:has(.comments) .site-foot {
   font-size: 15px;
 }
 
-.byline .meta span {
+.byline .meta > * {
   display: inline-flex;
   align-items: center;
   gap: 6px;
