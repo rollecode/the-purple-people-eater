@@ -55,3 +55,11 @@
 :is(.prose, .editor-styles-wrapper) :is(.is-style-green-shades, .is-style-red-shades) li:nth-child(3) { --i: 2; }
 :is(.prose, .editor-styles-wrapper) :is(.is-style-green-shades, .is-style-red-shades) li:nth-child(4) { --i: 3; }
 :is(.prose, .editor-styles-wrapper) :is(.is-style-green-shades, .is-style-red-shades) li:nth-child(n+5) { --i: 4; }
+
+/**
+ * "Ilman listamerkkejä" list style.
+ */
+:is(.prose, .editor-styles-wrapper) .is-style-no-bullets {
+  padding-left: 0;
+  list-style: none;
+}

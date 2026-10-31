@@ -1,7 +1,0 @@
-/**
- * "Ilman listamerkkejä" list style.
- */
-:is(.prose, .editor-styles-wrapper) .is-style-no-bullets {
-  padding-left: 0;
-  list-style: none;
-}

@@ -10,3 +10,16 @@
   font-family: var(--sans);
   font-size: 16px;
 }
+
+/**
+ * "Laatikko" paragraph style: a note set apart on a lavender tint.
+ */
+:is(.prose, .editor-styles-wrapper) .is-style-boxed {
+  padding: 18px 22px;
+  border-radius: 8px;
+  background: var(--tint);
+  color: var(--ink-2);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+}
