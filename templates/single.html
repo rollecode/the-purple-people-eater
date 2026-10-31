@@ -1,37 +1,35 @@
-<!-- wp:the-purple-people-eater/site-frame -->
-<!-- wp:template-part {"slug":"header","tagName":"div","className":"site-header-part"} /-->
+<!-- wp:template-part {"slug":"header","tagName":"div"} /-->
 
-<!-- wp:group {"tagName":"div","className":"site-content","layout":{"type":"default"}} -->
-<div class="wp-block-group site-content"><!-- wp:group {"tagName":"main","anchor":"content","className":"site-main","layout":{"type":"default"}} -->
-<main id="content" class="wp-block-group site-main"><!-- wp:the-purple-people-eater/article -->
-<!-- wp:the-purple-people-eater/article-head -->
-<!-- wp:post-featured-image {"sizeSlug":"full"} /-->
+<!-- wp:group {"tagName":"main","anchor":"content","className":"site-main"} -->
+<main id="content" class="wp-block-group site-main"><!-- wp:group {"tagName":"article"} -->
+<article class="wp-block-group"><!-- wp:group {"tagName":"header","className":"article-head"} -->
+<header class="wp-block-group article-head"><!-- wp:post-featured-image {"sizeSlug":"full"} /-->
 
-<!-- wp:group {"className":"ph-text","layout":{"type":"default"}} -->
+<!-- wp:group {"className":"ph-text"} -->
 <div class="wp-block-group ph-text"><!-- wp:post-title {"level":1,"className":"cover-title"} /-->
 
-<!-- wp:the-purple-people-eater/excerpt {"className":"standfirst"} /-->
+<!-- wp:post-excerpt {"className":"standfirst","moreText":"","showMoreOnNewLine":false} /-->
 
-<!-- wp:the-purple-people-eater/hero-meta /--></div>
-<!-- /wp:group -->
-
-<!-- wp:the-purple-people-eater/hero-credit /-->
-<!-- /wp:the-purple-people-eater/article-head -->
-
-<!-- wp:group {"className":"read","layout":{"type":"default"}} -->
-<div class="wp-block-group read"><!-- wp:the-purple-people-eater/byline /-->
-
-<!-- wp:the-purple-people-eater/archive-note /-->
-
-<!-- wp:post-content {"className":"prose","layout":{"type":"default"}} /-->
-
-<!-- wp:the-purple-people-eater/endmatter /--></div>
-<!-- /wp:group -->
-
-<!-- wp:the-purple-people-eater/comments /-->
-<!-- /wp:the-purple-people-eater/article --></main>
+<!-- wp:group {"className":"hero-foot meta-line meta-text"} -->
+<div class="wp-block-group hero-foot meta-line meta-text"><!-- wp:post-date {"format":"j.n.Y"} /--><!-- wp:post-time-to-read {"displayAsRange":false,"averageReadingSpeed":200} /--><!-- wp:post-time-to-read {"displayMode":"words"} /--></div>
 <!-- /wp:group --></div>
+<!-- /wp:group --></header>
 <!-- /wp:group -->
 
-<!-- wp:template-part {"slug":"footer","tagName":"div","className":"site-footer-part"} /-->
-<!-- /wp:the-purple-people-eater/site-frame -->
+<!-- wp:group {"className":"read"} -->
+<div class="wp-block-group read"><!-- wp:pattern {"slug":"the-purple-people-eater/byline"} /-->
+
+<!-- wp:html -->
+<aside class="archive-note" aria-label="Arkistomatskua" data-archive-note hidden></aside>
+<!-- /wp:html -->
+
+<!-- wp:post-content {"className":"prose","metadata":{"ignoredHookedBlocks":["activitypub/reactions"]}} /-->
+
+<!-- wp:pattern {"slug":"the-purple-people-eater/endmatter"} /--></div>
+<!-- /wp:group -->
+
+<!-- wp:pattern {"slug":"the-purple-people-eater/comments"} /--></article>
+<!-- /wp:group --></main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"div"} /-->

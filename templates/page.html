@@ -1,25 +1,19 @@
-<!-- wp:the-purple-people-eater/site-frame -->
-<!-- wp:template-part {"slug":"header","tagName":"div","className":"site-header-part"} /-->
+<!-- wp:template-part {"slug":"header","tagName":"div"} /-->
 
-<!-- wp:group {"tagName":"div","className":"site-content","layout":{"type":"default"}} -->
-<div class="wp-block-group site-content"><!-- wp:group {"tagName":"main","anchor":"content","className":"site-main","layout":{"type":"default"}} -->
-<main id="content" class="wp-block-group site-main"><!-- wp:the-purple-people-eater/article -->
-<!-- wp:the-purple-people-eater/page-head -->
-<!-- wp:group {"className":"inner","layout":{"type":"default"}} -->
+<!-- wp:group {"tagName":"main","anchor":"content","className":"site-main"} -->
+<main id="content" class="wp-block-group site-main"><!-- wp:group {"tagName":"article"} -->
+<article class="wp-block-group"><!-- wp:group {"tagName":"header","className":"page-hero"} -->
+<header class="wp-block-group page-hero"><!-- wp:group {"className":"inner"} -->
 <div class="wp-block-group inner"><!-- wp:post-title {"level":1} /-->
 
-<!-- wp:the-purple-people-eater/excerpt {"className":"intro"} /--></div>
-<!-- /wp:group -->
-<!-- /wp:the-purple-people-eater/page-head -->
-
-<!-- wp:group {"className":"read page-body","layout":{"type":"default"}} -->
-<div class="wp-block-group read page-body"><!-- wp:post-content {"className":"prose","layout":{"type":"default"}} /-->
-
-<!-- wp:the-purple-people-eater/edit-link /--></div>
-<!-- /wp:group -->
-<!-- /wp:the-purple-people-eater/article --></main>
-<!-- /wp:group --></div>
+<!-- wp:post-excerpt {"className":"intro","moreText":"","showMoreOnNewLine":false} /--></div>
+<!-- /wp:group --></header>
 <!-- /wp:group -->
 
-<!-- wp:template-part {"slug":"footer","tagName":"div","className":"site-footer-part"} /-->
-<!-- /wp:the-purple-people-eater/site-frame -->
+<!-- wp:group {"className":"read page-body"} -->
+<div class="wp-block-group read page-body"><!-- wp:post-content {"className":"prose","metadata":{"ignoredHookedBlocks":["activitypub/reactions"]}} /--></div>
+<!-- /wp:group --></article>
+<!-- /wp:group --></main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"div"} /-->

@@ -1,23 +1,39 @@
-<!-- wp:the-purple-people-eater/site-frame -->
-<!-- wp:template-part {"slug":"header","tagName":"div","className":"site-header-part"} /-->
+<!-- wp:template-part {"slug":"header","tagName":"div"} /-->
 
-<!-- wp:group {"tagName":"div","className":"site-content","layout":{"type":"default"}} -->
-<div class="wp-block-group site-content"><!-- wp:group {"tagName":"main","anchor":"content","className":"site-main","layout":{"type":"default"}} -->
-<main id="content" class="wp-block-group site-main"><!-- wp:the-purple-people-eater/diary-note /-->
+<!-- wp:group {"tagName":"main","anchor":"content","className":"site-main"} -->
+<main id="content" class="wp-block-group site-main"><!-- wp:pattern {"slug":"the-purple-people-eater/diary-note"} /-->
 
-<!-- wp:the-purple-people-eater/article -->
-<!-- wp:the-purple-people-eater/diary-head /-->
+<!-- wp:group {"tagName":"article"} -->
+<article class="wp-block-group"><!-- wp:group {"tagName":"header","className":"read diary-head"} -->
+<header class="wp-block-group read diary-head"><!-- wp:pattern {"slug":"the-purple-people-eater/diary-kicker"} /-->
 
-<!-- wp:group {"className":"read","layout":{"type":"default"}} -->
-<div class="wp-block-group read"><!-- wp:post-content {"className":"prose","layout":{"type":"default"}} /-->
+<!-- wp:post-title {"level":1} /-->
 
-<!-- wp:the-purple-people-eater/diary-end /--></div>
+<!-- wp:group {"className":"meta-line meta-text"} -->
+<div class="wp-block-group meta-line meta-text"><!-- wp:post-date {"format":"l j.n.Y \\k\\l\\o G.i"} /--><!-- wp:post-time-to-read {"displayMode":"words"} /--></div>
+<!-- /wp:group --></header>
 <!-- /wp:group -->
 
-<!-- wp:the-purple-people-eater/comments /-->
-<!-- /wp:the-purple-people-eater/article --></main>
+<!-- wp:group {"className":"read"} -->
+<div class="wp-block-group read"><!-- wp:post-content {"className":"prose","metadata":{"ignoredHookedBlocks":["activitypub/reactions"]}} /-->
+
+<!-- wp:group {"tagName":"section","ariaLabel":"Päivän tiedot","className":"day"} -->
+<section aria-label="Päivän tiedot" class="wp-block-group day"><!-- wp:html -->
+<div data-day></div>
+<!-- /wp:html --></section>
+<!-- /wp:group -->
+
+<!-- wp:html -->
+<div data-year-ago></div>
+<!-- /wp:html -->
+
+<!-- wp:group {"tagName":"nav","ariaLabel":"Edellinen ja seuraava päivä","className":"prevnext"} -->
+<nav aria-label="Edellinen ja seuraava päivä" class="wp-block-group prevnext"><!-- wp:post-navigation-link {"type":"previous","label":"Edellinen","showTitle":true,"linkLabel":true} /--><!-- wp:post-navigation-link {"type":"next","label":"Seuraava","showTitle":true,"linkLabel":true} /--></nav>
 <!-- /wp:group --></div>
 <!-- /wp:group -->
 
-<!-- wp:template-part {"slug":"footer","tagName":"div","className":"site-footer-part"} /-->
-<!-- /wp:the-purple-people-eater/site-frame -->
+<!-- wp:pattern {"slug":"the-purple-people-eater/comments"} /--></article>
+<!-- /wp:group --></main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"div"} /-->
