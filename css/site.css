@@ -2165,7 +2165,7 @@ body:has(.comments) .site-foot {
 
 @media (max-width: 860px) {
   .opening {
-    padding: 136px 0 120px;
+    padding: 136px 0 96px;
   }
 
   .statement {
