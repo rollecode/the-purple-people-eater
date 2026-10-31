@@ -921,7 +921,7 @@ body:has(.comments) .site-foot {
 .foot-follow {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 14px 16px;
 }
 
 /* Every other place: logos only, named for screen readers */
@@ -3038,7 +3038,7 @@ body:has(.comments) .site-foot {
 .share {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 14px 16px;
 }
 
 .share .btn {
