@@ -569,22 +569,21 @@
 
   const rankedList = (items, start) => `<ol class="ranked" start="${start}">${items.map(({ link, title, count }, index) => `<li><span class="pos" aria-hidden="true">${String(start + index).padStart(2, '0')}</span><a href="${escapeHtml(link)}">${escapeHtml(title)}</a><span class="num"><b>${fiNumber(count)}</b></span></li>`).join('')}</ol>`;
 
-  const fillRanked = (element, items, unit) => {
+  const fillRanked = (element, items) => {
     const more = items.slice(ARCHIVE_RANK_OPEN);
 
     element.innerHTML = rankedList(items.slice(0, ARCHIVE_RANK_OPEN), 1)
-      + (more.length ? `<details class="more-ranked"><summary>Koko lista, ${items.length} kirjoitusta</summary>${rankedList(more, ARCHIVE_RANK_OPEN + 1)}</details>` : '')
-      + `<p class="ranked-unit meta-text">${unit}</p>`;
+      + (more.length ? `<details class="more-ranked"><summary>Koko lista, ${items.length} kirjoitusta</summary>${rankedList(more, ARCHIVE_RANK_OPEN + 1)}</details>` : '');
   };
 
   const mostRead = $('[data-ranked="read"]');
   if (mostRead) {
-    getJson(`most-read?period=alltime&limit=${ARCHIVE_RANKED}`).then((posts) => fillRanked(mostRead, posts.map((post) => ({ ...post, count: post.reads })), 'Lukukerrat kaikkien aikojen.'));
+    getJson(`most-read?period=alltime&limit=${ARCHIVE_RANKED}`).then((posts) => fillRanked(mostRead, posts.map((post) => ({ ...post, count: post.reads }))));
   }
 
   const discussed = $('[data-ranked="discussed"]');
   if (discussed) {
-    getJson(`discussed?limit=${ARCHIVE_RANKED}`).then((posts) => fillRanked(discussed, posts, 'Kommentit kaikkien aikojen.'));
+    getJson(`discussed?limit=${ARCHIVE_RANKED}`).then((posts) => fillRanked(discussed, posts));
   }
 
   /**

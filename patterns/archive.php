@@ -51,7 +51,7 @@ $icons = get_theme_file_uri( 'svg/icons.svg' );
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"sub"} -->
-<p class="sub">18 käytetyintä <span data-stat="tags">1841</span> avainsanasta. Palkki kertoo kirjoitusten määrän.</p>
+<p class="sub">18 käytetyintä <span data-stat="tags">1841</span> avainsanasta.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:html -->

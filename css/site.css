@@ -325,7 +325,7 @@ kbd {
 }
 
 .h-sec {
-  margin-bottom: 8px;
+  margin-bottom: 24px;
   font-size: clamp(36px, 3.4vw, 52px);
 }
 
@@ -2530,10 +2530,6 @@ body:has(.comments) .site-foot {
   font-weight: 500;
 }
 
-.ranked-unit {
-  margin: 8px 0 0;
-  color: var(--muted);
-}
 
 /* All posts on one page */
 /* All posts: a sticky year rail beside one steady column of dates and titles */
