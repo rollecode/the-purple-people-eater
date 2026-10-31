@@ -15,7 +15,7 @@ $icons = get_theme_file_uri( 'svg/icons.svg' );
 <div class="wp-block-group inner"><!-- wp:group {"className":"foot-top"} -->
 <div class="wp-block-group foot-top"><!-- wp:group {"className":"sign"} -->
 <div class="wp-block-group sign"><!-- wp:html -->
-<a class="foot-mark" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="Rollemaa, etusivu"><svg class="ic" aria-hidden="true"><use href="<?php echo esc_url( $icons ); ?>#logo"></use></svg></a>
+<a class="foot-mark" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="Rollemaa, etusivu"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2A10 10 0 0 0 2 12a1 1 0 0 0 1 1h8v6a3 3 0 0 0 6 0 1 1 0 0 0-2 0 1 1 0 0 1-2 0v-6h8a1 1 0 0 0 1-1A10 10 0 0 0 12 2zm-7.94 9a8 8 0 0 1 15.88 0z"/></svg></a>
 <!-- /wp:html -->
 
 <!-- wp:group -->

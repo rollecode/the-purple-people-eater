@@ -477,7 +477,7 @@ kbd {
   align-items: center;
   padding: 10px 0;
   color: inherit;
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: Muli, "Inter", system-ui, sans-serif;
   font-size: 21px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -4981,3 +4981,4 @@ article:has(.prose h1) > .page-hero {
     corner-shape: squircle;
   }
 }
+
