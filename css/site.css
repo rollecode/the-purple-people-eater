@@ -2694,10 +2694,10 @@ body:has(.comments) .site-foot {
   gap: 18px;
 }
 
-.byline > img {
+.byline img {
   width: 60px;
   height: 60px;
-  border-radius: 50%;
+  border-radius: 14px;
   object-fit: cover;
 }
 
@@ -4740,4 +4740,11 @@ article:has(.prose h1) > .page-hero {
 .byline figure {
   flex: none;
   margin: 0;
+}
+
+@supports (corner-shape: squircle) {
+  .byline img {
+    border-radius: 20px;
+    corner-shape: squircle;
+  }
 }
