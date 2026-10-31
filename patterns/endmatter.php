@@ -11,7 +11,11 @@ $icons = get_theme_file_uri( 'svg/icons.svg' );
 
 ?>
 <!-- wp:group {"tagName":"footer","className":"endmatter"} -->
-<footer class="wp-block-group endmatter"><!-- wp:group {"className":"colophon"} -->
+<footer class="wp-block-group endmatter"><!-- wp:html -->
+<div class="clap" data-clap><button class="clap-btn" type="button" aria-describedby="clap-count"><svg class="clap-hands" viewBox="0 0 48 48" aria-hidden="true"><g class="hand hand-l"><path d="M14.5 41c-3-2-4.5-4.8-4.5-8.4V24.5a2 2 0 0 1 4 0V28V17a2 2 0 0 1 4 0V26V15.5a2 2 0 0 1 4 0V26V18a2 2 0 0 1 4 0v12.5c0 6-3.6 10.5-8.6 10.5-1.1 0-2.1-.2-2.9-.5z"/></g><g class="hand hand-r"><path d="M14.5 41c-3-2-4.5-4.8-4.5-8.4V24.5a2 2 0 0 1 4 0V28V17a2 2 0 0 1 4 0V26V15.5a2 2 0 0 1 4 0V26V18a2 2 0 0 1 4 0v12.5c0 6-3.6 10.5-8.6 10.5-1.1 0-2.1-.2-2.9-.5z"/></g><path class="clap-sparks" d="M24 4v4M17 6.5l2 3.2M31 6.5l-2 3.2"/></svg><span class="clap-plus" aria-hidden="true"></span><span class="screen-reader-text">Taputa</span></button><div class="clap-text"><p class="clap-title">Hyvin kirjoitettu</p><p class="clap-count meta-text" id="clap-count" aria-live="polite">Taputa, jos tykkäsit</p></div></div>
+<!-- /wp:html -->
+
+<!-- wp:group {"className":"colophon"} -->
 <div class="wp-block-group colophon"><!-- wp:post-terms {"term":"post_tag","separator":", ","className":"keywords"} /--></div>
 <!-- /wp:group -->
 
