@@ -1,14 +1,14 @@
 /**
  * Buttons block: the site's own buttons.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-buttons {
+.prose .wp-block-buttons {
   display: flex;
   flex-wrap: wrap;
   margin-block: 1.8em;
   gap: 12px;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-button__link {
+.prose .wp-block-button__link {
   display: inline-flex;
   align-items: center;
   min-height: 46px;
@@ -22,11 +22,11 @@
   text-decoration: none;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-button__link:hover {
+.prose .wp-block-button__link:hover {
   background: color-mix(in oklab, var(--deep) 86%, var(--ink));
 }
 
-:is(.prose, .editor-styles-wrapper) .is-style-outline .wp-block-button__link {
+.prose .is-style-outline .wp-block-button__link {
   background: var(--tint);
   color: var(--ink);
 }

@@ -2,6 +2,6 @@
  * Heading block: headings keep the prose rhythm; anchors leave room for
  * the top of the screen.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-heading {
+.prose .wp-block-heading {
   scroll-margin-top: 32px;
 }

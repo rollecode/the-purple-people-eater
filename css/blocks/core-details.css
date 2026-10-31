@@ -1,22 +1,22 @@
 /**
  * Details block: a question that opens to its answer.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-details {
+.prose .wp-block-details {
   margin-block: 1.4em;
   border-bottom: 1px solid var(--rule);
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-details summary {
+.prose .wp-block-details summary {
   padding: 14px 0;
   cursor: pointer;
   font-family: var(--sans);
   font-weight: 700;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-details summary::marker {
+.prose .wp-block-details summary::marker {
   color: var(--accent);
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-details[open] > :last-child {
+.prose .wp-block-details[open] > :last-child {
   padding-bottom: 16px;
 }

@@ -1,24 +1,24 @@
 /**
  * Pullquote block: a line from the text in large italic serif.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-pullquote {
+.prose .wp-block-pullquote {
   margin: 2.4em -120px 2.4em 0;
   padding: 8px 0;
   border: 0;
   text-align: left;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-pullquote blockquote {
+.prose .wp-block-pullquote blockquote {
   margin: 0;
   padding: 0;
   border: 0;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-pullquote blockquote::before {
+.prose .wp-block-pullquote blockquote::before {
   content: none;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-pullquote p {
+.prose .wp-block-pullquote p {
   margin: 0 0 12px;
   color: var(--accent);
   font-family: var(--display);
@@ -27,7 +27,7 @@
   line-height: 1.08;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-pullquote cite {
+.prose .wp-block-pullquote cite {
   color: var(--muted);
   font-family: var(--sans);
   font-size: 15px;
@@ -35,7 +35,7 @@
 }
 
 @media (max-width: 1240px) {
-  :is(.prose, .editor-styles-wrapper) .wp-block-pullquote {
+  .prose .wp-block-pullquote {
     margin-right: 0;
   }
 }

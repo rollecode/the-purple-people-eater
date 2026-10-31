@@ -1,7 +1,7 @@
 /**
  * Preformatted block: plain monospace on a tint, unlike code.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-preformatted {
+.prose .wp-block-preformatted {
   margin-block: 1.8em;
   padding: 18px 20px;
   overflow-x: auto;

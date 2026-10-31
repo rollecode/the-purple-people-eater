@@ -1,7 +1,7 @@
 /**
  * File block: the file name, and a download button.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-file {
+.prose .wp-block-file {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -13,13 +13,13 @@
   font-family: var(--sans);
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-file > a:first-child {
+.prose .wp-block-file > a:first-child {
   flex: 1;
   min-width: 160px;
   font-weight: 500;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-file__button {
+.prose .wp-block-file__button {
   display: inline-flex;
   align-items: center;
   min-height: 40px;

@@ -2,38 +2,38 @@
  * Table block: scrolls sideways on its own when it does not fit; the
  * striped style tints every other row.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-table {
+.prose .wp-block-table {
   margin-block: 2em;
   overflow-x: auto;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-table table {
+.prose .wp-block-table table {
   margin: 0;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-table :is(td, th) {
+.prose .wp-block-table :is(td, th) {
   border: 0;
   border-bottom: 1px solid var(--rule);
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-table thead {
+.prose .wp-block-table thead {
   border-bottom: 1px solid var(--rule-strong);
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-table.is-style-stripes {
+.prose .wp-block-table.is-style-stripes {
   border: 0;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-table.is-style-stripes tbody tr:nth-child(odd) {
+.prose .wp-block-table.is-style-stripes tbody tr:nth-child(odd) {
   background: color-mix(in oklab, var(--soft) 55%, transparent);
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-table.is-style-stripes :is(td, th) {
+.prose .wp-block-table.is-style-stripes :is(td, th) {
   padding-left: 12px;
   border: 0;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-table figcaption {
+.prose .wp-block-table figcaption {
   margin-top: 8px;
   color: var(--muted);
   font-size: 14px;

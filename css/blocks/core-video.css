@@ -1,17 +1,17 @@
 /**
  * Video block.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-video {
+.prose .wp-block-video {
   margin-block: 2em;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-video video {
+.prose .wp-block-video video {
   width: 100%;
   border-radius: 4px;
   background: #000;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-video figcaption {
+.prose .wp-block-video figcaption {
   margin-top: 8px;
   color: var(--muted);
   font-family: var(--sans);

@@ -2,7 +2,7 @@
  * Cover block: text on a photo under a deep violet veil that keeps it
  * readable whatever the photo.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-cover {
+.prose .wp-block-cover {
   display: grid;
   position: relative;
   overflow: hidden;
@@ -14,8 +14,8 @@
   text-align: center;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-cover__image-background,
-:is(.prose, .editor-styles-wrapper) .wp-block-cover__video-background {
+.prose .wp-block-cover__image-background,
+.prose .wp-block-cover__video-background {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -23,23 +23,23 @@
   object-fit: cover;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-cover__background {
+.prose .wp-block-cover__background {
   position: absolute;
   inset: 0;
   background: color-mix(in oklab, #2A1640 62%, transparent) !important;
   opacity: 1 !important;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-cover__inner-container {
+.prose .wp-block-cover__inner-container {
   position: relative;
   z-index: 1;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-cover :is(p, h2, h3) {
+.prose .wp-block-cover :is(p, h2, h3) {
   color: #fff;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-cover p {
+.prose .wp-block-cover p {
   max-width: 30em;
   margin-inline: auto;
 }

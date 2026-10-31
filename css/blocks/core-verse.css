@@ -1,7 +1,7 @@
 /**
  * Verse block: italic body serif, line breaks kept.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-verse {
+.prose .wp-block-verse {
   margin-block: 1.8em;
   padding: 0 0 0 1.2em;
   overflow: visible;

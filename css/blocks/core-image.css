@@ -2,24 +2,24 @@
  * Image block: captions in Geist, wide and full images breaking out of
  * the reading column.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-image {
+.prose .wp-block-image {
   margin-block: 2em;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-image img {
+.prose .wp-block-image img {
   height: auto;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-image.alignleft,
-:is(.prose, .editor-styles-wrapper) .wp-block-image.alignright {
+.prose .wp-block-image.alignleft,
+.prose .wp-block-image.alignright {
   margin-top: .3em;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-image.is-style-rounded img {
+.prose .wp-block-image.is-style-rounded img {
   border-radius: 999px;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-image figcaption {
+.prose .wp-block-image figcaption {
   margin-top: 8px;
   color: var(--muted);
   font-family: var(--sans);

@@ -1,7 +1,7 @@
 /**
  * Old text columns block, kept for posts that still use it.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-text-columns {
+.prose .wp-block-text-columns {
   display: grid;
   grid-auto-columns: minmax(0, 1fr);
   grid-auto-flow: column;
@@ -9,13 +9,13 @@
   gap: 32px;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-text-columns p {
+.prose .wp-block-text-columns p {
   font-family: var(--sans);
   font-size: 17px;
 }
 
 @media (max-width: 860px) {
-  :is(.prose, .editor-styles-wrapper) .wp-block-text-columns {
+  .prose .wp-block-text-columns {
     grid-auto-flow: row;
   }
 }

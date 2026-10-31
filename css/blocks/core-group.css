@@ -1,12 +1,12 @@
 /**
  * Group block: a group with a background colour becomes a padded panel.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-group.has-background {
+.prose .wp-block-group.has-background {
   margin-block: 2em;
   padding: 28px 32px;
   border-radius: 8px;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-group.has-background > :last-child {
+.prose .wp-block-group.has-background > :last-child {
   margin-bottom: 0;
 }

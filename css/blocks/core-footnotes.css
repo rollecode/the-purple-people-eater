@@ -1,14 +1,14 @@
 /**
  * Footnotes block and the note numbers in the text.
  */
-:is(.prose, .editor-styles-wrapper) sup.fn a {
+.prose sup.fn a {
   color: var(--accent);
   font-family: var(--sans);
   font-weight: 600;
   text-decoration: none;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-footnotes {
+.prose .wp-block-footnotes {
   margin: 3em 0 0;
   padding: 16px 0 0 1.4em;
   border-top: 1px solid var(--rule);
@@ -17,10 +17,10 @@
   font-size: 16px;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-footnotes li {
+.prose .wp-block-footnotes li {
   font-family: var(--sans);
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-footnotes li::marker {
+.prose .wp-block-footnotes li::marker {
   color: var(--accent);
 }

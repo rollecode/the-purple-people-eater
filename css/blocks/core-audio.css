@@ -1,15 +1,15 @@
 /**
  * Audio block.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-audio {
+.prose .wp-block-audio {
   margin-block: 2em;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-audio audio {
+.prose .wp-block-audio audio {
   width: 100%;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-audio figcaption {
+.prose .wp-block-audio figcaption {
   margin-top: 8px;
   color: var(--muted);
   font-family: var(--sans);

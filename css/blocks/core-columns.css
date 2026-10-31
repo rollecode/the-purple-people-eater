@@ -1,7 +1,7 @@
 /**
  * Columns block: Geist inside, so narrow columns stay readable.
  */
-:is(.prose, .editor-styles-wrapper) .wp-block-columns {
+.prose .wp-block-columns {
   display: grid;
   grid-auto-columns: minmax(0, 1fr);
   grid-auto-flow: column;
@@ -9,17 +9,17 @@
   gap: 32px;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-column > :first-child {
+.prose .wp-block-column > :first-child {
   margin-top: 0;
 }
 
-:is(.prose, .editor-styles-wrapper) .wp-block-column :is(p, li) {
+.prose .wp-block-column :is(p, li) {
   font-family: var(--sans);
   font-size: 17px;
 }
 
 @media (max-width: 860px) {
-  :is(.prose, .editor-styles-wrapper) .wp-block-columns {
+  .prose .wp-block-columns {
     grid-auto-flow: row;
   }
 }
