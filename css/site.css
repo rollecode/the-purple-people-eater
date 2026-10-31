@@ -4513,8 +4513,9 @@ a.heat-day:hover {
 
 .prevnext .post-navigation-link__title {
   font-family: var(--display);
-  font-size: 34px;
-  line-height: 1;
+  font-size: 30px;
+  font-style: italic;
+  line-height: 1.05;
 }
 
 .prevnext a:hover .post-navigation-link__title {
@@ -4542,7 +4543,22 @@ a.heat-day:hover {
 
   .prevnext .post-navigation-link__title {
     font-size: 24px;
-    white-space: nowrap;
+  }
+}
+
+/* One day per row on a phone, the dates are long */
+@media (max-width: 600px) {
+  .prevnext {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .prevnext .post-navigation-link-next {
+    grid-column: 1;
+  }
+
+  .prevnext a {
+    padding-block: 14px;
   }
 
   .prevnext .is-arrow-arrow {

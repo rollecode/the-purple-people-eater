@@ -809,9 +809,10 @@
         return;
       }
 
+      const [ longDate, clock ] = entry.date.split(' · ');
       const more = entry.long ? `<button class="btn btn-ghost yearago-more" type="button" aria-expanded="false" aria-controls="year-ago-text" data-expand data-more="Näytä koko päivä" data-less="Näytä vähemmän"><span class="lbl">Näytä koko päivä</span>${icon('chev')}</button>` : '';
 
-      yearAgo.innerHTML = `<aside class="yearago" aria-labelledby="year-ago-title"><p class="yearago-label meta-text">${icon('clock', 'ic-sm')}Vuosi sitten tänä päivänä</p><h2 id="year-ago-title"><a href="${escapeHtml(entry.link)}">${escapeHtml(entry.title)}</a></h2><p class="dmeta meta-text">${escapeHtml(entry.date)}</p><div class="prose yearago-text${entry.long ? ' is-clamped' : ''}" id="year-ago-text">${entry.content}</div>${more}</aside>`;
+      yearAgo.innerHTML = `<aside class="yearago" aria-labelledby="year-ago-title"><p class="yearago-label meta-text">${icon('clock', 'ic-sm')}Vuosi sitten tänä päivänä</p><h2 id="year-ago-title"><a href="${escapeHtml(entry.link)}">${escapeHtml(longDate)}</a></h2><p class="dmeta meta-text">${escapeHtml(`${entry.title} · ${clock}`)}</p><div class="prose yearago-text${entry.long ? ' is-clamped' : ''}" id="year-ago-text">${entry.content}</div>${more}</aside>`;
     });
   }
 
