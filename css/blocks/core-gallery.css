@@ -66,9 +66,9 @@
   transform: rotate(1.4deg);
 }
 
-.prose .wp-block-gallery.columns-2 figcaption {
-  margin-top: 18px;
-  padding-inline: 6px;
+.prose .wp-block-gallery.columns-2 figure.wp-block-image figcaption {
+  margin-top: 26px;
+  padding-inline: 8px;
 }
 
 .prose .wp-block-gallery > .blocks-gallery-caption {
