@@ -523,7 +523,7 @@
       const items = [];
 
       if (listening) {
-        items.push(nowItem('lastfm', listening.playing ? 'Soi nyt' : 'Kuunneltua', listening.url, `${listening.artist} – ${listening.track}`, 'Last.fm', listening.date && fiAgo(listening.date)));
+        items.push(nowItem('lastfm', listening.playing ? 'Juuri nyt' : 'Kuunneltua', listening.url, `${listening.artist} – ${listening.track}`, 'Last.fm', listening.date && fiAgo(listening.date)));
       }
       if (watched) {
         const source = watched.source || 'Rollekino';
