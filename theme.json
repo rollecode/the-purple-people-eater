@@ -257,6 +257,13 @@
       "postTypes": [
         "page"
       ]
+    },
+    {
+      "name": "template-info",
+      "title": "Tietoa",
+      "postTypes": [
+        "page"
+      ]
     }
   ],
   "templateParts": [
