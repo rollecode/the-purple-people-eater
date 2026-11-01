@@ -686,11 +686,12 @@
     card.popover = 'auto';
     card.setAttribute('role', 'dialog');
     card.setAttribute('aria-label', 'Sanan selitys');
-    card.innerHTML = `<button class="gloss-close" type="button" aria-label="Sulje" autofocus>${icon('close')}</button><p><strong></strong> <span></span></p><a class="gloss-link" hidden></a>`;
+    card.innerHTML = `<button class="gloss-close" type="button" aria-label="Sulje">${icon('close')}</button><p><strong></strong> <span></span></p><a class="gloss-link" hidden></a>`;
     document.body.append(card);
 
     const [ word, explanation ] = [ $('strong', card), $('span', card) ];
     const link = $('.gloss-link', card);
+    const closeButton = $('.gloss-close', card);
     let active = null;
     let closingOwn = false;
 
@@ -707,12 +708,16 @@
       link.textContent = linkable ? linkLabel(url) : '';
 
       active = term;
+
+      // Placed before it opens, or the browser scrolls to where it first appears
+      const { left, bottom } = term.getBoundingClientRect();
+      card.style.top = `${bottom + window.scrollY + GLOSS_GAP}px`;
+      card.style.left = `${left + window.scrollX}px`;
       card.showPopover();
 
-      const { left, bottom } = term.getBoundingClientRect();
       const widest = document.documentElement.clientWidth - card.offsetWidth - GLOSS_EDGE;
-      card.style.top = `${bottom + window.scrollY + GLOSS_GAP}px`;
       card.style.left = `${Math.max(GLOSS_EDGE, Math.min(left, widest)) + window.scrollX}px`;
+      closeButton.focus({ preventScroll: true });
     };
 
     glosses.forEach((term) => {
@@ -743,7 +748,7 @@
       });
     });
 
-    $('.gloss-close', card).addEventListener('click', () => card.hidePopover());
+    closeButton.addEventListener('click', () => card.hidePopover());
     card.addEventListener('toggle', ({ newState }) => {
       active?.setAttribute('aria-expanded', String('open' === newState));
       if ('closed' === newState) {
