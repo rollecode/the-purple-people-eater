@@ -47,7 +47,7 @@ $icons = get_theme_file_uri( 'svg/icons.svg' );
 <!-- wp:html -->
 <div class="cf-fedi">
   <h3>Kommentoi muualta</h3>
-  <p class="hint">Keskustelu käydään somessa. Kommentit Blueskystä, Threadsista ja Mastodonista tuodaan tämän artikkelin kylkeen automaattisesti. Voit vastata kirjoitukseen suoraan omalta Mastodon-tililtäsi tai miltä tahansa fediversumin palvelimelta:</p>
+  <p class="hint">Keskustelu käydään somessa. Julkiset kommentit Blueskysta, Threadsista ja Mastodonista tuodaan tämän artikkelin kylkeen automaattisesti. Voit vastata kirjoitukseen suoraan omalta Mastodon-tililtäsi tai miltä tahansa fediversumin palvelimelta:</p>
   <ol class="steps">
     <li><span class="step-n" aria-hidden="true">1</span><div><b>Kopioi kirjoituksen osoite</b><div class="copyfield"><input class="copybox" readonly aria-label="Kirjoituksen osoite" data-permalink><button class="btn" type="button" data-copy><svg class="ic" aria-hidden="true"><use href="<?php echo esc_url( $icons ); ?>#copy"></use></svg><span>Kopioi</span></button></div></div></li>
     <li><span class="step-n" aria-hidden="true">2</span><div><b>Liitä osoite oman palvelimesi hakuun</b><p>Haku löytää kirjoituksen, ja voit vastata siihen kuten mihin tahansa julkaisuun.</p></div></li>
