@@ -3081,51 +3081,38 @@ body:has(.comments) .site-foot {
 }
 
 .clap-hands {
-  width: 54px;
-  height: 54px;
+  width: 46px;
+  height: 50px;
   overflow: visible;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.9;
+  fill: currentColor;
 }
 
-.clap-hands .hand {
-  transition: translate .18s cubic-bezier(.3, 1.6, .5, 1);
+/* Hands traced from the classic clap; they tip on hover and squeeze on each clap */
+.clap-palms {
+  transform-box: fill-box;
+  transform-origin: 50% 85%;
+  transition: scale .18s cubic-bezier(.3, 1.6, .5, 1), rotate .18s cubic-bezier(.3, 1.6, .5, 1), fill .3s;
 }
 
-/* Both palms fill with the button's colour, so the front hand covers the back one */
-.clap-hands .hand path {
-  fill: var(--tint);
-  transition: fill .3s;
+.clap-spark {
+  fill: var(--accent);
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition: scale .25s;
 }
 
-.clap-sparks {
-  opacity: 0;
-  stroke: var(--accent);
-  transition: opacity .3s;
+.clap-btn:hover .clap-palms {
+  rotate: -5deg;
 }
 
-/* Hands part a little on hover and meet on each clap */
-.clap-btn:hover .hand-back {
-  translate: 1.2px -1.2px;
+.clap.is-clapping .clap-palms {
+  scale: .88;
+  rotate: 4deg;
+  transition: none;
 }
 
-.clap-btn:hover .hand-front {
-  translate: -1px 1px;
-}
-
-.clap.is-clapping .hand-back {
-  translate: -.6px .6px;
-}
-
-.clap.is-clapping .hand-front {
-  translate: 1.4px -1.4px;
-}
-
-.clap.is-clapping .clap-sparks {
-  opacity: 1;
+.clap.is-clapping .clap-spark {
+  scale: 1.4;
   transition: none;
 }
 
@@ -3133,8 +3120,8 @@ body:has(.comments) .site-foot {
   background: color-mix(in oklab, var(--accent) 16%, var(--tint));
 }
 
-.clap.has-clapped .hand path {
-  fill: color-mix(in oklab, var(--accent) 16%, var(--tint));
+.clap.has-clapped .clap-palms {
+  fill: var(--accent);
 }
 
 /* The running count of one burst: +1, +2, +3 */
@@ -3191,7 +3178,8 @@ body:has(.comments) .site-foot {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .clap-hands .hand,
+  .clap-palms,
+  .clap-spark,
   .clap-plus {
     transition: none;
   }
