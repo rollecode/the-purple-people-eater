@@ -13,6 +13,11 @@
 .prose .wp-block-gallery.columns-2 { --columns: 2; }
 .prose .wp-block-gallery.columns-4 { --columns: 4; }
 
+/* Older galleries wrap the pictures in a list; the list steps aside so they join the grid */
+.prose .wp-block-gallery > .blocks-gallery-grid {
+  display: contents;
+}
+
 .prose .wp-block-gallery .wp-block-image,
 .prose .wp-block-gallery .blocks-gallery-item {
   width: auto !important;
@@ -58,11 +63,11 @@
   aspect-ratio: 4 / 3;
 }
 
-.prose .wp-block-gallery.columns-2 > figure:nth-child(odd) img {
+.prose .wp-block-gallery.columns-2 :is(.wp-block-gallery > figure, .blocks-gallery-grid > li):nth-child(odd) img {
   transform: rotate(-1.8deg);
 }
 
-.prose .wp-block-gallery.columns-2 > figure:nth-child(even) img {
+.prose .wp-block-gallery.columns-2 :is(.wp-block-gallery > figure, .blocks-gallery-grid > li):nth-child(even) img {
   transform: rotate(1.4deg);
 }
 
@@ -81,11 +86,13 @@
   }
 
   /* An odd count: the first picture goes wide, so no picture is left alone on the last row */
-  .prose .wp-block-gallery > figure:first-child:nth-last-child(odd of figure) {
+  .prose .wp-block-gallery > figure:first-child:nth-last-child(odd of figure),
+  .prose .blocks-gallery-grid > li:first-child:nth-last-child(odd) {
     grid-column: 1 / -1;
   }
 
-  .prose .wp-block-gallery > figure:first-child:nth-last-child(odd of figure) img {
+  .prose .wp-block-gallery > figure:first-child:nth-last-child(odd of figure) img,
+  .prose .blocks-gallery-grid > li:first-child:nth-last-child(odd) img {
     aspect-ratio: 3 / 2;
   }
 }
