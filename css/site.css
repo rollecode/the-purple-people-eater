@@ -3288,10 +3288,37 @@ body:has(.comments) .site-foot {
 
 .ai-summary > p {
   margin: 0;
-  padding: 0 18px 18px 46px;
-  color: var(--ink-2);
+  padding: 0 18px 10px 46px;
+  color: var(--ink);
   font-size: 16.5px;
-  line-height: 1.6;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.ai-summary > ul {
+  display: grid;
+  margin: 0;
+  padding: 0 18px 18px 46px;
+  gap: 6px;
+  color: var(--ink-2);
+  font-size: 16px;
+  line-height: 1.45;
+  list-style: none;
+}
+
+.ai-summary > ul li {
+  position: relative;
+}
+
+.ai-summary > ul li::before {
+  position: absolute;
+  top: .62em;
+  left: -16px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  content: "";
 }
 
 /* The editor wraps the hidden resume bar in a block of its own */
