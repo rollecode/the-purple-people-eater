@@ -212,6 +212,10 @@ if (responsesFor) {
     const line = $('.count-line');
     const meta = $('.byline .meta, .diary-head .meta-line');
 
+    if (comments && meta) {
+      meta.insertAdjacentHTML('beforeend', `<a class="meta-comments" href="#comments">${icon('comment', 'ic-sm')}${fiCount(comments, 'kommentti', 'kommenttia')}</a>`);
+    }
+
     if (reactions && meta) {
       meta.insertAdjacentHTML('beforeend', `<span>${icon('heart', 'ic-sm')}${fiCount(reactions, 'reaktio', 'reaktiota')}</span>`);
     }
