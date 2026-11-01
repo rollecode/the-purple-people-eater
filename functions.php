@@ -92,7 +92,7 @@ add_action( 'wp_head', function () {
 }, 0 );
 
 add_action( 'enqueue_block_editor_assets', function () {
-  wp_enqueue_script( 'theme-editor', get_theme_file_uri( 'js/gutenberg-editor.js' ), [ 'wp-blocks', 'wp-hooks', 'wp-data', 'wp-editor', 'wp-plugins', 'wp-element', 'wp-components', 'wp-api-fetch' ], filemtime( get_theme_file_path( 'js/gutenberg-editor.js' ) ), true );
+  wp_enqueue_script( 'theme-editor', get_theme_file_uri( 'js/gutenberg-editor.js' ), [ 'wp-block-editor', 'wp-blocks', 'wp-hooks', 'wp-data', 'wp-editor', 'wp-plugins', 'wp-element', 'wp-components', 'wp-api-fetch', 'wp-rich-text' ], filemtime( get_theme_file_path( 'js/gutenberg-editor.js' ) ), true );
 } );
 
 // Texts open in the editor inside their template, as they look on the site

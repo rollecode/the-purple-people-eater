@@ -667,6 +667,80 @@
     }
   }
 
+  // Word explanations from the editor: <dfn class="gloss" title="…" data-url="…">
+  const glosses = $$('dfn.gloss');
+  if (glosses.length && HTMLElement.prototype.showPopover) {
+    const GLOSS_EDGE = 16;
+    const GLOSS_GAP = 8;
+    const card = document.createElement('div');
+    card.className = 'gloss-card';
+    card.popover = 'auto';
+    card.setAttribute('role', 'dialog');
+    card.setAttribute('aria-label', 'Sanan selitys');
+    card.innerHTML = `<button class="gloss-close" type="button" aria-label="Sulje" autofocus>${icon('close')}</button><p><strong></strong> <span></span></p><a class="gloss-link" hidden></a>`;
+    document.body.append(card);
+
+    const [ word, explanation ] = [ $('strong', card), $('span', card) ];
+    const link = $('.gloss-link', card);
+    let active = null;
+    let closingOwn = false;
+
+    const linkLabel = (url) => (/wikipedia\.org$/.test(url.hostname) ? 'Lue lisää Wikipediasta' : `Lue lisää: ${url.hostname.replace(/^www\./, '')}`);
+
+    const open = (term) => {
+      const url = URL.canParse(term.dataset.url) ? new URL(term.dataset.url) : null;
+      const linkable = url && [ 'http:', 'https:' ].includes(url.protocol);
+
+      word.textContent = term.textContent;
+      explanation.textContent = term.dataset.gloss;
+      link.hidden = !linkable;
+      link.href = linkable ? url.href : '';
+      link.textContent = linkable ? linkLabel(url) : '';
+
+      active = term;
+      card.showPopover();
+
+      const { left, bottom } = term.getBoundingClientRect();
+      const widest = document.documentElement.clientWidth - card.offsetWidth - GLOSS_EDGE;
+      card.style.top = `${bottom + window.scrollY + GLOSS_GAP}px`;
+      card.style.left = `${Math.max(GLOSS_EDGE, Math.min(left, widest)) + window.scrollX}px`;
+    };
+
+    glosses.forEach((term) => {
+      term.dataset.gloss = term.title;
+      term.removeAttribute('title');
+      term.tabIndex = 0;
+      term.setAttribute('role', 'button');
+      term.setAttribute('aria-haspopup', 'dialog');
+      term.setAttribute('aria-expanded', 'false');
+
+      // The press itself closes the open card, so the click after it must not reopen it
+      term.addEventListener('pointerdown', () => {
+        closingOwn = active === term;
+      });
+      term.addEventListener('click', () => {
+        if (!closingOwn) {
+          open(term);
+        }
+        closingOwn = false;
+      });
+      term.addEventListener('keydown', (event) => {
+        if ('Enter' === event.key || ' ' === event.key) {
+          event.preventDefault();
+          open(term);
+        }
+      });
+    });
+
+    $('.gloss-close', card).addEventListener('click', () => card.hidePopover());
+    card.addEventListener('toggle', ({ newState }) => {
+      active?.setAttribute('aria-expanded', String('open' === newState));
+      if ('closed' === newState) {
+        active = null;
+      }
+    });
+  }
+
   // One face per person, however many ways they reacted
   const reactionsHtml = ({ faces, counts }) => (faces.length ? `<div class="rx"><ul class="rx-faces" aria-label="Reagoineet">${faces.map(({ url, name, avatar }) => `<li><a href="${escapeHtml(url)}" title="${escapeHtml(name)}"><img src="${escapeHtml(avatar)}" alt="${escapeHtml(name)}" width="32" height="32" loading="lazy"></a></li>`).join('')}</ul><p class="rx-count meta-text">${icon('heart', 'ic-sm')}${counts}</p></div>` : '');
 
