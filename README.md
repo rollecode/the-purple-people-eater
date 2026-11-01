@@ -7,7 +7,7 @@
 ![CSS](https://img.shields.io/badge/CSS-663399?style=for-the-badge&logo=css&logoColor=white)
 ![ActivityPub](https://img.shields.io/badge/Fediverse-6364FF?style=for-the-badge&logo=mastodon&logoColor=white)
 
-The WordPress theme of [Rollemaa.fi](https://www.rollemaa.fi), a Finnish personal blog with writing since 2005 and a daily diary, Lokikirja, since 2021.
+**The WordPress theme of [Rollemaa.fi](https://www.rollemaa.fi), a Finnish personal blog with writing since 2005 and a daily diary, Lokikirja, since 2021.**
 
 <img width="1200" height="900" alt="The front page of rollemaa.fi in dark mode: the post and word counts in a large serif, a bar chart of texts per year below" src="screenshot.png" />
 
