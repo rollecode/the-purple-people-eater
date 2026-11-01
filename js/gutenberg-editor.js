@@ -2,6 +2,10 @@
  * Editor settings. Buildless, uses editor globals.
  */
 
+// Core offers wide and full only in a constrained layout, which would also restyle the column
+const POST_CONTENT_LAYOUT = { alignments: [ 'left', 'center', 'right', 'wide', 'full' ] };
+wp.hooks.addFilter('blockEditor.useSetting.before', 'the-purple-people-eater', (value, path, clientId, blockName) => ('layout' === path && 'core/post-content' === blockName ? POST_CONTENT_LAYOUT : value));
+
 // The excerpt sits in the template, but it is the text's own and stays editable
 wp.hooks.addFilter('editor.postContentBlockTypes', 'the-purple-people-eater', (types) => [ ...types, 'core/post-excerpt' ]);
 
