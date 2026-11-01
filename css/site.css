@@ -2961,6 +2961,11 @@ body:has(.comments) .site-foot {
   padding-top: 72px;
 }
 
+/* The diary's title opens as far down as a page's own heading (.page-body) */
+.art-head.art-head {
+  padding-top: calc(24px + clamp(64px, 10vh, 120px));
+}
+
 :is(.art-head, .article-head:not(:has(> figure))) .cover-title {
   color: var(--ink);
   font-size: clamp(46px, 5vw, 72px);
