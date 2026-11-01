@@ -3357,7 +3357,8 @@ body:has(.comments) .site-foot {
   align-items: center;
   width: fit-content;
   max-width: 100%;
-  margin: -20px 0 40px;
+  /* As much room above (after the byline's own padding) as below, where the first line's leading adds to it */
+  margin: -25px 0 40px;
   padding: 16px 24px 16px 20px;
   gap: 4px 20px;
   border-radius: 4px;
@@ -3953,7 +3954,7 @@ body:has(.comments) .site-foot {
 
   .archive-note {
     grid-template-columns: 1fr;
-    margin-top: -12px;
+    margin-top: -25px;
     padding: 14px 16px;
   }
 
