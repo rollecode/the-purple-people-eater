@@ -162,7 +162,7 @@ wp.richText.registerFormatType(GLOSS_FORMAT, {
     };
 
     return el(Fragment, null,
-      el(wp.blockEditor.RichTextToolbarButton, { icon: 'editor-help', title: 'Selitys', onClick: start, isActive }),
+      el(wp.blockEditor.RichTextToolbarButton, { name: 'unknown', icon: 'editor-help', title: 'Selitys', onClick: start, isActive }),
       open && el(Popover, { anchor, placement: 'bottom-start', focusOnMount: 'firstElement', onClose: () => setOpen(false) },
         el('div', { style: { width: 320, padding: 12 } },
           el(TextareaControl, { label: 'Selitys', value: text, rows: 4, onChange: setText }),
