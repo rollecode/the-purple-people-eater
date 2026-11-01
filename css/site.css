@@ -5439,7 +5439,7 @@ article:has(.prose h1) > .page-hero {
   /* Where the open button was, round and quiet */
   .site-head .nav .wp-block-navigation__responsive-container-close.wp-block-navigation__responsive-container-close {
     top: max(16px, env(safe-area-inset-top));
-    right: var(--pad);
+    right: 0;
     display: grid;
     width: 44px;
     height: 44px;
