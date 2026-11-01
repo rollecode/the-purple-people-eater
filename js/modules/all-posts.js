@@ -26,6 +26,7 @@ if (allPosts) {
  * All posts page: the year rail marks the year in view
  */
 function watchYears() {
+  const rail = $('.all-years');
   const yearLinks = $$('.all-years a');
   const yearObserver = new IntersectionObserver((entries) => {
     entries.filter((entry) => entry.isIntersecting).forEach((entry) => {
@@ -34,7 +35,14 @@ function watchYears() {
         link.toggleAttribute('aria-current', current);
         if (current) {
           link.setAttribute('aria-current', 'true');
-          link.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+
+          // scrollIntoView would move the page too and fight the reader's scroll
+          const railBox = rail.getBoundingClientRect();
+          const linkBox = link.getBoundingClientRect();
+          rail.scrollBy({
+            left: linkBox.left - railBox.left - (railBox.width - linkBox.width) / 2,
+            top: linkBox.top - railBox.top - (railBox.height - linkBox.height) / 2,
+          });
         }
       });
     });
