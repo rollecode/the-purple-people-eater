@@ -440,22 +440,25 @@
   const SHELF_TONES = [ 'L', 'D', 'S', 'L', 'S', 'D', 'L', 'S' ];
   const yearUrl = (year, count) => (count.posts ? `/${year}/` : `/lokikirja/${year}/`);
 
+  // Every spine counts the year's texts, articles and diary days alike, and grows with its words
   const shelfHtml = (years, maxHeight) => {
-    const most = Math.max(1, ...Object.values(years).map(({ posts }) => posts));
+    const yearWords = ({ post_words: postWords, diary_words: diaryWords }) => postWords + diaryWords;
+    const most = Math.max(1, ...Object.values(years).map(yearWords));
     let spines = 0;
 
     return Object.entries(years).map(([ year, count ]) => {
-      if (!count.posts && !count.diary) {
+      const texts = count.posts + count.diary;
+      if (!texts) {
         return '';
       }
 
-      const tone = count.posts ? SHELF_TONES[spines % SHELF_TONES.length] : 'S';
-      const height = Math.round(count.posts ? maxHeight * .38 + count.posts / most * maxHeight * .62 : maxHeight * .6);
-      const words = count.posts ? count.post_words : count.diary_words;
-      const label = count.posts ? `${year}: ${count.posts} kirjoitusta` : `${year}: lokikirjassa ${count.diary} päivää`;
+      const words = yearWords(count);
+      const tone = SHELF_TONES[spines % SHELF_TONES.length];
+      const height = Math.round(maxHeight * .38 + words / most * maxHeight * .62);
+      const label = `${year}: ${fiCount(texts, 'kirjoitus', 'kirjoitusta')}, ${fiCount(words, 'sana', 'sanaa')}`;
       spines += 1;
 
-      return `<li class="vol" style="--w: ${40 + Math.round(words / 1000)}; --h: ${height}px"><a href="${yearUrl(year, count)}" aria-label="${label}"><span class="sp ${tone}"><span class="n">${count.posts || count.diary}</span></span><span class="pl"></span><span class="y">${year}</span></a></li>`;
+      return `<li class="vol" style="--w: ${40 + Math.round(words / 1000)}; --h: ${height}px"><a href="${yearUrl(year, count)}" aria-label="${label}"><span class="sp ${tone}"><span class="n">${fiNumber(texts)}</span></span><span class="pl"></span><span class="y">${year}</span></a></li>`;
     }).join('');
   };
 
