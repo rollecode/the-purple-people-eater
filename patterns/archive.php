@@ -75,7 +75,7 @@ $icons = get_theme_file_uri( 'svg/icons.svg' );
 <!-- /wp:group -->
 
 <!-- wp:paragraph -->
-<p><a class="textlink" href="/kaikki-rollemaan-kirjoitukset/">Kaikki kirjoitukset <svg class="ic" aria-hidden="true"><use href="<?php echo esc_url( $icons ); ?>#arrow"></use></svg></a></p>
+<p><a class="btn" href="/kaikki-rollemaan-kirjoitukset/">Kaikki kirjoitukset <svg class="ic" aria-hidden="true"><use href="<?php echo esc_url( $icons ); ?>#arrow"></use></svg></a></p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:group --></div>
 <!-- /wp:group -->
