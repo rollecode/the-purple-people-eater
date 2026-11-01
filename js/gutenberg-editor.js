@@ -114,7 +114,7 @@ wp.plugins.registerPlugin('rollemaa-summary', {
         .finally(() => setBusy(false));
     };
 
-    return el(wp.editor.PluginDocumentSettingPanel, { name: 'rollemaa-summary', title: 'Tekoälyn tiivistelmä' },
+    return el(wp.editor.PluginDocumentSettingPanel, { name: 'rollemaa-summary', title: 'Juttu tiivistettynä' },
       el(TextareaControl, {
         label: 'Tiivistelmä',
         hideLabelFromVision: true,
