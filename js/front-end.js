@@ -893,7 +893,7 @@
   };
 
   if (responsesFor) {
-    getJson(`responses/${responsesFor}`).then(({ comments, fediverse, likes, boosts, people, claps, highlight }) => {
+    getJson(`responses/${responsesFor}`).then(({ comments, fediverse, bluesky, threads, likes, boosts, people, claps, highlight }) => {
       showClaps(claps);
       if (highlight && highlightProse) {
         showTopHighlight(highlight);
@@ -913,9 +913,11 @@
       }
 
       if (line) {
-        line.innerHTML = comments
-          ? `${fiCount(comments, 'kommentti', 'kommenttia')}${fediverse ? ` · ${icon('fedi', 'ic-sm')}${fiNumber(fediverse)} fediversumista` : ''}`
-          : 'Ei vielä kommentteja';
+        const sources = [ [ fediverse, 'fedi', 'fediversumista' ], [ bluesky, 'bluesky', 'Blueskystä' ], [ threads, 'threads', 'Threadsista' ] ]
+          .filter(([ count ]) => count)
+          .map(([ count, name, from ]) => ` · ${icon(name, 'ic-sm')}${fiNumber(count)} ${from}`)
+          .join('');
+        line.innerHTML = comments ? `${fiCount(comments, 'kommentti', 'kommenttia')}${sources}` : 'Ei vielä kommentteja';
       }
     });
   }
@@ -930,26 +932,52 @@
   }
 
   /**
-   * Comments: Rolle's own, fediverse handles and long ones folded
+   * Comments: Rolle's own, handles and where each came from, long ones folded
    */
-  const AUTHOR_URL = 'https://mementomori.social/@rolle';
+  const OWN_PROFILES = [ 'https://mementomori.social/@rolle', 'https://bsky.app/profile/rolle.social', 'https://www.threads.com/@rolle_' ];
   const COMMENT_CLAMP_CHARS = 900;
+  const NETWORKS = {
+    fediverse: { icon: 'masto', from: 'fediversumista', at: 'fediversumissa' },
+    bluesky: { icon: 'bluesky', from: 'Blueskystä', at: 'Blueskyssä' },
+    threads: { icon: 'threads', from: 'Threadsista', at: 'Threadsissa' },
+  };
+
+  const commentHandle = (url, network) => {
+    if (network === 'bluesky') {
+      return (url.match(/bsky\.app\/profile\/([^/?]+)/) || [])[1];
+    }
+    if (network === 'threads') {
+      return (url.match(/threads\.(?:com|net)\/@([^/?]+)/) || [])[1];
+    }
+    const fedi = url.match(/^https?:\/\/([^/]+)\/@([^/?]+)/);
+    return fedi ? `${fedi[2]}@${fedi[1]}` : '';
+  };
 
   $$('.comment-list .cmt').forEach((comment, index) => {
+    const item = comment.closest('li');
     const link = $('.name a', comment);
     const url = link ? link.href.replace(/\/$/, '') : '';
-    const handle = url.match(/^https?:\/\/([^/]+)\/@([^/?]+)/);
     const body = $('.cmt-body', comment);
+    const network = [ 'bluesky', 'threads', 'fediverse' ].find((name) => item.classList.contains(`from-${name}`))
+      || (/^https?:\/\/[^/]+\/@[^/?]+/.test(url) ? 'fediverse' : '');
+    const handle = network ? commentHandle(url, network) : '';
 
-    if (AUTHOR_URL === url || comment.closest('.bypostauthor')) {
+    if (OWN_PROFILES.includes(url) || comment.closest('.bypostauthor')) {
       comment.classList.add('is-author');
       $('.name', comment).insertAdjacentHTML('beforeend', '<span class="role">Kirjoittaja</span>');
     } else if (handle) {
-      $('.name', comment).insertAdjacentHTML('beforeend', `<a class="handle" href="${escapeHtml(url)}">@${handle[2]}@${handle[1]}</a>`);
+      $('.name', comment).insertAdjacentHTML('beforeend', `<a class="handle" href="${escapeHtml(url)}">@${escapeHtml(handle)}</a>`);
     }
 
-    if (handle) {
-      $('.when', comment).insertAdjacentHTML('beforeend', `<span class="via">${icon('masto')}fediversumista</span>`);
+    if (network) {
+      const { icon: name, from, at } = NETWORKS[network];
+      let label = from;
+      if (item.classList.contains('is-quote')) {
+        label = `lainasi ${at}`;
+      } else if (item.classList.contains('is-share')) {
+        label = `jakoi ${at}`;
+      }
+      $('.when', comment).insertAdjacentHTML('beforeend', `<span class="via">${icon(name)}${label}</span>`);
     }
 
     if (body.textContent.length > COMMENT_CLAMP_CHARS) {

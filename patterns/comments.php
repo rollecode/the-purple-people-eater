@@ -41,18 +41,19 @@ $icons = get_theme_file_uri( 'svg/icons.svg' );
 <!-- /wp:comments -->
 
 <!-- wp:paragraph {"className":"comments-empty"} -->
-<p class="comments-empty">Kukaan ei ole vielä sanonut mitään. Aloita keskustelu vastaamalla omalta Mastodon-tililtäsi.</p>
+<p class="comments-empty">Kukaan ei ole vielä sanonut mitään. Aloita keskustelu fediversumissa, Blueskyssä tai Threadsissa.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:html -->
 <div class="cf-fedi">
-  <h3>Vastaa fediversumista</h3>
-  <p class="hint">Voit vastata omalta Mastodon-tililtäsi tai miltä tahansa fediversumin palvelimelta. Vastauksesi näkyy täällä muiden kommenttien joukossa.</p>
+  <h3>Kommentoi muualta</h3>
+  <p class="hint">Täällä ei ole kommenttilomaketta. Keskustelu käydään fediversumissa, Blueskyssä ja Threadsissa, ja se tuodaan tänne. Voit vastata kirjoitukseen suoraan omalta Mastodon-tililtäsi tai miltä tahansa fediversumin palvelimelta:</p>
   <ol class="steps">
     <li><span class="step-n" aria-hidden="true">1</span><div><b>Kopioi kirjoituksen osoite</b><div class="copyfield"><input class="copybox" readonly aria-label="Kirjoituksen osoite" data-permalink><button class="btn" type="button" data-copy><svg class="ic" aria-hidden="true"><use href="<?php echo esc_url( $icons ); ?>#copy"></use></svg><span>Kopioi</span></button></div></div></li>
     <li><span class="step-n" aria-hidden="true">2</span><div><b>Liitä osoite oman palvelimesi hakuun</b><p>Haku löytää kirjoituksen, ja voit vastata siihen kuten mihin tahansa julkaisuun.</p></div></li>
     <li><span class="step-n" aria-hidden="true">3</span><div><b>Rolle Mastodonissa</b><p><a href="https://mementomori.social/@rolle" rel="me">@rolle@mementomori.social</a></p></div></li>
   </ol>
+  <div class="cf-shares"><b>Jaa ja keskustele</b><p>Kun kirjoitus jaetaan Mastodonissa, Blueskyssä tai Threadsissa, jakoon tulleet vastaukset ja lainaukset kopioituvat tänne viestiketjuineen. Jaoitpa linkin itse tai vastasit jonkun toisen jakoon, keskustelu näkyy täällä yleensä tunnin sisällä.</p></div>
 </div>
 <!-- /wp:html --></div>
 <!-- /wp:group --></section>
