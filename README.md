@@ -8,7 +8,7 @@ This theme is **not for the public to use**. It is made for my own website, it i
 
 The previous theme is [Minimalist Madness](https://github.com/rollecode/minimalistmadness). This repository grew out of it, so its history goes back to 25.3.2020.
 
-## How it is built
+## Structure
 
 A block theme with no build step: what is in this repository is what runs.
 
