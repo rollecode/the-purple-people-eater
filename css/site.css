@@ -563,6 +563,11 @@ kbd {
   transform: rotate(-8deg);
 }
 
+/* In the editor a block wrapper sits between the button and the grid */
+.site-head .bar > :has(> .search-btn) {
+  justify-self: end;
+}
+
 .search-btn {
   display: inline-flex;
   align-items: center;
