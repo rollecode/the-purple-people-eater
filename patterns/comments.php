@@ -14,7 +14,7 @@ $icons = get_theme_file_uri( 'svg/icons.svg' );
 <section id="comments" class="wp-block-group comments"><!-- wp:group {"className":"read"} -->
 <div class="wp-block-group read"><!-- wp:group {"className":"comments-head"} -->
 <div class="wp-block-group comments-head"><!-- wp:heading -->
-<h2 class="wp-block-heading">Kommentit</h2>
+<h2 class="wp-block-heading">Keskustelu</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"className":"count-line"} -->
