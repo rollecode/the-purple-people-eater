@@ -1,9 +1,8 @@
 # The Purple People Eater - Rollemaa.fi WordPress theme v25/2026
 
 ![Version](https://img.shields.io/badge/Version-v25%2F2026-573F74?style=for-the-badge)
-![WordPress](https://img.shields.io/badge/WordPress_7.1-21759B?style=for-the-badge&logo=wordpress&logoColor=white)
-![PHP](https://img.shields.io/badge/PHP_8.3-777BB4?style=for-the-badge&logo=php&logoColor=white)
-![Block theme](https://img.shields.io/badge/Block_theme-573F74?style=for-the-badge)
+![WordPress](https://img.shields.io/badge/WordPress-3858E9?style=for-the-badge&logo=wordpress&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![CSS](https://img.shields.io/badge/CSS-663399?style=for-the-badge&logo=css&logoColor=white)
 ![ActivityPub](https://img.shields.io/badge/Fediverse-6364FF?style=for-the-badge&logo=mastodon&logoColor=white)
