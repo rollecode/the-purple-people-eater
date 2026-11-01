@@ -2545,7 +2545,7 @@ body:has(.comments) .site-foot {
 .year-index li {
   display: grid;
   grid-template-columns: 64px minmax(0, 1fr) auto;
-  align-items: baseline;
+  align-items: start;
   padding: 12px 0;
   gap: 12px;
   border-bottom: 1px solid var(--rule);
@@ -2570,6 +2570,7 @@ body:has(.comments) .site-foot {
   color: var(--ink);
   font-size: 15px;
   font-weight: 600;
+  line-height: 1.4;
   font-variant-numeric: tabular-nums;
   text-align: right;
 }
