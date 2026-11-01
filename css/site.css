@@ -3578,6 +3578,11 @@ body:has(.comments) .site-foot {
   list-style: none;
 }
 
+/* Likes and boosts are the faces under the text, not comments */
+.comment-list > :is(li.like, li.repost) {
+  display: none;
+}
+
 .comment-list > li {
   margin-bottom: 20px;
 }
