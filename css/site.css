@@ -2939,23 +2939,6 @@ body:has(.comments) .site-foot {
   font-size: 12.5px;
 }
 
-/* The photo can carry the "left off here" ribbon too */
-.article-head:has(> figure) .ribbon {
-  position: absolute;
-  z-index: 3;
-  top: 0;
-  right: clamp(64px, 22vw, 330px);
-  width: 30px;
-  height: 50px;
-  background: var(--lavender);
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
-  transition: height .45s var(--ease);
-}
-
-.article-head:has(> figure) .ribbon:hover {
-  height: 60px;
-}
-
 /* No image: no hero at all, the title opens the reading column */
 :is(.art-head, .article-head:not(:has(> figure))) {
   padding-top: 72px;

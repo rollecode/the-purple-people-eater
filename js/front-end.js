@@ -1208,11 +1208,6 @@
       $('.resume-bar i', resume).style.width = `${saved.pct}%`;
       resume.hidden = false;
 
-      const hero = $('.article-head:has(> figure)');
-      if (hero) {
-        hero.insertAdjacentHTML('beforeend', `<a class="ribbon" href="#" data-resume-go aria-label="Jatka siitä, mihin jäit (${saved.pct} % luettu)"></a>`);
-      }
-
       $$('[data-resume-go]').forEach((link) => link.addEventListener('click', (event) => {
         event.preventDefault();
         jumpTo(saved.pct);
