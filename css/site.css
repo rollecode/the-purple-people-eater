@@ -4116,30 +4116,37 @@ body:has(.comments) .site-foot {
   margin: .45em 0 0;
 }
 
-/* Quotes hang a large quotation mark instead of a side rule */
+/* Quotes read like a passage someone selected: large semibold lines, each
+   carrying the selection's purple behind it */
 .prose blockquote {
-  position: relative;
   margin: 1.8em 0;
-  padding: .2em 0 .2em 1.5em;
-  color: var(--ink-2);
-  font-style: italic;
-}
-
-.prose blockquote::before {
-  position: absolute;
-  top: -.08em;
-  left: -.05em;
-  color: var(--accent);
-  content: "”";
-  font-family: var(--display);
-  font-size: 2.8em;
+  padding: 0;
+  color: var(--ink);
+  font-size: 28px;
   font-style: normal;
-  line-height: 1;
+  font-weight: 600;
+  line-height: 1.5;
 }
 
 .prose blockquote p {
-  margin-bottom: .6em;
+  display: inline;
+  margin: 0;
+  padding: .06em .22em;
+  border-radius: 4px;
+  background: light-dark(#E3D5F2, #4A3266);
   color: inherit;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.prose blockquote p:empty {
+  display: none;
+}
+
+/* Paragraphs inside one quote still break apart */
+.prose blockquote p:not(:last-of-type)::after {
+  content: "\A\A";
+  white-space: pre;
 }
 
 .prose blockquote cite,
@@ -4372,6 +4379,7 @@ body:has(.comments) .site-foot {
   font-family: var(--sans);
   font-size: 15px;
   font-style: normal;
+  font-weight: 400;
   line-height: 1.5;
 }
 
@@ -4390,9 +4398,16 @@ body:has(.comments) .site-foot {
 
 /* The tweet; the "— Name (@handle) date" line after it stays smaller */
 .prose blockquote.twitter-tweet p {
+  display: block;
   margin: 0 0 14px;
+  padding: 0;
+  background: none;
   color: #E7E9EA;
   font-size: 17px;
+}
+
+.prose blockquote.twitter-tweet p::after {
+  content: none;
 }
 
 .prose blockquote.twitter-tweet a {

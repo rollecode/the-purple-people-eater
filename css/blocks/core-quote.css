@@ -2,20 +2,14 @@
  * Quote block: a hanging quotation mark and the source in Geist.
  */
 .prose .wp-block-quote {
-  position: relative;
   margin-block: 1.8em;
-  padding: .2em 0 .2em 1.5em;
+  padding: 0;
   border: 0;
 }
 
 .prose .wp-block-quote.is-style-large,
 .prose .wp-block-quote.is-large {
   padding-left: 0;
-}
-
-.prose .wp-block-quote.is-style-large::before,
-.prose .wp-block-quote.is-large::before {
-  content: none;
 }
 
 .prose .wp-block-quote.is-style-large p,
@@ -28,6 +22,8 @@
 
 .prose .wp-block-quote cite {
   display: block;
+  margin-top: 14px;
+  font-weight: 400;
   color: var(--muted);
   font-family: var(--sans);
   font-size: 15px;
