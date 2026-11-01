@@ -5783,3 +5783,13 @@ article:has(.prose h1) > .page-hero {
     transform: translateY(-100%);
   }
 }
+
+/* Chrome rewraps balanced text around the editor's outline pseudo-element, so the outline goes on the block */
+:is(.rich-text.is-hovered, .rich-text.has-editable-outline)::after {
+  content: none !important;
+}
+
+.is-outline-mode .rich-text.is-hovered:not(.is-selected) {
+  outline: 2px solid var(--wp-admin-theme-color);
+  outline-offset: -2px;
+}
