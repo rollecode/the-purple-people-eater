@@ -33,10 +33,10 @@ the-purple-people-eater/
 └── images/            Author photo and defaults
 ```
 
-Core blocks do the work: Query Loop for the lists, post blocks for the texts, core navigation for the menu. `functions.php` only loads assets and registers block styles. Posts open in the editor inside their template, so writing looks the same as reading.
+Core blocks do the work: Query Loop for the lists, post blocks for the texts, core navigation for the menu. `functions.php` loads assets and registers block styles. Posts open in the editor inside their template, so writing looks the same as reading.
 
-Everything that is not presentation lives in the `rollemaa-site` mu-plugin in [the site's repository](https://github.com/rollecode/rollemaa): the diary, REST routes, search, comments from the fediverse. A theme switch never takes those with it.
+Everything that is not presentation lives in the `rollemaa-site` mu-plugin in the site's own private repository: the diary, REST routes, search, comments from the fediverse. A theme switch never takes those with it.
 
 ## Credits
 
-The theme started from [Air](https://github.com/digitoimistodude/air), Dude's starter theme, in 2020. Nothing of that structure is left.
+The theme started from [Air](https://github.com/digitoimistodude/air), Dude's starter theme, in 2020.
