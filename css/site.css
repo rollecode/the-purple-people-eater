@@ -1717,6 +1717,8 @@ body:has(.comments) .site-foot {
 .card-lead .card-img {
   grid-row: 1;
   grid-column: 6 / -1;
+  align-self: start;
+  width: 100%;
   max-height: 72vh;
   aspect-ratio: 4 / 3;
 }
