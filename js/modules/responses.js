@@ -228,9 +228,9 @@ if (responsesFor) {
     if (line) {
       const sources = [ [ fediverse, 'fedi', 'fediversumista' ], [ bluesky, 'bluesky', 'Blueskystä' ], [ threads, 'threads', 'Threadsista' ] ]
         .filter(([ count ]) => count)
-        .map(([ count, name, from ]) => ` · ${icon(name, 'ic-sm')}${fiNumber(count)} ${from}`)
+        .map(([ count, name, from ]) => `<span class="count-part">${icon(name, 'ic-sm')}${fiNumber(count)}<span class="count-from"> ${from}</span></span>`)
         .join('');
-      line.innerHTML = comments ? `${fiCount(comments, 'kommentti', 'kommenttia')}${sources}` : 'Ei vielä kommentteja';
+      line.innerHTML = comments ? `<span class="count-part">${fiCount(comments, 'kommentti', 'kommenttia')}</span>${sources}` : 'Ei vielä kommentteja';
     }
   });
 }

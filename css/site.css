@@ -3635,6 +3635,29 @@ body:has(.comments) .site-foot {
   gap: 8px;
   color: var(--muted);
   font-size: 16px;
+  white-space: nowrap;
+}
+
+.count-part {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.count-part + .count-part::before {
+  margin-right: 3px;
+  content: "·";
+}
+
+/* On a phone the icons say where from, so the line never wraps */
+@media (max-width: 600px) {
+  .count-from {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
 }
 
 .comments-empty {
