@@ -65,7 +65,7 @@ The previous theme is [Minimalist Madness](https://github.com/rollecode/minimali
 
 ## Credits
 
-The theme started from [Air](https://github.com/digitoimistodude/air), Dude's starter theme, in 2020.
+The theme started from [air-light](https://github.com/digitoimistodude/air-light), Dude's starter theme, in 2020.
 
 ## License
 
