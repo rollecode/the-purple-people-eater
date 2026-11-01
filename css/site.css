@@ -3081,30 +3081,23 @@ body:has(.comments) .site-foot {
 }
 
 .clap-hands {
-  width: 44px;
-  height: 44px;
+  width: 54px;
+  height: 54px;
   overflow: visible;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 2.2;
+  stroke-width: 1.9;
 }
 
 .clap-hands .hand {
-  transform-origin: 24px 40px;
-  transition: transform .18s cubic-bezier(.3, 1.6, .5, 1);
+  transition: translate .18s cubic-bezier(.3, 1.6, .5, 1);
 }
 
-.clap-hands .hand-l {
-  transform: rotate(-16deg);
-}
-
-.clap-hands .hand-r {
-  transform: scaleX(-1) rotate(-16deg);
-}
-
+/* Both palms fill with the button's colour, so the front hand covers the back one */
 .clap-hands .hand path {
+  fill: var(--tint);
   transition: fill .3s;
 }
 
@@ -3114,20 +3107,21 @@ body:has(.comments) .site-foot {
   transition: opacity .3s;
 }
 
-.clap-btn:hover .clap-hands .hand-l {
-  transform: rotate(-20deg);
+/* Hands part a little on hover and meet on each clap */
+.clap-btn:hover .hand-back {
+  translate: 1.2px -1.2px;
 }
 
-.clap-btn:hover .clap-hands .hand-r {
-  transform: scaleX(-1) rotate(-20deg);
+.clap-btn:hover .hand-front {
+  translate: -1px 1px;
 }
 
-.clap.is-clapping .clap-hands .hand-l {
-  transform: rotate(-3deg);
+.clap.is-clapping .hand-back {
+  translate: -.6px .6px;
 }
 
-.clap.is-clapping .clap-hands .hand-r {
-  transform: scaleX(-1) rotate(-3deg);
+.clap.is-clapping .hand-front {
+  translate: 1.4px -1.4px;
 }
 
 .clap.is-clapping .clap-sparks {
@@ -3140,7 +3134,7 @@ body:has(.comments) .site-foot {
 }
 
 .clap.has-clapped .hand path {
-  fill: color-mix(in oklab, var(--accent) 30%, transparent);
+  fill: color-mix(in oklab, var(--accent) 16%, var(--tint));
 }
 
 /* The running count of one burst: +1, +2, +3 */
