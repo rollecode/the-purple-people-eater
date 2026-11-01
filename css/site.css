@@ -2939,6 +2939,13 @@ body:has(.comments) .site-foot {
   font-size: 12.5px;
 }
 
+@media (max-width: 860px) {
+  .credit {
+    right: auto;
+    left: var(--pad);
+  }
+}
+
 .credit-label {
   margin-right: .35em;
   color: #ffffffc9;
