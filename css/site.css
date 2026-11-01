@@ -4097,8 +4097,8 @@ body:has(.comments) .site-foot {
 
 /* Drop cap: an article's opening paragraph, three lines deep. Diary days
    start plain, like a page in a notebook */
-.single-post .prose > p:nth-child(1 of :not(.mnote, .hl-label))::first-letter,
-.editor-styles-wrapper.post-type-post .prose > p:nth-child(1 of :not(.mnote, .hl-label))::first-letter,
+.single-post .prose > p:nth-child(1 of :not(.mnote, .hl-label, [class*="is-style-callout-"]))::first-letter,
+.editor-styles-wrapper.post-type-post .prose > p:nth-child(1 of :not(.mnote, .hl-label, [class*="is-style-callout-"]))::first-letter,
 .prose .has-drop-cap::first-letter {
   float: left;
   margin: .07em .08em 0 -.02em;
@@ -4111,8 +4111,8 @@ body:has(.comments) .site-foot {
 }
 
 @supports (initial-letter: 3) or (-webkit-initial-letter: 3) {
-  .single-post .prose > p:nth-child(1 of :not(.mnote, .hl-label))::first-letter,
-  .editor-styles-wrapper.post-type-post .prose > p:nth-child(1 of :not(.mnote, .hl-label))::first-letter,
+  .single-post .prose > p:nth-child(1 of :not(.mnote, .hl-label, [class*="is-style-callout-"]))::first-letter,
+  .editor-styles-wrapper.post-type-post .prose > p:nth-child(1 of :not(.mnote, .hl-label, [class*="is-style-callout-"]))::first-letter,
   .prose .has-drop-cap::first-letter {
     float: none;
     margin: 0 .12em 0 0;
@@ -4311,6 +4311,81 @@ body:has(.comments) .site-foot {
   font-family: var(--sans);
   font-size: 15px;
   line-height: 1.5;
+}
+
+/* Callouts: a group or paragraph styled Info, Varoitus or Kriittinen in the editor */
+.prose [class*="is-style-callout-"] {
+  --callout-ground: light-dark(#E7EFFA, #16202D);
+  --callout-ink: light-dark(#1D4A85, #A3C7F5);
+  --callout-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 11v5.5M12 7.5v.01'/%3E%3C/svg%3E");
+  position: relative;
+  margin-block: 2em;
+  padding: 20px 24px 20px 58px;
+  border-radius: 10px;
+  background: var(--callout-ground);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.prose [class*="is-style-callout-"]::before {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  width: 22px;
+  height: 22px;
+  background: var(--callout-ink);
+  content: "";
+  mask: var(--callout-icon) center / contain no-repeat;
+}
+
+.prose .is-style-callout-warning {
+  --callout-ground: light-dark(#FAF1DA, #2A2314);
+  --callout-ink: light-dark(#755611, #E6C277);
+  --callout-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.3 3.9 2.4 17.5A2 2 0 0 0 4.1 20.5h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z'/%3E%3Cpath d='M12 9.5V14M12 17v.01'/%3E%3C/svg%3E");
+}
+
+.prose .is-style-callout-critical {
+  --callout-ground: light-dark(#FBE7E9, #301A1E);
+  --callout-ink: light-dark(#9B2F40, #F4A0AA);
+  --callout-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8.2 2.5h7.6l5.7 5.7v7.6l-5.7 5.7H8.2l-5.7-5.7V8.2z'/%3E%3Cpath d='M12 7.5V13M12 16.5v.01'/%3E%3C/svg%3E");
+}
+
+.prose [class*="is-style-callout-"] > :first-child {
+  margin-top: 0;
+}
+
+.prose [class*="is-style-callout-"] > :last-child {
+  margin-bottom: 0;
+}
+
+.prose [class*="is-style-callout-"] :is(h2, h3, h4, strong:first-child) {
+  color: var(--callout-ink);
+}
+
+.prose [class*="is-style-callout-"] :is(h2, h3, h4) {
+  margin: 0 0 .4em;
+  font-family: var(--sans);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.prose [class*="is-style-callout-"] p {
+  font: inherit;
+}
+
+@media (max-width: 600px) {
+  .prose [class*="is-style-callout-"] {
+    padding: 18px 18px 18px 50px;
+    font-size: 16px;
+  }
+
+  .prose [class*="is-style-callout-"]::before {
+    top: 20px;
+    left: 18px;
+  }
 }
 
 /* Videos keep their shape at any width; other frames keep their height */

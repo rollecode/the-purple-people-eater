@@ -38,8 +38,15 @@ add_action( 'init', function () {
   }
 } );
 
+const CALLOUT_STYLES = [
+  'callout-info'     => 'Info',
+  'callout-warning'  => 'Varoitus',
+  'callout-critical' => 'Kriittinen',
+];
+
 const BLOCK_STYLES = [
-  'core/paragraph' => [ 'boxed' => 'Laatikko' ],
+  'core/paragraph' => [ 'boxed' => 'Laatikko' ] + CALLOUT_STYLES,
+  'core/group'     => CALLOUT_STYLES,
   'core/list'      => [
     'no-bullets'   => 'Ilman listamerkkejä',
     'todo-list'    => 'Todo-lista',
