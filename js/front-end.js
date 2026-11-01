@@ -718,7 +718,9 @@
       term.addEventListener('pointerdown', () => {
         closingOwn = active === term;
       });
-      term.addEventListener('click', () => {
+      term.addEventListener('click', (event) => {
+        event.preventDefault();
+
         if (!closingOwn) {
           open(term);
         }
@@ -1001,6 +1003,7 @@
     fediverse: { icon: 'masto', from: 'fediversumista', at: 'fediversumissa' },
     bluesky: { icon: 'bluesky', from: 'Blueskystä', at: 'Blueskyssä' },
     threads: { icon: 'threads', from: 'Threadsista', at: 'Threadsissa' },
+    web: { icon: 'link', from: 'verkosta', at: 'verkossa' },
   };
 
   const commentHandle = (url, network) => {
@@ -1009,6 +1012,9 @@
     }
     if (network === 'threads') {
       return (url.match(/threads\.(?:com|net)\/@([^/?]+)/) || [])[1];
+    }
+    if (network === 'web') {
+      return '';
     }
     const fedi = url.match(/^https?:\/\/([^/]+)\/@([^/?]+)/);
     return fedi ? `${fedi[2]}@${fedi[1]}` : '';
@@ -1019,7 +1025,7 @@
     const link = $('.name a', comment);
     const url = link ? link.href.replace(/\/$/, '') : '';
     const body = $('.cmt-body', comment);
-    const network = [ 'bluesky', 'threads', 'fediverse' ].find((name) => item.classList.contains(`from-${name}`))
+    const network = [ 'bluesky', 'threads', 'fediverse', 'web' ].find((name) => item.classList.contains(`from-${name}`))
       || (/^https?:\/\/[^/]+\/@[^/?]+/.test(url) ? 'fediverse' : '');
     const handle = network ? commentHandle(url, network) : '';
 
@@ -1037,6 +1043,8 @@
         label = `lainasi ${at}`;
       } else if (item.classList.contains('is-share')) {
         label = `jakoi ${at}`;
+      } else if (item.classList.contains('is-mention')) {
+        label = `linkitti ${at}`;
       }
       $('.when', comment).insertAdjacentHTML('beforeend', `<span class="via">${icon(name)}${label}</span>`);
     }
