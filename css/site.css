@@ -3308,12 +3308,13 @@ body:has(.comments) .site-foot {
 
 .ai-summary > ul li {
   position: relative;
+  padding-left: 16px;
 }
 
 .ai-summary > ul li::before {
   position: absolute;
   top: .62em;
-  left: -16px;
+  left: 0;
   width: 6px;
   height: 6px;
   border-radius: 50%;
