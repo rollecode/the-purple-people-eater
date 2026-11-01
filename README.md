@@ -46,8 +46,9 @@ the-purple-people-eater/
 │   ├── legacy.css     Markup of posts older than the block editor
 │   └── prism.css      Code highlighting, loaded when needed
 ├── js/
-│   ├── front-end.js   Interactions and the dynamic parts of a page
-│   ├── gutenberg-editor.js  Editor settings
+│   ├── main.js        Loads what the page needs
+│   ├── modules/       One feature per file, shared helpers in lib.js
+│   ├── editor/        One editor feature per file
 │   ├── heatmap.js     Writing heatmap on the diary archive
 │   └── prism.js       Code highlighting, loaded when needed
 ├── fonts/             Instrument Serif, Atkinson Hyperlegible Next and Geist

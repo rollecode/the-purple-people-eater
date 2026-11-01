@@ -8,6 +8,7 @@
 
 namespace The_Purple_People_Eater;
 
+const MODULES_ON_EVERY_PAGE = [ 'lib', 'theme-switch', 'expand', 'nav-current', 'logo-rain', 'phone-menu', 'site-head', 'search' ];
 const PRELOADED_FONTS = [ 'InstrumentSerif-latin', 'Geist-latin', 'Inter-Bold-latin', 'AtkinsonHyperlegibleNext-latin' ];
 
 add_action( 'after_setup_theme', function () {
@@ -16,7 +17,19 @@ add_action( 'after_setup_theme', function () {
 
 add_action( 'wp_enqueue_scripts', function () {
   wp_enqueue_style( 'site', get_theme_file_uri( 'css/site.css' ), [], filemtime( get_theme_file_path( 'css/site.css' ) ) );
-  wp_enqueue_script( 'site', get_theme_file_uri( 'js/front-end.js' ), [], filemtime( get_theme_file_path( 'js/front-end.js' ) ), [ 'strategy' => 'defer' ] );
+
+  foreach ( glob( get_theme_file_path( 'js/modules/*.js' ) ) as $file ) {
+    $name = basename( $file, '.js' );
+
+    wp_register_script_module( 'theme/' . $name, get_theme_file_uri( 'js/modules/' . $name . '.js' ), [], filemtime( $file ) );
+  }
+
+  $modules = array_map( fn( $file ) => [
+    'id'     => 'theme/' . basename( $file, '.js' ),
+    'import' => in_array( basename( $file, '.js' ), MODULES_ON_EVERY_PAGE, true ) ? 'static' : 'dynamic',
+  ], glob( get_theme_file_path( 'js/modules/*.js' ) ) );
+
+  wp_enqueue_script_module( 'theme/main', get_theme_file_uri( 'js/main.js' ), $modules, filemtime( get_theme_file_path( 'js/main.js' ) ) );
 
   // Posts from before the block editor still carry the markup of their old themes
   if ( is_singular() && ! has_blocks( get_queried_object() ) ) {
@@ -92,7 +105,11 @@ add_action( 'wp_head', function () {
 }, 0 );
 
 add_action( 'enqueue_block_editor_assets', function () {
-  wp_enqueue_script( 'theme-editor', get_theme_file_uri( 'js/gutenberg-editor.js' ), [ 'wp-block-editor', 'wp-blocks', 'wp-hooks', 'wp-data', 'wp-editor', 'wp-plugins', 'wp-element', 'wp-components', 'wp-api-fetch', 'wp-rich-text' ], filemtime( get_theme_file_path( 'js/gutenberg-editor.js' ) ), true );
+  foreach ( glob( get_theme_file_path( 'js/editor/*.js' ) ) as $file ) {
+    $name = basename( $file, '.js' );
+
+    wp_enqueue_script( 'theme-editor-' . $name, get_theme_file_uri( 'js/editor/' . $name . '.js' ), [ 'wp-block-editor', 'wp-blocks', 'wp-hooks', 'wp-data', 'wp-editor', 'wp-plugins', 'wp-element', 'wp-components', 'wp-api-fetch', 'wp-rich-text' ], filemtime( $file ), true );
+  }
 } );
 
 // Texts open in the editor inside their template, as they look on the site

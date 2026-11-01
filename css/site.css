@@ -462,7 +462,7 @@ kbd {
 }
 
 /* On a photo the whole head sleeps until the mouse moves or the reader
-   pulls back up (front-end.js) */
+   pulls back up (js/modules/site-head.js) */
 @media (scripting: enabled) {
   :root:has(.article-head > figure) .site-head .bar > * {
     opacity: 0;
@@ -478,7 +478,7 @@ kbd {
   }
 }
 
-/* Away from the top the head floats over the page while awake (front-end.js) */
+/* Away from the top the head floats over the page while awake (js/modules/site-head.js) */
 @media (scripting: enabled) {
   .head-floating:not(:has(.article-head > figure)) .wp-site-blocks {
     padding-top: var(--head-h);
@@ -846,7 +846,7 @@ kbd {
 
 /**
  * Rain over the page while the pointer rests on the logo. The drops are
- * written by front-end.js; this only shows and animates them.
+ * written by js/modules/logo-rain.js; this only shows and animates them.
  */
 .rain-wrapper {
   position: absolute;
@@ -1052,7 +1052,7 @@ body:has(.comments) .site-foot {
   background: var(--surface);
 }
 
-/* The pressed highlight, moved by front-end.js; it stretches as it goes */
+/* The pressed highlight, moved by js/modules/theme-switch.js; it stretches as it goes */
 .themesw::before {
   position: absolute;
   top: 3px;
@@ -1878,7 +1878,7 @@ body:has(.comments) .site-foot {
   opacity: .6;
 }
 
-/* Where the reader left off (front-end.js, from localStorage) */
+/* Where the reader left off (js/modules/reading.js, from localStorage) */
 .ribbon {
   position: absolute;
   z-index: 3;
@@ -5975,7 +5975,7 @@ article:has(.prose h1) > .page-hero {
 }
 
 /* The phone menu is a frosted sheet: it slides down as tall as its links,
-   lets the page show through, and follows a finger back up (front-end.js) */
+   lets the page show through, and follows a finger back up (js/modules/phone-menu.js) */
 @media (max-width: 599px) {
   .site-head .nav.wp-block-navigation .wp-block-navigation__responsive-container.is-menu-open.is-menu-open {
     inset: 0 0 auto;
