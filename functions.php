@@ -17,6 +17,11 @@ add_action( 'after_setup_theme', function () {
 add_action( 'wp_enqueue_scripts', function () {
   wp_enqueue_style( 'site', get_theme_file_uri( 'css/site.css' ), [], filemtime( get_theme_file_path( 'css/site.css' ) ) );
   wp_enqueue_script( 'site', get_theme_file_uri( 'js/front-end.js' ), [], filemtime( get_theme_file_path( 'js/front-end.js' ) ), [ 'strategy' => 'defer' ] );
+
+  // Posts from before the block editor still carry the markup of their old themes
+  if ( is_singular() && ! has_blocks( get_queried_object() ) ) {
+    wp_enqueue_style( 'legacy', get_theme_file_uri( 'css/legacy.css' ), [ 'site' ], filemtime( get_theme_file_path( 'css/legacy.css' ) ) );
+  }
 } );
 
 // css/blocks/core-quote.css styles core/quote, and only where a quote renders

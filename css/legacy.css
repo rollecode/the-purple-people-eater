@@ -1,0 +1,156 @@
+/**
+ * Posts written before the block editor, in the markup of the themes they were
+ * written for. Loaded only on those posts.
+ */
+
+/* A notice where an old plugin's element used to be */
+.prose .old-notice {
+  padding: 14px 18px;
+  border-radius: 8px;
+  background: var(--tint);
+  color: var(--ink-2);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Small logos and pictures float beside the text */
+.prose img:is(.oikealle, .floatright, .floatright_border, .nbr) {
+  float: right;
+  max-width: min(36%, 200px);
+  margin: .35em 0 .8em 24px;
+}
+
+/* A video or picture with its caption in bold under it */
+.prose div:is(.photoblog, .photoblog_alt, .flickrtemplate, .flickrtemplate-big) {
+  clear: both;
+  margin: 2em 0;
+}
+
+.prose .wp-video {
+  max-width: 100%;
+}
+
+.prose .wp-video :is(.mejs-container, video) {
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.prose div.photoblog > :is(strong, b, em),
+.prose div.photoblog > p:has(> :is(strong, b):only-child),
+.prose div.photoblog_alt,
+.prose div:is(.flickrtemplate, .flickrtemplate-big) > div,
+.prose .flickrmeta,
+.prose div.via {
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.prose div.photoblog > :is(strong, b, em),
+.prose div.photoblog > p > :is(strong, b) {
+  display: block;
+  margin-top: 10px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.prose div:is(.photoblog_alt, .flickrtemplate, .flickrtemplate-big) img {
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* "Lähde: Wikipedia" under a quote */
+.prose div.via {
+  margin: -1em 0 1.6em;
+}
+
+/* An old quote box */
+.prose div.quote {
+  margin: 1.4em 0;
+  padding: 16px 20px;
+  border-radius: 8px;
+  background: var(--tint);
+  color: var(--ink-2);
+}
+
+/* "Updated post" box */
+.prose div.info {
+  margin: 2em 0;
+  padding: 20px 24px;
+  border-radius: 12px;
+  background: var(--tint);
+}
+
+.prose div.info > :first-child {
+  margin-top: 0;
+}
+
+.prose div.info > :last-child {
+  margin-bottom: 0;
+}
+
+/* Things not done in an old "have you ever" list */
+.prose .not {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+/* Pros and cons */
+.prose :is(.plus, .miinus) {
+  display: inline-block;
+  width: 1.2em;
+  font-weight: 700;
+}
+
+.prose .plus {
+  color: light-dark(#2F6B3A, #8FD19E);
+}
+
+.prose .miinus {
+  color: light-dark(#9A2F3A, #F0A0A8);
+}
+
+/* Recipe lines indented under their heading */
+.prose .tab {
+  display: inline-block;
+  padding-left: 1.5em;
+}
+
+/* Font Awesome is long gone, so its empty icons take no room */
+.prose .fa {
+  display: none;
+}
+
+.prose ul.bandinfo {
+  padding-left: 0;
+  list-style: none;
+}
+
+/* Lists, chat logs and commands once sat in quotes for the box around them:
+   they read as text, not as a highlighted quote */
+.prose blockquote:has(ul, ol, pre, code) {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.prose blockquote:has(ul, ol, pre, code) p {
+  display: block;
+  padding: 0;
+  background: none;
+}
+
+.prose ul.pikaviestin {
+  padding: 16px 20px;
+  border-radius: 8px;
+  background: var(--tint);
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.6;
+  list-style: none;
+}
+
+.prose ul.pikaviestin b {
+  color: var(--accent);
+}
