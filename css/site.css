@@ -3851,6 +3851,23 @@ body:has(.comments) .site-foot {
   list-style: none;
 }
 
+/* Three rows until asked for: a post can have a thousand faces */
+.rx-faces.is-clamped {
+  max-height: 104px;
+  overflow: hidden;
+}
+
+.rx-more {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--link);
+  font: inherit;
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .rx-faces a {
   display: block;
   position: relative;
