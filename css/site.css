@@ -2000,6 +2000,72 @@ body:has(.comments) .site-foot {
   color: var(--accent);
 }
 
+/* Bars in the icon's place while something is playing */
+.now li > .eq {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 11px;
+  gap: 3px;
+  border-radius: 50%;
+  background: var(--soft);
+}
+
+.eq i {
+  flex: none;
+  width: 3px;
+  height: 100%;
+  border-radius: 1px;
+  background: var(--accent);
+  transform: scaleY(.55);
+  transform-origin: bottom;
+}
+
+.eq i:nth-child(2) {
+  transform: scaleY(.9);
+}
+
+.eq i:nth-child(3) {
+  transform: scaleY(.4);
+}
+
+.eq i:nth-child(4) {
+  transform: scaleY(.7);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .eq i {
+    animation: eq-bar .7s ease-in-out infinite alternate;
+  }
+
+  .eq i:nth-child(2) {
+    animation-duration: .5s;
+    animation-delay: -.2s;
+  }
+
+  .eq i:nth-child(3) {
+    animation-duration: .85s;
+    animation-delay: -.4s;
+  }
+
+  .eq i:nth-child(4) {
+    animation-duration: .6s;
+    animation-delay: -.1s;
+  }
+}
+
+@keyframes eq-bar {
+  from {
+    transform: scaleY(.2);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
 .now .label {
   display: block;
   margin-bottom: 2px;

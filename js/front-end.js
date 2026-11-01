@@ -513,7 +513,9 @@
     Rollekino: 'https://www.rollekino.fi',
     Luku: 'https://luku.app/@rolle',
   };
-  const nowItem = (iconName, label, url, what, service, when) => `<li>${icon(iconName)}<div><span class="label meta-text">${label}</span><a class="what" href="${escapeHtml(url)}">${escapeHtml(what)}</a><span class="src"><a href="${PROFILES[service]}">${service}</a>${when ? `, ${when}` : ''}</span></div></li>`;
+  const EQUALIZER = '<span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>';
+  const JUST_NOW_SECONDS = 600;
+  const nowItem = (visual, label, url, what, service, when) => `<li>${visual}<div><span class="label meta-text">${label}</span><a class="what" href="${escapeHtml(url)}">${escapeHtml(what)}</a><span class="src"><a href="${PROFILES[service]}">${service}</a>${when ? `, ${when}` : ''}</span></div></li>`;
   const nowList = $('[data-now]');
   if (nowList) {
     const nowPanel = nowList.closest('.now');
@@ -523,14 +525,16 @@
       const items = [];
 
       if (listening) {
-        items.push(nowItem('lastfm', listening.playing ? 'Juuri nyt' : 'Kuunneltua', listening.url, `${listening.artist} – ${listening.track}`, 'Last.fm', listening.date && fiAgo(listening.date)));
+        const justNow = listening.playing || Date.now() / 1000 - listening.date < JUST_NOW_SECONDS;
+
+        items.push(nowItem(justNow ? EQUALIZER : icon('lastfm'), justNow ? 'Juuri nyt' : 'Kuunneltua', listening.url, `${listening.artist} – ${listening.track}`, 'Last.fm', listening.date && fiAgo(listening.date)));
       }
       if (watched) {
         const source = watched.source || 'Rollekino';
-        items.push(nowItem('Trakt' === source ? 'trakt' : 'rollekino', 'Katsottua', watched.url, watched.title, source, fiAgo(watched.date)));
+        items.push(nowItem(icon('Trakt' === source ? 'trakt' : 'rollekino'), 'Katsottua', watched.url, watched.title, source, fiAgo(watched.date)));
       }
       if (reading) {
-        items.push(nowItem('book', 'Luettua', reading.url, reading.title, 'Luku', reading.date && fiAgo(reading.date)));
+        items.push(nowItem(icon('book'), 'Luettua', reading.url, reading.title, 'Luku', reading.date && fiAgo(reading.date)));
       }
 
       nowList.innerHTML = items.join('');
