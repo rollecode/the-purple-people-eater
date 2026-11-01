@@ -4283,6 +4283,18 @@ body:has(.comments) .site-foot {
   line-height: 1.5;
 }
 
+/* Where an old post's element or picture used to be */
+.prose .old-notice {
+  display: block;
+  padding: 14px 18px;
+  border-radius: 8px;
+  background: var(--tint);
+  color: var(--ink-2);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
 /* Videos keep their shape at any width; other frames keep their height */
 .prose :where(iframe[src*="youtube"], iframe[src*="youtu.be"], iframe[src*="vimeo"]) {
   width: 100%;

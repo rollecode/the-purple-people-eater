@@ -3,17 +3,6 @@
  * written for. Loaded only on those posts.
  */
 
-/* A notice where an old plugin's element used to be */
-.prose .old-notice {
-  padding: 14px 18px;
-  border-radius: 8px;
-  background: var(--tint);
-  color: var(--ink-2);
-  font-family: var(--sans);
-  font-size: 15px;
-  line-height: 1.5;
-}
-
 /* Small logos and pictures float beside the text */
 .prose img:is(.oikealle, .floatright, .floatright_border, .nbr) {
   float: right;
