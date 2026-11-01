@@ -4505,6 +4505,17 @@ body:has(.comments) .site-foot {
     display: inline;
   }
 
+  /* The label is a line of its own, the title starts the next one */
+  .mnote b {
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+
+  .mnote b::after {
+    display: block;
+    content: "";
+  }
+
   .mnote .snippet {
     margin-top: 2px;
   }

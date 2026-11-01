@@ -636,7 +636,7 @@
         link.insertAdjacentHTML('afterend', `<sup class="ref" aria-hidden="true">${index + 1}</sup>`);
       }
 
-      target.insertAdjacentHTML('beforebegin', `<div class="mnote" role="note"><span class="n" aria-hidden="true">${index + 1}</span><b>${escapeHtml(label)}</b> <a href="${escapeHtml(url)}">${escapeHtml(title)}</a>${about ? `<span class="about">${escapeHtml(about)}</span>` : ''}${text ? `<span class="snippet">${escapeHtml(text)}</span>` : ''}</div>`);
+      target.insertAdjacentHTML('beforebegin', `<div class="mnote" role="note"><span class="n" aria-hidden="true">${index + 1}</span><b>${escapeHtml(label)}<span class="screen-reader-text">:</span></b> <a href="${escapeHtml(url)}">${escapeHtml(title)}</a>${about ? `<span class="about">${escapeHtml(about)}</span>` : ''}${text ? `<span class="snippet">${escapeHtml(text)}</span>` : ''}</div>`);
     });
   };
 
