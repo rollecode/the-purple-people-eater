@@ -1,31 +1,42 @@
-# The Purple People Eater for Rollemaa.fi
+# The Purple People Eater
 
-A repository for 25th design, approximately 7th WordPress theme for [Rollemaa.fi](https://www.rollemaa.fi), code name *The Purple People Eater*.
+The WordPress theme of [Rollemaa.fi](https://www.rollemaa.fi), a Finnish personal blog with writing since 2005 and a daily diary, Lokikirja, since 2021.
 
-Obviously, this theme is **not for the public to use**, since this is **my** website and the theme contains some custom functions that just will not work elsewhere. Would feel awkward to see this in somewhere else. If you are interested in using this in some way, please be in touch. The theme is in here solely for backup purposes, and releasing in sake of open source, versioning and for you to see how I did this thing.
+![The front page of rollemaa.fi in dark mode: the post and word counts in a large serif, a bar chart of texts per year below](screenshot.png)
 
-The theme is completely in Finnish and contains hardcoded strings and some of my personal oddities.
+This theme is **not for the public to use**. It is made for my own website, it is in Finnish, and it depends on code that does not work anywhere else. It is here for backup and so you can see how it was done.
 
-#### Etymology
+The previous theme is [Minimalist Madness](https://github.com/rollecode/minimalistmadness). This repository grew out of it, so its history goes back to 25.3.2020.
 
-The goal for this theme was to be minimal as possible yet retaining some functionality and wow-effect. Also as OCD as I am I thought many times "this is madness" to code for 20 hours straight. Hence, 'The Purple People Eater'.
+## How it is built
 
-![](https://i.imgur.com/60Yahxr.jpg "Screenshot")
+A block theme with no build step: what is in this repository is what runs.
 
-## History
+```
+the-purple-people-eater/
+├── theme.json         Design tokens, layout sizes and block defaults
+├── templates/         Pages as block markup
+├── parts/             Header and footer
+├── patterns/          Repeating pieces: cards, byline, diary parts
+├── css/
+│   ├── site.css       The design, also loaded in the editor
+│   ├── blocks/        Styles loaded only with their block
+│   ├── legacy.css     Markup of posts older than the block editor
+│   └── prism.css      Code highlighting, loaded when needed
+├── js/
+│   ├── front-end.js   Interactions and the dynamic parts of a page
+│   ├── gutenberg-editor.js  Editor settings
+│   ├── heatmap.js     Writing heatmap on the diary archive
+│   └── prism.js       Code highlighting, loaded when needed
+├── fonts/             Instrument Serif, Atkinson Hyperlegible Next and Geist
+├── svg/               Icon sprite and the diary's mood, device and weather icons
+└── images/            Author photo and defaults
+```
 
-Rollemaa.fi is my first website ever, started originally in 1999. Since then I have resigned the site 25 times. This theme was started on  *Wednesday, 25th of March*, during hectic and busy work week and was released on *Saturday night, 28th of March*. I was coding 4-6 hour streaks, longest was almost 10 hours.
+Core blocks do the work: Query Loop for the lists, post blocks for the texts, core navigation for the menu. `functions.php` only loads assets and registers block styles. Posts open in the editor inside their template, so writing looks the same as reading.
 
-The website is in Finnish, since it's my personal blog and playground, and I'm from Finland. But the documentation should almost all cases be in English, in my opinion if no specific reason to do otherwise.
+Everything that is not presentation lives in the `rollemaa-site` mu-plugin in [the site's repository](https://github.com/rollecode/rollemaa): the diary, REST routes, search, comments from the fediverse. A theme switch never takes those with it.
 
-### Features
+## Credits
 
-- WordPress configuration is based on [dudestack](https://github.com/digitoimistodude/dudestack) which is based on [bedrock by Roots](https://github.com/roots/bedrock). Not releasing the whole rollemaa-stack here, because the repository is about a gig and contains legacy code and stuff behind 10 years... (don't worry, been patching the security)
-- Theme based on [air WordPress starter theme](https://github.com/digitoimistodude/air)
-- New logo! Old one looked like [this](https://www.rollemaa.fi/content/themes/newera/images/logo.png) (2014) and [this](https://www.rollemaa.fi/content/themes/khonsu/svg/logo.svg) (2017). New one looks like [this](https://files.servepics.com/V1i6Q.png)
-- No bootstrap or other bloated CSS
-- CC0-photos, random fog/scenery photo for old posts that do not have a featured image
-- SVG icons
-- Accessible (I hope)
-- Speed optimized
-- Credentials, API keys and lisences are in .env file and ignored, naturally
+The theme started from [Air](https://github.com/digitoimistodude/air), Dude's starter theme, in 2020. Nothing of that structure is left.
