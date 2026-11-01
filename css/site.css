@@ -2928,14 +2928,12 @@ body:has(.comments) .site-foot {
 
 .credit {
   position: absolute;
-  z-index: 1;
-  right: 16px;
+  z-index: 2;
+  right: var(--pad);
   bottom: 14px;
-  max-width: calc(100% - 32px);
-  padding: 3px 8px;
-  border-radius: 3px;
-  background: rgb(10 8 14 / .6);
-  color: #fff;
+  max-width: calc(100% - 2 * var(--pad));
+  color: rgb(255 255 255 / .78);
+  font-family: var(--sans);
   font-size: 12.5px;
 }
 

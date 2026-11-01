@@ -665,19 +665,6 @@
       note.innerHTML = `<span class="yr" aria-hidden="true">${written.getFullYear()}</span><p><b>Arkistomatskua.</b> Kirjoitettu ${month}ssa ${written.getFullYear()}, ${fiWord(yearsAgo)} vuotta sitten. Olin kirjoittamishetkellä ${Math.floor((written - AUTHOR_BORN) / YEAR_MS)}-vuotias.</p>`;
       note.hidden = false;
     }
-
-    // The photo's caption is its credit
-    const hero = $('.article-head:has(> figure)');
-    if (hero) {
-      fetch(`${REST_URL}wp/v2/posts/${articleId}?_embed=wp:featuredmedia&_fields=_links,_embedded`)
-        .then((response) => response.json())
-        .then(({ _embedded: embedded }) => {
-          const caption = embedded?.['wp:featuredmedia']?.[0]?.caption?.rendered;
-          if (caption) {
-            hero.insertAdjacentHTML('beforeend', `<span class="credit">${caption.replace(/<[^>]+>/g, '').trim()}</span>`);
-          }
-        });
-    }
   }
 
   // One face per person, however many ways they reacted
