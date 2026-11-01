@@ -3527,13 +3527,13 @@ body:has(.comments) .site-foot {
 }
 
 .comment-list,
-.comment-list .children {
+.comment-list .comment > ol {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.comment-list > .comment {
+.comment-list > li {
   margin-bottom: 20px;
 }
 
@@ -3821,7 +3821,7 @@ body:has(.comments) .site-foot {
 }
 
 /* Replies hang from a thin line */
-.comment-list .children {
+.comment-list .comment > ol {
   display: grid;
   position: relative;
   margin: 12px 0 0 20px;
@@ -3830,13 +3830,13 @@ body:has(.comments) .site-foot {
 }
 
 
-.comment-list .children > .comment {
+.comment-list .comment > ol > .comment {
   position: relative;
 }
 
 /* Each reply draws its own elbow, and the line on to the next reply, so
    the thread line ends at the last reply */
-.comment-list .children > .comment::before {
+.comment-list .comment > ol > .comment::before {
   position: absolute;
   top: -12px;
   left: -36px;
@@ -3848,7 +3848,7 @@ body:has(.comments) .site-foot {
   content: "";
 }
 
-.comment-list .children > .comment:not(:last-child)::after {
+.comment-list .comment > ol > .comment:not(:last-child)::after {
   position: absolute;
   top: 0;
   bottom: -12px;
@@ -4017,17 +4017,17 @@ body:has(.comments) .site-foot {
     font-size: 17.5px;
   }
 
-  .comment-list .children {
+  .comment-list .comment > ol {
     margin-left: 8px;
     padding-left: 22px;
   }
 
-  .comment-list .children > .comment::before {
+  .comment-list .comment > ol > .comment::before {
     left: -22px;
     width: 16px;
   }
 
-  .comment-list .children > .comment:not(:last-child)::after {
+  .comment-list .comment > ol > .comment:not(:last-child)::after {
     left: -22px;
   }
 
