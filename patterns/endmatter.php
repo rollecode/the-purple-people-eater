@@ -21,7 +21,7 @@ $icons = get_theme_file_uri( 'svg/icons.svg' );
 
 <!-- wp:group -->
 <div class="wp-block-group"><!-- wp:heading -->
-<h2 class="wp-block-heading">Reaktiot fediversumissa</h2>
+<h2 class="wp-block-heading">Reaktiot</h2>
 <!-- /wp:heading -->
 
 <!-- wp:html -->
@@ -29,7 +29,7 @@ $icons = get_theme_file_uri( 'svg/icons.svg' );
 <!-- /wp:html -->
 
 <!-- wp:paragraph {"className":"fedi-note"} -->
-<p class="fedi-note">Tykkää, boostaa tai vastaa omalta Mastodon-tililtäsi: hae palvelimesi haulla tämän kirjoituksen osoite. Reaktiot päivittyvät tänne. Rolle Mastodonissa: <a href="https://mementomori.social/@rolle" rel="me">@rolle@mementomori.social</a>.</p>
+<p class="fedi-note">Tykkää, boostaa tai vastaa siellä, missä kirjoitus on jaettu. Reaktiot Mastodonista, Blueskysta ja Threadsista päivittyvät tänne. Jos jakoa ei vielä ole, hae kirjoituksen osoite Mastodon-palvelimesi haulla. Rolle Mastodonissa: <a href="https://mementomori.social/@rolle" rel="me">@rolle@mementomori.social</a>.</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
