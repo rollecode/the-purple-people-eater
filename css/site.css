@@ -3015,6 +3015,25 @@ body:has(.comments) .site-foot {
   gap: 6px;
 }
 
+/* Phones: the meta always takes two rows under the name, and the photo spans all three */
+@media (max-width: 600px) {
+  .byline {
+    grid-template-columns: 84px minmax(0, 1fr);
+  }
+
+  .byline img {
+    width: 84px;
+    height: 84px;
+    border-radius: 18px;
+  }
+
+  .byline .meta {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    justify-content: start;
+  }
+}
+
 /* Icons from CSS, so the editor shows them too */
 .byline .meta > :is(.wp-block-post-date, .wp-block-post-time-to-read, .wp-block-post-comments-link)::before {
   flex: none;

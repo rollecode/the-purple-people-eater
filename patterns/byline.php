@@ -9,8 +9,8 @@
 
 ?>
 <!-- wp:group {"className":"byline"} -->
-<div class="wp-block-group byline"><!-- wp:image {"width":"60px","height":"60px"} -->
-<figure class="wp-block-image is-resized"><img src="<?php echo esc_url( get_theme_file_uri( 'images/author-info.jpg' ) ); ?>" alt="" style="width:60px;height:60px"/></figure>
+<div class="wp-block-group byline"><!-- wp:image -->
+<figure class="wp-block-image"><img src="<?php echo esc_url( get_theme_file_uri( 'images/author-info.jpg' ) ); ?>" alt=""/></figure>
 <!-- /wp:image -->
 
 <!-- wp:group -->
