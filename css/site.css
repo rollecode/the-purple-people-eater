@@ -3651,6 +3651,12 @@ body:has(.comments) .site-foot {
 
 /* On a phone the icons say where from, so the line never wraps */
 @media (max-width: 600px) {
+  .count-line {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
   .count-from {
     position: absolute;
     width: 1px;
