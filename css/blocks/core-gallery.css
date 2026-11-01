@@ -49,9 +49,26 @@
   flex-direction: column;
 }
 
-/* Two pictures side by side get room to breathe */
+/* Two pictures side by side are photos on a table: apart, each at its own angle */
+.prose .wp-block-gallery.columns-2 {
+  gap: 36px 48px;
+}
+
 .prose .wp-block-gallery.columns-2 img {
   aspect-ratio: 4 / 3;
+}
+
+.prose .wp-block-gallery.columns-2 > figure:nth-child(odd) img {
+  transform: rotate(-1.8deg);
+}
+
+.prose .wp-block-gallery.columns-2 > figure:nth-child(even) img {
+  transform: rotate(1.4deg);
+}
+
+.prose .wp-block-gallery.columns-2 figcaption {
+  margin-top: 18px;
+  padding-inline: 6px;
 }
 
 .prose .wp-block-gallery > .blocks-gallery-caption {
@@ -73,3 +90,8 @@
   }
 }
 
+@media (max-width: 600px) {
+  .prose .wp-block-gallery.columns-2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
