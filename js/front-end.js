@@ -753,7 +753,7 @@
   }
 
   // One face per person, however many ways they reacted
-  const reactionsHtml = ({ faces, counts }) => (faces.length ? `<div class="rx"><ul class="rx-faces" aria-label="Reagoineet">${faces.map(({ url, name, avatar }) => `<li><a href="${escapeHtml(url)}" title="${escapeHtml(name)}"><img src="${escapeHtml(avatar)}" alt="${escapeHtml(name)}" width="32" height="32" loading="lazy"></a></li>`).join('')}</ul><p class="rx-count meta-text">${icon('heart', 'ic-sm')}${counts}</p></div>` : '');
+  const reactionsHtml = ({ faces, counts }) => (faces.length || counts ? `<div class="rx"><ul class="rx-faces" aria-label="Reagoineet">${faces.map(({ url, name, avatar }) => `<li><a href="${escapeHtml(url)}" title="${escapeHtml(name)}"><img src="${escapeHtml(avatar)}" alt="${escapeHtml(name)}" width="32" height="32" loading="lazy"></a></li>`).join('')}</ul><p class="rx-count meta-text">${icon('heart', 'ic-sm')}${counts}</p></div>` : '');
 
   const responsesFor = articleId || (bodyClasses.contains('single-diary') ? postId : null);
   const postJson = (path, body) => fetch(`${config.rest}${path}`, {
