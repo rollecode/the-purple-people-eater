@@ -985,7 +985,7 @@
       }
 
       if (line) {
-        const sources = [ [ fediverse, 'fedi', 'fediversumista' ], [ bluesky, 'bluesky', 'Blueskystä' ], [ threads, 'threads', 'Threadsista' ] ]
+        const sources = [ [ fediverse, 'fedi', 'fediversumi' ], [ bluesky, 'bluesky', 'Bluesky' ], [ threads, 'threads', 'Threads' ] ]
           .filter(([ count ]) => count)
           .map(([ count, name, from ]) => ` · ${icon(name, 'ic-sm')}${fiNumber(count)} ${from}`)
           .join('');
@@ -1009,9 +1009,9 @@
   const OWN_PROFILES = [ 'https://mementomori.social/@rolle', 'https://bsky.app/profile/rolle.social', 'https://www.threads.com/@rolle_' ];
   const COMMENT_CLAMP_CHARS = 900;
   const NETWORKS = {
-    fediverse: { icon: 'masto', from: 'fediversumista', at: 'fediversumissa' },
-    bluesky: { icon: 'bluesky', from: 'Blueskystä', at: 'Blueskyssä' },
-    threads: { icon: 'threads', from: 'Threadsista', at: 'Threadsissa' },
+    fediverse: { icon: 'masto', from: 'fediversumi', at: 'fediversumissa' },
+    bluesky: { icon: 'bluesky', from: 'Bluesky', at: 'Blueskyssä' },
+    threads: { icon: 'threads', from: 'Threads', at: 'Threadsissa' },
     web: { icon: 'link', from: 'verkosta', at: 'verkossa' },
   };
 
