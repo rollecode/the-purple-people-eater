@@ -564,7 +564,7 @@ kbd {
 }
 
 /* In the editor a block wrapper sits between the button and the grid */
-.site-head .bar > :has(> .search-btn) {
+.site-head .bar > :has(.search-btn) {
   justify-self: end;
 }
 
