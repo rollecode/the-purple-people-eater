@@ -4470,6 +4470,27 @@ body:has(.comments) .site-foot {
   line-height: 0;
 }
 
+/* Core's default gaps. They stop being printed once blockGap is editable */
+:root {
+  --wp--style--block-gap: .5em;
+}
+
+:where(.is-layout-flex, .is-layout-grid) {
+  gap: .5em;
+}
+
+:where(.wp-block-columns.is-layout-flex, .wp-block-columns.is-layout-grid) {
+  gap: 2em;
+}
+
+:where(.wp-block-post-template, .wp-block-latest-posts, .wp-block-term-template):where(.is-layout-flex, .is-layout-grid) {
+  gap: 1.25em;
+}
+
+:where(.wp-block-gallery):where(.is-layout-flex, .is-layout-grid) {
+  gap: .5em;
+}
+
 /* Alignments, shared by blocks and the classic editor */
 .prose .alignleft {
   float: left;
