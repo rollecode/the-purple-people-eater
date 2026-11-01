@@ -62,4 +62,14 @@
   .prose .wp-block-gallery {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  /* An odd count: the first picture goes wide, so no picture is left alone on the last row */
+  .prose .wp-block-gallery > figure:first-child:nth-last-child(odd of figure) {
+    grid-column: 1 / -1;
+  }
+
+  .prose .wp-block-gallery > figure:first-child:nth-last-child(odd of figure) img {
+    aspect-ratio: 3 / 2;
+  }
 }
+
