@@ -20,7 +20,7 @@ $icons = get_theme_file_uri( 'svg/icons.svg' );
 
 <!-- wp:group -->
 <div class="wp-block-group"><!-- wp:paragraph {"className":"foot-line"} -->
-<p class="foot-line">Rollen blogi ja lokikirja. Kirjoituksia vuodesta 2005,<br>päivittäinen päiväkirja vuodesta 2021.</p>
+<p class="foot-line">Rollen blogi. Kirjoituksia vuodesta 2005,<br>päivittäinen päiväkirja vuodesta 2021.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph {"className":"foot-stats meta-text"} -->
