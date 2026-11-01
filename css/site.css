@@ -4131,9 +4131,7 @@ body:has(.comments) .site-foot {
 
 .prose h6 {
   color: var(--muted);
-  font-size: 14px;
-  letter-spacing: .07em;
-  text-transform: uppercase;
+  font-size: 16px;
 }
 
 .prose :where(ul, ol) {
@@ -5319,10 +5317,8 @@ a.heat-day:hover {
 .editor-role {
   color: var(--accent);
   font-family: var(--sans);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .editor-name {
