@@ -1029,7 +1029,7 @@
     return fedi ? `${fedi[2]}@${fedi[1]}` : '';
   };
 
-  $$('.comment-list .cmt').forEach((comment, index) => {
+  const decorateComments = () => $$('.comment-list .cmt').forEach((comment, index) => {
     const item = comment.closest('li');
     const link = $('.name a', comment);
     const url = link ? link.href.replace(/\/$/, '') : '';
@@ -1064,6 +1064,31 @@
       body.insertAdjacentHTML('afterend', `<button class="expand" type="button" aria-expanded="false" aria-controls="${body.id}" data-expand><span class="screen-reader-text">Näytä koko kommentti</span>${icon('chev')}</button>`);
     }
   });
+
+  decorateComments();
+
+  // Cached pages can be a day old; the list is fetched fresh when it comes near
+  const commentsSection = $('#comments');
+  if (responsesFor && commentsSection) {
+    new IntersectionObserver(([ entry ], observer) => {
+      if (!entry.isIntersecting) {
+        return;
+      }
+
+      observer.disconnect();
+      getJson(`comments/${responsesFor}`).then(({ html }) => {
+        const list = $('.wp-block-comments', commentsSection);
+
+        if (list) {
+          list.outerHTML = html;
+        } else {
+          $('.comments-empty', commentsSection).insertAdjacentHTML('beforebegin', html);
+        }
+
+        decorateComments();
+      });
+    }, { rootMargin: '600px' }).observe(commentsSection);
+  }
 
   $$('[data-permalink]').forEach((field) => {
     field.value = permalink;
