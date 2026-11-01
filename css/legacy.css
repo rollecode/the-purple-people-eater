@@ -50,8 +50,9 @@
   margin-bottom: 10px;
 }
 
-/* "Lähde: Wikipedia" under a quote */
+/* "Lähde: Wikipedia" under a quote; not the comments' "via" badge */
 .prose div.via {
+  display: block;
   margin: -1em 0 1.6em;
 }
 
