@@ -3361,6 +3361,25 @@ body:has(.comments) .site-foot {
   white-space: nowrap;
 }
 
+/* Phone: the text gets the full width, the link goes under it */
+@media (max-width: 600px) {
+  .resume {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 10px 14px;
+  }
+
+  .resume-flag {
+    margin-top: 2px;
+  }
+
+  .resume a {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
 /* Old article: when it was written and how old the writer was */
 .archive-note {
   display: grid;
