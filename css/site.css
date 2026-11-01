@@ -5488,13 +5488,9 @@ article:has(.prose h1) > .page-hero {
 
 @media (max-width: 599px) and (prefers-reduced-motion: no-preference) {
   .site-head .nav.wp-block-navigation .wp-block-navigation__responsive-container.is-menu-open.is-menu-open {
-    animation: sheet-down .45s cubic-bezier(.2, .9, .25, 1);
+    animation: sheet-down .26s cubic-bezier(.2, .9, .25, 1);
   }
 
-  .site-head .nav .is-menu-open.is-leaving {
-    transform: translateY(-110%) !important;
-    transition: transform .3s cubic-bezier(.4, 0, 1, 1) !important;
-  }
 }
 
 @keyframes sheet-down {
