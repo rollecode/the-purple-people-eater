@@ -985,7 +985,7 @@
       }
 
       if (line) {
-        const sources = [ [ fediverse, 'fedi', 'fediversumi' ], [ bluesky, 'bluesky', 'Bluesky' ], [ threads, 'threads', 'Threads' ] ]
+        const sources = [ [ fediverse, 'fedi', 'fediversumista' ], [ bluesky, 'bluesky', 'Blueskystä' ], [ threads, 'threads', 'Threadsista' ] ]
           .filter(([ count ]) => count)
           .map(([ count, name, from ]) => ` · ${icon(name, 'ic-sm')}${fiNumber(count)} ${from}`)
           .join('');
