@@ -1122,6 +1122,14 @@ body:has(.comments) .site-foot {
   }
 }
 
+/* The three theme choices fit the narrowest phones */
+@media (max-width: 360px) {
+  .themesw button {
+    padding-inline: 6px;
+    gap: 5px;
+  }
+}
+
 /* Ten icons don't fit one line on a phone, so two even rows */
 @media (max-width: 440px) {
   .foot-elsewhere ul {
