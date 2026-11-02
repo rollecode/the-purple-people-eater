@@ -11,7 +11,7 @@ const COPIED_MS = 2000;
 const AUTO_MIN_RELEVANCE = 5;
 const PLAIN = [ 'plaintext', 'text', 'txt' ];
 
-// Shorter names than highlight.js gives, which joins HTML with XML and INI with TOML
+// Where highlight.js gives no name, or one for two languages (HTML with XML, INI with TOML)
 const LABELS = { html: 'HTML', xml: 'XML', php: 'PHP', 'php-template': 'PHP', ini: 'INI' };
 
 const { default: hljs } = await import(`${VENDOR_URL}highlight.min.js`);
