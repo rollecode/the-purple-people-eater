@@ -3130,8 +3130,8 @@ body:has(.comments) .site-foot {
   }
 }
 
-/* Two columns of meta no longer fit beside the photo */
-@media (max-width: 400px) {
+/* Two columns of meta no longer fit beside the photo, a three-digit comment count needs 387px */
+@media (max-width: 386px) {
   .byline .meta {
     grid-template-columns: max-content;
   }
