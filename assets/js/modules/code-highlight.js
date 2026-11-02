@@ -11,8 +11,8 @@ const COPIED_MS = 2000;
 const AUTO_MIN_RELEVANCE = 5;
 const PLAIN = [ 'plaintext', 'text', 'txt' ];
 
-// highlight.js names HTML and XML as one language and leaves PHP without a name
-const LABELS = { html: 'HTML', xml: 'XML', php: 'PHP', 'php-template': 'PHP' };
+// Shorter names than highlight.js gives, which joins HTML with XML and INI with TOML
+const LABELS = { html: 'HTML', xml: 'XML', php: 'PHP', 'php-template': 'PHP', ini: 'INI' };
 
 const { default: hljs } = await import(`${VENDOR_URL}highlight.min.js`);
 
