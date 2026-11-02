@@ -17,7 +17,7 @@ import 'theme/search';
 const MODULES = {
   'theme/all-posts': '[data-all-posts]',
   'theme/archive-lists': '[data-tagbars], [data-ranked]',
-  'theme/code-highlight': '.prose pre',
+  'theme/code-highlight': '.prose .wp-block-code',
   'theme/comments': '#comments, .comment-list, [data-permalink], [data-share]',
   'theme/copy-link': '[data-copy]',
   'theme/cover-title': '.cover-title',

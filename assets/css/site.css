@@ -34,7 +34,7 @@
   --on-deep: light-dark(#FFFFFF, #19141F);
   --mark: color-mix(in oklab, var(--lavender) 60%, var(--surface));
   --scrim: rgb(12 10 16 / .82);
-  --code-ground: light-dark(#16121E, #050407);
+  --code-ground: #1A1B26;
 
   --pad: clamp(16px, 4.4vw, 64px);
   --wrap: 1312px;
@@ -4677,7 +4677,7 @@ body:has(.comments) .site-foot {
   overflow-x: auto;
   border-radius: 8px;
   background: var(--code-ground);
-  color: #E9E4F3;
+  color: #A9B1D6;
   font-family: var(--mono);
   font-size: 14.5px;
   line-height: 1.65;

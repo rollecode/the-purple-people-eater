@@ -34,6 +34,11 @@ add_action( 'wp_enqueue_scripts', function () {
   // Posts from before the block editor still carry the markup of their old themes
   if ( is_singular() && ! has_blocks( get_queried_object() ) ) {
     wp_enqueue_style( 'legacy', get_theme_file_uri( 'assets/css/legacy.css' ), [ 'site' ], filemtime( get_theme_file_path( 'assets/css/legacy.css' ) ) );
+
+    // Their code blocks are plain HTML, so no core/code block loads this
+    if ( str_contains( get_queried_object()->post_content, 'wp-block-code' ) ) {
+      wp_enqueue_style( 'theme-core-code', get_theme_file_uri( 'assets/css/blocks/core-code.css' ), [ 'site' ], filemtime( get_theme_file_path( 'assets/css/blocks/core-code.css' ) ) );
+    }
   }
 } );
 
@@ -108,7 +113,7 @@ add_action( 'enqueue_block_editor_assets', function () {
   foreach ( glob( get_theme_file_path( 'assets/js/editor/*.js' ) ) as $file ) {
     $name = basename( $file, '.js' );
 
-    wp_enqueue_script( 'theme-editor-' . $name, get_theme_file_uri( 'assets/js/editor/' . $name . '.js' ), [ 'wp-block-editor', 'wp-blocks', 'wp-hooks', 'wp-data', 'wp-editor', 'wp-plugins', 'wp-element', 'wp-components', 'wp-api-fetch', 'wp-rich-text' ], filemtime( $file ), true );
+    wp_enqueue_script( 'theme-editor-' . $name, get_theme_file_uri( 'assets/js/editor/' . $name . '.js' ), [ 'wp-block-editor', 'wp-blocks', 'wp-compose', 'wp-hooks', 'wp-data', 'wp-editor', 'wp-plugins', 'wp-element', 'wp-components', 'wp-api-fetch', 'wp-rich-text' ], filemtime( $file ), true );
   }
 } );
 

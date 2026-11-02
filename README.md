@@ -24,6 +24,7 @@
 - Callouts: Info, Varoitus and Kriittinen
 - Word explanations: click a word for a card with an explanation and a link
 - Wide and full images
+- Code blocks in Tokyo Night with every highlight.js language and a copy button
 - Real-time search overlay
 - Lokikirja with moods, weather, device and a writing heatmap
 - Fediverse reactions and comments under every text
@@ -44,16 +45,15 @@ the-purple-people-eater/
     ├── css/
     │   ├── site.css       The design, also loaded in the editor
     │   ├── blocks/        Styles loaded only with their block
-    │   ├── legacy.css     Markup of posts older than the block editor
-    │   └── prism.css      Code highlighting, loaded when needed
+    │   └── legacy.css     Markup of posts older than the block editor
     ├── js/
     │   ├── main.js        Loads what the page needs
     │   ├── modules/       One feature per file, shared helpers in lib.js
-    │   ├── editor/        One editor feature per file
-    │   └── prism.js       Code highlighting, loaded when needed
+    │   └── editor/        One editor feature per file
     ├── fonts/             Instrument Serif, Atkinson Hyperlegible Next and Geist
     ├── svg/               Icon sprite and the diary's mood, device and weather icons
-    └── images/            Author photo and defaults
+    ├── images/            Author photo and defaults
+    └── vendor/highlight/  highlight.js 11.12.0, every language, loaded only with code
 ```
 
 WordPress looks for `templates/`, `parts/` and `patterns/` only at the theme root, so those stay there.
