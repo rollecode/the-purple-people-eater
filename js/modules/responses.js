@@ -1,4 +1,5 @@
 import { $, articleId, store, getJson, icon, fiNumber, fiCount, reactionsHtml, responsesFor, postJson } from 'theme/lib';
+import { showReach } from 'theme/reading';
 
 // Selections are compared as the server compares them (rollemaa-site readers.php)
 const QUOTES = { '”': '"', '“': '"', '’': "'", '‘': "'", '–': '-', '—': '-', '…': '...' };
@@ -202,8 +203,9 @@ const showTopHighlight = ({ text, count }) => {
 };
 
 if (responsesFor) {
-  getJson(`responses/${responsesFor}`).then(({ comments, fediverse, bluesky, threads, likes, boosts, people, claps, highlight }) => {
+  getJson(`responses/${responsesFor}`).then(({ comments, fediverse, bluesky, threads, likes, boosts, people, claps, highlight, reach }) => {
     showClaps(claps);
+    showReach(reach);
     if (highlight && highlightProse) {
       showTopHighlight(highlight);
     }

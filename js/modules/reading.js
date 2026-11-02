@@ -1,4 +1,4 @@
-import { $, $$, articleId, postIdOf, store, prose, reducedMotion } from 'theme/lib';
+import { $, $$, articleId, postIdOf, store, prose, reducedMotion, postJson } from 'theme/lib';
 
 /**
  * Long texts remember how far you got. The byline offers to continue,
@@ -10,6 +10,9 @@ const RESUME_MAX = 95;
 const METER_FROM = 2;
 const METER_DONE_MS = 2400;
 const METER_RESET = 97;
+const REACH_AFTER_MS = 3000;
+const REACH_SHOWN_MIN = 5;
+const REACH_SHOWN_MAX = 95;
 
 const whenFi = (time) => {
   const date = new Date(time);
@@ -43,6 +46,25 @@ export function markResumable(root) {
 }
 
 markResumable(document);
+
+/**
+ * Where most readers stop: a dim line across the text with a dot that tells.
+ */
+export function showReach(reach) {
+  if (!prose || !reach || reach.pct < REACH_SHOWN_MIN || reach.pct > REACH_SHOWN_MAX) {
+    return;
+  }
+  prose.insertAdjacentHTML('beforeend', `<div class="reach" style="--reach: ${reach.pct}"><button class="reach-dot" type="button" aria-expanded="false" aria-controls="reach-tip" aria-label="Mihin asti suurin osa luki"></button><p class="reach-tip" id="reach-tip" hidden>Suurin osa ihmisistä jaksoi lukea tänne asti, eli ${reach.pct} %.</p></div>`);
+  const dot = $('.reach-dot', prose);
+  const tip = $('.reach-tip', prose);
+  const toggle = (open) => {
+    tip.hidden = !open;
+    dot.setAttribute('aria-expanded', String(open));
+  };
+  dot.addEventListener('click', () => toggle(tip.hidden));
+  document.addEventListener('click', (event) => event.target !== dot && toggle(false));
+  document.addEventListener('keydown', (event) => 'Escape' === event.key && toggle(false));
+}
 
 if (prose && articleId) {
   const key = `${READ_PREFIX}${articleId}`;
@@ -94,6 +116,19 @@ if (prose && articleId) {
     }
   }
 
+  // How far this visit got, sent when the page is left; no cookies, no storage
+  const openedAt = Date.now();
+  let furthest = Math.round(progress() * 100);
+  let reachSent = -1;
+  const sendReach = () => {
+    if (furthest > reachSent && Date.now() - openedAt >= REACH_AFTER_MS) {
+      reachSent = furthest;
+      postJson(`reach/${articleId}`, { depth: furthest });
+    }
+  };
+  document.addEventListener('visibilitychange', () => 'hidden' === document.visibilityState && sendReach());
+  window.addEventListener('pagehide', sendReach);
+
   let ticking = false;
   let lastSave = 0;
   window.addEventListener('scroll', () => {
@@ -105,6 +140,7 @@ if (prose && articleId) {
       ticking = false;
       const value = progress();
       const pct = Math.round(value * 100);
+      furthest = Math.max(furthest, pct);
       const footer = $('.site-foot');
 
       // Back up the text after finishing: the meter returns
