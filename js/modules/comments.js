@@ -1,10 +1,11 @@
-import { $, $$, permalink, getJson, escapeHtml, icon, responsesFor } from 'theme/lib';
+import { $, $$, permalink, getJson, escapeHtml, icon, responsesFor, fiAgo } from 'theme/lib';
 
 /**
  * Comments: Rolle's own, handles and where each came from, long ones folded
  */
 const OWN_PROFILES = [ 'https://mementomori.social/@rolle', 'https://bsky.app/profile/rolle.social', 'https://www.threads.com/@rolle_' ];
 const COMMENT_CLAMP_CHARS = 900;
+const RELATIVE_FOR_MS = 7 * 86400000;
 const NETWORKS = {
   fediverse: { icon: 'masto', from: 'fediversumi', at: 'fediversumissa' },
   bluesky: { icon: 'bluesky', from: 'Bluesky', at: 'Blueskyssä' },
@@ -40,6 +41,15 @@ const decorateComments = () => $$('.comment-list .cmt').forEach((comment, index)
     $('.name', comment).insertAdjacentHTML('beforeend', '<span class="role">Kirjoittaja</span>');
   } else if (handle) {
     $('.name', comment).insertAdjacentHTML('beforeend', `<a class="handle" href="${escapeHtml(url)}">@${escapeHtml(handle)}</a>`);
+  }
+
+  // The past week reads as "kaksi tuntia sitten"; the exact time stays on hover
+  const time = $('.when time', comment);
+  const then = time ? Date.parse(time.dateTime) : NaN;
+  if (Date.now() - then < RELATIVE_FOR_MS) {
+    const label = time.firstElementChild || time;
+    time.title = label.textContent;
+    label.textContent = fiAgo(then / 1000);
   }
 
   if (network) {
