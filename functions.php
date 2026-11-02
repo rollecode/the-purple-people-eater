@@ -12,39 +12,39 @@ const MODULES_ON_EVERY_PAGE = [ 'lib', 'theme-switch', 'expand', 'nav-current', 
 const PRELOADED_FONTS = [ 'InstrumentSerif-latin', 'Geist-latin', 'Inter-Bold-latin', 'AtkinsonHyperlegibleNext-latin' ];
 
 add_action( 'after_setup_theme', function () {
-  add_editor_style( 'css/site.css' );
+  add_editor_style( 'assets/css/site.css' );
 } );
 
 add_action( 'wp_enqueue_scripts', function () {
-  wp_enqueue_style( 'site', get_theme_file_uri( 'css/site.css' ), [], filemtime( get_theme_file_path( 'css/site.css' ) ) );
+  wp_enqueue_style( 'site', get_theme_file_uri( 'assets/css/site.css' ), [], filemtime( get_theme_file_path( 'assets/css/site.css' ) ) );
 
-  foreach ( glob( get_theme_file_path( 'js/modules/*.js' ) ) as $file ) {
+  foreach ( glob( get_theme_file_path( 'assets/js/modules/*.js' ) ) as $file ) {
     $name = basename( $file, '.js' );
 
-    wp_register_script_module( 'theme/' . $name, get_theme_file_uri( 'js/modules/' . $name . '.js' ), [], filemtime( $file ) );
+    wp_register_script_module( 'theme/' . $name, get_theme_file_uri( 'assets/js/modules/' . $name . '.js' ), [], filemtime( $file ) );
   }
 
   $modules = array_map( fn( $file ) => [
     'id'     => 'theme/' . basename( $file, '.js' ),
     'import' => in_array( basename( $file, '.js' ), MODULES_ON_EVERY_PAGE, true ) ? 'static' : 'dynamic',
-  ], glob( get_theme_file_path( 'js/modules/*.js' ) ) );
+  ], glob( get_theme_file_path( 'assets/js/modules/*.js' ) ) );
 
-  wp_enqueue_script_module( 'theme/main', get_theme_file_uri( 'js/main.js' ), $modules, filemtime( get_theme_file_path( 'js/main.js' ) ) );
+  wp_enqueue_script_module( 'theme/main', get_theme_file_uri( 'assets/js/main.js' ), $modules, filemtime( get_theme_file_path( 'assets/js/main.js' ) ) );
 
   // Posts from before the block editor still carry the markup of their old themes
   if ( is_singular() && ! has_blocks( get_queried_object() ) ) {
-    wp_enqueue_style( 'legacy', get_theme_file_uri( 'css/legacy.css' ), [ 'site' ], filemtime( get_theme_file_path( 'css/legacy.css' ) ) );
+    wp_enqueue_style( 'legacy', get_theme_file_uri( 'assets/css/legacy.css' ), [ 'site' ], filemtime( get_theme_file_path( 'assets/css/legacy.css' ) ) );
   }
 } );
 
-// css/blocks/core-quote.css styles core/quote, and only where a quote renders
+// assets/css/blocks/core-quote.css styles core/quote, and only where a quote renders
 add_action( 'init', function () {
-  foreach ( glob( get_theme_file_path( 'css/blocks/*.css' ) ) as $file ) {
+  foreach ( glob( get_theme_file_path( 'assets/css/blocks/*.css' ) ) as $file ) {
     $name = basename( $file, '.css' );
 
     wp_enqueue_block_style( preg_replace( '/-/', '/', $name, 1 ), [
       'handle' => 'theme-' . $name,
-      'src'    => get_theme_file_uri( 'css/blocks/' . $name . '.css' ),
+      'src'    => get_theme_file_uri( 'assets/css/blocks/' . $name . '.css' ),
       'path'   => $file,
       'ver'    => filemtime( $file ),
     ] );
@@ -84,7 +84,7 @@ add_action( 'init', function () {
 add_filter( 'wp_preload_resources', function ( $resources ) {
   foreach ( PRELOADED_FONTS as $font ) {
     $resources[] = [
-      'href'        => get_theme_file_uri( 'fonts/' . $font . '.woff2' ),
+      'href'        => get_theme_file_uri( 'assets/fonts/' . $font . '.woff2' ),
       'as'          => 'font',
       'type'        => 'font/woff2',
       'crossorigin' => 'anonymous',
@@ -105,10 +105,10 @@ add_action( 'wp_head', function () {
 }, 0 );
 
 add_action( 'enqueue_block_editor_assets', function () {
-  foreach ( glob( get_theme_file_path( 'js/editor/*.js' ) ) as $file ) {
+  foreach ( glob( get_theme_file_path( 'assets/js/editor/*.js' ) ) as $file ) {
     $name = basename( $file, '.js' );
 
-    wp_enqueue_script( 'theme-editor-' . $name, get_theme_file_uri( 'js/editor/' . $name . '.js' ), [ 'wp-block-editor', 'wp-blocks', 'wp-hooks', 'wp-data', 'wp-editor', 'wp-plugins', 'wp-element', 'wp-components', 'wp-api-fetch', 'wp-rich-text' ], filemtime( $file ), true );
+    wp_enqueue_script( 'theme-editor-' . $name, get_theme_file_uri( 'assets/js/editor/' . $name . '.js' ), [ 'wp-block-editor', 'wp-blocks', 'wp-hooks', 'wp-data', 'wp-editor', 'wp-plugins', 'wp-element', 'wp-components', 'wp-api-fetch', 'wp-rich-text' ], filemtime( $file ), true );
   }
 } );
 

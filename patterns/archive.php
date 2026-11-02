@@ -7,7 +7,7 @@
  * @package the-purple-people-eater
  */
 
-$icons = get_theme_file_uri( 'svg/icons.svg' );
+$icons = get_theme_file_uri( 'assets/svg/icons.svg' );
 
 ?>
 <!-- wp:group {"tagName":"header","className":"page-hero"} -->

@@ -36,24 +36,27 @@ A block theme with no build step: what is in this repository is what runs.
 
 ```
 the-purple-people-eater/
-├── theme.json         Design tokens, layout sizes and block defaults
-├── templates/         Pages as block markup
-├── parts/             Header and footer
-├── patterns/          Repeating pieces: cards, byline, diary parts
-├── css/
-│   ├── site.css       The design, also loaded in the editor
-│   ├── blocks/        Styles loaded only with their block
-│   ├── legacy.css     Markup of posts older than the block editor
-│   └── prism.css      Code highlighting, loaded when needed
-├── js/
-│   ├── main.js        Loads what the page needs
-│   ├── modules/       One feature per file, shared helpers in lib.js
-│   ├── editor/        One editor feature per file
-│   ├── heatmap.js     Writing heatmap on the diary archive
-│   └── prism.js       Code highlighting, loaded when needed
-├── fonts/             Instrument Serif, Atkinson Hyperlegible Next and Geist
-├── svg/               Icon sprite and the diary's mood, device and weather icons
-└── images/            Author photo and defaults
+├── theme.json             Design tokens, layout sizes and block defaults
+├── templates/             Pages as block markup
+├── parts/                 Header and footer
+├── patterns/              Repeating pieces: cards, byline, diary parts
+└── assets/
+    ├── css/
+    │   ├── site.css       The design, also loaded in the editor
+    │   ├── blocks/        Styles loaded only with their block
+    │   ├── legacy.css     Markup of posts older than the block editor
+    │   └── prism.css      Code highlighting, loaded when needed
+    ├── js/
+    │   ├── main.js        Loads what the page needs
+    │   ├── modules/       One feature per file, shared helpers in lib.js
+    │   ├── editor/        One editor feature per file
+    │   └── prism.js       Code highlighting, loaded when needed
+    ├── fonts/             Instrument Serif, Atkinson Hyperlegible Next and Geist
+    ├── svg/               Icon sprite and the diary's mood, device and weather icons
+    └── images/            Author photo and defaults
+```
+
+WordPress looks for `templates/`, `parts/` and `patterns/` only at the theme root, so those stay there.
 ```
 
 Core blocks do the work: Query Loop for the lists, post blocks for the texts, core navigation for the menu. `functions.php` loads assets and registers block styles. Posts open in the editor inside their template, so writing looks the same as reading.

@@ -7,7 +7,7 @@
  * @package the-purple-people-eater
  */
 
-$icons = get_theme_file_uri( 'svg/icons.svg' );
+$icons = get_theme_file_uri( 'assets/svg/icons.svg' );
 
 ?>
 <!-- wp:group {"className":"wrap who"} -->
@@ -27,15 +27,15 @@ $icons = get_theme_file_uri( 'svg/icons.svg' );
 
 <!-- wp:group {"className":"who-photos"} -->
 <div class="wp-block-group who-photos"><!-- wp:image {"linkDestination":"custom"} -->
-<figure class="wp-block-image"><a href="https://www.instagram.com/p/_P_FY3G0Vm"><img src="<?php echo esc_url( get_theme_file_uri( 'images/instagram-5.jpg' ) ); ?>" alt="Kahvikuppi, jonka pinnalle heijastuu koodia"/></a></figure>
+<figure class="wp-block-image"><a href="https://www.instagram.com/p/_P_FY3G0Vm"><img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/instagram-5.jpg' ) ); ?>" alt="Kahvikuppi, jonka pinnalle heijastuu koodia"/></a></figure>
 <!-- /wp:image --><!-- wp:image {"linkDestination":"custom"} -->
-<figure class="wp-block-image"><a href="https://www.instagram.com/p/BWkzo1YH41w"><img src="<?php echo esc_url( get_theme_file_uri( 'images/instagram-2.jpg' ) ); ?>" alt="Rolle ja Manu-poika hymyilevät"/></a></figure>
+<figure class="wp-block-image"><a href="https://www.instagram.com/p/BWkzo1YH41w"><img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/instagram-2.jpg' ) ); ?>" alt="Rolle ja Manu-poika hymyilevät"/></a></figure>
 <!-- /wp:image --><!-- wp:image {"linkDestination":"custom"} -->
-<figure class="wp-block-image"><a href="https://www.instagram.com/p/BkvleS7HJWF"><img src="<?php echo esc_url( get_theme_file_uri( 'images/instagram-3.jpg' ) ); ?>" alt="Rolle ja Veera-vaimo hymyilevät"/></a></figure>
+<figure class="wp-block-image"><a href="https://www.instagram.com/p/BkvleS7HJWF"><img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/instagram-3.jpg' ) ); ?>" alt="Rolle ja Veera-vaimo hymyilevät"/></a></figure>
 <!-- /wp:image --><!-- wp:image {"linkDestination":"custom"} -->
-<figure class="wp-block-image"><a href="https://www.instagram.com/p/BD0kbXIm0T3"><img src="<?php echo esc_url( get_theme_file_uri( 'images/instagram-4.jpg' ) ); ?>" alt="Rolle koodaa läppärillä puiston penkillä"/></a></figure>
+<figure class="wp-block-image"><a href="https://www.instagram.com/p/BD0kbXIm0T3"><img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/instagram-4.jpg' ) ); ?>" alt="Rolle koodaa läppärillä puiston penkillä"/></a></figure>
 <!-- /wp:image --><!-- wp:image {"linkDestination":"custom"} -->
-<figure class="wp-block-image"><a href="https://www.instagram.com/p/BNL6xgrg3iR"><img src="<?php echo esc_url( get_theme_file_uri( 'images/instagram-1.jpg' ) ); ?>" alt="Taiteellinen tummataustainen potrettikuva Rollesta"/></a></figure>
+<figure class="wp-block-image"><a href="https://www.instagram.com/p/BNL6xgrg3iR"><img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/instagram-1.jpg' ) ); ?>" alt="Taiteellinen tummataustainen potrettikuva Rollesta"/></a></figure>
 <!-- /wp:image --></div>
 <!-- /wp:group --></div>
 <!-- /wp:group -->

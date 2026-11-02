@@ -79,7 +79,7 @@
               "fontWeight": "400",
               "fontDisplay": "swap",
               "src": [
-                "file:./fonts/InstrumentSerif-latin.woff2"
+                "file:./assets/fonts/InstrumentSerif-latin.woff2"
               ]
             },
             {
@@ -88,7 +88,7 @@
               "fontWeight": "400",
               "fontDisplay": "swap",
               "src": [
-                "file:./fonts/InstrumentSerif-Italic-latin.woff2"
+                "file:./assets/fonts/InstrumentSerif-Italic-latin.woff2"
               ]
             }
           ]
@@ -104,7 +104,7 @@
               "fontWeight": "400 700",
               "fontDisplay": "swap",
               "src": [
-                "file:./fonts/AtkinsonHyperlegibleNext-latin.woff2"
+                "file:./assets/fonts/AtkinsonHyperlegibleNext-latin.woff2"
               ]
             },
             {
@@ -113,7 +113,7 @@
               "fontWeight": "400 700",
               "fontDisplay": "swap",
               "src": [
-                "file:./fonts/AtkinsonHyperlegibleNext-Italic-latin.woff2"
+                "file:./assets/fonts/AtkinsonHyperlegibleNext-Italic-latin.woff2"
               ]
             }
           ]
@@ -129,7 +129,7 @@
               "fontWeight": "400 700",
               "fontDisplay": "swap",
               "src": [
-                "file:./fonts/Geist-latin.woff2"
+                "file:./assets/fonts/Geist-latin.woff2"
               ]
             }
           ]
@@ -145,7 +145,7 @@
               "fontWeight": "700",
               "fontDisplay": "swap",
               "src": [
-                "file:./fonts/Inter-Bold-latin.woff2"
+                "file:./assets/fonts/Inter-Bold-latin.woff2"
               ]
             }
           ]

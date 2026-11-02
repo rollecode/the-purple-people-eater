@@ -3,13 +3,13 @@
  * Finnish wording.
  */
 
-const THEME_URL = new URL('../../', import.meta.url).href;
+const ASSETS_URL = new URL('../../', import.meta.url).href;
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const REST_URL = $('link[rel="https://api.w.org/"]').href;
 const config = {
   rest: `${REST_URL}rollemaa/v1/`,
-  sprite: `${THEME_URL}svg/icons.svg`,
+  sprite: `${ASSETS_URL}svg/icons.svg`,
   localDomains: [ 'rollemaa.test', 'rollemaa.fi', 'www.rollemaa.fi' ],
 };
 const { classList: bodyClasses } = document.body;
@@ -127,7 +127,7 @@ const prose = $('.single-post .prose');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 export {
-  THEME_URL,
+  ASSETS_URL,
   $,
   $$,
   REST_URL,

@@ -1,4 +1,4 @@
-import { THEME_URL, $, config, store } from 'theme/lib';
+import { ASSETS_URL, $, config, store } from 'theme/lib';
 
 /**
  * Own ad, with permanent dismiss. Dude's brand: the aurora and the
@@ -27,7 +27,7 @@ if (DUDE_AD_ENABLED && store.raw('hide_dude_ad') !== '1') {
     ownAd.innerHTML = adContent;
     ownAd.classList.add('ownad-unblockable');
     ownAd.setAttribute('aria-label', 'Mainos: Digitoimisto Dude');
-    document.head.append(Object.assign(document.createElement('link'), { rel: 'stylesheet', href: `${THEME_URL}css/ads.css` }));
+    document.head.append(Object.assign(document.createElement('link'), { rel: 'stylesheet', href: `${ASSETS_URL}css/ads.css` }));
     referenceElement.after(ownAd);
   };
 
