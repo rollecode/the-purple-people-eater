@@ -24,7 +24,7 @@ const shelfHtml = (years, maxHeight) => {
     const label = `${year}: ${fiCount(texts, 'kirjoitus', 'kirjoitusta')}, ${fiCount(words, 'sana', 'sanaa')}`;
     spines += 1;
 
-    return `<li class="vol" style="--w: ${40 + Math.round(words / 1000)}; --h: ${height}px"><a href="${yearUrl(year, count)}" aria-label="${label}"><span class="sp ${tone}"><span class="n">${fiNumber(texts)}</span></span><span class="pl"></span><span class="y">${year}</span></a></li>`;
+    return `<li class="vol" style="--w: ${40 + Math.round(words / 1000)}; --h: ${height}px"><a href="${yearUrl(year, count)}" aria-label="${label}"><span class="sp ${tone}"><span class="n">${fiNumber(texts)}</span></span><span class="y">${year}</span></a></li>`;
   }).join('');
 };
 

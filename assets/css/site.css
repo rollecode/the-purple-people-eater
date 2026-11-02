@@ -1516,12 +1516,6 @@ body:has(.comments) .site-foot {
   text-align: center;
 }
 
-.vol .pl {
-  display: block;
-  height: 5px;
-  background: color-mix(in oklab, var(--lavender) 70%, var(--deep));
-}
-
 .vol .y {
   display: block;
   margin-top: 8px;
