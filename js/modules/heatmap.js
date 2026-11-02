@@ -8,19 +8,17 @@
  * arrow keys between days.
  */
 
-(() => {
-  'use strict';
+import { getJson } from 'theme/lib';
 
-  const el = document.getElementById('heatmap');
-  const rest = document.querySelector('link[rel="https://api.w.org/"]').href;
+const el = document.getElementById('heatmap');
 
-  const MONTHS = [ 'tammi', 'helmi', 'maalis', 'huhti', 'touko', 'kesä', 'heinä', 'elo', 'syys', 'loka', 'marras', 'joulu' ];
-  const MIN_CELL = 8; // Below this a square is too small to see or tap: drop the oldest weeks
-  const LABEL_WEEKS = 4; // Room a month name needs at the right edge
-  const DAY_MS = 86400000;
-  const localIso = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+const MONTHS = [ 'tammi', 'helmi', 'maalis', 'huhti', 'touko', 'kesä', 'heinä', 'elo', 'syys', 'loka', 'marras', 'joulu' ];
+const MIN_CELL = 8; // Below this a square is too small to see or tap: drop the oldest weeks
+const LABEL_WEEKS = 4; // Room a month name needs at the right edge
+const DAY_MS = 86400000;
+const localIso = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
-  const draw = ({ words: counts, links: days }) => {
+const draw = ({ words: counts, links: days }) => {
   const max = Math.max(...Object.values(counts), 1);
   const level = (value) => (value ? Math.min(4, Math.ceil(value / (max / 4))) : 0);
 
@@ -156,7 +154,6 @@
   el.addEventListener('pointerleave', hideTip);
   el.addEventListener('focusout', hideTip);
   window.addEventListener('scroll', hideTip, { passive: true });
-  };
+};
 
-  fetch(`${rest}rollemaa/v1/heatmap`).then((response) => response.json()).then(draw);
-})();
+getJson('heatmap').then(draw);

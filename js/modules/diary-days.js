@@ -1,4 +1,4 @@
-import { THEME_URL, $, $$, bodyClasses, postId, postIdOf, getJson, escapeHtml, icon, reactionsHtml } from 'theme/lib';
+import { $, $$, bodyClasses, postId, postIdOf, getJson, escapeHtml, icon, reactionsHtml } from 'theme/lib';
 
 /**
  * Lokikirja: the day's numbers and the same day a year ago
@@ -50,6 +50,6 @@ if (heatmap) {
   if (bodyClasses.contains('paged') || bodyClasses.contains('date')) {
     heatmap.hidden = true;
   } else {
-    document.head.append(Object.assign(document.createElement('script'), { src: `${THEME_URL}js/heatmap.js`, async: true }));
+    import('theme/heatmap');
   }
 }
