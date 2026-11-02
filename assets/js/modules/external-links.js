@@ -14,7 +14,7 @@ $$('.prose a[href^="http"], .keywords a[href^="http"]').forEach((link) => {
   if (localHosts.includes(host) || link.getAttribute('aria-label') || !link.textContent.trim()) {
     return;
   }
-  link.setAttribute('aria-label', `${link.textContent.trim()}: ulkoinen sivusto`);
+  link.setAttribute('aria-label', `${link.textContent.trim()}: ${link.classList.contains('broken-link') ? 'rikkinäinen linkki' : 'ulkoinen sivusto'}`);
 });
 
 // Mastodon embed script, only when the page actually has an embed
