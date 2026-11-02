@@ -19,7 +19,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:group {"className":"meta"} -->
-<div class="wp-block-group meta"><!-- wp:post-date {"format":"j.n.Y"} /--><!-- wp:post-time-to-read {"displayAsRange":false,"averageReadingSpeed":200} /--><!-- wp:post-comments-link /--></div>
+<div class="wp-block-group meta"><!-- wp:post-date {"format":"j.n.Y"} /--><!-- wp:post-time-to-read {"displayAsRange":false,"averageReadingSpeed":200} /--></div>
 <!-- /wp:group --></div>
 <!-- /wp:group -->
 
