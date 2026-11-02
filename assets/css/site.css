@@ -4147,7 +4147,8 @@ body:has(.comments) .site-foot {
   outline-offset: 2px;
 }
 
-.copybox {
+/* Two classes, so wp-admin's input[readonly] grey loses in the editor */
+.copyfield .copybox {
   flex: 1;
   min-width: 0;
   padding: 0;
