@@ -3130,6 +3130,13 @@ body:has(.comments) .site-foot {
   }
 }
 
+/* Two columns of meta no longer fit beside the photo */
+@media (max-width: 400px) {
+  .byline .meta {
+    grid-template-columns: max-content;
+  }
+}
+
 /* Icons from CSS, so the editor shows them too */
 .byline .meta > :is(.wp-block-post-date, .wp-block-post-time-to-read)::before {
   flex: none;
@@ -3765,9 +3772,11 @@ body:has(.comments) .site-foot {
 }
 
 .cmt .handle {
+  min-width: 0;
   color: var(--muted);
   font-size: 14.5px;
   font-weight: 400;
+  overflow-wrap: anywhere;
   text-decoration: none;
 }
 
