@@ -154,6 +154,15 @@ add_filter( 'wp_preload_resources', function ( $resources ) {
   return $resources;
 } );
 
+// The logo umbrella as it tilts on hover. The Site Icon stays for the fediverse profile and wp-admin
+remove_action( 'wp_head', 'wp_site_icon', 99 );
+
+add_action( 'wp_head', function () {
+  printf( '<link rel="icon" href="%s" sizes="32x32">' . "\n", esc_url( get_theme_file_uri( 'assets/images/favicon.png' ) ) );
+  printf( '<link rel="icon" href="%s" type="image/svg+xml">' . "\n", esc_url( get_theme_file_uri( 'assets/images/favicon.svg' ) ) );
+  printf( '<link rel="apple-touch-icon" href="%s">' . "\n", esc_url( get_theme_file_uri( 'assets/images/apple-touch-icon.png' ) ) );
+} );
+
 // Before first paint, or the page flashes the wrong theme
 add_action( 'wp_head', function () {
   wp_print_inline_script_tag( "try{var t=localStorage.getItem('theme')}catch(e){}document.documentElement.className=(t||matchMedia('(prefers-color-scheme: dark)').matches&&'theme-dark')==='theme-dark'?'theme-dark':'theme-light'" );
