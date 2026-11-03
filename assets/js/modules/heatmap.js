@@ -19,8 +19,10 @@ const DAY_MS = 86400000;
 const localIso = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
 const draw = ({ words: counts, links: days }) => {
-  const max = Math.max(...Object.values(counts), 1);
-  const level = (value) => (value ? Math.min(4, Math.ceil(value / (max / 4))) : 0);
+  // Shade by rank among the written days, so a few long days do not wash out the rest
+  const sorted = Object.values(counts).filter(Boolean).sort((a, b) => a - b);
+  const cuts = [ 0.25, 0.5, 0.75 ].map((share) => sorted[Math.floor(share * (sorted.length - 1))]);
+  const level = (value) => (value ? 1 + cuts.filter((cut) => value > cut).length : 0);
 
   // One year back from today, whole weeks from Monday
   const today = new Date();

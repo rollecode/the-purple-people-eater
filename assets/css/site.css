@@ -5168,9 +5168,9 @@ body:has(.comments) .site-foot {
   padding: 4px 4px 6px;
 
   --h0: color-mix(in oklab, var(--rule) 70%, var(--ground));
-  --h1: var(--soft);
-  --h2: color-mix(in oklab, var(--accent) 34%, var(--soft));
-  --h3: color-mix(in oklab, var(--accent) 67%, var(--soft));
+  --h1: color-mix(in oklab, var(--accent) 22%, var(--soft));
+  --h2: color-mix(in oklab, var(--accent) 46%, var(--soft));
+  --h3: color-mix(in oklab, var(--accent) 72%, var(--soft));
   --h4: var(--accent);
 }
 
