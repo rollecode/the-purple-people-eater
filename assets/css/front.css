@@ -422,48 +422,19 @@
 }
 /* An open book turning its pages while a Luku timer runs */
 .now li > .pages {
-  position: relative;
   width: 40px;
   height: 40px;
+  padding: 9px;
   border-radius: 50%;
   background: var(--soft);
-  perspective: 60px;
+  overflow: visible;
 }
-.pages::before {
-  position: absolute;
-  inset: 9px;
-  background: var(--accent);
-  content: "";
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z'/%3E%3C/svg%3E") center / contain no-repeat;
-}
-/* The turning page lifts off the right page and lands on the left one */
-.pages i {
-  position: absolute;
-  top: 13px;
-  left: 20px;
-  width: 8px;
-  height: 12px;
-  border: 1.5px solid var(--accent);
-  border-left: 0;
-  border-radius: 0 1px 1px 0;
-  background: var(--soft);
-  opacity: 0;
-  transform-origin: left center;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .pages i { animation: page-turn 1.8s cubic-bezier(.45, 0, .3, 1) infinite; }
-  .pages i:nth-child(2) { animation-delay: -.9s; }
-}
-@keyframes page-turn {
-  0% {
-    opacity: 0;
-    transform: rotateY(0);
-  }
-  10%, 55% { opacity: 1; }
-  65%, 100% {
-    opacity: 0;
-    transform: rotateY(-180deg);
-  }
+.pages path {
+  fill: var(--soft);
+  stroke: var(--accent);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3.5;
 }
 .now .label {
   display: block;
