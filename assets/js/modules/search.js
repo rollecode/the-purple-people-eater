@@ -148,7 +148,7 @@ if (dialog) {
         }
       })
       .catch(() => {
-        status.textContent = 'Haku ei juuri nyt vastaa. Paina Enter, niin haetaan sivuston omalla haulla.';
+        status.textContent = 'Haku ei juuri nyt vastaa. Yritä hetken päästä uudelleen.';
       });
   };
 
