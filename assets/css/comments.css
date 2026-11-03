@@ -289,7 +289,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--soft);
+  background: light-dark(var(--soft), var(--rule-strong));
   color: var(--accent);
   font-size: 14px;
   font-weight: 600;
