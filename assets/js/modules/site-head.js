@@ -39,9 +39,9 @@ if (siteHead) {
     sleepTimer = window.setTimeout(sleep, awakeFor);
   };
 
-  // Floating takes the head out of the page, so its place is kept. Touch screens keep it at the top of the page
+  // Floating takes the head out of the page, so its place is kept
   const float = () => {
-    const floating = !touch && window.scrollY > siteHead.offsetHeight;
+    const floating = window.scrollY > siteHead.offsetHeight;
     if (floating !== classList.contains('head-floating')) {
       document.documentElement.style.setProperty('--head-h', `${siteHead.offsetHeight}px`);
       classList.toggle('head-floating', floating);
