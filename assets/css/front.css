@@ -422,12 +422,17 @@
 }
 /* An open book turning its pages while a Luku timer runs */
 .now li > .pages {
+  display: grid;
+  place-items: center;
   width: 40px;
   height: 40px;
-  padding: 9px;
   border-radius: 50%;
   background: var(--soft);
-  overflow: visible;
+}
+/* The view box leaves room round the strokes, so no browser clips the corners */
+.pages svg {
+  width: 25px;
+  height: 25px;
 }
 .pages path {
   fill: var(--soft);
