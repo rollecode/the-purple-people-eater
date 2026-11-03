@@ -510,7 +510,7 @@ body:has(.comments) .site-foot { margin-top: 0; }
   left: 0;
   width: var(--pill-w, 0);
   border-radius: 999px;
-  background: var(--soft);
+  background: light-dark(var(--soft), var(--rule-strong));
   content: "";
   transform: translateX(var(--pill-x, 0));
 }
