@@ -57,7 +57,6 @@ the-purple-people-eater/
 ```
 
 WordPress looks for `templates/`, `parts/` and `patterns/` only at the theme root, so those stay there.
-```
 
 Core blocks do the work: Query Loop for the lists, post blocks for the texts, core navigation for the menu. `functions.php` loads assets and registers block styles. Posts open in the editor inside their template, so writing looks the same as reading.
 
