@@ -24,6 +24,8 @@ const PROFILES = {
   Luku: 'https://luku.app/@rolle',
 };
 const EQUALIZER = '<span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>';
+const TURNING_PAGES = '<span class="pages" aria-hidden="true"><i></i><i></i></span>';
+const READING_LABELS = { active: 'Juuri nyt', paused: 'Tauolla' };
 const JUST_NOW_SECONDS = 600;
 const NOW_REFRESH_MS = 30000;
 const nowItem = (visual, label, url, what, service, when) => `<li>${visual}<div><span class="label meta-text">${label}</span><a class="what" href="${escapeHtml(url)}">${escapeHtml(what)}</a><span class="src"><a href="${PROFILES[service]}">${service}</a>${when ? `, ${when}` : ''}</span></div></li>`;
@@ -45,17 +47,18 @@ if (nowList) {
       items.push(nowItem(icon('Trakt' === source ? 'trakt' : 'rollekino'), 'Katsottua', watched.url, watched.title, source, fiAgo(watched.date)));
     }
     if (reading) {
-      items.push(nowItem(icon('book'), 'Luettua', reading.url, reading.title, 'Luku', reading.date && fiAgo(reading.date)));
+      const visual = 'active' === reading.state ? TURNING_PAGES : icon('book');
+      items.push(nowItem(visual, READING_LABELS[reading.state] || 'Luettua', reading.url, reading.title, 'Luku', !reading.state && reading.date && fiAgo(reading.date)));
     }
 
-    // Unchanged lists stay in place so the bars keep moving
+    // Unchanged lists stay in place so the bars and pages keep moving
     if (nowList.innerHTML !== items.join('')) {
       nowList.innerHTML = items.join('');
     }
     nowPanel.hidden = !items.length;
   }).catch(() => {});
 
-  // Live while the page is in view: the next song replaces the last one within half a minute
+  // Live while the page is in view: the next song or book replaces the last one within half a minute
   show();
   setInterval(() => 'visible' === document.visibilityState && show(), NOW_REFRESH_MS);
   document.addEventListener('visibilitychange', () => 'visible' === document.visibilityState && show());
