@@ -1,0 +1,65 @@
+/* Likes and boosts (template-parts/reactions.php) */
+.rx {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+}
+.rx-faces {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  gap: 4px;
+  list-style: none;
+}
+
+/* Three rows until asked for: a post can have a thousand faces */
+.rx-faces.is-clamped {
+  max-height: 104px;
+  overflow: hidden;
+}
+.rx-more {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--link);
+  font: inherit;
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.rx-faces a {
+  display: block;
+  position: relative;
+  border-radius: 50%;
+}
+.rx-faces img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--soft);
+  object-fit: cover;
+  transition: transform .18s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+/* A quick, springy lift on the face you point at */
+.rx-faces a:hover, .rx-faces a:focus-visible { z-index: 1; }
+.rx-faces a:hover img, .rx-faces a:focus-visible img { transform: scale(1.4); }
+@media (prefers-reduced-motion: reduce) {
+  .rx-faces img { transition: none; }
+}
+.rx-count {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  gap: 7px;
+  color: var(--ink-2);
+}
+.rx-count .ic { color: var(--accent); }
+.day .rx {
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+}
+.rx + .fedi-note { margin-top: 16px; }

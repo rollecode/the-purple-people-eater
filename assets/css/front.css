@@ -1,0 +1,563 @@
+/* Opening: a title page on the plain page ground */
+.opening {
+  display: grid;
+  justify-items: center;
+  padding: clamp(176px, 22vh, 260px) 0 clamp(168px, 20vh, 240px);
+  text-align: center;
+}
+.statement {
+  max-width: 12.5em;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(46px, 5.6vw, 88px);
+  letter-spacing: -.015em;
+  line-height: 1.02;
+}
+.statement em { color: var(--accent); }
+.imprint {
+  margin: 48px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+  letter-spacing: .02em;
+}
+.follow-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+  gap: 10px 28px;
+  font-size: 16px;
+}
+.follow-row a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration: none;
+}
+.follow-row a:hover { text-decoration: underline; }
+.posts { padding-top: 104px; }
+.posts > .wp-block-query + .wp-block-query { margin-top: 88px; }
+.card {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  min-width: 0;
+  gap: 24px;
+}
+.card-img {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-radius: 22px;
+  background: var(--soft);
+}
+@supports (corner-shape: squircle) {
+  .card-img {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+}
+.card-img a, .card-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.card-body {
+  display: grid;
+  justify-items: start;
+  align-content: start;
+  gap: 14px;
+}
+.card-body > * { margin: 0; }
+.card-title {
+  font-size: clamp(30px, 2.6vw, 38px);
+  line-height: 1.04;
+  text-wrap: balance;
+}
+.card-title a {
+  color: var(--ink);
+  text-decoration: none;
+}
+.card-title a:hover { color: var(--accent); }
+.card .excerpt {
+  max-width: 62ch;
+  color: var(--ink-2);
+  font-family: var(--body);
+  font-size: 18px;
+  line-height: 1.65;
+}
+.card .excerpt p { margin: 0; }
+
+/* The lead: the picture across the page, a headline as big as a cover's */
+.lead-badge {
+  display: inline-flex;
+  position: relative;
+  z-index: 2;
+  grid-row: 1;
+  grid-column: 6 / -1;
+  align-items: center;
+  align-self: start;
+  justify-self: end;
+  margin: 24px;
+  padding: 9px 16px 9px 12px;
+  gap: 8px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--ground) 82%, transparent);
+  color: var(--ink);
+  font: 600 15px / 1.2 var(--sans);
+  letter-spacing: normal;
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  backdrop-filter: blur(12px) saturate(1.4);
+}
+.lead-badge svg {
+  width: 17px;
+  height: 17px;
+  color: var(--accent);
+}
+
+/* Without a picture the pill sits above the headline */
+.card-lead:not(:has(.card-img)) .lead-badge {
+  position: static;
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+.card-lead {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: center;
+  gap: 32px;
+}
+
+/* Headline on the left, the picture beside it, both within one screen */
+.card-lead .card-body {
+  display: flex;
+  grid-row: 1;
+  grid-column: 1 / span 5;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+.card-lead .card-img {
+  grid-row: 1;
+  grid-column: 6 / -1;
+  align-self: start;
+  width: 100%;
+  max-height: 72vh;
+  aspect-ratio: 4 / 3;
+}
+.card-lead .card-title {
+  font-size: clamp(44px, 4.8vw, 80px);
+  line-height: .96;
+  letter-spacing: -.01em;
+}
+.card-lead .excerpt { font-size: 19px; }
+
+/* The feed, six at a time */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  gap: 88px 32px;
+  list-style: none;
+}
+.cards > li {
+  grid-column: span 4;
+  min-width: 0;
+}
+.cards > li:nth-child(6n + 1) { grid-column: 1 / -1; }
+.cards > li:nth-child(6n + 2), .cards > li:nth-child(6n + 3) { grid-column: span 6; }
+
+/* Feature: picture and headline side by side, the side changing every other time */
+.cards > li:nth-child(6n + 1) .card {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: center;
+  gap: 48px;
+}
+.cards > li:nth-child(12n + 7) .card-img { order: 2; }
+.cards > li:nth-child(6n + 1) .card-img { aspect-ratio: 5 / 4; }
+.cards > li:nth-child(6n + 1) .card-title {
+  font-size: clamp(44px, 4.6vw, 72px);
+  line-height: .98;
+}
+.cards > li:nth-child(6n + 1) .excerpt { font-size: 20px; }
+.cards > li:nth-child(6n + 2) .card-img, .cards > li:nth-child(6n + 3) .card-img {
+  aspect-ratio: 3 / 2;
+}
+.cards > li:nth-child(6n + 2) .card-title, .cards > li:nth-child(6n + 3) .card-title {
+  font-size: clamp(36px, 3.4vw, 50px);
+  line-height: 1;
+}
+.cards > li:nth-child(6n + 4) .excerpt,
+.cards > li:nth-child(6n + 5) .excerpt,
+.cards > li:nth-child(6n + 6) .excerpt {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+/* Without a picture the headline becomes the picture */
+.card:not(:has(.card-img)) {
+  justify-content: center;
+  padding: clamp(32px, 4vw, 64px);
+  border-radius: 22px;
+  background: var(--tint);
+}
+@supports (corner-shape: squircle) {
+  .card:not(:has(.card-img)) {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+}
+.cards > li:nth-child(6n + 1) .card:not(:has(.card-img)) {
+  display: flex;
+  min-height: 420px;
+}
+.card:not(:has(.card-img)) .card-title {
+  font-size: clamp(38px, 3.6vw, 56px);
+  font-style: italic;
+  line-height: 1;
+}
+.cards > li:nth-child(6n + 1) .card:not(:has(.card-img)) .card-title {
+  max-width: 18ch;
+  font-size: clamp(52px, 6vw, 96px);
+  line-height: .96;
+}
+.card-lead:not(:has(.card-img)) .card-title { font-style: italic; }
+
+/* Lataa lisää: the link to older texts, turned into a button by the script */
+.loadmore {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin-top: 88px;
+  gap: 12px 20px;
+}
+.loadmore .wp-block-query-pagination-next {
+  display: inline-flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 26px;
+  gap: 10px;
+  border-radius: 999px;
+  background: var(--field);
+  box-shadow: inset 0 0 0 1px var(--rule-strong);
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.loadmore .wp-block-query-pagination-next:hover {
+  background: var(--soft);
+  box-shadow: inset 0 0 0 1px var(--field-line);
+}
+.loadmore [aria-busy="true"] {
+  cursor: progress;
+  opacity: .6;
+}
+
+/* Where the reader left off (js/modules/reading.js, from localStorage) */
+.ribbon {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  right: 28px;
+  width: 30px;
+  height: 50px;
+  background: var(--lavender);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+}
+.resume-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.resume-chip::before {
+  width: 10px;
+  height: 16px;
+  background: var(--deep);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%);
+  content: "";
+}
+.resume-chip:hover { text-decoration: underline; }
+
+/* Most read and "Nyt" */
+.duo {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: start;
+  padding-block: 96px 24px;
+  gap: clamp(28px, 4vw, 64px);
+}
+.chart {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chart li {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 88px;
+  padding: 16px 0;
+  gap: 20px;
+  border-bottom: 1px solid var(--rule);
+}
+.chart .pos {
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 52px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-align: center;
+  transform: translateY(-.04em);
+}
+.chart a {
+  color: inherit;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-decoration: none;
+}
+.chart a:hover { text-decoration: underline; }
+.chart .reads {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.now {
+  padding: 28px 30px;
+  border-radius: 4px;
+  background: var(--tint);
+}
+.now[hidden] { display: none; }
+.now h2 {
+  margin-bottom: 4px;
+  font-size: 44px;
+}
+.now ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.now li {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  align-items: start;
+  padding: 16px 0;
+  gap: 14px;
+}
+.now li > .ic {
+  width: 40px;
+  height: 40px;
+  padding: 9px;
+  border-radius: 50%;
+  background: var(--soft);
+  color: var(--accent);
+}
+
+/* Bars in the icon's place while something is playing */
+.now li > .eq {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 11px;
+  gap: 3px;
+  border-radius: 50%;
+  background: var(--soft);
+}
+.eq i {
+  flex: none;
+  width: 3px;
+  height: 100%;
+  border-radius: 1px;
+  background: var(--accent);
+  transform: scaleY(.55);
+  transform-origin: bottom;
+}
+.eq i:nth-child(2) { transform: scaleY(.9); }
+.eq i:nth-child(3) { transform: scaleY(.4); }
+.eq i:nth-child(4) { transform: scaleY(.7); }
+@media (prefers-reduced-motion: no-preference) {
+  .eq i { animation: eq-bar .7s ease-in-out infinite alternate; }
+  .eq i:nth-child(2) {
+    animation-duration: .5s;
+    animation-delay: -.2s;
+  }
+  .eq i:nth-child(3) {
+    animation-duration: .85s;
+    animation-delay: -.4s;
+  }
+  .eq i:nth-child(4) {
+    animation-duration: .6s;
+    animation-delay: -.1s;
+  }
+}
+@keyframes eq-bar {
+  from { transform: scaleY(.2); }
+  to { transform: scaleY(1); }
+}
+.now .label {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--muted);
+}
+.now .what {
+  display: block;
+  color: var(--ink);
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-decoration: none;
+}
+.now .what:hover { text-decoration: underline; }
+.now .src {
+  color: var(--muted);
+  font-size: 15px;
+}
+.now .src a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: .2em;
+}
+.now .src a:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+/* Who: a few words and a loose pile of photos */
+.who {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  align-items: center;
+  padding-block: 96px 120px;
+  gap: clamp(32px, 6vw, 96px);
+}
+.who h2 {
+  margin-bottom: 20px;
+  font-size: clamp(48px, 4.8vw, 76px);
+}
+.who-text p {
+  max-width: 30em;
+  margin: 0 0 20px;
+  font-family: var(--body);
+  font-size: 19px;
+  line-height: 1.7;
+}
+.who-photos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  gap: 18px;
+  list-style: none;
+}
+.who-photos figure:first-child {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.who-photos figure:nth-child(1) { --tilt: -1.2deg; }
+.who-photos figure:nth-child(2) { --tilt: 1.4deg; }
+.who-photos figure:nth-child(3) { --tilt: -.9deg; }
+.who-photos figure:nth-child(4) { --tilt: -1.6deg; }
+.who-photos figure:nth-child(5) { --tilt: 1.1deg; }
+.who-photos a {
+  display: block;
+  border-radius: 22px;
+}
+
+/* Float like the pictures in the articles (content.css) */
+.who-photos img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 22px;
+  box-shadow: var(--float-shadow);
+  transform: rotate(var(--tilt));
+}
+@supports (corner-shape: squircle) {
+  .who-photos img {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .who-photos img { transition: transform .7s var(--ease), box-shadow .7s var(--ease); }
+  .who-photos a:hover img {
+    box-shadow: var(--float-shadow-hover);
+    transform: translateY(-4px) rotate(calc(var(--tilt) * .4));
+  }
+}
+@media (max-width: 1100px) {
+  .duo { grid-template-columns: 1fr; }
+  .card-lead .card-img, .card-lead .lead-badge {
+    grid-row: 1;
+    grid-column: 1 / -1;
+  }
+  .card-lead .card-body {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+  .cards > li:nth-child(6n + 4), .cards > li:nth-child(6n + 5) { grid-column: span 6; }
+  .cards > li:nth-child(6n + 6) { grid-column: 1 / -1; }
+}
+@media (max-width: 860px) {
+  .opening { padding: 136px 0 96px; }
+  .statement { font-size: 44px; }
+  .imprint { font-size: 14px; }
+  .follow-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .posts { padding-top: 72px; }
+  .cards, .card-lead { grid-template-columns: minmax(0, 1fr); }
+  .cards { gap: 64px; }
+  .posts > .wp-block-query + .wp-block-query { margin-top: 64px; }
+  .cards > li, .cards > li:nth-child(n) { grid-column: 1 / -1; }
+  .cards > li:nth-child(6n + 1) .card {
+    display: flex;
+    gap: 24px;
+  }
+  .cards > li:nth-child(12n + 7) .card-img { order: 0; }
+  .card-lead { gap: 24px; }
+  .card-lead .card-img, .card .card-img, .cards > li:nth-child(n) .card-img { aspect-ratio: 4 / 3; }
+  .card-lead .card-title { font-size: 48px; }
+  .cards > li:nth-child(n) .card-title { font-size: 34px; }
+  .cards > li:nth-child(6n + 1) .card:not(:has(.card-img)) { min-height: 0; }
+  .cards > li:nth-child(n) .card:not(:has(.card-img)) .card-title { font-size: 40px; }
+  .card .excerpt, .card-lead .excerpt, .cards > li:nth-child(n) .excerpt { font-size: 17.5px; }
+  .chart li { grid-template-columns: 44px minmax(0, 1fr); }
+  .chart .pos { font-size: 40px; }
+  .chart .reads { grid-column: 2; }
+}
+@media (max-width: 860px) {
+  .who {
+    grid-template-columns: 1fr;
+    padding-block: 64px 88px;
+  }
+  .who-text p { font-size: 18px; }
+  .who-photos { gap: 12px; }
+}
+.who-photos figure { margin: 0; }
+
+/* The opening's RSS link is in the footer too, phones keep only the handle */
+@media (max-width: 600px) {
+  .follow-row a[href$="/feed/"] { display: none; }
+}

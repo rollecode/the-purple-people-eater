@@ -1,25 +1,15 @@
-/**
- * Quote block: a hanging quotation mark and the source in Geist.
- */
 .prose .wp-block-quote {
   margin-block: 1.8em;
   padding: 0;
   border: 0;
 }
-
-.prose .wp-block-quote.is-style-large,
-.prose .wp-block-quote.is-large {
-  padding-left: 0;
-}
-
-.prose .wp-block-quote.is-style-large p,
-.prose .wp-block-quote.is-large p {
+.prose .wp-block-quote.is-style-large, .prose .wp-block-quote.is-large { padding-left: 0; }
+.prose .wp-block-quote.is-style-large p, .prose .wp-block-quote.is-large p {
   color: var(--accent);
   font-family: var(--display);
   font-size: clamp(30px, 3vw, 40px);
   line-height: 1.12;
 }
-
 .prose .wp-block-quote cite {
   display: block;
   margin-top: 14px;

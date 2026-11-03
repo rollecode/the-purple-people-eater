@@ -1,0 +1,26 @@
+.bigsearch { max-width: 720px; }
+
+/* One pill that holds its button */
+.bigsearch .wp-block-search__inside-wrapper {
+  padding: 5px;
+  gap: 6px;
+  border: 1px solid var(--field-line);
+  border-radius: 999px;
+  background: var(--field);
+}
+.bigsearch .wp-block-search__inside-wrapper:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.bigsearch input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  padding: 0 0 0 16px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--ink);
+  font-size: 18px;
+}
+.bigsearch input:focus { outline: 0; }

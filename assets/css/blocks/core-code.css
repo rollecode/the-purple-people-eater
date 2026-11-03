@@ -1,8 +1,3 @@
-/**
- * Code block: Tokyo Night in both themes. The bar is painted before the
- * highlighter adds the language and the copy button over it, so nothing moves.
- * Colours from github.com/enkia/tokyo-night-vscode-theme.
- */
 .prose .wp-block-code {
   --code-bar: 40px;
   margin-block: 1.8em;
@@ -20,7 +15,6 @@
   scrollbar-color: #3B4261 transparent;
   scrollbar-width: thin;
 }
-
 .prose .wp-block-code code {
   padding: 0;
   background: none;
@@ -28,20 +22,12 @@
   font-size: inherit;
   white-space: inherit;
 }
-
-.prose .wp-block-code ::selection {
-  background: #515C7E80;
-}
-
+.prose .wp-block-code ::selection { background: #515C7E80; }
 .code-frame {
   position: relative;
   margin-block: 1.8em;
 }
-
-.code-frame > .wp-block-code {
-  margin-block: 0;
-}
-
+.code-frame > .wp-block-code { margin-block: 0; }
 .code-bar {
   display: flex;
   position: absolute;
@@ -54,7 +40,6 @@
   font-family: var(--sans);
   font-size: 13px;
 }
-
 .code-copy {
   display: inline-flex;
   align-items: center;
@@ -68,79 +53,34 @@
   font: inherit;
   cursor: pointer;
 }
-
 .code-copy:hover {
   background: #868BC415;
   color: #C0CAF5;
 }
-
 .code-copy:focus-visible {
   outline: 2px solid #3D59A1;
   outline-offset: 0;
 }
-
 @media (max-width: 600px) {
   .prose .wp-block-code {
     padding-inline: 16px;
     font-size: 13px;
   }
-
-  .code-bar {
-    padding-inline: 14px 4px;
-  }
+  .code-bar { padding-inline: 14px 4px; }
 }
 
 /* Tokens, as highlight.js names them */
-.hljs-comment,
-.hljs-quote {
+.hljs-comment, .hljs-quote {
   color: #565F89;
   font-style: italic;
 }
-
-.hljs-keyword,
-.hljs-attr,
-.hljs-tag .hljs-attr,
-.hljs-selector-attr {
-  color: #BB9AF7;
-}
-
-.hljs-string,
-.hljs-meta .hljs-string {
-  color: #9ECE6A;
-}
-
-.hljs-number,
-.hljs-literal,
-.hljs-symbol,
-.hljs-bullet {
-  color: #FF9E64;
-}
-
-.hljs-title,
-.hljs-title.function_,
-.hljs-section,
-.hljs-attribute,
-.hljs-doctag {
-  color: #7AA2F7;
-}
-
-.hljs-title.class_,
-.hljs-type,
-.hljs-built_in {
-  color: #0DB9D7;
-}
-
-.hljs-variable,
-.hljs-template-variable,
-.hljs-subst,
-.hljs-punctuation {
-  color: #C0CAF5;
-}
-
-.hljs-params {
-  color: #E0AF68;
-}
-
+.hljs-keyword, .hljs-attr, .hljs-tag .hljs-attr, .hljs-selector-attr { color: #BB9AF7; }
+.hljs-string, .hljs-meta .hljs-string { color: #9ECE6A; }
+.hljs-number, .hljs-literal, .hljs-symbol, .hljs-bullet { color: #FF9E64; }
+.hljs-title, .hljs-title.function_, .hljs-section, .hljs-attribute, .hljs-doctag { color: #7AA2F7; }
+.hljs-title.class_, .hljs-type, .hljs-built_in { color: #0DB9D7; }
+.hljs-variable, .hljs-template-variable, .hljs-subst, .hljs-punctuation { color: #C0CAF5; }
+.hljs-params { color: #E0AF68; }
 .hljs-variable.language_,
 .hljs-name,
 .hljs-selector-tag,
@@ -150,38 +90,11 @@
 .hljs-template-tag {
   color: #F7768E;
 }
-
-.hljs-tag {
-  color: #BA3C97;
-}
-
-.hljs-operator,
-.hljs-char.escape_,
-.hljs-meta {
-  color: #89DDFF;
-}
-
-.hljs-regexp {
-  color: #B4F9F8;
-}
-
-.hljs-property,
-.hljs-link {
-  color: #73DACA;
-}
-
-.hljs-addition {
-  color: #449DAB;
-}
-
-.hljs-deletion {
-  color: #914C54;
-}
-
-.hljs-emphasis {
-  font-style: italic;
-}
-
-.hljs-strong {
-  font-weight: 700;
-}
+.hljs-tag { color: #BA3C97; }
+.hljs-operator, .hljs-char.escape_, .hljs-meta { color: #89DDFF; }
+.hljs-regexp { color: #B4F9F8; }
+.hljs-property, .hljs-link { color: #73DACA; }
+.hljs-addition { color: #449DAB; }
+.hljs-deletion { color: #914C54; }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: 700; }

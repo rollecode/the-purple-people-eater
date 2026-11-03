@@ -1,23 +1,15 @@
-/**
- * Pullquote block: a line from the text in large italic serif.
- */
 .prose .wp-block-pullquote {
   margin: 2.4em -120px 2.4em 0;
   padding: 8px 0;
   border: 0;
   text-align: left;
 }
-
 .prose .wp-block-pullquote blockquote {
   margin: 0;
   padding: 0;
   border: 0;
 }
-
-.prose .wp-block-pullquote blockquote::before {
-  content: none;
-}
-
+.prose .wp-block-pullquote blockquote::before { content: none; }
 .prose .wp-block-pullquote p {
   margin: 0 0 12px;
   color: var(--accent);
@@ -26,16 +18,12 @@
   font-style: italic;
   line-height: 1.08;
 }
-
 .prose .wp-block-pullquote cite {
   color: var(--muted);
   font-family: var(--sans);
   font-size: 15px;
   font-style: normal;
 }
-
 @media (max-width: 1240px) {
-  .prose .wp-block-pullquote {
-    margin-right: 0;
-  }
+  .prose .wp-block-pullquote { margin-right: 0; }
 }

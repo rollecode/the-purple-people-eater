@@ -1,7 +1,1 @@
-/**
- * Heading block: headings keep the prose rhythm; anchors leave room for
- * the top of the screen.
- */
-.prose .wp-block-heading {
-  scroll-margin-top: 32px;
-}
+.prose .wp-block-heading { scroll-margin-top: 32px; }

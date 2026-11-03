@@ -1,0 +1,40 @@
+.page-hero { padding: clamp(104px, 14vh, 168px) var(--pad) 56px; }
+.page-hero .inner {
+  width: min(100%, var(--wrap));
+  margin: 0 auto;
+}
+.page-hero h1 {
+  max-width: 12em;
+  font-size: clamp(56px, 8vw, 132px);
+  letter-spacing: -.02em;
+  line-height: .92;
+}
+.page-hero h1 :is(em, i) { color: var(--accent); }
+.page-hero .intro {
+  max-width: 36em;
+  margin: 32px 0 0;
+  color: var(--ink-2);
+  font-family: var(--body);
+  font-size: 21px;
+  line-height: 1.6;
+}
+.page-body { padding-top: 40px; }
+:is(.page-template-template-no-title, .page-template-template-info) .page-body {
+  padding-top: 24px;
+}
+
+/* Pages that open with their own heading in the content */
+.page-body .prose > h1:first-child,
+:is(.page-template-template-no-title, .page-template-template-info) .page-body .prose > :first-child > h2:first-child {
+  margin: clamp(64px, 10vh, 120px) 0 .5em;
+  font-size: clamp(56px, 8vw, 104px);
+  letter-spacing: -.02em;
+  line-height: .92;
+}
+article:has(.prose h1) > .page-hero {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}

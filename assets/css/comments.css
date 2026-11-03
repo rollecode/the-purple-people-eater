@@ -1,0 +1,380 @@
+.comments {
+  margin-top: 88px;
+  padding-block: 72px 88px;
+  background: color-mix(in oklab, var(--ground) 70%, var(--soft));
+}
+.comments-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 12px;
+}
+.comments-head h2 { font-size: clamp(40px, 3.6vw, 56px); }
+.count-line {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 16px;
+  white-space: nowrap;
+}
+.count-part {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.count-part + .count-part::before {
+  margin-right: 3px;
+  content: "·";
+}
+
+/* On a phone the icons say where from, so the line never wraps */
+@media (max-width: 600px) {
+  .count-line {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .count-from {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+}
+.comments-empty {
+  margin: 0 0 28px;
+  color: var(--ink-2);
+}
+.comment-list, .comment-list .comment > ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Likes and boosts are the faces under the text, not comments */
+.comment-list > :is(li.like, li.repost) { display: none; }
+.comment-list > li { margin-bottom: 20px; }
+.cmt {
+  padding: 22px 24px 16px;
+  border-radius: 12px;
+  background: var(--surface);
+}
+.cmt.is-author { background: var(--soft); }
+.cmt.is-author .when { color: var(--ink-2); }
+.cmt-head {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+.cmt-head p { margin: 0; }
+.av {
+  display: inline-grid;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 15px;
+  background: var(--soft);
+  font-weight: 700;
+  object-fit: cover;
+  place-items: center;
+}
+.av1 { background: color-mix(in oklab, #9DBF86 30%, var(--surface)); }
+.av2 { background: color-mix(in oklab, #D48FB4 30%, var(--surface)); }
+.av3 { background: color-mix(in oklab, #86AFC4 30%, var(--surface)); }
+.av4 { background: color-mix(in oklab, #D2B57A 30%, var(--surface)); }
+.cmt .name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 10px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.cmt .handle, .cmt .when a {
+  display: inline-block;
+  min-height: 24px;
+}
+.cmt .handle {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 14.5px;
+  font-weight: 400;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+.cmt .handle:hover { text-decoration: underline; }
+.role {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--deep);
+  color: var(--on-deep);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+.cmt .when {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.cmt .when a {
+  color: inherit;
+  text-decoration: none;
+}
+.cmt .when a:hover { text-decoration: underline; }
+.via {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent);
+}
+.via .ic {
+  width: 15px;
+  height: 15px;
+}
+.awaiting {
+  margin: 0 0 10px;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+.cmt-body {
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 18px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.cmt-body p { margin-bottom: .7em; }
+.cmt-body.is-clamped {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 10;
+}
+.expand {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px 0 2px;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  background: none;
+  color: var(--ink-2);
+}
+.expand .ic { transition: transform .3s var(--ease); }
+.expand[aria-expanded="true"] .ic { transform: rotate(180deg); }
+.cmt-actions {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+  gap: 20px;
+  font-size: 15px;
+}
+.comment-reply-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 0;
+  gap: 6px;
+  border: 0;
+  background: none;
+  color: var(--deep);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+}
+.comment-reply-link:hover { text-decoration: underline; }
+
+/* The ActivityPub remote reply dialog, in the theme's colours */
+.activitypub-modal__overlay {
+  --activitypub-modal-background-color: var(--surface);
+  --activitypub-modal-border-color: var(--rule-strong);
+  --activitypub-modal-text-color: var(--ink);
+}
+.activitypub-modal__frame {
+  color: var(--ink);
+  font-family: var(--sans);
+}
+.activitypub-modal__frame .activitypub-modal__close { color: var(--ink); }
+.activitypub-modal__frame input:not([type="checkbox"]) {
+  border: 1px solid var(--field-line);
+  border-radius: 8px;
+  background: var(--field);
+  color: var(--ink);
+}
+.activitypub-modal__frame .wp-element-button:not(.activitypub-modal__close) {
+  border: 0;
+  border-radius: 999px;
+  background: var(--deep);
+  color: var(--on-deep);
+  font-weight: 600;
+}
+
+/* Replies hang from a thin line */
+.comment-list .comment > ol {
+  display: grid;
+  position: relative;
+  margin: 12px 0 0 20px;
+  padding-left: 36px;
+  gap: 12px;
+}
+.comment-list .comment > ol > .comment { position: relative; }
+
+/* Each reply draws its own elbow, and the line on to the next reply, so
+ the thread line ends at the last reply */
+.comment-list .comment > ol > .comment::before {
+  position: absolute;
+  top: -12px;
+  left: -36px;
+  width: 28px;
+  height: 46px;
+  border-bottom: 1px solid var(--rule-strong);
+  border-left: 1px solid var(--rule-strong);
+  border-bottom-left-radius: 10px;
+  content: "";
+}
+.comment-list .comment > ol > .comment:not(:last-child)::after {
+  position: absolute;
+  top: 0;
+  bottom: -12px;
+  left: -36px;
+  border-left: 1px solid var(--rule-strong);
+  content: "";
+}
+
+/* Two ways to answer */
+.cf-fedi {
+  margin-top: 56px;
+  padding: 40px 44px 44px;
+  border-radius: 8px;
+  background: var(--surface);
+}
+.cf-fedi h3 {
+  margin-bottom: 10px;
+  font-size: 32px;
+}
+.cf-fedi .hint {
+  margin: 0 0 24px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.steps {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  gap: 26px;
+  list-style: none;
+}
+.steps li {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+}
+.step-n {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--soft);
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  place-items: center;
+}
+.steps b {
+  display: block;
+  margin: 4px 0 8px;
+  font-size: 17px;
+  line-height: 1.4;
+}
+.steps p {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.cf-shares {
+  margin-top: 30px;
+  padding-top: 26px;
+  border-top: 1px solid var(--rule);
+}
+.cf-shares b {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 17px;
+  line-height: 1.4;
+}
+.cf-shares p {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* The address and its copy button as one field */
+.copyfield {
+  display: flex;
+  align-items: center;
+  padding: 5px 5px 5px 16px;
+  gap: 10px;
+  border: 1px solid var(--field-line);
+  border-radius: 999px;
+  background: var(--field);
+}
+.copyfield:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Two classes, so wp-admin's input[readonly] grey loses in the editor */
+.copyfield .copybox {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 13.5px;
+}
+.copyfield .btn {
+  flex: none;
+  min-height: 40px;
+  padding: 0 16px;
+  font-size: 15px;
+}
+@media (max-width: 860px) {
+  .comments { padding-block: 56px 72px; }
+  .cmt { padding: 18px 18px 12px; }
+  .cmt-body { font-size: 17.5px; }
+  .comment-list .comment > ol {
+    margin-left: 8px;
+    padding-left: 22px;
+  }
+  .comment-list .comment > ol > .comment::before {
+    left: -22px;
+    width: 16px;
+  }
+  .comment-list .comment > ol > .comment:not(:last-child)::after { left: -22px; }
+  .cf-fedi { padding: 30px 22px 34px; }
+}
+.wp-block-comments ~ .comments-empty { display: none; }
+.cmt .name a:not(.handle) {
+  color: inherit;
+  text-decoration: none;
+}

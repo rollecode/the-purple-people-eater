@@ -1,6 +1,3 @@
-/**
- * Columns block: Geist inside, so narrow columns stay readable.
- */
 .prose .wp-block-columns {
   display: grid;
   grid-auto-columns: minmax(0, 1fr);
@@ -8,18 +5,11 @@
   margin-block: 2em;
   gap: 32px;
 }
-
-.prose .wp-block-column > :first-child {
-  margin-top: 0;
-}
-
+.prose .wp-block-column > :first-child { margin-top: 0; }
 .prose .wp-block-column :is(p, li) {
   font-family: var(--sans);
   font-size: 17px;
 }
-
 @media (max-width: 860px) {
-  .prose .wp-block-columns {
-    grid-auto-flow: row;
-  }
+  .prose .wp-block-columns { grid-auto-flow: row; }
 }

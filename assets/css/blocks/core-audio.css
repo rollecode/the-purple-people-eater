@@ -1,14 +1,5 @@
-/**
- * Audio block.
- */
-.prose .wp-block-audio {
-  margin-block: 2em;
-}
-
-.prose .wp-block-audio audio {
-  width: 100%;
-}
-
+.prose .wp-block-audio { margin-block: 2em; }
+.prose .wp-block-audio audio { width: 100%; }
 .prose .wp-block-audio figcaption {
   margin-top: 8px;
   color: var(--muted);

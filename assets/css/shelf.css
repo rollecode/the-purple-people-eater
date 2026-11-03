@@ -1,0 +1,95 @@
+.shelf-wrap { padding-bottom: 8px; }
+.shelf-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 0 0 18px;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 14.5px;
+}
+.shelf-meta h2 {
+  font-family: var(--sans);
+  font-size: inherit;
+  letter-spacing: 0;
+  line-height: inherit;
+}
+.shelf-meta a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.shelf-meta a:hover { text-decoration: underline; }
+.shelf {
+  display: flex;
+  align-items: flex-end;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  list-style: none;
+  scrollbar-width: none;
+
+  /* Spine colours: lavender, deep, soft */
+  --spine-l: var(--lavender);
+  --spine-l-ink: light-dark(var(--ink), var(--on-deep));
+  --spine-d: light-dark(var(--deep), color-mix(in oklab, var(--deep) 30%, var(--ground)));
+  --spine-d-ink: light-dark(var(--on-deep), var(--ink));
+}
+.shelf::-webkit-scrollbar { display: none; }
+.vol {
+  flex: var(--w) 1 0;
+  min-width: 34px;
+}
+.vol a {
+  display: grid;
+  color: var(--muted);
+  text-decoration: none;
+}
+.vol .sp {
+  display: block;
+  position: relative;
+  height: var(--h);
+  margin: 0 2px;
+  border-radius: 3px 3px 0 0;
+  background: var(--c);
+  color: var(--t);
+  transition: transform .45s var(--ease);
+}
+.vol .sp.L {
+  --c: var(--spine-l);
+  --t: var(--spine-l-ink);
+}
+.vol .sp.D {
+  --c: var(--spine-d);
+  --t: var(--spine-d-ink);
+}
+.vol .sp.S {
+  --c: var(--soft);
+  --t: var(--ink);
+}
+.vol .n {
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  left: 0;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-align: center;
+}
+.vol .y {
+  display: block;
+  margin-top: 8px;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+.vol a:hover .sp, .vol a:focus-visible .sp { transform: translateY(-8px); }
+.vol a:hover .y, .vol a:focus-visible .y {
+  color: var(--ink);
+  font-weight: 600;
+}
+@media (max-width: 860px) {
+  .vol { min-width: 38px; }
+}

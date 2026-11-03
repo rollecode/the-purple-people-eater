@@ -1,17 +1,11 @@
-/**
- * List block styles: a todo list with done items, and lavender shades from
- * strongest to faintest for rankings (no-bullets.css has the third style).
- */
 .prose .is-style-todo-list {
   padding-left: 0;
   list-style: none;
 }
-
 .prose .is-style-todo-list li {
   position: relative;
   padding-left: 1.7em;
 }
-
 .prose .is-style-todo-list li::before {
   position: absolute;
   top: .3em;
@@ -22,43 +16,33 @@
   border-radius: 4px;
   content: "";
 }
-
 .prose .is-style-todo-list li.is-style-checked::before {
   border-color: var(--deep);
   background: var(--deep) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 80% no-repeat;
 }
-
 .prose :is(.is-style-green-shades, .is-style-red-shades) {
   overflow: hidden;
   padding: 0;
   border-radius: 6px;
   list-style: none;
 }
-
 .prose :is(.is-style-green-shades, .is-style-red-shades) li {
   margin: 0;
   padding: .45em 1em;
   font-family: var(--sans);
   font-size: 16px;
 }
-
 .prose .is-style-green-shades li {
   background: color-mix(in oklab, var(--lavender) calc(100% - var(--i, 0) * 18%), var(--surface));
 }
-
 .prose .is-style-red-shades li {
   background: color-mix(in oklab, #E5B8C6 calc(100% - var(--i, 0) * 18%), var(--surface));
   color: #211B27;
 }
-
 .prose :is(.is-style-green-shades, .is-style-red-shades) li:nth-child(2) { --i: 1; }
 .prose :is(.is-style-green-shades, .is-style-red-shades) li:nth-child(3) { --i: 2; }
 .prose :is(.is-style-green-shades, .is-style-red-shades) li:nth-child(4) { --i: 3; }
 .prose :is(.is-style-green-shades, .is-style-red-shades) li:nth-child(n+5) { --i: 4; }
-
-/**
- * "Ilman listamerkkejä" list style.
- */
 .prose .is-style-no-bullets {
   padding-left: 0;
   list-style: none;

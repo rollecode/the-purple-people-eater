@@ -1,13 +1,9 @@
-/**
- * Buttons block: the site's own buttons.
- */
 .prose .wp-block-buttons {
   display: flex;
   flex-wrap: wrap;
   margin-block: 1.8em;
   gap: 12px;
 }
-
 .prose .wp-block-button__link {
   display: inline-flex;
   align-items: center;
@@ -21,11 +17,9 @@
   font-weight: 600;
   text-decoration: none;
 }
-
 .prose .wp-block-button__link:hover {
   background: color-mix(in oklab, var(--deep) 86%, var(--ink));
 }
-
 .prose .is-style-outline .wp-block-button__link {
   background: var(--tint);
   color: var(--ink);

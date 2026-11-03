@@ -1,14 +1,8 @@
-/**
- * Ads: Rolle's own company ad between paragraphs (js/modules/own-ad.js) and the
- * paid slot on the front page (template-parts/ads.php).
- */
-
 /* Dude's own colours and the aurora from dude.fi, dark in both themes */
 .ownad-unblockable {
   --dude-midnight: #1c1e26;
   --dude-mint: #7effe1;
   --dude-ink: #fff;
-
   display: grid;
   position: relative;
   isolation: isolate;
@@ -16,14 +10,7 @@
   margin: 2.6em 0;
   padding: clamp(36px, 6vw, 64px) clamp(22px, 6vw, 64px) 28px;
   border-radius: 14px;
-  background:
-    radial-gradient(ellipse 68% 60% at 50% 52%, rgb(28 30 38 / .7) 45%, transparent),
-    linear-gradient(to top, rgb(28 30 38 / .6), transparent 24%),
-    radial-gradient(ellipse 40% 50% at 100% 30%, rgb(0 240 160 / .3), transparent 70%),
-    radial-gradient(ellipse 70% 50% at 85% 25%, rgb(8 200 148 / .5), transparent 70%),
-    radial-gradient(ellipse 60% 40% at 65% 55%, rgb(26 106 138 / .5), transparent 70%),
-    radial-gradient(ellipse 70% 60% at 35% 45%, rgb(19 29 47 / .55), transparent 80%),
-    linear-gradient(160deg, #1c1e26 0%, #1c2535 30%, #1a3a50 55%, #1a5a6a 85%, #08a878 118%);
+  background: radial-gradient(ellipse 68% 60% at 50% 52%, rgb(28 30 38 / .7) 45%, transparent), linear-gradient(to top, rgb(28 30 38 / .6), transparent 24%), radial-gradient(ellipse 40% 50% at 100% 30%, rgb(0 240 160 / .3), transparent 70%), radial-gradient(ellipse 70% 50% at 85% 25%, rgb(8 200 148 / .5), transparent 70%), radial-gradient(ellipse 60% 40% at 65% 55%, rgb(26 106 138 / .5), transparent 70%), radial-gradient(ellipse 70% 60% at 35% 45%, rgb(19 29 47 / .55), transparent 80%), linear-gradient(160deg, #1c1e26 0%, #1c2535 30%, #1a3a50 55%, #1a5a6a 85%, #08a878 118%);
   background-size: 100% 100%, 100% 100%, 180% 180%, 180% 180%, 180% 180%, 180% 180%, 100% 100%;
   color: var(--dude-ink);
   font-family: var(--sans);
@@ -45,20 +32,12 @@
   mix-blend-mode: overlay;
   opacity: .4;
 }
-
-.ownad-unblockable.closing {
-  opacity: 0;
-}
-
-.ownad-unblockable.dismissed {
-  display: none;
-}
-
+.ownad-unblockable.closing { opacity: 0; }
+.ownad-unblockable.dismissed { display: none; }
 .ownad-unblockable .global-link {
   position: absolute;
   inset: 0;
 }
-
 .ownad-unblockable .ownad-note {
   margin: 0 0 clamp(28px, 4vw, 40px);
   color: var(--dude-ink);
@@ -66,14 +45,12 @@
   font-size: 14px;
   line-height: 1.5;
 }
-
 .ownad-logo {
   width: clamp(150px, 30%, 220px);
   height: auto;
   margin-bottom: clamp(24px, 3.4vw, 34px);
   fill: currentColor;
 }
-
 .ownad-unblockable .ownad-title {
   max-width: 18em;
   margin: 0 0 14px;
@@ -85,7 +62,6 @@
   line-height: 1.12;
   text-wrap: balance;
 }
-
 .ownad-unblockable .ownad-text {
   max-width: 34em;
   margin: 0;
@@ -94,7 +70,6 @@
   font-size: 16.5px;
   line-height: 1.6;
 }
-
 .ownad-unblockable .ownad-facts {
   display: flex;
   flex-wrap: wrap;
@@ -104,7 +79,6 @@
   gap: 8px;
   list-style: none;
 }
-
 .ownad-unblockable .ownad-facts li {
   margin: 0;
   padding: 5px 13px;
@@ -117,17 +91,11 @@
   font-weight: 500;
   line-height: 1.4;
 }
-
-.ownad-unblockable .ownad-facts li::before {
-  display: none;
-}
-
-.ownad-unblockable .ownad-cta,
-.hide-forever-ad {
+.ownad-unblockable .ownad-facts li::before { display: none; }
+.ownad-unblockable .ownad-cta, .hide-forever-ad {
   position: relative;
   z-index: 1;
 }
-
 .ownad-unblockable .ownad-cta {
   display: inline-flex;
   align-items: center;
@@ -143,24 +111,13 @@
   transition: transform .3s var(--ease);
   animation: ownad-pulse 2.4s var(--ease) infinite;
 }
-
-.ownad-unblockable .ownad-cta:hover {
-  transform: translateY(-2px);
-}
-
-.ownad-unblockable .ownad-cta .ic {
-  transition: transform .3s var(--ease);
-}
-
-.ownad-unblockable .ownad-cta:hover .ic {
-  transform: translateX(3px);
-}
-
+.ownad-unblockable .ownad-cta:hover { transform: translateY(-2px); }
+.ownad-unblockable .ownad-cta .ic { transition: transform .3s var(--ease); }
+.ownad-unblockable .ownad-cta:hover .ic { transform: translateX(3px); }
 .ownad-unblockable :focus-visible {
   outline: 3px solid var(--dude-mint);
   outline-offset: 3px;
 }
-
 .hide-forever-ad {
   display: inline-flex;
   align-items: center;
@@ -174,12 +131,10 @@
   font-size: 14px;
   cursor: pointer;
 }
-
 .hide-forever-ad:hover {
   color: var(--dude-ink);
   text-decoration: underline;
 }
-
 .hide-forever-ad .ic {
   width: 14px;
   height: 14px;
@@ -187,50 +142,21 @@
 
 /* The aurora drifts; the scrim and the base gradient stay put */
 @keyframes ownad-aurora {
-  from {
-    background-position: 0 0, 0 0, 100% 0, 100% 0, 100% 0, 100% 0, 0 0;
-  }
-
-  to {
-    background-position: 0 0, 0 0, 0 100%, 20% 100%, 0 80%, 30% 100%, 0 0;
-  }
+  from { background-position: 0 0, 0 0, 100% 0, 100% 0, 100% 0, 100% 0, 0 0; }
+  to { background-position: 0 0, 0 0, 0 100%, 20% 100%, 0 80%, 30% 100%, 0 0; }
 }
-
 @keyframes ownad-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgb(126 255 225 / .55);
-  }
-
-  70%,
-  100% {
-    box-shadow: 0 0 0 16px rgb(126 255 225 / 0);
-  }
+  0% { box-shadow: 0 0 0 0 rgb(126 255 225 / .55); }
+  70%, 100% { box-shadow: 0 0 0 16px rgb(126 255 225 / 0); }
 }
-
 @keyframes ownad-noise {
-  0% {
-    background-position: 0 0;
-  }
-
-  25% {
-    background-position: -173px -247px;
-  }
-
-  50% {
-    background-position: -311px -89px;
-  }
-
-  75% {
-    background-position: -67px -359px;
-  }
+  0% { background-position: 0 0; }
+  25% { background-position: -173px -247px; }
+  50% { background-position: -311px -89px; }
+  75% { background-position: -67px -359px; }
 }
-
 @media (prefers-reduced-motion: reduce) {
-  .ownad-unblockable,
-  .ownad-unblockable::before,
-  .ownad-unblockable .ownad-cta {
-    animation: none;
-  }
+  .ownad-unblockable, .ownad-unblockable::before, .ownad-unblockable .ownad-cta { animation: none; }
 }
 
 /* Paid slot on the front page */

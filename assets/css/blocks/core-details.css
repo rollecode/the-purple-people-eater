@@ -1,22 +1,12 @@
-/**
- * Details block: a question that opens to its answer.
- */
 .prose .wp-block-details {
   margin-block: 1.4em;
   border-bottom: 1px solid var(--rule);
 }
-
 .prose .wp-block-details summary {
   padding: 14px 0;
   cursor: pointer;
   font-family: var(--sans);
   font-weight: 700;
 }
-
-.prose .wp-block-details summary::marker {
-  color: var(--accent);
-}
-
-.prose .wp-block-details[open] > :last-child {
-  padding-bottom: 16px;
-}
+.prose .wp-block-details summary::marker { color: var(--accent); }
+.prose .wp-block-details[open] > :last-child { padding-bottom: 16px; }

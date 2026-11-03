@@ -1,6 +1,3 @@
-/**
- * Separator block: short by default, full width or three dots.
- */
 .prose .wp-block-separator {
   width: 120px;
   margin: 2.4em auto;
@@ -8,11 +5,7 @@
   border-top: 1px solid var(--rule-strong);
   opacity: 1;
 }
-
-.prose .wp-block-separator.is-style-wide {
-  width: 100%;
-}
-
+.prose .wp-block-separator.is-style-wide { width: 100%; }
 .prose .wp-block-separator.is-style-dots {
   width: auto;
   height: 20px;
@@ -20,7 +13,6 @@
   background: none;
   text-align: center;
 }
-
 .prose .wp-block-separator.is-style-dots::before {
   display: inline-block;
   width: 66px;

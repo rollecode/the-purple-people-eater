@@ -1,0 +1,124 @@
+.results-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 56px 0 32px;
+  gap: 20px;
+}
+.results-head h1 {
+  font-size: clamp(52px, 6.4vw, 96px);
+  line-height: .95;
+}
+.results-head h1 em, .results-head h1 span { color: var(--accent); }
+.results-head .intro {
+  margin: 0;
+  color: var(--muted);
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.filters a {
+  display: inline-flex;
+  align-items: baseline;
+  padding: 6px 14px;
+  gap: 8px;
+  border-radius: 999px;
+  background: var(--field);
+  box-shadow: inset 0 0 0 1px var(--rule-strong);
+  color: var(--ink);
+  font-size: 15px;
+  text-decoration: none;
+}
+.filters a:hover { background: var(--soft); }
+.filters a[aria-current] {
+  background: var(--ink);
+  color: var(--ground);
+}
+.filters .meta-text { font-size: 12.5px; }
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Diary days in a listing carry the diary's mark */
+.diary-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Text first; the image, when there is one, sits on the right */
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  padding: 28px 0;
+  gap: 32px;
+  border-bottom: 1px solid var(--rule);
+}
+.row:has(.row-thumb) { grid-template-columns: minmax(0, 1fr) 200px; }
+.row-thumb {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-radius: 4px;
+  background: var(--soft);
+}
+.row-thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.row-title {
+  margin: 6px 0 10px;
+  font-size: clamp(28px, 2.2vw, 32px);
+  line-height: 1.08;
+}
+.row-title a {
+  color: inherit;
+  text-decoration: none;
+}
+.row-title a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+.row .excerpt {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--ink-2);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.6;
+}
+.nothing { padding: 40px 0; }
+.nothing h2 {
+  margin-bottom: 12px;
+  font-size: 40px;
+}
+.nothing p {
+  color: var(--ink-2);
+  font-family: var(--body);
+  font-size: 19px;
+}
+@media (max-width: 860px) {
+  .row {
+    padding: 22px 0;
+    gap: 16px;
+  }
+  .row:has(.row-thumb) { grid-template-columns: minmax(0, 1fr) 88px; }
+  .row-thumb { aspect-ratio: 1; }
+  .row .excerpt {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 16.5px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+}

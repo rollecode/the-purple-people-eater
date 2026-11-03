@@ -1,19 +1,11 @@
-/**
- * Paragraph block: lead sizes from the editor's font size picker.
- */
 .prose p.has-large-font-size {
   font-size: 24px;
   line-height: 1.5;
 }
-
 .prose p.has-small-font-size {
   font-family: var(--sans);
   font-size: 16px;
 }
-
-/**
- * "Laatikko" paragraph style: a note set apart on a lavender tint.
- */
 .prose .is-style-boxed {
   padding: 18px 22px;
   border-radius: 8px;

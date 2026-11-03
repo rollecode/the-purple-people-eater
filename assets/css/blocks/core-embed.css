@@ -1,27 +1,15 @@
-/**
- * Embed block: videos fill the column at 16:9, social posts keep their own
- * size, captions as everywhere else.
- */
-.prose .wp-block-embed {
-  margin-block: 2em;
-}
-
-.prose .wp-block-embed__wrapper {
-  position: relative;
-}
-
+.prose .wp-block-embed { margin-block: 2em; }
+.prose .wp-block-embed__wrapper { position: relative; }
 .prose .wp-embed-aspect-16-9 .wp-block-embed__wrapper iframe,
 .prose .is-type-video .wp-block-embed__wrapper iframe {
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
 }
-
 .prose .wp-block-embed.is-type-rich iframe {
   max-width: 100%;
   margin-inline: auto;
 }
-
 .prose .wp-block-embed figcaption {
   margin-top: 8px;
   color: var(--muted);

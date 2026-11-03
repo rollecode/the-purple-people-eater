@@ -11,12 +11,46 @@ namespace The_Purple_People_Eater;
 const MODULES_ON_EVERY_PAGE = [ 'lib', 'theme-switch', 'expand', 'nav-current', 'logo-rain', 'phone-menu', 'site-head', 'search' ];
 const PRELOADED_FONTS = [ 'InstrumentSerif-latin', 'Geist-latin', 'Inter-Bold-latin', 'AtkinsonHyperlegibleNext-latin' ];
 
+// assets/css/<name>.css in cascade order, each loaded only on the templates it styles; block styles are in assets/css/blocks
+const STYLES = [
+  'site'      => [ '*' ],
+  'article'   => [ 'single' ],
+  'rain'      => [ '*' ],
+  'search'    => [ '*' ],
+  'shelf'     => [ 'front-page', 'page-archive' ],
+  'front'     => [ 'front-page' ],
+  'picks'     => [ 'front-page', '404' ],
+  'listings'  => [ 'index', 'archive', 'search' ],
+  'arkisto'   => [ 'page-archive' ],
+  'all-posts' => [ 'page-all' ],
+  'cover'     => [ 'single', 'archive-diary' ],
+  'comments'  => [ 'single', 'single-diary' ],
+  'reactions' => [ 'single', 'single-diary', 'archive-diary' ],
+  'diary'     => [ 'archive-diary', 'single-diary' ],
+  'heatmap'   => [ 'archive-diary' ],
+  'pages'     => [ 'page', 'template-info', 'template-no-title', 'page-all', 'page-archive' ],
+  'masthead'  => [ 'template-info' ],
+  'notfound'  => [ '404' ],
+];
+
+// Only needed once someone opens search or hovers the logo, so they never hold up the page
+const ASYNC_STYLES = [ 'rain', 'search' ];
+
 add_action( 'after_setup_theme', function () {
-  add_editor_style( 'assets/css/site.css' );
+  add_editor_style( array_map( fn( $name ) => 'assets/css/' . $name . '.css', [ ...array_keys( STYLES ), 'editor' ] ) );
 } );
 
 add_action( 'wp_enqueue_scripts', function () {
-  wp_enqueue_style( 'site', get_theme_file_uri( 'assets/css/site.css' ), [], filemtime( get_theme_file_path( 'assets/css/site.css' ) ) );
+  $here = [ '*', explode( '//', $GLOBALS['_wp_current_template_id'] ?? '' )[1] ?? '' ];
+
+  foreach ( STYLES as $name => $where ) {
+    if ( ! array_intersect( $where, $here ) ) {
+      continue;
+    }
+
+    $file = 'assets/css/' . $name . '.css';
+    wp_enqueue_style( 'theme-' . $name, get_theme_file_uri( $file ), [], filemtime( get_theme_file_path( $file ) ), in_array( $name, ASYNC_STYLES, true ) ? 'print' : 'all' );
+  }
 
   foreach ( glob( get_theme_file_path( 'assets/js/modules/*.js' ) ) as $file ) {
     $name = basename( $file, '.js' );
@@ -33,14 +67,22 @@ add_action( 'wp_enqueue_scripts', function () {
 
   // Posts from before the block editor still carry the markup of their old themes
   if ( is_singular() && ! has_blocks( get_queried_object() ) ) {
-    wp_enqueue_style( 'legacy', get_theme_file_uri( 'assets/css/legacy.css' ), [ 'site' ], filemtime( get_theme_file_path( 'assets/css/legacy.css' ) ) );
+    wp_enqueue_style( 'legacy', get_theme_file_uri( 'assets/css/legacy.css' ), [ 'theme-site' ], filemtime( get_theme_file_path( 'assets/css/legacy.css' ) ) );
 
     // Their code blocks are plain HTML, so no core/code block loads this
     if ( str_contains( get_queried_object()->post_content, 'wp-block-code' ) ) {
-      wp_enqueue_style( 'theme-core-code', get_theme_file_uri( 'assets/css/blocks/core-code.css' ), [ 'site' ], filemtime( get_theme_file_path( 'assets/css/blocks/core-code.css' ) ) );
+      wp_enqueue_style( 'theme-core-code', get_theme_file_uri( 'assets/css/blocks/core-code.css' ), [ 'theme-site' ], filemtime( get_theme_file_path( 'assets/css/blocks/core-code.css' ) ) );
     }
   }
 } );
+
+add_filter( 'style_loader_tag', function ( $tag, $handle ) {
+  if ( in_array( substr( $handle, strlen( 'theme-' ) ), ASYNC_STYLES, true ) ) {
+    $tag = str_replace( " media='print'", " media='print' onload=\"this.media='all'\"", $tag );
+  }
+
+  return $tag;
+}, 10, 2 );
 
 // assets/css/blocks/core-quote.css styles core/quote, and only where a quote renders
 add_action( 'init', function () {
@@ -84,6 +126,15 @@ add_action( 'init', function () {
       ] );
     }
   }
+} );
+
+// theme.json can hide core's default presets but not stop printing them; no text uses them
+add_filter( 'wp_theme_json_data_default', function ( $theme_json ) {
+  $data = $theme_json->get_data();
+
+  unset( $data['settings']['color']['palette'], $data['settings']['color']['gradients'], $data['settings']['color']['duotone'], $data['settings']['typography']['fontSizes'], $data['settings']['spacing']['spacingSizes'], $data['settings']['shadow']['presets'], $data['settings']['dimensions']['aspectRatios'] );
+
+  return new \WP_Theme_JSON_Data( $data, 'default' );
 } );
 
 add_filter( 'wp_preload_resources', function ( $resources ) {

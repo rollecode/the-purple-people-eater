@@ -1,0 +1,12 @@
+/* Editor only: the block editor loads every stylesheet, visitors never load this one */
+.editor-styles-wrapper { color-scheme: dark; --wp--preset--color--ink: var(--ink); --wp--preset--color--ground: var(--ground); --wp--preset--color--surface: var(--surface); --wp--preset--color--tint: var(--tint); --wp--preset--color--lavender: var(--lavender); --wp--preset--color--accent: var(--accent); --wp--preset--color--deep: var(--deep); --wp--preset--color--muted: var(--muted); }
+.editor-styles-wrapper .site-head .bar > * { opacity: 1 !important; }
+.editor-styles-wrapper .article-head::before { opacity: 1; }
+.editor-styles-wrapper .wp-block-post-excerpt__more-link { display: none; }
+.editor-styles-wrapper :is(.meta-line, .meta, .cmt-actions) > .wp-block { margin-inline: 0; }
+/* Chrome rewraps balanced text around the editor's outline pseudo-element, so the outline goes on the block */
+:is(.rich-text.is-hovered, .rich-text.has-editable-outline)::after { content: none !important; }
+.is-outline-mode .rich-text.is-hovered:not(.is-selected) {
+  outline: 2px solid var(--wp-admin-theme-color);
+  outline-offset: -2px;
+}

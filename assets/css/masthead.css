@@ -1,0 +1,102 @@
+/* Tietoa: the editor in chief, a larger byline */
+.masthead { margin-top: clamp(64px, 10vh, 120px); }
+.masthead-title {
+  margin: 0 0 20px;
+  font-size: clamp(40px, 4vw, 56px);
+}
+.editor-card {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  align-items: start;
+  padding: 28px;
+  gap: 28px;
+  border-radius: 16px;
+  background: var(--tint);
+}
+.editor-card img {
+  width: 132px;
+  height: 132px;
+  object-fit: cover;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0C88 0 100 12 100 50S88 100 50 100 0 88 0 50 12 0 50 0Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0C88 0 100 12 100 50S88 100 50 100 0 88 0 50 12 0 50 0Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+.editor-card :is(p, ul, dl) { margin: 0; }
+.editor-role {
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+}
+.editor-name {
+  margin-top: 4px !important;
+  font-family: var(--display);
+  font-size: clamp(32px, 3.4vw, 42px);
+  line-height: 1.05;
+}
+.editor-titles {
+  margin-top: 10px !important;
+  color: var(--ink-2);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.editor-merits {
+  display: grid;
+  margin-top: 16px !important;
+  padding: 0;
+  gap: 6px;
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.45;
+  list-style: none;
+}
+.editor-merits li {
+  position: relative;
+  padding-left: 16px;
+}
+.editor-merits li::before {
+  position: absolute;
+  top: .55em;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  content: "";
+}
+.editor-contact {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px !important;
+  padding-top: 16px;
+  gap: 10px 32px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--sans);
+  font-size: 15px;
+}
+.editor-contact dt {
+  color: var(--muted);
+  font-size: 13px;
+}
+.editor-contact dd {
+  margin: 0;
+  font-weight: 600;
+}
+@media (max-width: 600px) {
+  .editor-card {
+    grid-template-columns: 84px minmax(0, 1fr);
+    padding: 20px;
+    gap: 0 18px;
+  }
+  .editor-card img {
+    width: 84px;
+    height: 84px;
+  }
+  .editor-card > .wp-block-group { display: contents; }
+  .editor-card > figure {
+    grid-row: span 2;
+    align-self: center;
+  }
+  .editor-role { align-self: end; }
+  .editor-titles, .editor-merits, .editor-contact { grid-column: 1 / -1; }
+}

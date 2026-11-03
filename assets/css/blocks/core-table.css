@@ -1,38 +1,21 @@
-/**
- * Table block: scrolls sideways on its own when it does not fit; the
- * striped style tints every other row.
- */
 .prose .wp-block-table {
   margin-block: 2em;
   overflow-x: auto;
 }
-
-.prose .wp-block-table table {
-  margin: 0;
-}
-
+.prose .wp-block-table table { margin: 0; }
 .prose .wp-block-table :is(td, th) {
   border: 0;
   border-bottom: 1px solid var(--rule);
 }
-
-.prose .wp-block-table thead {
-  border-bottom: 1px solid var(--rule-strong);
-}
-
-.prose .wp-block-table.is-style-stripes {
-  border: 0;
-}
-
+.prose .wp-block-table thead { border-bottom: 1px solid var(--rule-strong); }
+.prose .wp-block-table.is-style-stripes { border: 0; }
 .prose .wp-block-table.is-style-stripes tbody tr:nth-child(odd) {
   background: color-mix(in oklab, var(--soft) 55%, transparent);
 }
-
 .prose .wp-block-table.is-style-stripes :is(td, th) {
   padding-left: 12px;
   border: 0;
 }
-
 .prose .wp-block-table figcaption {
   margin-top: 8px;
   color: var(--muted);

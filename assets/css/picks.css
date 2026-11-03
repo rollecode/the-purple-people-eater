@@ -1,0 +1,42 @@
+.shuffle { padding-block: 72px 24px; }
+.shuffle-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+.picks {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: opacity .35s var(--ease), filter .35s var(--ease);
+}
+.picks.is-loading {
+  filter: blur(4px);
+  opacity: 0;
+}
+.picks li { padding: 20px 24px 20px 0; }
+.picks li + li { padding-left: 24px; }
+.picks .meta-text { color: var(--muted); }
+.picks a {
+  display: block;
+  margin-top: 8px;
+  color: inherit;
+  font-family: var(--display);
+  font-size: 30px;
+  line-height: 1.1;
+  text-decoration: none;
+}
+.picks a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+@media (max-width: 860px) {
+  .picks { grid-template-columns: 1fr; }
+  .picks li, .picks li + li { padding: 18px 0; }
+  .picks a { font-size: 28px; }
+}

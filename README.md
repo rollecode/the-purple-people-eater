@@ -12,7 +12,7 @@
 > [!IMPORTANT]
 > This theme is **not for the public to use**. It is made for my own website, it is in Finnish, and it depends on code that does not work anywhere else. It is here for backup and so you can see how it was done.
 
-<img width="1200" height="900" alt="The front page of rollemaa.fi in dark mode: the post and word counts in a large serif, a bar chart of texts per year below" src="screenshot.png" />
+<img width="1200" height="900" alt="The front page of rollemaa.fi in dark mode: the post and word counts in a large serif, a bar chart of texts per year below" src="screenshot.jpg" />
 
 ## Features
 
@@ -43,7 +43,8 @@ the-purple-people-eater/
 ├── patterns/              Repeating pieces: cards, byline, diary parts
 └── assets/
     ├── css/
-    │   ├── site.css       The design, also loaded in the editor
+    │   ├── site.css       What every page needs: tokens, header, footer
+    │   ├── *.css          One view or feature each, loaded only on its templates
     │   ├── blocks/        Styles loaded only with their block
     │   └── legacy.css     Markup of posts older than the block editor
     ├── js/
@@ -52,7 +53,7 @@ the-purple-people-eater/
     │   └── editor/        One editor feature per file
     ├── fonts/             Instrument Serif, Atkinson Hyperlegible Next and Geist
     ├── svg/               Icon sprite and the diary's mood, device and weather icons
-    ├── images/            Author photo and defaults
+    ├── images/            Author photo and the front page photos
     └── vendor/highlight/  highlight.js 11.12.0, every language, loaded only with code
 ```
 

@@ -1,0 +1,132 @@
+/* A year of writing */
+.diary-heat {
+  width: min(100% - 2 * var(--pad), 1020px);
+  margin: 48px auto 0;
+}
+.heat-scroll {
+
+  /* Room for today's outline */
+  padding: 4px 4px 6px;
+  --h0: color-mix(in oklab, var(--rule) 70%, var(--ground));
+  --h1: color-mix(in oklab, var(--accent) 22%, var(--soft));
+  --h2: color-mix(in oklab, var(--accent) 46%, var(--soft));
+  --h3: color-mix(in oklab, var(--accent) 72%, var(--soft));
+  --h4: var(--accent);
+}
+.heat {
+  display: grid;
+  grid-template-columns: 28px auto;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  gap: 6px 8px;
+  color: var(--muted);
+  font-size: 12.5px;
+  --gap: clamp(2px, .5vw, 4px);
+}
+
+/* Skeleton until heatmap.js draws: the finished size and its squares */
+.heat:empty {
+  position: relative;
+  width: min(986px, 100%);
+  height: 180px;
+}
+.heat:empty::before {
+  position: absolute;
+  top: 24px;
+  left: 36px;
+  width: calc(100% - 36px);
+  height: 122px;
+  background: var(--h0);
+  content: "";
+  -webkit-mask: linear-gradient(90deg, #000 14px, transparent 14px) 0 0 / 18px 18px, linear-gradient(#000 14px, transparent 14px) 0 0 / 18px 18px;
+  mask: linear-gradient(90deg, #000 14px, transparent 14px) 0 0 / 18px 18px, linear-gradient(#000 14px, transparent 14px) 0 0 / 18px 18px;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .heat:empty::before { animation: heat-pulse 1.1s ease-in-out infinite alternate; }
+}
+@keyframes heat-pulse {
+  to { opacity: .45; }
+}
+
+/* Older pages of the diary have no heatmap */
+.paged .diary-heat, .date .diary-heat { display: none; }
+@media (scripting: none) {
+  .diary-heat { display: none; }
+}
+
+/* Months, days and squares share one column grid that shrinks to fit */
+.heat-months, .heat-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--weeks), minmax(0, 14px));
+  gap: var(--gap);
+}
+.heat-months {
+  grid-column: 2;
+  height: 18px;
+  white-space: nowrap;
+}
+.heat-months span { grid-row: 1; }
+.heat-days {
+  display: grid;
+  grid-template-rows: repeat(7, 1fr);
+  gap: var(--gap);
+}
+.heat-days span {
+  align-self: center;
+  line-height: 1;
+}
+.heat-grid {
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, auto);
+}
+.heat-day {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: min(3px, 20%);
+  background: var(--h0);
+}
+.heat-day[data-l="1"] { background: var(--h1); }
+.heat-day[data-l="2"] { background: var(--h2); }
+.heat-day[data-l="3"] { background: var(--h3); }
+.heat-day[data-l="4"] { background: var(--h4); }
+a.heat-day:hover {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+.heat-day.is-today {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.heat-legend {
+  display: flex;
+  grid-column: 2;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 8px;
+  gap: 6px;
+}
+.heat-legend i {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+
+/* Black tooltip over a heatmap day, placed by heatmap.js */
+.heat-tip {
+  position: fixed;
+  z-index: 70;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 8px));
+  white-space: nowrap;
+}
+.heat-tip[hidden] { display: none; }

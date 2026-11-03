@@ -1,0 +1,144 @@
+/* Head on the photo, the site header lying on top of it */
+.article-head:has(> figure) {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  align-items: flex-end;
+  min-height: min(92vh, 880px);
+  background: #1A1220;
+  color: #fff;
+  isolation: isolate;
+}
+.article-head:has(> figure) .wp-block-post-featured-image {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  margin: 0;
+}
+.article-head:has(> figure) .wp-block-post-featured-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Three layers, so no shade ever has an edge: a steady tint over the whole
+ photo, and two long S-curves. Together they give 7:1 on a white photo
+ behind the text and the site head. */
+.article-head:has(> figure)::after {
+  position: absolute;
+  inset: 0;
+  background: rgb(18 10 24 / .34);
+  content: "";
+}
+.article-head:has(> figure)::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 700px;
+  background: linear-gradient(to bottom, rgb(18 10 24 / .6) 90px, rgb(18 10 24 / .593) 128px, rgb(18 10 24 / .574) 166px, rgb(18 10 24 / .545) 204px, rgb(18 10 24 / .506) 242px, rgb(18 10 24 / .461) 281px, rgb(18 10 24 / .41) 319px, rgb(18 10 24 / .356) 357px, rgb(18 10 24 / .3) 395px, rgb(18 10 24 / .244) 433px, rgb(18 10 24 / .19) 471px, rgb(18 10 24 / .139) 509px, rgb(18 10 24 / .094) 548px, rgb(18 10 24 / .055) 586px, rgb(18 10 24 / .026) 624px, rgb(18 10 24 / .007) 662px, rgb(18 10 24 / 0) 700px);
+  content: "";
+}
+@media (scripting: enabled) {
+  .article-head:has(> figure)::before {
+    opacity: 0;
+    transition: opacity .6s ease-in-out;
+  }
+  .head-awake .article-head:has(> figure)::before,
+  body:has(.site-head :focus-visible) .article-head:has(> figure)::before {
+    opacity: 1;
+    transition-duration: .9s;
+  }
+}
+.ph-text {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2 * var(--pad), var(--read));
+  margin: 0 auto;
+  padding: 160px 0 44px;
+}
+
+/* Follows the text: 570px down the curve is the top of the text */
+.ph-text::before {
+  position: absolute;
+  z-index: -1;
+  top: -410px;
+  bottom: 0;
+  left: calc(50% - 50vw);
+  width: 100vw;
+  background: linear-gradient(to bottom, rgb(18 10 24 / 0) 0px, rgb(18 10 24 / .01) 56px, rgb(18 10 24 / .038) 112px, rgb(18 10 24 / .081) 169px, rgb(18 10 24 / .138) 225px, rgb(18 10 24 / .204) 281px, rgb(18 10 24 / .278) 338px, rgb(18 10 24 / .358) 394px, rgb(18 10 24 / .44) 450px, rgb(18 10 24 / .522) 506px, rgb(18 10 24 / .602) 562px, rgb(18 10 24 / .676) 619px, rgb(18 10 24 / .743) 675px, rgb(18 10 24 / .799) 731px, rgb(18 10 24 / .842) 788px, rgb(18 10 24 / .87) 844px, rgb(18 10 24 / .88) 900px);
+  content: "";
+}
+
+/* Without a photo the text just opens the reading column */
+:is(.art-head, .article-head:not(:has(> figure))) .ph-text {
+  width: auto;
+  padding: 0;
+}
+:is(.art-head, .article-head:not(:has(> figure))) .ph-text::before { display: none; }
+.cover-title {
+  font-size: clamp(46px, 5.2vw, 82px);
+  letter-spacing: -.015em;
+  line-height: 1;
+}
+.article-head:has(> figure) .cover-title em { color: #E9DCF3; }
+.standfirst {
+  max-width: 34em;
+  margin: 24px 0 0;
+  font-family: var(--body);
+  font-size: 21px;
+  line-height: 1.6;
+}
+.article-head:has(> figure) .standfirst { color: #EFE7F5; }
+.hero-foot {
+  margin-top: 32px;
+  color: #EFE7F5;
+  gap: 6px 22px;
+}
+.credit {
+  position: absolute;
+  z-index: 2;
+  right: var(--pad);
+  bottom: 14px;
+  max-width: calc(100% - 2 * var(--pad));
+  color: rgb(255 255 255 / .82);
+  font-family: var(--sans);
+  font-size: 12.5px;
+}
+@media (max-width: 860px) {
+  .credit {
+    right: auto;
+    left: var(--pad);
+  }
+}
+.credit-label {
+  margin-right: .35em;
+  color: #ffffffc9;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+/* No image: no hero at all, the title opens the reading column */
+:is(.art-head, .article-head:not(:has(> figure))) { padding-top: 72px; }
+
+/* The diary's title opens as far down as a page's own heading (.page-body) */
+.art-head.art-head { padding-top: calc(24px + clamp(64px, 10vh, 120px)); }
+:is(.art-head, .article-head:not(:has(> figure))) .cover-title {
+  color: var(--ink);
+  font-size: clamp(46px, 5vw, 72px);
+}
+:is(.art-head, .article-head:not(:has(> figure))) .cover-title em { color: var(--accent); }
+:is(.art-head, .article-head:not(:has(> figure))) .standfirst {
+  color: var(--ink-2);
+  font-size: 22px;
+}
+@media (max-width: 860px) {
+  .article-head:has(> figure) { min-height: 100svh; }
+  .ph-text { padding: 140px 0 52px; }
+  .cover-title { font-size: 42px; }
+  .standfirst { font-size: 19px; }
+  :is(.art-head, .article-head:not(:has(> figure))) { padding-top: 40px; }
+  :is(.art-head, .article-head:not(:has(> figure))) .cover-title { font-size: 44px; }
+  :is(.art-head, .article-head:not(:has(> figure))) .standfirst { font-size: 19px; }
+}
+.article-head:not(:has(> figure)) .hero-foot { display: none; }
