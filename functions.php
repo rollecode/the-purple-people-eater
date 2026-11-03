@@ -11,9 +11,11 @@ namespace The_Purple_People_Eater;
 const MODULES_ON_EVERY_PAGE = [ 'lib', 'theme-switch', 'expand', 'nav-current', 'logo-rain', 'phone-menu', 'site-head', 'search' ];
 const PRELOADED_FONTS = [ 'InstrumentSerif-latin', 'Geist-latin', 'Inter-Bold-latin', 'AtkinsonHyperlegibleNext-latin' ];
 
-// assets/css/<name>.css in cascade order, each loaded only on the templates it styles; block styles are in assets/css/blocks
+// assets/css/<name>.css in cascade order, each loaded only on the templates it styles. Styles that
+// override core block CSS of the same weight stay here, after it, not in assets/css/blocks
 const STYLES = [
   'site'      => [ '*' ],
+  'pager'     => [ 'index', 'archive', 'search', 'archive-diary', 'front-page' ],
   'article'   => [ 'single' ],
   'rain'      => [ '*' ],
   'search'    => [ '*' ],
@@ -26,11 +28,13 @@ const STYLES = [
   'cover'     => [ 'single', 'archive-diary' ],
   'comments'  => [ 'single', 'single-diary' ],
   'reactions' => [ 'single', 'single-diary', 'archive-diary' ],
+  'prose'     => [ 'single', 'single-diary', 'archive-diary', 'page', 'template-info', 'template-no-title' ],
   'diary'     => [ 'archive-diary', 'single-diary' ],
   'heatmap'   => [ 'archive-diary' ],
   'pages'     => [ 'page', 'template-info', 'template-no-title', 'page-all', 'page-archive' ],
   'masthead'  => [ 'template-info' ],
   'notfound'  => [ '404' ],
+  'bigsearch' => [ 'search', '404' ],
 ];
 
 // Only needed once someone opens search or hovers the logo, so they never hold up the page
