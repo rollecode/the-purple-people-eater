@@ -12,7 +12,7 @@
 > [!IMPORTANT]
 > This theme is **not for the public to use**. It is made for my own website, it is in Finnish, and it depends on code that does not work anywhere else. It is here for backup and so you can see how it was done.
 
-<img width="1200" height="900" alt="The front page of rollemaa.fi in dark mode: the post and word counts in a large serif, a bar chart of texts per year below" src="screenshot.jpg" />
+<img width="1600" height="1200" alt="The front page of rollemaa.fi in dark mode: the post and word counts in a large serif, a bar chart of texts per year below" src="screenshot.png" />
 
 ## Features
 
