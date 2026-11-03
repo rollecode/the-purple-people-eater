@@ -6038,17 +6038,31 @@ a.heat-day:hover {
   max-width: 720px;
 }
 
+/* One pill that holds its button */
 .bigsearch .wp-block-search__inside-wrapper {
-  gap: 10px;
+  padding: 5px;
+  gap: 6px;
+  border: 1px solid var(--field-line);
+  border-radius: 999px;
+  background: var(--field);
+}
+
+.bigsearch .wp-block-search__inside-wrapper:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
 }
 
 .bigsearch input {
   flex: 1;
   min-width: 0;
-  padding: 12px 20px;
-  border-radius: 999px;
-  background: var(--field);
+  padding: 0 0 0 16px;
+  border: 0;
+  background: none;
   font-size: 18px;
+}
+
+.bigsearch input:focus {
+  outline: 0;
 }
 
 .day [data-day] {
