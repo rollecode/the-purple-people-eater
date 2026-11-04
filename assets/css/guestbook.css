@@ -341,3 +341,16 @@ textarea.gb-ink {
 .page-hero .intro { max-width: 31em; }
 .page-hero .intro p { margin: 0; }
 .page-hero .intro a { color: var(--accent); }
+
+/* The typing/drawing switch shows only over its part or while the part is in use; touch screens keep it */
+@media (hover: hover) {
+  .gb-modes {
+    opacity: 0;
+    transition: opacity .3s var(--ease);
+  }
+  .gb-part:is(:hover, :focus-within) .gb-modes,
+  .gb-part[data-mode="draw"] .gb-modes { opacity: 1; }
+}
+@media (hover: hover) and (prefers-reduced-motion: reduce) {
+  .gb-modes { transition: none; }
+}
