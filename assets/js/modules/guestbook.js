@@ -329,7 +329,11 @@ const parts = $$('[data-gb-part]', form).map((part) => {
     part.dataset.mode = mode;
     $$('[data-gb-mode]', part).forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.gbMode === mode)));
   };
-  $$('[data-gb-mode]', part).forEach((button) => button.addEventListener('click', () => setMode(button.dataset.gbMode)));
+  // The chosen way of writing takes the focus at once
+  $$('[data-gb-mode]', part).forEach((button) => button.addEventListener('click', () => {
+    setMode(button.dataset.gbMode);
+    $('draw' === button.dataset.gbMode ? 'canvas' : 'textarea, input', part).focus();
+  }));
   $('[data-gb-clear]', part).addEventListener('click', pad.clear);
   setMode('type');
   return { name: part.dataset.gbPart, part, pad, setMode };

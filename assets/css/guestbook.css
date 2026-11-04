@@ -187,7 +187,17 @@
 
 
 /* The blank page: write straight onto the paper, no boxes */
-.gb-write { display: grid; align-content: start; }
+.gb-write {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The signature has its own spot at the foot of the page, apart from the greeting */
+[data-gb-part="signature"] {
+  margin-top: auto;
+  padding-top: 36px;
+}
+[data-gb-part="picture"] { margin-bottom: 36px; }
 .gb-write[hidden] { display: none; }
 .gb-ink {
   width: 100%;
@@ -206,7 +216,7 @@
   outline-offset: 6px;
 }
 textarea.gb-ink {
-  min-height: 72px;
+  min-height: 180px;
   field-sizing: content;
 }
 .gb-ink[aria-invalid="true"] { outline: 2px dashed var(--ink-red); outline-offset: 6px; }
@@ -250,7 +260,7 @@ textarea.gb-ink {
   user-select: none;
   -webkit-user-select: none;
 }
-.gb-pad.is-drawing { border-color: var(--pen); }
+.gb-pad.is-drawing, .gb-pad:focus { border-color: var(--pen); outline: 0; }
 [data-mode="type"] .gb-pad, [data-mode="type"] .gb-clear, [data-mode="draw"] textarea { display: none; }
 .gb-modes .gb-clear { margin-left: auto; }
 
