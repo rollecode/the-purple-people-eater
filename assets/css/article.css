@@ -710,7 +710,7 @@
   margin: 0;
 }
 
-/* Other readers right now (js/modules/presence.js): a line in the byline, a dot in the margin each */
+/* Other readers right now, a line in the byline (js/modules/presence.js) */
 .readers-now::before {
   width: 8px;
   height: 8px;
@@ -722,41 +722,6 @@
 @keyframes readers-pulse {
   50% { opacity: .35; }
 }
-.reader-rail {
-  position: fixed;
-  z-index: 50;
-  top: 22vh;
-  right: 12px;
-  width: 2px;
-  height: 50vh;
-  background: var(--rule);
-  pointer-events: none;
-}
-.reader-rail[hidden] { display: none; }
-.reader-rail > * {
-  position: absolute;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  translate: -50% -50%;
-  transition: top .8s var(--ease);
-}
-.reader-rail i {
-  background: var(--accent);
-  box-shadow: 0 0 0 2px var(--ground);
-}
-.reader-rail .me {
-  width: 10px;
-  height: 10px;
-  border: 2px solid var(--ink);
-  background: var(--ground);
-  transition: none;
-}
-@media (max-width: 600px) {
-  .reader-rail { right: 4px; }
-}
 @media (prefers-reduced-motion: reduce) {
   .readers-now::before { animation: none; }
-  .reader-rail > * { transition: none; }
 }
