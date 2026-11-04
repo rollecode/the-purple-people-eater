@@ -154,6 +154,11 @@ add_filter( 'wp_preload_resources', function ( $resources ) {
   return $resources;
 } );
 
+// The sprite is cached for a year, so a new icon needs a new URL
+add_filter( 'theme_file_uri', function ( $url, $file ) {
+  return 'assets/svg/icons.svg' === $file ? $url . '?ver=' . filemtime( get_theme_file_path( $file ) ) : $url;
+}, 10, 2 );
+
 // The logo umbrella as it tilts on hover. The Site Icon stays for the fediverse profile and wp-admin
 remove_action( 'wp_head', 'wp_site_icon', 99 );
 

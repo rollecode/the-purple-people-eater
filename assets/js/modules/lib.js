@@ -9,7 +9,8 @@ const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const REST_URL = $('link[rel="https://api.w.org/"]').href;
 const config = {
   rest: `${REST_URL}rollemaa/v1/`,
-  sprite: `${ASSETS_URL}svg/icons.svg`,
+  // The page's own versioned sprite URL
+  sprite: ($('use[href*="icons.svg"]')?.getAttribute('href') || `${ASSETS_URL}svg/icons.svg`).split('#')[0],
   localDomains: [ 'rollemaa.test', 'rollemaa.fi', 'www.rollemaa.fi' ],
 };
 const { classList: bodyClasses } = document.body;
