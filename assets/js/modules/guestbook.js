@@ -1,4 +1,5 @@
 import { $, $$, config, getJson, store, reducedMotion } from 'theme/lib';
+import { attachCorner } from 'theme/page-curl';
 
 /**
  * Vieraskirja: entries written one after another down the pages of an open
@@ -19,7 +20,6 @@ const singlePage = window.matchMedia('(max-width: 760px)');
 
 const book = $('[data-guestbook]');
 const spread = $('[data-gb-spread]', book);
-const TURN_MS = 650;
 const SWIPE_PX = 60;
 const form = $('[data-gb-form]', book);
 const status = $('[data-gb-status]', book);
@@ -31,6 +31,7 @@ let totalPages = 1;
 let spreadIndex = 0;
 let loaded = false;
 let own = store.get(OWN_KEY);
+const turns = { next: null, prev: null };
 
 const element = (tag, className, text) => {
   const node = document.createElement(tag);
@@ -117,6 +118,7 @@ const render = () => {
     return;
   }
   spread.removeAttribute('aria-busy');
+  form.style.clipPath = '';
   layOut();
   spreadIndex = Math.min(spreadIndex, spreadCount() - 1);
   spread.replaceChildren();
@@ -134,69 +136,36 @@ const render = () => {
     spread.append(sheet);
   });
 
-  // Page numbers at the foot, and folded outer corners to turn the page
-  $$('.gb-folio, .gb-corner', spread).forEach((node) => node.remove());
+  // Page numbers at the foot, and curled outer corners to turn the page
+  $$('.gb-folio', spread).forEach((node) => node.remove());
   const sheets = [ ...spread.children ];
   const first = spreadIndex * pagesPerSpread();
   sheets.forEach((sheet, index) => sheet.append(element('span', 'gb-folio', String(first + index + 1))));
 
   const more = loadedPages < totalPages;
-  if (spreadIndex) {
-    sheets[0].append(corner('prev', 'Edellinen sivu'));
-  }
-  if (spreadIndex < spreadCount() - 1 || more) {
-    sheets[sheets.length - 1].append(corner('next', 'Seuraava sivu'));
-  }
+  const before = spreadIndex;
+  const curled = (side, page, label, step) => attachCorner({
+    host: spread,
+    page,
+    side,
+    label,
+    prepare: () => moveTo(before + step),
+    restore: () => {
+      spreadIndex = before;
+      render();
+    },
+  }).turn;
+  turns.prev = spreadIndex ? curled('prev', sheets[0], 'Edellinen sivu', -1) : null;
+  turns.next = spreadIndex < spreadCount() - 1 || more ? curled('next', sheets[sheets.length - 1], 'Seuraava sivu', 1) : null;
 };
 
-function corner(side, label) {
-  const button = element('button', `gb-corner is-${side}`);
-  button.type = 'button';
-  button.ariaLabel = label;
-  button.addEventListener('click', () => turn('next' === side ? 1 : -1));
-  return button;
-}
-
-// The page that turns is a copy of the old one, folding over the spine while the new spread lies under it
-const pageCopy = (sheet, step) => {
-  if (!sheet || reducedMotion.matches) {
-    return null;
+// Lays the spread being turned to under the turning page, loading more entries first when needed
+const moveTo = async (target) => {
+  if ((target + 1) * pagesPerSpread() >= pageList().length && loadedPages < totalPages) {
+    await loadMore();
   }
-  const copy = sheet.cloneNode(true);
-  copy.querySelectorAll('.gb-corner').forEach((node) => node.remove());
-  copy.querySelectorAll('[id]').forEach((node) => node.removeAttribute('id'));
-  copy.classList.add('gb-flip', step > 0 ? 'is-forward' : 'is-back');
-  copy.removeAttribute('data-gb-form');
-  Object.assign(copy.style, { left: `${sheet.offsetLeft}px`, top: `${sheet.offsetTop}px`, width: `${sheet.offsetWidth}px`, height: `${sheet.offsetHeight}px` });
-  return copy;
-};
-
-const fold = (copy, step) => {
-  spread.append(copy);
-  copy.animate([
-    { transform: 'rotateY(0deg)', filter: 'brightness(1)' },
-    { transform: `rotateY(${step > 0 ? -90 : 90}deg)`, filter: 'brightness(.75)' },
-  ], { duration: TURN_MS, easing: 'cubic-bezier(.45, 0, .55, 1)' }).finished.then(() => copy.remove());
-};
-
-let turning = false;
-const turn = (step) => {
-  if (turning) {
-    return;
-  }
-  turning = true;
-  const target = spreadIndex + step;
-  const ready = (target + 1) * pagesPerSpread() >= pageList().length && loadedPages < totalPages ? loadMore() : Promise.resolve();
-  ready.then(() => {
-    const copy = pageCopy(step > 0 ? spread.lastElementChild : spread.firstElementChild, step);
-    spreadIndex = Math.max(0, target);
-    render();
-    if (copy) {
-      fold(copy, step);
-    }
-  }).finally(() => {
-    turning = false;
-  });
+  spreadIndex = Math.max(0, target);
+  render();
 };
 
 // A swipe on a touch screen turns the page too, except while drawing
@@ -211,7 +180,7 @@ spread.addEventListener('pointerup', (event) => {
   const distance = event.clientX - swipeFrom;
   swipeFrom = null;
   if (Math.abs(distance) > SWIPE_PX) {
-    turn(distance < 0 ? 1 : -1);
+    turns[distance < 0 ? 'next' : 'prev']?.();
   }
 });
 
