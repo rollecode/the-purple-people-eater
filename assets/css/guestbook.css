@@ -83,14 +83,18 @@
 /* Page numbers, and the folded outer corners that turn the page */
 .gb-folio {
   position: absolute;
-  right: 0;
-  bottom: 12px;
-  left: 0;
+  bottom: 16px;
   color: var(--pencil);
-  font-size: 18px;
+  font-size: 19px;
   line-height: 1;
-  text-align: center;
   pointer-events: none;
+}
+
+/* In the outer corners, as in a printed book: left on the left page, right on the right one */
+.gb-page:first-child .gb-folio { left: 40px; }
+.gb-page:last-child .gb-folio {
+  right: 40px;
+  left: auto;
 }
 .gb-corner {
   position: absolute;
