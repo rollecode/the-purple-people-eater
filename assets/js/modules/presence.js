@@ -1,7 +1,7 @@
 import { $, config, articleId, prose, postJson } from 'theme/lib';
 
 /**
- * Who else is reading this post right now, as a line in the byline. The tab
+ * How many are reading this post right now, as a line in the byline. The tab
  * is known only by a random id that lives as long as the page.
  */
 const CHECK_IN_MS = 30000;
@@ -24,10 +24,11 @@ if (articleId && prose) {
     return Math.round(Math.max(0, Math.min(1, (window.innerHeight - rect.top) / rect.height)) * 100);
   };
 
+  // Everyone on the post, this reader included; alone it says nothing
   const show = (others) => {
-    const count = others.length;
-    line.hidden = !count;
-    line.textContent = 1 === count ? '1 muu lukee tätä juuri nyt' : `${count} muuta lukee tätä juuri nyt`;
+    const count = others.length + 1;
+    line.hidden = count < 2;
+    line.textContent = `${count} lukee parhaillaan`;
   };
 
   const checkIn = () => {
