@@ -284,18 +284,18 @@ html.theme-90s { background: #000018 var(--stars); }
 .theme-90s .themesw button { color: #000000; font: 400 14px var(--gui); }
 .theme-90s .themesw button[aria-pressed="true"] { box-shadow: inset 2px 2px #404040, inset -2px -2px #FFFFFF; background: #DFDFDF; }
 
-/* The cursor rope from ninety.js */
-.nn-seg {
+/* The cursor snake from ninety.js; it fades away while the mouse rests */
+.theme-90s .nn-seg {
   position: fixed;
-  z-index: 9999;
-  top: -4px;
-  left: -4px;
-  width: 8px;
-  height: 8px;
+  top: 0;
+  left: 0;
+  border-radius: 50% !important;
   background: currentColor;
-  box-shadow: 1px 1px #000000;
+  box-shadow: inset -2px -2px rgb(0 0 0 / .35), 1px 1px #000000;
   pointer-events: none;
+  transition: opacity .6s;
 }
+.nn-snake-resting .nn-seg { opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   .theme-90s *, .nn-blink { animation: none !important; }

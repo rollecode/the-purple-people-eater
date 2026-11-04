@@ -8,11 +8,17 @@ import { ASSETS_URL, $, getJson, reducedMotion } from 'theme/lib';
 const GIFS = `${ASSETS_URL}images/90s/`;
 const COUNTER_DIGITS = 7;
 const SNAKE_COLOURS = [ '#F00', '#F80', '#FF0', '#0F0', '#0FF', '#00F', '#F0F' ];
-const SNAKE_LENGTH = 28;
-const SNAKE_LINK_PX = 9;
-const SNAKE_GRAVITY = 0.5;
-const SNAKE_DAMPING = 0.97;
-const SNAKE_STIFFNESS = 4;
+const SNAKE_LENGTH = 26;
+const SNAKE_HEAD_PX = 16;
+const SNAKE_TAIL_PX = 4;
+const SNAKE_LINK_PX = 7;
+const SNAKE_GRAVITY = 0.35;
+const SNAKE_DAMPING = 0.92;
+const SNAKE_STIFFNESS = 3;
+const SNAKE_STEP_MS = 16;
+// The head trails just below the pointer, so the arrow stays visible
+const SNAKE_OFFSET_PX = 14;
+const SNAKE_IDLE_MS = 2500;
 
 const WIKI = 'https://fi.wikipedia.org/wiki/';
 const BADGES = [
@@ -86,69 +92,80 @@ const unhoverLate = (event) => {
   }
 };
 
-// A rope of pixels: the head follows the mouse, the rest swings and hangs under gravity
-const pull = (from, to, pinned) => {
-  const dx = to.x - from.x;
-  const dy = to.y - from.y;
-  const stretch = (Math.hypot(dx, dy) - SNAKE_LINK_PX) / (Math.hypot(dx, dy) || 1);
-  const share = pinned ? 1 : 0.5;
-  to.x -= dx * stretch * share;
-  to.y -= dy * stretch * share;
-  if (!pinned) {
-    from.x += dx * stretch * share;
-    from.y += dy * stretch * share;
-  }
+// A snake of dots: the head is the mouse, each dot keeps its distance to the one before and droops under gravity
+const keepLink = (leader, follower) => {
+  const dx = follower.x - leader.x;
+  const dy = follower.y - leader.y;
+  const length = Math.hypot(dx, dy) || 1;
+  follower.x = leader.x + (dx / length * SNAKE_LINK_PX);
+  follower.y = leader.y + (dy / length * SNAKE_LINK_PX);
 };
 
 const startSnake = () => {
-  const mouse = { x: 0, y: 0, seen: false };
   const links = Array.from({ length: SNAKE_LENGTH }, (_, index) => {
+    const size = Math.round(SNAKE_HEAD_PX - ((SNAKE_HEAD_PX - SNAKE_TAIL_PX) * index / (SNAKE_LENGTH - 1)));
     const element = document.createElement('i');
     element.className = 'nn-seg';
     element.ariaHidden = 'true';
-    element.style.color = SNAKE_COLOURS[index % SNAKE_COLOURS.length];
+    element.style.cssText = `width:${size}px;height:${size}px;margin:${-size / 2}px 0 0 ${-size / 2}px;color:${SNAKE_COLOURS[index % SNAKE_COLOURS.length]};z-index:${10000 - index}`;
     document.body.append(element);
     return { element, x: 0, y: 0, oldX: 0, oldY: 0 };
   });
+  const [ head ] = links;
+  let lastMove = 0;
+  let lastFrame = 0;
+  let pending = 0;
 
   const move = (event) => {
     if ('mouse' !== event.pointerType) {
       return;
     }
-    mouse.x = event.clientX;
-    mouse.y = event.clientY;
-    if (!mouse.seen) {
-      mouse.seen = true;
-      links.forEach((link) => Object.assign(link, { x: mouse.x, y: mouse.y, oldX: mouse.x, oldY: mouse.y }));
+    const x = event.clientX + SNAKE_OFFSET_PX;
+    const y = event.clientY + SNAKE_OFFSET_PX;
+    if (!lastMove) {
+      links.forEach((link) => Object.assign(link, { x, y, oldX: x, oldY: y }));
     }
+    Object.assign(head, { x, y });
+    lastMove = event.timeStamp;
+    document.documentElement.classList.remove('nn-snake-resting');
   };
 
-  const step = () => {
-    snake.frame = requestAnimationFrame(step);
-    if (!mouse.seen) {
-      return;
-    }
-
-    links.forEach((link) => {
+  const physics = () => {
+    links.forEach((link, index) => {
+      if (!index) {
+        return;
+      }
       const speedX = (link.x - link.oldX) * SNAKE_DAMPING;
       const speedY = (link.y - link.oldY) * SNAKE_DAMPING;
       Object.assign(link, { oldX: link.x, oldY: link.y, x: link.x + speedX, y: link.y + speedY + SNAKE_GRAVITY });
     });
-    Object.assign(links[0], { x: mouse.x, y: mouse.y });
-
     for (let round = 0; round < SNAKE_STIFFNESS; round++) {
       for (let index = 1; index < links.length; index++) {
-        pull(links[index - 1], links[index], 1 === index);
+        keepLink(links[index - 1], links[index]);
       }
     }
+  };
 
+  // Fixed steps, so a 120 Hz screen gets the same snake as a 60 Hz one
+  const frame = (now) => {
+    snake.frame = requestAnimationFrame(frame);
+    if (!lastMove) {
+      lastFrame = now;
+      return;
+    }
+    pending = Math.min(pending + now - (lastFrame || now), SNAKE_STEP_MS * 5);
+    lastFrame = now;
+    for (; pending >= SNAKE_STEP_MS; pending -= SNAKE_STEP_MS) {
+      physics();
+    }
     links.forEach(({ element, x, y }) => {
       element.style.transform = `translate(${x}px, ${y}px)`;
     });
+    document.documentElement.classList.toggle('nn-snake-resting', now - lastMove > SNAKE_IDLE_MS);
   };
 
   document.addEventListener('pointermove', move, { passive: true });
-  snake = { links, move, frame: requestAnimationFrame(step) };
+  snake = { links, move, frame: requestAnimationFrame(frame) };
 };
 
 const stopSnake = () => {
@@ -158,6 +175,7 @@ const stopSnake = () => {
   cancelAnimationFrame(snake.frame);
   document.removeEventListener('pointermove', snake.move);
   snake.links.forEach(({ element }) => element.remove());
+  document.documentElement.classList.remove('nn-snake-resting');
   snake = null;
 };
 
