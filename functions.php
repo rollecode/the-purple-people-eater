@@ -165,7 +165,8 @@ add_action( 'wp_head', function () {
 
 // Before first paint, or the page flashes the wrong theme
 add_action( 'wp_head', function () {
-  wp_print_inline_script_tag( "try{var t=localStorage.getItem('theme')}catch(e){}document.documentElement.className=(t||matchMedia('(prefers-color-scheme: dark)').matches&&'theme-dark')==='theme-dark'?'theme-dark':'theme-light'" );
+  $nineties = get_theme_file_uri( 'assets/css/90s.css' ) . '?ver=' . filemtime( get_theme_file_path( 'assets/css/90s.css' ) );
+  wp_print_inline_script_tag( "try{var t=localStorage.getItem('theme')}catch(e){}var d=document.documentElement;d.dataset.nineties='" . esc_js( $nineties ) . "';if('theme-90s'===t){d.className=t;document.write('<link rel=\"stylesheet\" data-nineties href=\"'+d.dataset.nineties+'\">')}else{d.className=(t||matchMedia('(prefers-color-scheme: dark)').matches&&'theme-dark')==='theme-dark'?'theme-dark':'theme-light'}" );
   wp_print_script_tag( [
     'defer'       => true,
     'data-domain' => 'rollemaa.fi',

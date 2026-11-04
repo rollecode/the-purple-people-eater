@@ -44,7 +44,7 @@ $icons = get_theme_file_uri( 'assets/svg/icons.svg' );
 <!-- /wp:paragraph -->
 
 <!-- wp:html -->
-<div class="themesw" role="group" aria-label="Väriteema"><button type="button" aria-pressed="false" data-theme-set="light"><svg class="ic ic-sm" aria-hidden="true"><use href="<?php echo esc_url( $icons ); ?>#sun"></use></svg>Vaalea</button><button type="button" aria-pressed="false" data-theme-set="dark"><svg class="ic ic-sm" aria-hidden="true"><use href="<?php echo esc_url( $icons ); ?>#moon"></use></svg>Tumma</button><button type="button" aria-pressed="false" data-theme-set="auto"><svg class="ic ic-sm" aria-hidden="true"><use href="<?php echo esc_url( $icons ); ?>#auto"></use></svg>Automaattinen</button></div>
+<div class="themesw" role="group" aria-label="Väriteema"><button type="button" aria-pressed="false" data-theme-set="light"><svg class="ic ic-sm" aria-hidden="true"><use href="<?php echo esc_url( $icons ); ?>#sun"></use></svg>Vaalea</button><button type="button" aria-pressed="false" data-theme-set="dark"><svg class="ic ic-sm" aria-hidden="true"><use href="<?php echo esc_url( $icons ); ?>#moon"></use></svg>Tumma</button><button type="button" aria-pressed="false" data-theme-set="auto"><svg class="ic ic-sm" aria-hidden="true"><use href="<?php echo esc_url( $icons ); ?>#auto"></use></svg>Automaattinen</button><button type="button" aria-pressed="false" data-theme-set="90s"><svg class="ic ic-sm" aria-hidden="true"><use href="<?php echo esc_url( $icons ); ?>#star"></use></svg>90s</button></div>
 <!-- /wp:html --></div>
 <!-- /wp:group --></div>
 <!-- /wp:group --></footer>

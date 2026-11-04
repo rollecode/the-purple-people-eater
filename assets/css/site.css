@@ -551,11 +551,18 @@ body:has(.comments) .site-foot { margin-top: 0; }
   }
 }
 
-/* The three theme choices fit the narrowest phones */
-@media (max-width: 360px) {
+/* The four theme choices fit the narrowest phones */
+@media (max-width: 430px) {
   .themesw button {
     padding-inline: 6px;
     gap: 5px;
+  }
+}
+@media (max-width: 360px) {
+  .themesw button {
+    padding-inline: 3px;
+    gap: 3px;
+    font-size: 12px;
   }
 }
 

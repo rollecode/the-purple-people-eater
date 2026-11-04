@@ -1,0 +1,255 @@
+/* The 90s theme: loaded only when chosen in the footer, with js/modules/ninety.js */
+:root.theme-90s {
+  color-scheme: light;
+  --ground: #000018;
+  --surface: #C0C0C0;
+  --tint: #FFFFCC;
+  --soft: #C0C0C0;
+  --lavender: #8080FF;
+  --ink: #000000;
+  --ink-2: #000000;
+  --muted: #404040;
+  --rule: #808080;
+  --rule-strong: #000000;
+  --field-line: #000000;
+  --field: #FFFFFF;
+  --accent: #FF0000;
+  --link: #0000EE;
+  --deep: #000080;
+  --on-deep: #FFFF00;
+  --mark: #FFFF00;
+  --display: "Comic Sans MS", "Comic Neue", "Chalkboard SE", cursive;
+  --body: "Times New Roman", Times, serif;
+  --sans: "Comic Sans MS", "Comic Neue", "Chalkboard SE", cursive;
+  --gui: Tahoma, "MS Sans Serif", Geneva, Arial, sans-serif;
+  --bevel: inset -2px -2px #404040, inset 2px 2px #FFFFFF, inset -3px -3px #808080, inset 3px 3px #DFDFDF;
+  --rainbow: linear-gradient(90deg, #F00, #F80, #FF0, #0F0, #0FF, #00F, #F0F, #F00);
+  --float-shadow: none;
+  --float-shadow-hover: none;
+  --ease: linear;
+  --stars: url(../images/90s/stars.gif);
+}
+
+.theme-90s *, .theme-90s *::before, .theme-90s *::after { border-radius: 0 !important; }
+html.theme-90s { background: #000018 var(--stars); }
+.theme-90s body { background: transparent; }
+.theme-90s body { cursor: crosshair; }
+.theme-90s a { cursor: pointer; }
+
+/* Everything readable sits in one big white table on the stars */
+.theme-90s .site-main {
+  width: min(100% - 16px, 1240px);
+  margin: 0 auto;
+  border: 6px ridge #C0C0C0;
+  background: #FFFFFF;
+  color: #000000;
+  font-family: var(--body);
+}
+.theme-90s .site-main a:not(.btn) { color: var(--link); text-decoration: underline; }
+.theme-90s .site-main a:not(.btn):visited { color: #551A8B; }
+.theme-90s .site-main a:not(.btn):hover { color: #FF0000; }
+.theme-90s :where(h1, h2, h3, h4, .h-sec, .statement, .card-title) {
+  font-family: var(--display);
+  letter-spacing: 0;
+}
+.theme-90s .h-sec {
+  color: #FF00FF;
+  text-shadow: 2px 2px 0 #00FFFF;
+}
+.theme-90s .h-sec::after, .theme-90s hr, .theme-90s .wp-block-separator {
+  display: block;
+  height: 6px;
+  margin-top: 10px;
+  border: 0;
+  background: url(../images/90s/rainbow.gif) repeat-x;
+  content: "";
+  opacity: 1;
+}
+
+/* Head: the stars, a rainbow logo and yellow links */
+.theme-90s .site-head, :root.theme-90s .head-floating .site-head.site-head {
+  border-bottom: 0;
+  background: #000018 var(--stars);
+  color: #FFFF00;
+}
+
+/* No hiding over article photos: a 90s page shows its links all the time */
+:root.theme-90s body:not(.head-floating) .site-head { position: relative; }
+:root.theme-90s .site-head :is(.nav, .bar > *) {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+.theme-90s .nav a, .theme-90s .search-btn {
+  color: #FFFF00 !important;
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 700;
+}
+.theme-90s .nav a:hover, .theme-90s .nav a[aria-current="page"] { color: #00FFFF !important; }
+.theme-90s .search-btn kbd { color: #000000; }
+.theme-90s .brand {
+  background: var(--rainbow) 0 0 / 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: Impact, "Arial Black", var(--display);
+  font-size: 30px;
+  letter-spacing: 2px;
+  animation: nn-rainbow 3s linear infinite;
+  filter: drop-shadow(2px 2px 0 #FF00FF);
+}
+.theme-90s .brand svg { color: #FFFF00; }
+@keyframes nn-rainbow {
+  to { background-position: 200% 0; }
+}
+
+/* Inserted by ninety.js: marquee, fire and the construction sign */
+.nn-top {
+  display: grid;
+  justify-items: center;
+  width: min(100% - 16px, 1240px);
+  margin: 12px auto 0;
+  gap: 6px;
+}
+.nn-marquee {
+  display: block;
+  width: 100%;
+  padding: 4px 0;
+  border: 3px inset #C0C0C0;
+  background: #000080;
+  color: #FFFF00;
+  font: 700 18px/1.3 var(--display);
+}
+.nn-fire {
+  width: 100%;
+  height: 36px;
+  background: url(../images/90s/flames.gif) repeat-x bottom;
+}
+.nn-construction { display: flex; align-items: center; gap: 12px; color: #FFFF00; font: 700 15px var(--display); }
+.nn-blink { animation: nn-blink 1s steps(1) infinite; }
+@keyframes nn-blink {
+  50% { visibility: hidden; }
+}
+
+/* Front page */
+.theme-90s .opening { padding-block: 72px; }
+.theme-90s .statement { color: #000080; font-size: clamp(36px, 5vw, 68px); }
+.theme-90s .statement em {
+  background: var(--rainbow) 0 0 / 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: nn-rainbow 4s linear infinite;
+  -webkit-text-stroke: 1px #000000;
+}
+.theme-90s .imprint, .theme-90s .meta-text, .theme-90s .muted { color: #404040; }
+
+/* Cards and panels as Windows 95 windows */
+.theme-90s :where(.card, .picks li, .now, .chart, .who-photos figure, .shelf-meta, .comment-body, .ai-summary, .callout, .gloss-card, .is-style-boxed) {
+  background: #C0C0C0;
+  box-shadow: var(--bevel);
+}
+.theme-90s .card { padding: 6px; border: 0; }
+.theme-90s .card-img { border: 2px inset #FFFFFF; }
+.theme-90s .card-body { padding: 8px 6px; }
+.theme-90s .posts .wp-block-query:first-child li:first-child .card-title a::after {
+  display: inline-block;
+  width: 52px;
+  height: 24px;
+  margin-left: 8px;
+  background: url(../images/90s/new.gif);
+  content: "";
+  vertical-align: middle;
+}
+.theme-90s .now { padding: 16px; }
+.theme-90s .now h2 {
+  margin: -16px -16px 12px;
+  padding: 3px 8px;
+  background: linear-gradient(90deg, #000080, #1084D0);
+  color: #FFFFFF;
+  font: 700 15px var(--gui);
+}
+
+/* Buttons and fields */
+.theme-90s .btn, .theme-90s button.btn, .theme-90s .loadmore a, .theme-90s .wp-block-button__link, .theme-90s input[type="submit"] {
+  border: 0;
+  background: #C0C0C0;
+  box-shadow: var(--bevel);
+  color: #000000;
+  font: 400 14px var(--gui);
+  text-decoration: none;
+}
+.theme-90s .btn:active { box-shadow: inset 2px 2px #404040, inset -2px -2px #FFFFFF; transform: none; }
+.theme-90s :where(input, textarea, select) { border: 2px inset #FFFFFF; background: #FFFFFF; color: #000000; font-family: var(--gui); }
+
+/* Article */
+.theme-90s .prose { font-family: var(--body); font-size: 19px; }
+.theme-90s .prose blockquote { border: 2px dashed #FF00FF; background: #FFFFCC; }
+.theme-90s .prose img { border: 3px ridge #C0C0C0; }
+
+/* Search window */
+.theme-90s .search-dialog .sbox { background: #C0C0C0; box-shadow: var(--bevel); color: #000000; }
+
+/* Foot on the stars */
+.theme-90s .site-foot {
+  margin-top: 24px;
+  border-top: 0;
+  background: transparent;
+  color: #00FF00;
+  font-family: var(--display);
+}
+.theme-90s .site-foot a:not(.btn) { color: #00FFFF; }
+.theme-90s .foot-base { border-top: 0; color: #FFFF00; }
+.theme-90s :is(.foot-line, .foot-stats) { color: #00FF00; }
+.theme-90s .foot-mark { color: #FFFF00; }
+.nn-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin-top: 32px;
+  gap: 10px;
+  color: #FFFFFF;
+  font: 700 15px var(--display);
+}
+.nn-foot img { display: inline-block; image-rendering: pixelated; }
+.nn-counter {
+  display: inline-flex;
+  padding: 2px;
+  gap: 2px;
+  border: 2px inset #C0C0C0;
+  background: #000000;
+}
+.nn-counter span {
+  width: 1.1em;
+  background: linear-gradient(#333, #000 50%, #222 50%, #111);
+  color: #00FF00;
+  font: 700 18px/1.4 "Courier New", monospace;
+  text-align: center;
+}
+.nn-foot-line { flex-basis: 100%; text-align: center; }
+
+/* The switch itself as Windows buttons */
+.theme-90s .themesw { padding: 2px; background: #C0C0C0; box-shadow: var(--bevel); }
+.theme-90s .themesw::before { display: none; }
+.theme-90s .themesw button { color: #000000; font: 400 14px var(--gui); }
+.theme-90s .themesw button[aria-pressed="true"] { box-shadow: inset 2px 2px #404040, inset -2px -2px #FFFFFF; background: #DFDFDF; }
+
+/* Cursor sparkles from ninety.js */
+.nn-spark {
+  position: fixed;
+  z-index: 9999;
+  width: 9px;
+  height: 9px;
+  background: currentColor;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  pointer-events: none;
+  animation: nn-fall .8s linear forwards;
+}
+@keyframes nn-fall {
+  to { opacity: 0; transform: translateY(28px) rotate(180deg) scale(.4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-90s *, .nn-blink { animation: none !important; }
+}
