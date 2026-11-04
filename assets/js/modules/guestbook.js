@@ -1,16 +1,18 @@
-import { $, config, getJson, reducedMotion } from 'theme/lib';
+import { $, $$, config, getJson, reducedMotion } from 'theme/lib';
 
 /**
- * Vieraskirja: entries on the pages of an open book, two to a page, and a
- * blank page where the visitor writes and signs. Everything a visitor wrote goes on the page as
- * text nodes and SVG numbers, never as markup.
+ * Vieraskirja: entries written one after another down the pages of an open
+ * book, as many as fit, and a blank page where the visitor writes or draws a
+ * greeting and signs. Everything a visitor sent goes on the page as text
+ * nodes and SVG numbers, never as markup.
  */
 const PAD_WIDTH = 600;
-const PAD_HEIGHT = 200;
+const PAD_HEIGHT = 360;
 const PAD_MIN_STEP = 3;
 const PAD_POINTS_MAX = 3000;
-const ENTRIES_PER_PAGE = 2;
 const SVG = 'http://www.w3.org/2000/svg';
+const WRITE_PAGE = 'write';
+const RELAYOUT_MS = 200;
 const singlePage = window.matchMedia('(max-width: 760px)');
 
 const book = $('[data-guestbook]');
@@ -19,13 +21,14 @@ const prev = $('[data-gb-prev]', book);
 const next = $('[data-gb-next]', book);
 const position = $('[data-gb-pos]', book);
 const form = $('[data-gb-form]', book);
-const pad = $('[data-gb-pad]', book);
 const status = $('[data-gb-status]', book);
 
 let entries = [];
+let pages = [];
 let loadedPages = 0;
 let totalPages = 1;
 let spreadIndex = 0;
+let loaded = false;
 
 const element = (tag, className, text) => {
   const node = document.createElement(tag);
@@ -36,10 +39,10 @@ const element = (tag, className, text) => {
   return node;
 };
 
-const signature = (strokes) => {
+const drawingSvg = (strokes, className) => {
   const svg = document.createElementNS(SVG, 'svg');
   svg.setAttribute('viewBox', `0 0 ${PAD_WIDTH} ${PAD_HEIGHT}`);
-  svg.setAttribute('class', 'gb-sign');
+  svg.setAttribute('class', className);
   svg.setAttribute('aria-hidden', 'true');
   strokes.forEach((stroke) => {
     const line = document.createElementNS(SVG, 'polyline');
@@ -53,33 +56,51 @@ const signature = (strokes) => {
   return svg;
 };
 
-const entryNode = ({ name, message, date, strokes }) => {
+const entryNode = ({ name, message, date, picture, strokes }) => {
   const entry = element('article', 'gb-entry');
   entry.append(element('p', 'gb-date', date));
   if (message) {
     entry.append(element('p', 'gb-message', message));
   }
-  if (strokes.length) {
-    entry.append(signature(strokes));
+  if (picture?.length) {
+    entry.append(drawingSvg(picture, 'gb-picture'));
+  }
+  if (strokes?.length) {
+    entry.append(drawingSvg(strokes, 'gb-sign'));
   }
   entry.append(element('p', 'gb-name', `– ${name}`));
   return entry;
 };
 
-const WRITE_PAGE = 'write';
 const pagesPerSpread = () => (singlePage.matches ? 1 : 2);
+
+// Entries run down a page until the next one no longer fits, then carry on to the next page
+const layOut = () => {
+  const gaps = getComputedStyle(spread);
+  const probe = element('div', 'gb-page gb-probe');
+  probe.style.width = `${(spread.clientWidth - parseFloat(gaps.paddingLeft) - parseFloat(gaps.paddingRight)) / pagesPerSpread()}px`;
+  spread.append(probe);
+
+  pages = [];
+  let page = [];
+  entries.forEach((entry) => {
+    probe.append(entryNode(entry));
+    if (page.length && probe.scrollHeight > probe.clientHeight) {
+      pages.push(page);
+      page = [];
+      probe.replaceChildren(entryNode(entry));
+    }
+    page.push(entry);
+  });
+  pages.push(page);
+  probe.remove();
+};
 
 // The book opens at the newest page with the blank page beside it, on a phone the blank page comes first
 const pageList = () => {
-  const pages = [];
-  for (let start = 0; start < entries.length; start += ENTRIES_PER_PAGE) {
-    pages.push(entries.slice(start, start + ENTRIES_PER_PAGE));
-  }
-  if (!pages.length) {
-    pages.push([]);
-  }
-  pages.splice(singlePage.matches ? 0 : 1, 0, WRITE_PAGE);
-  return pages;
+  const list = [ ...pages ];
+  list.splice(singlePage.matches ? 0 : 1, 0, WRITE_PAGE);
+  return list;
 };
 const spreadCount = () => Math.ceil(pageList().length / pagesPerSpread());
 
@@ -90,10 +111,15 @@ const loadMore = () => getJson(`guestbook?page=${loadedPages + 1}`).then((answer
 });
 
 const render = () => {
+  if (!loaded) {
+    return;
+  }
+  spread.removeAttribute('aria-busy');
+  layOut();
+  spreadIndex = Math.min(spreadIndex, spreadCount() - 1);
   spread.replaceChildren();
-  const pages = pageList().slice(spreadIndex * pagesPerSpread(), (spreadIndex + 1) * pagesPerSpread());
 
-  pages.forEach((page) => {
+  pageList().slice(spreadIndex * pagesPerSpread(), (spreadIndex + 1) * pagesPerSpread()).forEach((page) => {
     if (WRITE_PAGE === page) {
       spread.append(form);
       return;
@@ -116,7 +142,7 @@ const turn = (step) => {
   const target = spreadIndex + step;
   const ready = (target + 1) * pagesPerSpread() >= pageList().length && loadedPages < totalPages ? loadMore() : Promise.resolve();
   ready.then(() => {
-    spreadIndex = Math.max(0, Math.min(target, spreadCount() - 1));
+    spreadIndex = Math.max(0, target);
     spread.classList.remove('is-turning');
     if (!reducedMotion.matches) {
       void spread.offsetWidth;
@@ -128,86 +154,136 @@ const turn = (step) => {
 
 prev.addEventListener('click', () => turn(-1));
 next.addEventListener('click', () => turn(1));
-singlePage.addEventListener('change', () => {
-  spreadIndex = 0;
-  render();
-});
 
-// The signature pad keeps strokes in its own 600 × 200 space, whatever size it is drawn at
-const context = pad.getContext('2d');
-let strokes = [];
-let drawing = null;
-
-const padPoint = (event) => {
-  const rect = pad.getBoundingClientRect();
-  return [
-    Math.round((event.clientX - rect.left) / rect.width * PAD_WIDTH),
-    Math.round((event.clientY - rect.top) / rect.height * PAD_HEIGHT),
-  ];
-};
-
-const pointCount = () => strokes.reduce((sum, stroke) => sum + (stroke.length / 2), 0);
-
-pad.addEventListener('pointerdown', (event) => {
-  if (pointCount() >= PAD_POINTS_MAX) {
+let relayoutTimer;
+let lastWidth = 0;
+new ResizeObserver(() => {
+  if (spread.clientWidth === lastWidth) {
     return;
   }
-  if (!strokes.length) {
+  lastWidth = spread.clientWidth;
+  window.clearTimeout(relayoutTimer);
+  relayoutTimer = window.setTimeout(render, RELAYOUT_MS);
+}).observe(spread);
+
+/**
+ * A drawing pad: strokes in its own 600 × 360 space, whatever size it shows at.
+ * The page holds still under the pen.
+ */
+const makePad = (canvas, hint) => {
+  const context = canvas.getContext('2d');
+  let strokes = [];
+  let pen = null;
+
+  const point = (event) => {
+    const rect = canvas.getBoundingClientRect();
+    return [
+      Math.round((event.clientX - rect.left) / rect.width * PAD_WIDTH),
+      Math.round((event.clientY - rect.top) / rect.height * PAD_HEIGHT),
+    ];
+  };
+  const count = () => strokes.reduce((sum, stroke) => sum + (stroke.length / 2), 0);
+
+  const clear = () => {
+    strokes = [];
     context.clearRect(0, 0, PAD_WIDTH, PAD_HEIGHT);
-  }
-  pad.setPointerCapture(event.pointerId);
-  drawing = padPoint(event);
-  strokes.push([ ...drawing ]);
-  context.beginPath();
-  context.moveTo(...drawing);
-});
+    context.save();
+    context.fillStyle = getComputedStyle(form).getPropertyValue('--pencil');
+    context.globalAlpha = .55;
+    context.font = '40px Caveat, cursive';
+    context.textAlign = 'center';
+    context.fillText(hint, PAD_WIDTH / 2, PAD_HEIGHT / 2);
+    context.restore();
+  };
 
-pad.addEventListener('pointermove', (event) => {
-  if (!drawing || pointCount() >= PAD_POINTS_MAX) {
-    return;
-  }
-  const point = padPoint(event);
-  if (Math.hypot(point[0] - drawing[0], point[1] - drawing[1]) < PAD_MIN_STEP) {
-    return;
-  }
-  strokes[strokes.length - 1].push(...point);
-  context.lineTo(...point);
-  context.stroke();
-  drawing = point;
-});
+  [ 'touchstart', 'touchmove' ].forEach((type) => canvas.addEventListener(type, (event) => event.preventDefault(), { passive: false }));
 
-[ 'pointerup', 'pointercancel' ].forEach((type) => pad.addEventListener(type, () => {
-  drawing = null;
-}));
+  canvas.addEventListener('pointerdown', (event) => {
+    event.preventDefault();
+    if (count() >= PAD_POINTS_MAX) {
+      return;
+    }
+    if (!strokes.length) {
+      context.clearRect(0, 0, PAD_WIDTH, PAD_HEIGHT);
+    }
+    context.lineWidth = 4;
+    context.lineCap = 'round';
+    context.lineJoin = 'round';
+    context.strokeStyle = getComputedStyle(canvas).color;
+    canvas.setPointerCapture(event.pointerId);
+    canvas.classList.add('is-drawing');
+    pen = point(event);
+    strokes.push([ ...pen ]);
+    context.beginPath();
+    context.moveTo(...pen);
+  });
 
-const PAD_HINT = 'piirrä nimikirjoituksesi tähän';
+  canvas.addEventListener('pointermove', (event) => {
+    if (!pen || count() >= PAD_POINTS_MAX) {
+      return;
+    }
+    event.preventDefault();
+    const at = point(event);
+    if (Math.hypot(at[0] - pen[0], at[1] - pen[1]) < PAD_MIN_STEP) {
+      return;
+    }
+    strokes[strokes.length - 1].push(...at);
+    context.lineTo(...at);
+    context.stroke();
+    pen = at;
+  });
 
-const clearPad = () => {
-  strokes = [];
-  context.clearRect(0, 0, PAD_WIDTH, PAD_HEIGHT);
-  context.save();
-  context.fillStyle = getComputedStyle(form).getPropertyValue('--pencil');
-  context.globalAlpha = .55;
-  context.font = '34px Caveat, cursive';
-  context.fillText(PAD_HINT, 20, PAD_HEIGHT - 40);
-  context.restore();
+  [ 'pointerup', 'pointercancel' ].forEach((type) => canvas.addEventListener(type, () => {
+    pen = null;
+    canvas.classList.remove('is-drawing');
+  }));
+
+  return { clear, strokes: () => strokes.filter((stroke) => stroke.length >= 4) };
 };
 
-const setupPad = () => {
-  context.lineWidth = 3;
-  context.lineCap = 'round';
-  context.lineJoin = 'round';
-  context.strokeStyle = getComputedStyle(pad).color;
+// Each part, the greeting and the signature, is typed or drawn
+const parts = $$('[data-gb-part]', form).map((part) => {
+  const pad = makePad($('canvas', part), part.dataset.hint);
+  const setMode = (mode) => {
+    part.dataset.mode = mode;
+    $$('[data-gb-mode]', part).forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.gbMode === mode)));
+  };
+  $$('[data-gb-mode]', part).forEach((button) => button.addEventListener('click', () => setMode(button.dataset.gbMode)));
+  $('[data-gb-clear]', part).addEventListener('click', pad.clear);
+  setMode('type');
+  return { name: part.dataset.gbPart, part, pad, setMode };
+});
+const drawn = (name) => {
+  const found = parts.find((part) => part.name === name);
+  return 'draw' === found.part.dataset.mode ? found.pad.strokes() : [];
 };
 
-$('[data-gb-clear]', book).addEventListener('click', clearPad);
+const refuse = (field, message) => {
+  status.classList.remove('is-done');
+  status.textContent = message;
+  field.setAttribute('aria-invalid', 'true');
+  field.focus();
+};
+
+form.addEventListener('input', (event) => event.target.removeAttribute('aria-invalid'));
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   const data = new FormData(form);
+  const name = $('[name="name"]', form);
+  const message = $('[name="message"]', form);
+  if (!String(data.get('name')).trim()) {
+    refuse(name, 'Kirjoita vielä nimesi viivan perään.');
+    return;
+  }
+  if (!String(data.get('message')).trim() && !drawn('picture').length && !drawn('signature').length) {
+    refuse(message, 'Kirjoita tai piirrä vielä terveisesi.');
+    return;
+  }
   const button = $('button[type="submit"]', form);
   button.disabled = true;
   status.textContent = '';
+  status.classList.remove('is-done');
 
   fetch(`${config.rest}guestbook`, {
     method: 'POST',
@@ -216,7 +292,8 @@ form.addEventListener('submit', (event) => {
       name: data.get('name'),
       message: data.get('message'),
       website: data.get('website'),
-      strokes: strokes.filter((stroke) => stroke.length >= 4),
+      picture: drawn('picture'),
+      strokes: drawn('signature'),
     }),
   }).then((response) => response.json().then((answer) => {
     if (!response.ok) {
@@ -224,10 +301,14 @@ form.addEventListener('submit', (event) => {
     }
     entries.unshift(answer);
     spreadIndex = 0;
-    render();
     form.reset();
-    clearPad();
+    parts.forEach(({ pad, setMode }) => {
+      pad.clear();
+      setMode('type');
+    });
+    render();
     status.textContent = 'Kiitos! Merkintäsi on nyt kirjassa.';
+    status.classList.add('is-done');
     spread.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'center' });
   })).catch((error) => {
     status.textContent = error.message;
@@ -237,7 +318,12 @@ form.addEventListener('submit', (event) => {
 });
 
 form.hidden = false;
-document.fonts.load('34px Caveat').then(clearPad);
 $('[data-gb-today]', form).textContent = new Date().toLocaleDateString('fi-FI');
-setupPad();
-loadMore().then(render).catch(render);
+document.fonts.load('40px Caveat').then(() => {
+  parts.forEach(({ pad }) => pad.clear());
+  render();
+});
+loadMore().catch(() => {}).finally(() => {
+  loaded = true;
+  render();
+});

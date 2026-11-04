@@ -11,6 +11,8 @@
   --paper-line: #DCE3EE;
   --pen: #1D3B8F;
   --pencil: #6B6F80;
+  --ink-red: #B3261E;
+  --page-h: 640px;
   display: grid;
   width: min(100% - (2 * var(--pad)), var(--wrap));
   margin: 0 auto 120px;
@@ -24,6 +26,7 @@
 }
 .gb-spread {
   display: grid;
+  position: relative;
   grid-template-columns: 1fr 1fr;
   padding: 14px;
   border-radius: 10px;
@@ -31,7 +34,7 @@
   box-shadow: 0 24px 60px rgb(0 0 0 / .22);
 }
 .gb-page {
-  min-height: 560px;
+  min-height: var(--page-h);
   padding: 44px 44px 48px;
   background: var(--paper) repeating-linear-gradient(transparent 0 35px, var(--paper-line) 35px 36px);
   line-height: 36px;
@@ -47,6 +50,34 @@
   box-shadow: inset 26px 0 30px -24px rgb(0 0 0 / .35);
 }
 .gb-page:only-child { border-radius: 4px; }
+
+/* The layout pass measures pages on an unseen one of the same size (js/modules/guestbook.js) */
+.gb-probe {
+  position: absolute;
+  height: var(--page-h);
+  min-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+/* Until the entries arrive, pencil lines where the writing will be */
+.gb-skeleton {
+  display: grid;
+  align-content: start;
+  gap: 22px;
+}
+.gb-skeleton i {
+  width: 78%;
+  height: 14px;
+  border-radius: 7px;
+  background: color-mix(in oklab, var(--pencil) 16%, transparent);
+  animation: gb-wait 1.4s ease-in-out infinite alternate;
+}
+.gb-skeleton i:nth-child(3n + 2) { width: 56%; }
+.gb-skeleton i:nth-child(3n) { width: 32%; margin-bottom: 30px; justify-self: end; }
+@keyframes gb-wait {
+  to { opacity: .45; }
+}
 .gb-spread.is-turning .gb-page { animation: gb-turn .45s var(--ease); }
 @keyframes gb-turn {
   from {
@@ -66,16 +97,31 @@
   font-size: 26px;
   overflow-wrap: anywhere;
 }
-.gb-sign {
+.gb-picture {
   display: block;
-  width: auto;
-  max-width: 100%;
-  height: 72px;
+  width: 100%;
+  height: auto;
+  margin: 6px 0;
   fill: none;
   stroke: var(--pen);
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 4;
+}
+.gb-sign {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 108px;
+  fill: none;
+  stroke: var(--pen);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 4;
+}
+.gb-entry:not(:has(.gb-sign)) .gb-name {
+  font-size: 38px;
+  line-height: 72px;
 }
 .gb-name {
   margin: 0;
@@ -111,17 +157,63 @@
   resize: none;
 }
 .gb-ink::placeholder { color: var(--pencil); opacity: .7; }
-.gb-ink:focus { outline: 0; }
-.gb-ink:focus-visible, .gb-pad:focus-visible { outline: 2px dashed var(--pencil); outline-offset: 4px; }
+.gb-ink:focus {
+  border-radius: 4px;
+  outline: 2px dashed var(--pencil);
+  outline-offset: 6px;
+}
 textarea.gb-ink { height: 180px; }
+.gb-ink[aria-invalid="true"] { outline: 2px dashed var(--ink-red); outline-offset: 6px; }
+.gb-part {
+  display: grid;
+  margin-bottom: 20px;
+}
+.gb-modes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  margin: 0;
+  gap: 4px 14px;
+  color: var(--pencil);
+  font: 21px / 36px "Caveat", cursive;
+}
+.gb-modes button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--pencil);
+  font: inherit;
+  cursor: pointer;
+}
+.gb-modes [aria-pressed="true"] {
+  color: var(--pen);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Drawn: a big pad with a dashed edge, darker while the pen is down; it holds still under the pen */
 .gb-pad {
   display: block;
   width: 100%;
   height: auto;
-  margin-top: 0;
+  margin: 8px 0 12px;
+  border: 2px dashed color-mix(in oklab, var(--pencil) 45%, transparent);
+  border-radius: 6px;
   color: var(--pen);
   cursor: crosshair;
   touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.gb-pad.is-drawing { border-color: var(--pen); }
+[data-mode="type"] .gb-pad, [data-mode="type"] .gb-clear, [data-mode="draw"] textarea { display: none; }
+.gb-modes .gb-clear { margin-left: auto; }
+
+/* Typed: the name itself is the signature, large in the handwriting */
+[data-mode="type"] .gb-signed { justify-content: flex-start; }
+[data-mode="type"] .gb-signed, [data-mode="type"] .gb-signed .gb-ink {
+  font-size: 44px;
+  line-height: 72px;
 }
 .gb-signed {
   display: flex;
@@ -141,22 +233,16 @@ textarea.gb-ink { height: 180px; }
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  justify-content: space-between;
-  margin: 36px 0 0;
+  justify-content: flex-end;
+  margin: 16px 0 0;
   gap: 12px;
 }
-.gb-pencil, .gb-submit {
+.gb-submit {
   padding: 0;
   border: 0;
   background: none;
   font-family: "Caveat", cursive;
   cursor: pointer;
-}
-.gb-pencil {
-  color: var(--pencil);
-  font-size: 21px;
-}
-.gb-submit {
   color: var(--pen);
   font-size: 28px;
   font-weight: 700;
@@ -167,9 +253,11 @@ textarea.gb-ink { height: 180px; }
 .gb-submit:disabled { opacity: .5; }
 .gb-status {
   margin: 0;
-  color: var(--pencil);
-  font-size: 22px;
+  color: var(--ink-red);
+  font-size: 24px;
+  text-align: right;
 }
+.gb-status.is-done { color: var(--pen); }
 .gb-status:empty { display: none; }
 
 /* Hidden from people, filled in only by bots */
@@ -186,11 +274,13 @@ textarea.gb-ink { height: 180px; }
     grid-template-columns: 1fr;
     padding: 8px;
   }
-  .gb-page {
-    min-height: 0;
-    padding: 30px 24px 34px;
-  }
+  .guestbook { --page-h: 520px; }
+  .gb-page { padding: 30px 24px 34px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .gb-spread.is-turning .gb-page { animation: none; }
+  .gb-spread.is-turning .gb-page, .gb-skeleton i { animation: none; }
 }
+
+/* The intro is the page's own text, with links */
+.page-hero .intro p { margin: 0; }
+.page-hero .intro a { color: var(--accent); }
