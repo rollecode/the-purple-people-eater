@@ -285,16 +285,8 @@ html.theme-90s { background: #000018 var(--stars); }
 .theme-90s .themesw button { color: #000000; font: 400 14px var(--gui); }
 .theme-90s .themesw button[aria-pressed="true"] { box-shadow: inset 2px 2px #404040, inset -2px -2px #FFFFFF; background: #DFDFDF; }
 
-/* The cursor trail from ninety.js */
-.theme-90s .nn-dot {
-  position: fixed;
-  z-index: 9999;
-  top: 0;
-  left: 0;
-  border-radius: 50% !important;
-  background: currentColor;
-  pointer-events: none;
-}
+/* The clock cursor's canvas from ninety.js, above everything */
+.theme-90s body > canvas { z-index: 9999; }
 
 @media (prefers-reduced-motion: reduce) {
   .theme-90s *, .nn-blink { animation: none !important; }

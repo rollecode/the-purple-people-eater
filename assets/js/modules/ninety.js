@@ -2,17 +2,23 @@ import { ASSETS_URL, $, getJson, reducedMotion } from 'theme/lib';
 
 /**
  * The 90s theme's extras: marquee, fire, construction sign, buttons, a visit
- * counter and a cursor trail. Loaded by theme-switch only while it is chosen.
+ * counter and a clock that follows the cursor. Loaded by theme-switch only while it is chosen.
  */
 
 const GIFS = `${ASSETS_URL}images/90s/`;
 const COUNTER_DIGITS = 7;
 const VISITORS_EVERY_MS = 30000;
-const TRAIL_COLOURS = [ '#F00', '#F80', '#FF0', '#0F0', '#0FF', '#00F', '#F0F' ];
-const TRAIL_DOTS = 12;
-const TRAIL_TICK_MS = 40;
-// The dots sit just below the pointer, so the arrow stays visible
-const TRAIL_OFFSET_PX = 12;
+// Tim Holman's clock cursor from cursor-effects, loaded only for the 90s theme
+const CLOCK_OPTIONS = {
+  dateColor: '#FF8800',
+  faceColor: '#FF00FF',
+  secondsColor: '#FF0000',
+  minutesColor: '#0088FF',
+  hoursColor: '#00AA00',
+  theDays: [ 'sunnuntai', 'maanantai', 'tiistai', 'keskiviikko', 'torstai', 'perjantai', 'lauantai' ],
+  theMonths: [ 'tammikuuta', 'helmikuuta', 'maaliskuuta', 'huhtikuuta', 'toukokuuta', 'kesäkuuta', 'heinäkuuta', 'elokuuta', 'syyskuuta', 'lokakuuta', 'marraskuuta', 'joulukuuta' ],
+};
+const CURSOR_EFFECTS_URL = `${ASSETS_URL}vendor/cursor-effects-1.0.18/cursor-effects.js`;
 
 const WIKI = 'https://fi.wikipedia.org/wiki/';
 const BADGES = [
@@ -35,7 +41,7 @@ const footHtml = () => `<p class="nn-foot-line">Sivulla on käynyt <span class="
 <p class="nn-foot-line">${BADGES.map(([ name, alt, article ]) => `<a href="${WIKI}${article}">${gif(name, alt, 88, 31)}</a>`).join(' ')}</p>`;
 
 let added = [];
-let trail = null;
+let clock = null;
 let hoverRules = [];
 
 let renamed = [];
@@ -102,52 +108,15 @@ const unhoverLate = (event) => {
   }
 };
 
-// The classic cursor trail script: on every tick each dot takes the place of the one ahead of it
-const startTrail = () => {
-  const mouse = { x: 0, y: 0 };
-  const dots = Array.from({ length: TRAIL_DOTS }, (_, index) => {
-    const size = TRAIL_DOTS - index + 4;
-    const element = document.createElement('i');
-    element.className = 'nn-dot';
-    element.ariaHidden = 'true';
-    element.hidden = true;
-    element.style.cssText = `width:${size}px;height:${size}px;margin:${-size / 2}px 0 0 ${-size / 2}px;color:${TRAIL_COLOURS[index % TRAIL_COLOURS.length]}`;
-    document.body.append(element);
-    return { element, x: 0, y: 0 };
-  });
-
-  const move = (event) => {
-    if ('mouse' !== event.pointerType) {
-      return;
-    }
-    mouse.x = event.clientX + TRAIL_OFFSET_PX;
-    mouse.y = event.clientY + TRAIL_OFFSET_PX;
-  };
-
-  const tick = () => {
-    for (let index = dots.length - 1; index > 0; index--) {
-      Object.assign(dots[index], { x: dots[index - 1].x, y: dots[index - 1].y });
-    }
-    Object.assign(dots[0], mouse);
-    const resting = dots.every(({ x, y }) => x === mouse.x && y === mouse.y);
-    dots.forEach(({ element, x, y }) => {
-      element.hidden = resting || (!x && !y);
-      element.style.transform = `translate(${x}px, ${y}px)`;
-    });
-  };
-
-  document.addEventListener('pointermove', move, { passive: true });
-  trail = { dots, move, timer: window.setInterval(tick, TRAIL_TICK_MS) };
-};
-
-const stopTrail = () => {
-  if (!trail) {
-    return;
+const startClock = () => import(CURSOR_EFFECTS_URL).then(({ clockCursor }) => {
+  if (added.length && !clock) {
+    clock = clockCursor(CLOCK_OPTIONS);
   }
-  window.clearInterval(trail.timer);
-  document.removeEventListener('pointermove', trail.move);
-  trail.dots.forEach(({ element }) => element.remove());
-  trail = null;
+});
+
+const stopClock = () => {
+  clock?.destroy();
+  clock = null;
 };
 
 const add = (where, position, className, html) => {
@@ -176,7 +145,7 @@ const on = () => {
   visitorsTimer = window.setInterval(showVisitors, VISITORS_EVERY_MS);
 
   if (!reducedMotion.matches) {
-    startTrail();
+    startClock();
   }
 };
 
@@ -184,7 +153,7 @@ const off = () => {
   window.clearInterval(visitorsTimer);
   added.forEach((element) => element.remove());
   added = [];
-  stopTrail();
+  stopClock();
   document.removeEventListener('load', unhoverLate, true);
   hoverRules.forEach(([ rule, selector ]) => {
     rule.selectorText = selector;
