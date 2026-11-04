@@ -1,7 +1,7 @@
 /* The 90s theme: loaded only when chosen in the footer, with js/modules/ninety.js */
 :root.theme-90s {
   color-scheme: light;
-  --ground: #000018;
+  --ground: #FFFFFF;
   --surface: #C0C0C0;
   --tint: #FFFFCC;
   --soft: #C0C0C0;
@@ -27,7 +27,7 @@
   --float-shadow: none;
   --float-shadow-hover: none;
   --ease: linear;
-  --stars: url(../images/90s/starfield.gif);
+  --stars: url(../images/90s/starfield-slow.gif);
 }
 
 .theme-90s *, .theme-90s *::before, .theme-90s *::after { border-radius: 0 !important; }
@@ -47,7 +47,7 @@ html.theme-90s { background: #000018 var(--stars); }
 }
 .theme-90s .site-main a:not(.btn) { color: var(--link); text-decoration: underline; }
 .theme-90s .site-main a:not(.btn):visited { color: #551A8B; }
-.theme-90s .site-main a:not(.btn):hover { color: #FF0000; }
+.theme-90s a:not(.btn):active { color: #FF0000 !important; }
 .theme-90s :where(h1, h2, h3, h4, .h-sec, .statement, .card-title) {
   font-family: var(--display);
   letter-spacing: 0;
@@ -73,8 +73,38 @@ html.theme-90s { background: #000018 var(--stars); }
   color: #FFFF00;
 }
 
+/* A frameset: the head is the left frame, the page scrolls in the right one */
+:root.theme-90s, .theme-90s .site-head { scrollbar-color: #C0C0C0 #DFDFDF; }
+:root.theme-90s body .wp-site-blocks.wp-site-blocks { padding-top: 0; }
+:root.theme-90s .rain-wrapper { inset-inline: 0; width: auto; }
+@media (min-width: 861px) {
+  :root.theme-90s body .wp-site-blocks.wp-site-blocks { padding-left: 206px; }
+  :root.theme-90s body .site-head.site-head {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 206px;
+    overflow-y: auto;
+    border-right: 6px outset #C0C0C0;
+    opacity: 1;
+    transform: none;
+    transition: none;
+    visibility: visible;
+  }
+  :root.theme-90s body .site-head .bar.bar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 16px;
+    gap: 20px;
+  }
+  :root.theme-90s .site-head .brand { order: -1; font-size: 24px; }
+  :root.theme-90s .site-head .nav .wp-block-navigation__container { flex-direction: column; align-items: flex-start; gap: 2px; }
+}
+
 /* No hiding over article photos: a 90s page shows its links all the time */
-:root.theme-90s body:not(.head-floating) .site-head { position: relative; }
+@media (max-width: 860px) {
+  :root.theme-90s body .site-head.site-head { position: relative; opacity: 1; transform: none; visibility: visible; }
+}
 :root.theme-90s .site-head :is(.nav, .bar > *) {
   opacity: 1 !important;
   pointer-events: auto !important;
@@ -85,7 +115,7 @@ html.theme-90s { background: #000018 var(--stars); }
   font-size: 17px;
   font-weight: 700;
 }
-.theme-90s .nav a:hover, .theme-90s .nav a[aria-current="page"] { color: #00FFFF !important; }
+.theme-90s .nav a[aria-current="page"] { color: #00FFFF !important; }
 .theme-90s .search-btn kbd { color: #000000; }
 .theme-90s .brand {
   background: var(--rainbow) 0 0 / 200% 100%;
@@ -126,6 +156,8 @@ html.theme-90s { background: #000018 var(--stars); }
   background: url(../images/90s/flames-bar.gif) repeat-x bottom;
 }
 .nn-construction { display: flex; align-items: center; gap: 12px; color: #FFFF00; font: 700 15px var(--display); }
+.nn-sign { display: grid; gap: 2px; }
+.nn-sign b { color: #FF8800; font: 700 26px Impact, "Arial Black", var(--display); letter-spacing: 1px; }
 .nn-blink { animation: nn-blink 1s steps(1) infinite; }
 @keyframes nn-blink {
   50% { visibility: hidden; }
@@ -142,7 +174,7 @@ html.theme-90s { background: #000018 var(--stars); }
   animation: nn-rainbow 4s linear infinite;
   -webkit-text-stroke: 1px #000000;
 }
-.theme-90s .imprint, .theme-90s .meta-text, .theme-90s .muted { color: #404040; }
+.theme-90s :is(.imprint, .meta-text, .muted):not(.article-head:has(> figure) *) { color: #404040; }
 
 /* Cards and panels as Windows 95 windows */
 .theme-90s :where(.card, .picks li, .now, .chart, .who-photos figure, .shelf-meta, .comment-body, .ai-summary, .callout, .gloss-card, .is-style-boxed) {
@@ -150,8 +182,10 @@ html.theme-90s { background: #000018 var(--stars); }
   box-shadow: var(--bevel);
 }
 .theme-90s .card { padding: 6px; border: 0; }
+.theme-90s .chart { padding: 0 16px; }
+.theme-90s .chart li:last-child { border-bottom: 0; }
 .theme-90s .card-img { border: 2px inset #FFFFFF; }
-.theme-90s .card-body { padding: 8px 6px; }
+.theme-90s .card-body { padding: 10px 12px; }
 .theme-90s .posts .wp-block-query:first-child li:first-child .card-title a::after {
   display: inline-block;
   width: 40px;
@@ -179,12 +213,28 @@ html.theme-90s { background: #000018 var(--stars); }
   font: 400 14px var(--gui);
   text-decoration: none;
 }
-.theme-90s .btn:active { box-shadow: inset 2px 2px #404040, inset -2px -2px #FFFFFF; transform: none; }
+.theme-90s :is(.btn, .loadmore a, .wp-block-button__link, input[type="submit"], .themesw button):active {
+  box-shadow: inset 2px 2px #404040, inset -2px -2px #FFFFFF, inset 3px 3px #808080;
+  transform: none;
+}
 .theme-90s :where(input, textarea, select) { border: 2px inset #FFFFFF; background: #FFFFFF; color: #000000; font-family: var(--gui); }
+.theme-90s .copyfield { padding: 0; gap: 6px; border: 0; background: none; }
+.theme-90s .copyfield:focus-within { outline: 1px dotted #000000; }
+.theme-90s .copyfield .copybox {
+  height: 32px;
+  padding: 0 6px;
+  border: 2px solid;
+  border-color: #808080 #FFFFFF #FFFFFF #808080;
+  box-shadow: inset 1px 1px #000000;
+  background: #FFFFFF;
+  color: #000000;
+  font: 14px "Courier New", monospace;
+}
+.theme-90s .copyfield .btn { min-height: 32px; padding: 0 12px; }
 
 /* Article */
 .theme-90s .prose { font-family: var(--body); font-size: 19px; }
-.theme-90s .prose blockquote { border: 2px dashed #FF00FF; background: #FFFFCC; }
+.theme-90s .prose blockquote { padding: 16px 20px; border: 2px dashed #FF00FF; background: #FFFFCC; }
 .theme-90s .prose img { border: 3px ridge #C0C0C0; }
 
 /* Search window */
@@ -240,15 +290,14 @@ html.theme-90s { background: #000018 var(--stars); }
 .nn-spark {
   position: fixed;
   z-index: 9999;
-  width: 9px;
-  height: 9px;
-  background: currentColor;
-  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  font: 700 var(--size) / 1 Arial, sans-serif;
+  text-shadow: 0 0 6px currentColor, 0 0 2px #FFFFFF;
   pointer-events: none;
-  animation: nn-fall .8s linear forwards;
+  translate: -50% -50%;
+  animation: nn-fall 1.3s ease-out forwards;
 }
 @keyframes nn-fall {
-  to { opacity: 0; transform: translateY(28px) rotate(180deg) scale(.4); }
+  to { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--spin)) scale(.3); }
 }
 
 @media (prefers-reduced-motion: reduce) {
