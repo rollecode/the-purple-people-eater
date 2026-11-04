@@ -1,4 +1,4 @@
-import { ASSETS_URL, $, store, reducedMotion } from 'theme/lib';
+import { ASSETS_URL, $, getJson, reducedMotion } from 'theme/lib';
 
 /**
  * The 90s theme's extras: marquee, fire, construction sign, buttons, a visit
@@ -6,8 +6,7 @@ import { ASSETS_URL, $, store, reducedMotion } from 'theme/lib';
  */
 
 const GIFS = `${ASSETS_URL}images/90s/`;
-const VISITS_KEY = 'nn-visits';
-const COUNTER_DIGITS = 6;
+const COUNTER_DIGITS = 7;
 const SPARK_COLOURS = [ '#FF0', '#0FF', '#F0F', '#FFF', '#0F0' ];
 const SPARK_EVERY_MS = 40;
 
@@ -15,11 +14,13 @@ const gif = (name, alt, width, height) => `<img src="${GIFS}${name}.gif" alt="${
 
 const topHtml = () => `<div class="nn-fire" aria-hidden="true"></div>
 <marquee class="nn-marquee" scrollamount="6">★ Tervetuloa Rollemaan kotisivulle!!! ★ Lisää sivu suosikkeihin! ★ Tämä sivu on päivitetty ${new Date().toLocaleDateString('fi-FI')} ★ Kiitos käynnistä! ★</marquee>
-<p class="nn-construction">${gif('construction', 'Rakenteilla', 150, 46)}<span class="nn-blink">Sivu on aina rakenteilla!!!</span></p>`;
+<p class="nn-construction">${gif('construction-guy', 'Rakenteilla', 100, 113)}<span class="nn-blink">Sivu on aina rakenteilla!!!</span></p>`;
 
-const footHtml = (visits) => `<p class="nn-foot-line">Olet käynyt täällä <span class="nn-counter" role="img" aria-label="${visits} kertaa">${String(visits).padStart(COUNTER_DIGITS, '0').split('').map((digit) => `<span>${digit}</span>`).join('')}</span> kertaa</p>
-<a href="https://mementomori.social/@rolle">${gif('mail', '', 34, 24)} Lähetä sähköpostia! (eli Mastodonissa)</a>
-<p class="nn-foot-line">${gif('badge-800', 'Paras 800 × 600', 88, 31)} ${gif('badge-netscape', 'Netscape now!', 88, 31)} ${gif('badge-notepad', 'Tehty Notepadilla', 88, 31)} ${gif('badge-html', 'HTML 3.2', 88, 31)}</p>`;
+const counterHtml = (visitors) => String(visitors).padStart(COUNTER_DIGITS, '0').split('').map((digit) => `<span>${digit}</span>`).join('');
+
+const footHtml = () => `<p class="nn-foot-line">Sivulla on käynyt <span class="nn-counter" role="img" aria-label="Kävijämäärä">${counterHtml(0)}</span> kävijää</p>
+<a href="mailto:rolle@dude.fi">${gif('mail-letter', '', 45, 52)} Lähetä sähköpostia!</a>
+<p class="nn-foot-line">${gif('best-800x600', 'Best viewed 800 × 600', 88, 31)} ${gif('netscape-now', 'Netscape Now!', 88, 31)} ${gif('notepad', 'Built with Microsoft Notepad', 88, 31)} ${gif('valid-html32', 'W3C HTML 3.2', 88, 31)}</p>`;
 
 let added = [];
 let lastSpark = 0;
@@ -53,11 +54,16 @@ const on = () => {
     return;
   }
 
-  const visits = (store.get(VISITS_KEY) || 0) + 1;
-  store.set(VISITS_KEY, visits);
-
   add($('.site-main'), 'beforebegin', 'nn-top', topHtml());
-  add($('.foot-base'), 'beforebegin', 'nn-foot', footHtml(visits));
+  add($('.foot-base'), 'beforebegin', 'nn-foot', footHtml());
+  getJson('visitors').then(({ visitors }) => {
+    const counter = $('.nn-counter');
+    if (!visitors || !counter) {
+      return;
+    }
+    counter.innerHTML = counterHtml(visitors);
+    counter.setAttribute('aria-label', `${visitors} kävijää`);
+  }).catch(() => {});
 
   if (!reducedMotion.matches) {
     document.addEventListener('pointermove', spark, { passive: true });

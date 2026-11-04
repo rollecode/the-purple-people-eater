@@ -27,7 +27,7 @@
   --float-shadow: none;
   --float-shadow-hover: none;
   --ease: linear;
-  --stars: url(../images/90s/stars.gif);
+  --stars: url(../images/90s/starfield.gif);
 }
 
 .theme-90s *, .theme-90s *::before, .theme-90s *::after { border-radius: 0 !important; }
@@ -61,7 +61,7 @@ html.theme-90s { background: #000018 var(--stars); }
   height: 6px;
   margin-top: 10px;
   border: 0;
-  background: url(../images/90s/rainbow.gif) repeat-x;
+  background: url(../images/90s/rainbow-line.gif) 0 0 / 100% 100%;
   content: "";
   opacity: 1;
 }
@@ -122,8 +122,8 @@ html.theme-90s { background: #000018 var(--stars); }
 }
 .nn-fire {
   width: 100%;
-  height: 36px;
-  background: url(../images/90s/flames.gif) repeat-x bottom;
+  height: 50px;
+  background: url(../images/90s/flames-bar.gif) repeat-x bottom;
 }
 .nn-construction { display: flex; align-items: center; gap: 12px; color: #FFFF00; font: 700 15px var(--display); }
 .nn-blink { animation: nn-blink 1s steps(1) infinite; }
@@ -154,10 +154,10 @@ html.theme-90s { background: #000018 var(--stars); }
 .theme-90s .card-body { padding: 8px 6px; }
 .theme-90s .posts .wp-block-query:first-child li:first-child .card-title a::after {
   display: inline-block;
-  width: 52px;
-  height: 24px;
+  width: 40px;
+  height: 30px;
   margin-left: 8px;
-  background: url(../images/90s/new.gif);
+  background: url(../images/90s/new-burst.gif);
   content: "";
   vertical-align: middle;
 }
@@ -213,6 +213,7 @@ html.theme-90s { background: #000018 var(--stars); }
   font: 700 15px var(--display);
 }
 .nn-foot img { display: inline-block; image-rendering: pixelated; }
+.nn-foot > a { display: inline-flex; align-items: center; gap: 8px; }
 .nn-counter {
   display: inline-flex;
   padding: 2px;
