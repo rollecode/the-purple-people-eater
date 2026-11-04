@@ -31,10 +31,11 @@ const STYLES = [
   'prose'     => [ 'single', 'single-diary', 'archive-diary', 'page', 'template-info', 'template-no-title' ],
   'diary'     => [ 'archive-diary', 'single-diary' ],
   'heatmap'   => [ 'archive-diary' ],
-  'pages'     => [ 'page', 'template-info', 'template-no-title', 'page-all', 'page-archive' ],
+  'pages'     => [ 'page', 'template-info', 'template-no-title', 'page-all', 'page-archive', 'page-vieraskirja' ],
   'masthead'  => [ 'template-info' ],
   'notfound'  => [ '404' ],
   'bigsearch' => [ 'search', '404' ],
+  'guestbook' => [ 'page-vieraskirja' ],
 ];
 
 // Only needed once someone opens search or hovers the logo, so they never hold up the page

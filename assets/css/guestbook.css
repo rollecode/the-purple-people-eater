@@ -1,0 +1,167 @@
+/* Vieraskirja: an open book of handwritten entries, and the form to write one (js/modules/guestbook.js) */
+@font-face {
+  font-family: "Caveat";
+  font-display: swap;
+  font-weight: 400 700;
+  src: url(../fonts/Caveat-latin.woff2) format("woff2");
+}
+
+.guestbook {
+  --paper: #FBF7EC;
+  --paper-line: #DCE3EE;
+  --pen: #1D3B8F;
+  --pencil: #6B6F80;
+  display: grid;
+  width: min(100% - (2 * var(--pad)), var(--wrap));
+  margin: 0 auto 120px;
+  gap: 72px;
+}
+
+/* The book: two pages on cloth covers, the spine shaded in the middle */
+.gb-book {
+  display: grid;
+  gap: 20px;
+}
+.gb-spread {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 14px;
+  border-radius: 10px;
+  background: var(--deep);
+  box-shadow: 0 24px 60px rgb(0 0 0 / .22);
+}
+.gb-page {
+  min-height: 560px;
+  padding: 44px 44px 48px;
+  background: var(--paper) repeating-linear-gradient(transparent 0 35px, var(--paper-line) 35px 36px);
+  line-height: 36px;
+  color: var(--pen);
+  font-family: "Caveat", cursive;
+}
+.gb-page:first-child {
+  border-radius: 4px 0 0 4px;
+  box-shadow: inset -26px 0 30px -24px rgb(0 0 0 / .35);
+}
+.gb-page:last-child {
+  border-radius: 0 4px 4px 0;
+  box-shadow: inset 26px 0 30px -24px rgb(0 0 0 / .35);
+}
+.gb-page:only-child { border-radius: 4px; }
+.gb-spread.is-turning .gb-page { animation: gb-turn .45s var(--ease); }
+@keyframes gb-turn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.gb-entry + .gb-entry { margin-top: 36px; }
+.gb-date {
+  margin: 0;
+  color: var(--pencil);
+  font-size: 19px;
+}
+.gb-message {
+  margin: 0;
+  font-size: 26px;
+  overflow-wrap: anywhere;
+}
+.gb-sign {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 72px;
+  fill: none;
+  stroke: var(--pen);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 4;
+}
+.gb-name {
+  margin: 0;
+  font-size: 27px;
+  text-align: right;
+}
+.gb-empty {
+  margin: 0;
+  color: var(--pencil);
+  font-size: 27px;
+}
+
+.gb-turn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.gb-turn .btn[disabled] { visibility: hidden; }
+.gb-turn [data-gb-pos] { white-space: nowrap; }
+
+/* The form */
+.gb-form {
+  display: grid;
+  max-width: 640px;
+  gap: 20px;
+}
+.gb-form h2 { margin: 0; }
+.gb-field {
+  display: grid;
+  gap: 8px;
+}
+.gb-field > span { font-weight: 600; }
+.gb-field :is(input, textarea) {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--field-line);
+  border-radius: 10px;
+  background: var(--field);
+  color: var(--ink);
+  font: inherit;
+}
+.gb-field textarea { resize: vertical; }
+.gb-pad {
+  width: 100%;
+  height: auto;
+  border: 1px dashed var(--field-line);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--pen);
+  cursor: crosshair;
+  touch-action: none;
+}
+.gb-field .textlink {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.gb-form > .btn { justify-self: start; }
+.gb-status {
+  margin: 0;
+  font-weight: 600;
+}
+.gb-status:empty { display: none; }
+
+/* Hidden from people, filled in only by bots */
+.gb-trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+@media (max-width: 760px) {
+  .gb-spread {
+    grid-template-columns: 1fr;
+    padding: 8px;
+  }
+  .gb-page {
+    min-height: 0;
+    padding: 30px 24px 34px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gb-spread.is-turning .gb-page { animation: none; }
+}
