@@ -1,10 +1,11 @@
-import { $, $$, config, getJson, reducedMotion } from 'theme/lib';
+import { $, $$, config, getJson, store, reducedMotion } from 'theme/lib';
 
 /**
  * Vieraskirja: entries written one after another down the pages of an open
  * book, as many as fit, and a blank page where the visitor writes or draws a
- * greeting and signs. Everything a visitor sent goes on the page as text
- * nodes and SVG numbers, never as markup.
+ * greeting and signs. One entry per visitor, which its writer can edit for
+ * 30 days with the key their browser keeps. Everything a visitor sent goes on
+ * the page as text nodes and SVG numbers, never as markup.
  */
 const PAD_WIDTH = 600;
 const PAD_HEIGHT = 360;
@@ -13,13 +14,13 @@ const PAD_POINTS_MAX = 3000;
 const SVG = 'http://www.w3.org/2000/svg';
 const WRITE_PAGE = 'write';
 const RELAYOUT_MS = 200;
+const OWN_KEY = 'rollemaa:guestbook';
 const singlePage = window.matchMedia('(max-width: 760px)');
 
 const book = $('[data-guestbook]');
 const spread = $('[data-gb-spread]', book);
-const prev = $('[data-gb-prev]', book);
-const next = $('[data-gb-next]', book);
-const position = $('[data-gb-pos]', book);
+const TURN_MS = 650;
+const SWIPE_PX = 60;
 const form = $('[data-gb-form]', book);
 const status = $('[data-gb-status]', book);
 
@@ -29,6 +30,7 @@ let loadedPages = 0;
 let totalPages = 1;
 let spreadIndex = 0;
 let loaded = false;
+let own = store.get(OWN_KEY);
 
 const element = (tag, className, text) => {
   const node = document.createElement(tag);
@@ -68,7 +70,7 @@ const entryNode = ({ name, message, date, picture, strokes }) => {
   if (strokes?.length) {
     entry.append(drawingSvg(strokes, 'gb-sign'));
   }
-  entry.append(element('p', 'gb-name', `– ${name}`));
+  entry.append(element('p', 'gb-name', name));
   return entry;
 };
 
@@ -132,28 +134,86 @@ const render = () => {
     spread.append(sheet);
   });
 
+  // Page numbers at the foot, and folded outer corners to turn the page
+  $$('.gb-folio, .gb-corner', spread).forEach((node) => node.remove());
+  const sheets = [ ...spread.children ];
+  const first = spreadIndex * pagesPerSpread();
+  sheets.forEach((sheet, index) => sheet.append(element('span', 'gb-folio', String(first + index + 1))));
+
   const more = loadedPages < totalPages;
-  position.textContent = `Aukeama ${spreadIndex + 1} / ${spreadCount()}${more ? '+' : ''}`;
-  prev.disabled = !spreadIndex;
-  next.disabled = spreadIndex >= spreadCount() - 1 && !more;
+  if (spreadIndex) {
+    sheets[0].append(corner('prev', 'Edellinen sivu'));
+  }
+  if (spreadIndex < spreadCount() - 1 || more) {
+    sheets[sheets.length - 1].append(corner('next', 'Seuraava sivu'));
+  }
 };
 
+function corner(side, label) {
+  const button = element('button', `gb-corner is-${side}`);
+  button.type = 'button';
+  button.ariaLabel = label;
+  button.addEventListener('click', () => turn('next' === side ? 1 : -1));
+  return button;
+}
+
+// The page that turns is a copy of the old one, folding over the spine while the new spread lies under it
+const pageCopy = (sheet, step) => {
+  if (!sheet || reducedMotion.matches) {
+    return null;
+  }
+  const copy = sheet.cloneNode(true);
+  copy.querySelectorAll('.gb-corner').forEach((node) => node.remove());
+  copy.querySelectorAll('[id]').forEach((node) => node.removeAttribute('id'));
+  copy.classList.add('gb-flip', step > 0 ? 'is-forward' : 'is-back');
+  copy.removeAttribute('data-gb-form');
+  Object.assign(copy.style, { left: `${sheet.offsetLeft}px`, top: `${sheet.offsetTop}px`, width: `${sheet.offsetWidth}px`, height: `${sheet.offsetHeight}px` });
+  return copy;
+};
+
+const fold = (copy, step) => {
+  spread.append(copy);
+  copy.animate([
+    { transform: 'rotateY(0deg)', filter: 'brightness(1)' },
+    { transform: `rotateY(${step > 0 ? -90 : 90}deg)`, filter: 'brightness(.75)' },
+  ], { duration: TURN_MS, easing: 'cubic-bezier(.45, 0, .55, 1)' }).finished.then(() => copy.remove());
+};
+
+let turning = false;
 const turn = (step) => {
+  if (turning) {
+    return;
+  }
+  turning = true;
   const target = spreadIndex + step;
   const ready = (target + 1) * pagesPerSpread() >= pageList().length && loadedPages < totalPages ? loadMore() : Promise.resolve();
   ready.then(() => {
+    const copy = pageCopy(step > 0 ? spread.lastElementChild : spread.firstElementChild, step);
     spreadIndex = Math.max(0, target);
-    spread.classList.remove('is-turning');
-    if (!reducedMotion.matches) {
-      void spread.offsetWidth;
-      spread.classList.add('is-turning');
-    }
     render();
+    if (copy) {
+      fold(copy, step);
+    }
+  }).finally(() => {
+    turning = false;
   });
 };
 
-prev.addEventListener('click', () => turn(-1));
-next.addEventListener('click', () => turn(1));
+// A swipe on a touch screen turns the page too, except while drawing
+let swipeFrom = null;
+spread.addEventListener('pointerdown', (event) => {
+  swipeFrom = 'touch' === event.pointerType && !event.target.closest('canvas, textarea, input') ? event.clientX : null;
+});
+spread.addEventListener('pointerup', (event) => {
+  if (null === swipeFrom) {
+    return;
+  }
+  const distance = event.clientX - swipeFrom;
+  swipeFrom = null;
+  if (Math.abs(distance) > SWIPE_PX) {
+    turn(distance < 0 ? 1 : -1);
+  }
+});
 
 let relayoutTimer;
 let lastWidth = 0;
@@ -238,7 +298,28 @@ const makePad = (canvas, hint) => {
     canvas.classList.remove('is-drawing');
   }));
 
-  return { clear, strokes: () => strokes.filter((stroke) => stroke.length >= 4) };
+  const load = (saved) => {
+    clear();
+    if (!saved.length) {
+      return;
+    }
+    context.clearRect(0, 0, PAD_WIDTH, PAD_HEIGHT);
+    context.lineWidth = 4;
+    context.lineCap = 'round';
+    context.lineJoin = 'round';
+    context.strokeStyle = getComputedStyle(canvas).color;
+    strokes = saved.map((stroke) => [ ...stroke ]);
+    strokes.forEach((stroke) => {
+      context.beginPath();
+      context.moveTo(stroke[0], stroke[1]);
+      for (let index = 2; index < stroke.length - 1; index += 2) {
+        context.lineTo(stroke[index], stroke[index + 1]);
+      }
+      context.stroke();
+    });
+  };
+
+  return { clear, load, strokes: () => strokes.filter((stroke) => stroke.length >= 4) };
 };
 
 // Each part, the greeting and the signature, is typed or drawn
@@ -258,6 +339,28 @@ const drawn = (name) => {
   return 'draw' === found.part.dataset.mode ? found.pad.strokes() : [];
 };
 
+// After writing, the blank page holds the visitor's own entry: editable for 30 days, then closed
+const ownEditable = () => own && Date.now() < own.until;
+const showOwn = () => {
+  if (!own) {
+    return;
+  }
+  if (!ownEditable()) {
+    form.dataset.state = 'closed';
+    return;
+  }
+  form.dataset.state = 'editing';
+  $('[name="message"]', form).value = own.entry.message || '';
+  $('[name="name"]', form).value = own.entry.name || '';
+  [ [ 'picture', own.entry.picture ], [ 'signature', own.entry.strokes ] ].forEach(([ name, strokes ]) => {
+    const part = parts.find((found) => found.name === name);
+    part.setMode(strokes?.length ? 'draw' : 'type');
+    part.pad.load(strokes || []);
+  });
+  $('[data-gb-today]', form).textContent = `Merkintäsi, muokattavissa ${new Date(own.until).toLocaleDateString('fi-FI')} asti`;
+  $('.gb-submit', form).textContent = 'Tallenna muutokset';
+};
+
 const refuse = (field, message) => {
   status.classList.remove('is-done');
   status.textContent = message;
@@ -273,7 +376,7 @@ form.addEventListener('submit', (event) => {
   const name = $('[name="name"]', form);
   const message = $('[name="message"]', form);
   if (!String(data.get('name')).trim()) {
-    refuse(name, 'Kirjoita vielä nimesi viivan perään.');
+    refuse(name, 'Kirjoita vielä nimesi.');
     return;
   }
   if (!String(data.get('message')).trim() && !drawn('picture').length && !drawn('signature').length) {
@@ -285,10 +388,12 @@ form.addEventListener('submit', (event) => {
   status.textContent = '';
   status.classList.remove('is-done');
 
-  fetch(`${config.rest}guestbook`, {
+  const editing = ownEditable();
+  fetch(`${config.rest}guestbook${editing ? `/${own.id}` : ''}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
+      key: editing ? own.key : undefined,
       name: data.get('name'),
       message: data.get('message'),
       website: data.get('website'),
@@ -299,15 +404,14 @@ form.addEventListener('submit', (event) => {
     if (!response.ok) {
       throw new Error(answer.message || 'Merkintää ei saatu tallennettua.');
     }
-    entries.unshift(answer);
+    const { key, until, ...entry } = answer;
+    own = { id: entry.id, key, until, entry };
+    store.set(OWN_KEY, own);
+    entries = [ entry, ...entries.filter((other) => other.id !== entry.id) ];
     spreadIndex = 0;
-    form.reset();
-    parts.forEach(({ pad, setMode }) => {
-      pad.clear();
-      setMode('type');
-    });
+    showOwn();
     render();
-    status.textContent = 'Kiitos! Merkintäsi on nyt kirjassa.';
+    status.textContent = editing ? 'Muutokset tallennettu.' : 'Kiitos! Merkintäsi on nyt kirjassa.';
     status.classList.add('is-done');
     spread.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'center' });
   })).catch((error) => {
@@ -321,6 +425,7 @@ form.hidden = false;
 $('[data-gb-today]', form).textContent = new Date().toLocaleDateString('fi-FI');
 document.fonts.load('40px Caveat').then(() => {
   parts.forEach(({ pad }) => pad.clear());
+  showOwn();
   render();
 });
 loadMore().catch(() => {}).finally(() => {
