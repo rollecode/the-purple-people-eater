@@ -7,7 +7,7 @@ const dayHtml = ({ gratitude, scales, conditions, people }) => [
   gratitude ? `<div class="day-grat"><p class="day-label meta-text">Tänään olen kiitollinen</p><p class="day-grat-text">${gratitude}</p></div>` : '',
   scales.length ? `<ul class="day-scales">${scales.map(({ label, value, tone }) => `<li class="is-${tone}"><span class="meta-text">${escapeHtml(label)}</span><b>${value} %</b><span class="day-bar" aria-hidden="true"><i style="width: ${Math.min(100, value)}%"></i></span></li>`).join('')}</ul>` : '',
   conditions.length ? `<p class="day-conds meta-text">${conditions.map(({ icon: svg, text, url }) => `<span>${svg}${url ? `<a href="${escapeHtml(url)}">${escapeHtml(text)}</a>` : escapeHtml(text)}</span>`).join('')}</p>` : '',
-  postId ? reactionsHtml(people) : '',
+  reactionsHtml(people),
 ].join('');
 
 const days = $$('[data-day]');
