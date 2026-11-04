@@ -33,8 +33,6 @@
 .theme-90s *, .theme-90s *::before, .theme-90s *::after { border-radius: 0 !important; }
 html.theme-90s { background: #000018 var(--stars); }
 .theme-90s body { background: transparent; }
-.theme-90s body { cursor: crosshair; }
-.theme-90s a { cursor: pointer; }
 
 /* Everything readable sits in one big white table on the stars */
 .theme-90s .site-main {
