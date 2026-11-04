@@ -2,7 +2,7 @@ import { $, config, getJson, reducedMotion } from 'theme/lib';
 
 /**
  * Vieraskirja: entries on the pages of an open book, two to a page, and a
- * form with a signature pad. Everything a visitor wrote goes on the page as
+ * blank page where the visitor writes and signs. Everything a visitor wrote goes on the page as
  * text nodes and SVG numbers, never as markup.
  */
 const PAD_WIDTH = 600;
@@ -66,9 +66,22 @@ const entryNode = ({ name, message, date, strokes }) => {
   return entry;
 };
 
+const WRITE_PAGE = 'write';
 const pagesPerSpread = () => (singlePage.matches ? 1 : 2);
-const entriesPerSpread = () => pagesPerSpread() * ENTRIES_PER_PAGE;
-const spreadCount = () => Math.max(1, Math.ceil(entries.length / entriesPerSpread()));
+
+// The book opens at the newest page with the blank page beside it, on a phone the blank page comes first
+const pageList = () => {
+  const pages = [];
+  for (let start = 0; start < entries.length; start += ENTRIES_PER_PAGE) {
+    pages.push(entries.slice(start, start + ENTRIES_PER_PAGE));
+  }
+  if (!pages.length) {
+    pages.push([]);
+  }
+  pages.splice(singlePage.matches ? 0 : 1, 0, WRITE_PAGE);
+  return pages;
+};
+const spreadCount = () => Math.ceil(pageList().length / pagesPerSpread());
 
 const loadMore = () => getJson(`guestbook?page=${loadedPages + 1}`).then((answer) => {
   loadedPages += 1;
@@ -78,17 +91,20 @@ const loadMore = () => getJson(`guestbook?page=${loadedPages + 1}`).then((answer
 
 const render = () => {
   spread.replaceChildren();
-  const first = spreadIndex * entriesPerSpread();
+  const pages = pageList().slice(spreadIndex * pagesPerSpread(), (spreadIndex + 1) * pagesPerSpread());
 
-  for (let page = 0; page < pagesPerSpread(); page++) {
+  pages.forEach((page) => {
+    if (WRITE_PAGE === page) {
+      spread.append(form);
+      return;
+    }
     const sheet = element('div', 'gb-page');
-    const start = first + (page * ENTRIES_PER_PAGE);
-    entries.slice(start, start + ENTRIES_PER_PAGE).forEach((entry) => sheet.append(entryNode(entry)));
-    if (!entries.length && !page) {
+    page.forEach((entry) => sheet.append(entryNode(entry)));
+    if (!entries.length) {
       sheet.append(element('p', 'gb-empty', 'Ensimmäinen sivu odottaa vielä kirjoittajaansa.'));
     }
     spread.append(sheet);
-  }
+  });
 
   const more = loadedPages < totalPages;
   position.textContent = `Aukeama ${spreadIndex + 1} / ${spreadCount()}${more ? '+' : ''}`;
@@ -98,7 +114,7 @@ const render = () => {
 
 const turn = (step) => {
   const target = spreadIndex + step;
-  const ready = (target + 1) * entriesPerSpread() > entries.length && loadedPages < totalPages ? loadMore() : Promise.resolve();
+  const ready = (target + 1) * pagesPerSpread() >= pageList().length && loadedPages < totalPages ? loadMore() : Promise.resolve();
   ready.then(() => {
     spreadIndex = Math.max(0, Math.min(target, spreadCount() - 1));
     spread.classList.remove('is-turning');
@@ -136,6 +152,9 @@ pad.addEventListener('pointerdown', (event) => {
   if (pointCount() >= PAD_POINTS_MAX) {
     return;
   }
+  if (!strokes.length) {
+    context.clearRect(0, 0, PAD_WIDTH, PAD_HEIGHT);
+  }
   pad.setPointerCapture(event.pointerId);
   drawing = padPoint(event);
   strokes.push([ ...drawing ]);
@@ -161,9 +180,17 @@ pad.addEventListener('pointermove', (event) => {
   drawing = null;
 }));
 
+const PAD_HINT = 'piirrä nimikirjoituksesi tähän';
+
 const clearPad = () => {
   strokes = [];
   context.clearRect(0, 0, PAD_WIDTH, PAD_HEIGHT);
+  context.save();
+  context.fillStyle = getComputedStyle(form).getPropertyValue('--pencil');
+  context.globalAlpha = .55;
+  context.font = '34px Caveat, cursive';
+  context.fillText(PAD_HINT, 20, PAD_HEIGHT - 40);
+  context.restore();
 };
 
 const setupPad = () => {
@@ -209,5 +236,8 @@ form.addEventListener('submit', (event) => {
   });
 });
 
+form.hidden = false;
+document.fonts.load('34px Caveat').then(clearPad);
+$('[data-gb-today]', form).textContent = new Date().toLocaleDateString('fi-FI');
 setupPad();
 loadMore().then(render).catch(render);

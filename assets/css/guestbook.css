@@ -97,49 +97,78 @@
 .gb-turn .btn[disabled] { visibility: hidden; }
 .gb-turn [data-gb-pos] { white-space: nowrap; }
 
-/* The form */
-.gb-form {
-  display: grid;
-  max-width: 640px;
-  gap: 20px;
-}
-.gb-form h2 { margin: 0; }
-.gb-field {
-  display: grid;
-  gap: 8px;
-}
-.gb-field > span { font-weight: 600; }
-.gb-field :is(input, textarea) {
+/* The blank page: write straight onto the paper, no boxes */
+.gb-write { display: grid; align-content: start; }
+.gb-write[hidden] { display: none; }
+.gb-ink {
   width: 100%;
-  padding: 12px 14px;
-  border: 1px solid var(--field-line);
-  border-radius: 10px;
-  background: var(--field);
-  color: var(--ink);
-  font: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--pen);
+  font: 400 26px / 36px "Caveat", cursive;
+  resize: none;
 }
-.gb-field textarea { resize: vertical; }
+.gb-ink::placeholder { color: var(--pencil); opacity: .7; }
+.gb-ink:focus { outline: 0; }
+.gb-ink:focus-visible, .gb-pad:focus-visible { outline: 2px dashed var(--pencil); outline-offset: 4px; }
+textarea.gb-ink { height: 180px; }
 .gb-pad {
+  display: block;
   width: 100%;
   height: auto;
-  border: 1px dashed var(--field-line);
-  border-radius: 10px;
-  background: var(--paper);
+  margin-top: 0;
   color: var(--pen);
   cursor: crosshair;
   touch-action: none;
 }
-.gb-field .textlink {
-  justify-self: start;
+.gb-signed {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  margin: 0;
+  gap: 6px;
+  font-size: 27px;
+}
+.gb-signed .gb-ink {
+  width: auto;
+  min-width: 5ch;
+  font-size: 27px;
+  field-sizing: content;
+}
+.gb-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 36px 0 0;
+  gap: 12px;
+}
+.gb-pencil, .gb-submit {
   padding: 0;
   border: 0;
   background: none;
+  font-family: "Caveat", cursive;
   cursor: pointer;
 }
-.gb-form > .btn { justify-self: start; }
+.gb-pencil {
+  color: var(--pencil);
+  font-size: 21px;
+}
+.gb-submit {
+  color: var(--pen);
+  font-size: 28px;
+  font-weight: 700;
+  text-decoration: underline wavy;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+}
+.gb-submit:disabled { opacity: .5; }
 .gb-status {
   margin: 0;
-  font-weight: 600;
+  color: var(--pencil);
+  font-size: 22px;
 }
 .gb-status:empty { display: none; }
 
