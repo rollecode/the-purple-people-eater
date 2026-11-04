@@ -113,7 +113,7 @@ html.theme-90s { background: #000018 var(--stars); }
   font-size: 17px;
   font-weight: 700;
 }
-.theme-90s .nav a[aria-current="page"] { color: #00FFFF !important; }
+.theme-90s .nav a:is(:hover, [aria-current="page"]) { color: #00FFFF !important; }
 .theme-90s .search-btn kbd { color: #000000; }
 .theme-90s .brand {
   background: var(--rainbow) 0 0 / 200% 100%;
@@ -285,18 +285,16 @@ html.theme-90s { background: #000018 var(--stars); }
 .theme-90s .themesw button { color: #000000; font: 400 14px var(--gui); }
 .theme-90s .themesw button[aria-pressed="true"] { box-shadow: inset 2px 2px #404040, inset -2px -2px #FFFFFF; background: #DFDFDF; }
 
-/* The cursor snake from ninety.js; it fades away while the mouse rests */
-.theme-90s .nn-seg {
+/* The cursor trail from ninety.js */
+.theme-90s .nn-dot {
   position: fixed;
+  z-index: 9999;
   top: 0;
   left: 0;
   border-radius: 50% !important;
   background: currentColor;
-  box-shadow: inset -2px -2px rgb(0 0 0 / .35), 1px 1px #000000;
   pointer-events: none;
-  transition: opacity .6s;
 }
-.nn-snake-resting .nn-seg { opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   .theme-90s *, .nn-blink { animation: none !important; }
