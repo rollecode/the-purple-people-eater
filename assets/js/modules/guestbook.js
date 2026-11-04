@@ -76,13 +76,15 @@ const entryNode = ({ name, message, date, picture, strokes }) => {
   return entry;
 };
 
-const pagesPerSpread = () => (singlePage.matches ? 1 : 2);
+// Two pages a spread, side by side or on a phone one above the other
+const pagesPerSpread = () => 2;
+const columns = () => (singlePage.matches ? 1 : 2);
 
 // Entries run down a page until the next one no longer fits, then carry on to the next page
 const layOut = () => {
   const gaps = getComputedStyle(spread);
   const probe = element('div', 'gb-page gb-probe');
-  probe.style.width = `${(spread.clientWidth - parseFloat(gaps.paddingLeft) - parseFloat(gaps.paddingRight)) / pagesPerSpread()}px`;
+  probe.style.width = `${(spread.clientWidth - parseFloat(gaps.paddingLeft) - parseFloat(gaps.paddingRight)) / columns()}px`;
   spread.append(probe);
 
   pages = [];
@@ -100,10 +102,10 @@ const layOut = () => {
   probe.remove();
 };
 
-// The book opens at the newest page with the blank page beside it, on a phone the blank page comes first
+// The book opens at the newest page with the blank page beside it, or under it on a phone
 const pageList = () => {
   const list = [ ...pages ];
-  list.splice(singlePage.matches ? 0 : 1, 0, WRITE_PAGE);
+  list.splice(1, 0, WRITE_PAGE);
   return list;
 };
 const spreadCount = () => Math.ceil(pageList().length / pagesPerSpread());
@@ -163,7 +165,8 @@ const render = () => {
   tallest = Math.max(tallest, spread.offsetHeight);
   spread.style.minHeight = `${tallest}px`;
 
-  turns.prev = spreadIndex ? curled('prev', sheets[0], 'Edellinen sivu', -1) : null;
+  // Stacked on a phone, both corners are at the foot of the lower page
+  turns.prev = spreadIndex ? curled('prev', sheets[singlePage.matches ? sheets.length - 1 : 0], 'Edellinen sivu', -1) : null;
   turns.next = spreadIndex < spreadCount() - 1 || more ? curled('next', sheets[sheets.length - 1], 'Seuraava sivu', 1) : null;
 };
 
