@@ -71,32 +71,32 @@ html.theme-90s { background: #000018 var(--stars); }
   color: #FFFF00;
 }
 
-/* A frameset: the head is the left frame, the page scrolls in the right one */
+/* A frameset: the head is the top frame, the page scrolls in the frame below */
 :root.theme-90s, .theme-90s .site-head { scrollbar-color: #C0C0C0 #DFDFDF; }
 :root.theme-90s body .wp-site-blocks.wp-site-blocks { padding-top: 0; }
 :root.theme-90s .rain-wrapper { inset-inline: 0; width: auto; }
 @media (min-width: 861px) {
-  :root.theme-90s body .wp-site-blocks.wp-site-blocks { padding-left: 206px; }
+  :root.theme-90s { scroll-padding-top: 84px; }
+  :root.theme-90s body .wp-site-blocks.wp-site-blocks { padding-top: 78px; }
   :root.theme-90s body .site-head.site-head {
     position: fixed;
-    inset: 0 auto 0 0;
-    width: 206px;
-    overflow-y: auto;
-    border-right: 6px outset #C0C0C0;
+    inset: 0 0 auto;
+    height: 72px;
     opacity: 1;
     transform: none;
     transition: none;
     visibility: visible;
   }
-  :root.theme-90s body .site-head .bar.bar {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px 16px;
-    gap: 20px;
+  :root.theme-90s body .site-head .bar.bar { height: 100%; padding-block: 0; }
+
+  /* The frame border: a raised bar, light above, dark below */
+  :root.theme-90s body .site-head.site-head::after {
+    position: absolute;
+    inset: 100% 0 auto;
+    height: 6px;
+    background: linear-gradient(#DFDFDF 0 1px, #FFFFFF 1px 2px, #C0C0C0 2px 4px, #808080 4px 5px, #000000 5px 6px);
+    content: "";
   }
-  :root.theme-90s .site-head .brand { order: -1; font-size: 24px; }
-  :root.theme-90s .site-head .nav .wp-block-navigation__container { flex-direction: column; align-items: flex-start; gap: 2px; }
 }
 
 /* No hiding over article photos: a 90s page shows its links all the time */
@@ -284,18 +284,17 @@ html.theme-90s { background: #000018 var(--stars); }
 .theme-90s .themesw button { color: #000000; font: 400 14px var(--gui); }
 .theme-90s .themesw button[aria-pressed="true"] { box-shadow: inset 2px 2px #404040, inset -2px -2px #FFFFFF; background: #DFDFDF; }
 
-/* Cursor sparkles from ninety.js */
-.nn-spark {
+/* The cursor rope from ninety.js */
+.nn-seg {
   position: fixed;
   z-index: 9999;
-  font: 700 var(--size) / 1 Arial, sans-serif;
-  text-shadow: 0 0 6px currentColor, 0 0 2px #FFFFFF;
+  top: -4px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  background: currentColor;
+  box-shadow: 1px 1px #000000;
   pointer-events: none;
-  translate: -50% -50%;
-  animation: nn-fall 1.3s ease-out forwards;
-}
-@keyframes nn-fall {
-  to { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--spin)) scale(.3); }
 }
 
 @media (prefers-reduced-motion: reduce) {

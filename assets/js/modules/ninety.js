@@ -2,13 +2,17 @@ import { ASSETS_URL, $, getJson, reducedMotion } from 'theme/lib';
 
 /**
  * The 90s theme's extras: marquee, fire, construction sign, buttons, a visit
- * counter and cursor sparkles. Loaded by theme-switch only while it is chosen.
+ * counter and a rope that hangs from the cursor. Loaded by theme-switch only while it is chosen.
  */
 
 const GIFS = `${ASSETS_URL}images/90s/`;
 const COUNTER_DIGITS = 7;
-const SPARK_COLOURS = [ '#FF0', '#0FF', '#F0F', '#FFF', '#0F0', '#F80', '#F00' ];
-const SPARK_EVERY_MS = 25;
+const SNAKE_COLOURS = [ '#F00', '#F80', '#FF0', '#0F0', '#0FF', '#00F', '#F0F' ];
+const SNAKE_LENGTH = 28;
+const SNAKE_LINK_PX = 9;
+const SNAKE_GRAVITY = 0.5;
+const SNAKE_DAMPING = 0.97;
+const SNAKE_STIFFNESS = 4;
 
 const WIKI = 'https://fi.wikipedia.org/wiki/';
 const BADGES = [
@@ -31,7 +35,7 @@ const footHtml = () => `<p class="nn-foot-line">Sivulla on käynyt <span class="
 <p class="nn-foot-line">${BADGES.map(([ name, alt, article ]) => `<a href="${WIKI}${article}">${gif(name, alt, 88, 31)}</a>`).join(' ')}</p>`;
 
 let added = [];
-let lastSpark = 0;
+let snake = null;
 let hoverRules = [];
 
 let renamed = [];
@@ -82,26 +86,79 @@ const unhoverLate = (event) => {
   }
 };
 
-const SPARK_GLYPHS = [ '★', '✦', '✧', '✶', '❋', '✺' ];
-const SPARKS_PER_MOVE = 3;
-const pick = (list) => list[Math.floor(Math.random() * list.length)];
-const between = (min, max) => min + (Math.random() * (max - min));
+// A rope of pixels: the head follows the mouse, the rest swings and hangs under gravity
+const pull = (from, to, pinned) => {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const stretch = (Math.hypot(dx, dy) - SNAKE_LINK_PX) / (Math.hypot(dx, dy) || 1);
+  const share = pinned ? 1 : 0.5;
+  to.x -= dx * stretch * share;
+  to.y -= dy * stretch * share;
+  if (!pinned) {
+    from.x += dx * stretch * share;
+    from.y += dy * stretch * share;
+  }
+};
 
-const spark = (event) => {
-  if ('mouse' !== event.pointerType || event.timeStamp - lastSpark < SPARK_EVERY_MS) {
+const startSnake = () => {
+  const mouse = { x: 0, y: 0, seen: false };
+  const links = Array.from({ length: SNAKE_LENGTH }, (_, index) => {
+    const element = document.createElement('i');
+    element.className = 'nn-seg';
+    element.ariaHidden = 'true';
+    element.style.color = SNAKE_COLOURS[index % SNAKE_COLOURS.length];
+    document.body.append(element);
+    return { element, x: 0, y: 0, oldX: 0, oldY: 0 };
+  });
+
+  const move = (event) => {
+    if ('mouse' !== event.pointerType) {
+      return;
+    }
+    mouse.x = event.clientX;
+    mouse.y = event.clientY;
+    if (!mouse.seen) {
+      mouse.seen = true;
+      links.forEach((link) => Object.assign(link, { x: mouse.x, y: mouse.y, oldX: mouse.x, oldY: mouse.y }));
+    }
+  };
+
+  const step = () => {
+    snake.frame = requestAnimationFrame(step);
+    if (!mouse.seen) {
+      return;
+    }
+
+    links.forEach((link) => {
+      const speedX = (link.x - link.oldX) * SNAKE_DAMPING;
+      const speedY = (link.y - link.oldY) * SNAKE_DAMPING;
+      Object.assign(link, { oldX: link.x, oldY: link.y, x: link.x + speedX, y: link.y + speedY + SNAKE_GRAVITY });
+    });
+    Object.assign(links[0], { x: mouse.x, y: mouse.y });
+
+    for (let round = 0; round < SNAKE_STIFFNESS; round++) {
+      for (let index = 1; index < links.length; index++) {
+        pull(links[index - 1], links[index], 1 === index);
+      }
+    }
+
+    links.forEach(({ element, x, y }) => {
+      element.style.transform = `translate(${x}px, ${y}px)`;
+    });
+  };
+
+  document.addEventListener('pointermove', move, { passive: true });
+  snake = { links, move, frame: requestAnimationFrame(step) };
+};
+
+const stopSnake = () => {
+  if (!snake) {
     return;
   }
-  lastSpark = event.timeStamp;
-
-  for (let i = 0; i < SPARKS_PER_MOVE; i++) {
-    const star = document.createElement('i');
-    star.className = 'nn-spark';
-    star.ariaHidden = 'true';
-    star.textContent = pick(SPARK_GLYPHS);
-    star.style.cssText = `left:${event.clientX}px;top:${event.clientY}px;color:${pick(SPARK_COLOURS)};--size:${between(10, 28)}px;--dx:${between(-50, 50)}px;--dy:${between(20, 110)}px;--spin:${between(-360, 360)}deg`;
-    star.addEventListener('animationend', () => star.remove());
-    document.body.append(star);
-  }
+  cancelAnimationFrame(snake.frame);
+  document.removeEventListener('pointermove', snake.move);
+  snake.links.forEach(({ element }) => element.remove());
+  snake = null;
 };
 
 const add = (where, position, className, html) => {
@@ -136,14 +193,14 @@ const on = () => {
   }).catch(() => {});
 
   if (!reducedMotion.matches) {
-    document.addEventListener('pointermove', spark, { passive: true });
+    startSnake();
   }
 };
 
 const off = () => {
   added.forEach((element) => element.remove());
   added = [];
-  document.removeEventListener('pointermove', spark);
+  stopSnake();
   document.removeEventListener('load', unhoverLate, true);
   hoverRules.forEach(([ rule, selector ]) => {
     rule.selectorText = selector;

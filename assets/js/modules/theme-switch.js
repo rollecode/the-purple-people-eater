@@ -57,23 +57,8 @@ const applyTheme = () => {
   }
 };
 
-// The 90s theme adds and moves things above the switch; the switch stays put under the pointer
-const KEEP_IN_PLACE_MS = 1500;
-const keepInPlace = (element) => {
-  const top = element.getBoundingClientRect().top;
-  const until = performance.now() + KEEP_IN_PLACE_MS;
-  const hold = (now) => {
-    window.scrollBy({ top: element.getBoundingClientRect().top - top, behavior: 'instant' });
-    if (now < until) {
-      requestAnimationFrame(hold);
-    }
-  };
-  requestAnimationFrame(hold);
-};
-
 themeButtons.forEach((button) => button.addEventListener('click', () => {
   const value = button.dataset.themeSet;
-  keepInPlace(button);
   store.raw('theme', 'auto' === value ? null : `theme-${value}`);
   applyTheme();
 }));
