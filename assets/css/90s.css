@@ -248,7 +248,7 @@ html.theme-90s { background: #000018 var(--stars); }
 }
 .theme-90s .site-foot a:not(.btn) { color: #00FFFF; }
 .theme-90s .foot-base { border-top: 0; color: #FFFF00; }
-.theme-90s :is(.foot-line, .foot-stats) { color: #00FF00; }
+.theme-90s .site-foot.site-foot :is(.foot-line, .foot-stats, .meta-text, .muted) { color: #00FF00; }
 .theme-90s .foot-mark { color: #FFFF00; }
 .nn-foot {
   display: flex;
@@ -277,6 +277,7 @@ html.theme-90s { background: #000018 var(--stars); }
   text-align: center;
 }
 .nn-foot-line { flex-basis: 100%; text-align: center; }
+.nn-online b { color: #FFFF00; }
 
 /* The switch itself as Windows buttons */
 .theme-90s .themesw { padding: 2px; background: #C0C0C0; box-shadow: var(--bevel); }

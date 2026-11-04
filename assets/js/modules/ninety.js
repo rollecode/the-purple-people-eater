@@ -7,6 +7,7 @@ import { ASSETS_URL, $, getJson, reducedMotion } from 'theme/lib';
 
 const GIFS = `${ASSETS_URL}images/90s/`;
 const COUNTER_DIGITS = 7;
+const VISITORS_EVERY_MS = 30000;
 const SNAKE_COLOURS = [ '#F00', '#F80', '#FF0', '#0F0', '#0FF', '#00F', '#F0F' ];
 const SNAKE_LENGTH = 26;
 const SNAKE_HEAD_PX = 16;
@@ -36,7 +37,7 @@ const topHtml = () => `<div class="nn-fire" aria-hidden="true"></div>
 
 const counterHtml = (visitors) => String(visitors).padStart(COUNTER_DIGITS, '0').split('').map((digit) => `<span>${digit}</span>`).join('');
 
-const footHtml = () => `<p class="nn-foot-line">Sivulla on käynyt <span class="nn-counter" role="img" aria-label="Kävijämäärä">${counterHtml(0)}</span> kävijää</p>
+const footHtml = () => `<p class="nn-foot-line">Sivulla on käynyt <span class="nn-counter" role="img" aria-label="Kävijämäärä">${counterHtml(0)}</span> kävijää<span class="nn-online" hidden>, nyt paikalla <b></b></span></p>
 <a href="mailto:rolle@dude.fi">${gif('mail-letter', '', 45, 52)} Lähetä sähköpostia!</a>
 <p class="nn-foot-line">${BADGES.map(([ name, alt, article ]) => `<a href="${WIKI}${article}">${gif(name, alt, 88, 31)}</a>`).join(' ')}</p>`;
 
@@ -45,9 +46,25 @@ let snake = null;
 let hoverRules = [];
 
 let renamed = [];
+let visitorsTimer;
+
+// All-time visitors on the counter, the ones here now beside it
+const showVisitors = () => getJson('visitors').then(({ visitors, online }) => {
+  const counter = $('.nn-counter');
+  const now = $('.nn-online');
+  if (visitors && counter) {
+    counter.innerHTML = counterHtml(visitors);
+    counter.setAttribute('aria-label', `${visitors} kävijää`);
+  }
+  if (Number.isInteger(online) && now) {
+    $('b', now).textContent = online;
+    now.hidden = false;
+  }
+}).catch(() => {});
 
 // A blog was still a homepage then, and it all started earlier
 const RENAMES = [
+  [ 'Rollemaa on Rollen blogi, joka sisältää', 'Tervetuloa Rollen kotisivuille! Täällä on' ],
   [ 'Rollen blogi', 'Rollen kotisivut' ],
   [ 'Kirjoituksia vuodesta 2005', 'Kirjoituksia vuodesta 1998' ],
   [ 'päiväkirja vuodesta 2021', 'päiväkirja vuodesta 1999' ],
@@ -201,14 +218,8 @@ const on = () => {
 
   add($('.site-main'), 'beforebegin', 'nn-top', topHtml());
   add($('.foot-base'), 'beforebegin', 'nn-foot', footHtml());
-  getJson('visitors').then(({ visitors }) => {
-    const counter = $('.nn-counter');
-    if (!visitors || !counter) {
-      return;
-    }
-    counter.innerHTML = counterHtml(visitors);
-    counter.setAttribute('aria-label', `${visitors} kävijää`);
-  }).catch(() => {});
+  showVisitors();
+  visitorsTimer = window.setInterval(showVisitors, VISITORS_EVERY_MS);
 
   if (!reducedMotion.matches) {
     startSnake();
@@ -216,6 +227,7 @@ const on = () => {
 };
 
 const off = () => {
+  window.clearInterval(visitorsTimer);
   added.forEach((element) => element.remove());
   added = [];
   stopSnake();
