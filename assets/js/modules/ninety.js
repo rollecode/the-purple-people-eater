@@ -36,16 +36,20 @@ let hoverRules = [];
 
 let renamed = [];
 
-// A blog was still a homepage then
-const BLOG_NAME = 'Rollen blogi';
-const HOMEPAGE_NAME = 'Rollen kotisivut';
+// A blog was still a homepage then, and it all started earlier
+const RENAMES = [
+  [ 'Rollen blogi', 'Rollen kotisivut' ],
+  [ 'Kirjoituksia vuodesta 2005', 'Kirjoituksia vuodesta 1998' ],
+  [ 'päiväkirja vuodesta 2021', 'päiväkirja vuodesta 1999' ],
+];
 const rename = () => {
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   while (walker.nextNode()) {
     const node = walker.currentNode;
-    if (node.data.includes(BLOG_NAME)) {
+    const text = RENAMES.reduce((result, [ from, to ]) => result.replaceAll(from, to), node.data);
+    if (text !== node.data) {
       renamed.push([ node, node.data ]);
-      node.data = node.data.replaceAll(BLOG_NAME, HOMEPAGE_NAME);
+      node.data = text;
     }
   }
 };
