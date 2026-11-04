@@ -32,6 +32,7 @@ let spreadIndex = 0;
 let loaded = false;
 let own = store.get(OWN_KEY);
 const turns = { next: null, prev: null };
+let tallest = 0;
 
 const element = (tag, className, text) => {
   const node = document.createElement(tag);
@@ -119,6 +120,9 @@ const render = () => {
   }
   spread.removeAttribute('aria-busy');
   form.style.clipPath = '';
+  // The spread may have grown since, a drawing pad opened on the writing page
+  tallest = Math.max(tallest, spread.offsetHeight);
+  spread.style.minHeight = `${tallest}px`;
   layOut();
   spreadIndex = Math.min(spreadIndex, spreadCount() - 1);
   spread.replaceChildren();
@@ -155,6 +159,10 @@ const render = () => {
       render();
     },
   }).turn;
+  // The book keeps the tallest height it has had, so turning a page never moves the page around it
+  tallest = Math.max(tallest, spread.offsetHeight);
+  spread.style.minHeight = `${tallest}px`;
+
   turns.prev = spreadIndex ? curled('prev', sheets[0], 'Edellinen sivu', -1) : null;
   turns.next = spreadIndex < spreadCount() - 1 || more ? curled('next', sheets[sheets.length - 1], 'Seuraava sivu', 1) : null;
 };
@@ -191,8 +199,12 @@ new ResizeObserver(() => {
     return;
   }
   lastWidth = spread.clientWidth;
+  tallest = 0;
   window.clearTimeout(relayoutTimer);
-  relayoutTimer = window.setTimeout(render, RELAYOUT_MS);
+  relayoutTimer = window.setTimeout(() => {
+    spread.style.minHeight = '';
+    render();
+  }, RELAYOUT_MS);
 }).observe(spread);
 
 /**
