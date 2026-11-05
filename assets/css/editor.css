@@ -12,6 +12,12 @@
 }
 /* js/editor/video-embed.js puts the site's video look inside YouTube embeds; the block's own preview steps aside */
 .wp-block-embed__wrapper:has(> .vid) > :not(.vid) { display: none; }
+.wp-block-video:has(> .vid) {
+  display: flex;
+  flex-direction: column;
+}
+.wp-block-video:has(> .vid) > .vid { order: -1; }
+.wp-block-video:has(> .vid) video:not(.vid > video) { display: none; }
 /* js/editor/code-highlight.js lays a coloured copy under the code being typed, which turns see-through */
 .editor-styles-wrapper .wp-block-code:has(> .code-bar) { position: relative; }
 /* Long lines scroll sideways as on the site instead of wrapping (the editable text sets its own white-space inline) */

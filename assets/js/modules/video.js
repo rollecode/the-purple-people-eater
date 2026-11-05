@@ -99,7 +99,7 @@ $$('.vid[data-video]').forEach((video) => {
 });
 
 // Videos of this site's own: the same button over the poster, the player's controls once it plays
-$$('.prose video[controls][poster]').forEach((media) => {
+$$('.prose video[controls]').forEach((media) => {
   const wrap = Object.assign(document.createElement('span'), { className: 'vid is-native' });
   const button = Object.assign(document.createElement('button'), {
     className: 'vid-play',

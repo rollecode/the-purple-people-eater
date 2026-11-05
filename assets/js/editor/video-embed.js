@@ -63,3 +63,38 @@ const withVideoFacade = wp.compose.createHigherOrderComponent((BlockEdit) => (pr
 }, 'withVideoFacade');
 
 wp.hooks.addFilter('editor.BlockEdit', 'the-purple-people-eater/video-embed', withVideoFacade);
+
+// The site's own videos (js/modules/video.js): muted loop under the play mark
+const withNativeVideo = wp.compose.createHigherOrderComponent((BlockEdit) => (props) => {
+  const { createElement: el, Fragment, createPortal, useEffect, useState } = wp.element;
+  const src = 'core/video' === props.name ? props.attributes.src : '';
+  const [ figure, setFigure ] = useState(null);
+
+  useEffect(() => {
+    if (!src || figure?.isConnected) {
+      return;
+    }
+    const canvas = document.querySelector('iframe[name="editor-canvas"]')?.contentDocument || document;
+    setFigure(canvas.getElementById(`block-${props.clientId}`));
+  });
+
+  if (!src || !figure?.isConnected) {
+    return el(BlockEdit, props);
+  }
+
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  return el(Fragment, null,
+    el(BlockEdit, props),
+    createPortal(el('span', { className: 'vid is-native' },
+      // React leaves the muted attribute out, and browsers only autoplay muted video
+      el('video', { src, poster: props.attributes.poster, loop: true, playsInline: true, ref: (video) => {
+        if (video) {
+          video.muted = true;
+          still || video.play().catch(() => {});
+        }
+      } }),
+      el('span', { className: 'vid-play' }, el('svg', { viewBox: '0 0 24 24' }, el('path', { d: 'M8 5.2v13.6L19 12z' })))), figure));
+}, 'withNativeVideo');
+
+wp.hooks.addFilter('editor.BlockEdit', 'the-purple-people-eater/native-video', withNativeVideo);
