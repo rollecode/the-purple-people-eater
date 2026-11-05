@@ -10,7 +10,6 @@
   --rain: light-dark(rgb(58 52 66 / .42), rgb(214 204 228 / .4));
   position: relative;
   display: flex;
-  overflow: hidden;
   flex-direction: column;
   min-height: clamp(680px, calc(100svh - 88px), 1040px);
   background: linear-gradient(to bottom, var(--ground) 10%, var(--sky));
@@ -97,11 +96,12 @@
   }
 }
 
-/* Drops are made by js/modules/rain-scene.js and slant with the wind */
+/* Drops are made by js/modules/rain-scene.js and slant with the wind. They start
+ above the head, which stays on top of them */
 .nf-rain {
   position: absolute;
   z-index: 1;
-  inset: 0;
+  inset: -160px 0 0;
   overflow: hidden;
   pointer-events: none;
   container-type: size;
