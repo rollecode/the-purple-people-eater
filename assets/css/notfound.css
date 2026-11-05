@@ -1,45 +1,135 @@
+/* A rainy lake evening under the text; light scheme is a grey rainy day */
 .nf {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  align-items: start;
-  width: min(100% - 2 * var(--pad), var(--wrap));
-  margin: 0 auto;
-  padding-block: 72px 40px;
-  gap: 48px clamp(32px, 6vw, 96px);
+  --sky: light-dark(#E4DEEA, #221B2A);
+  --far: light-dark(#C7BED2, #2A2234);
+  --mid: light-dark(#A096AE, #1C1623);
+  --near: light-dark(#5E5469, #0D0A11);
+  --lake: light-dark(#D5CEDD, #17121C);
+  --shine: light-dark(rgb(255 255 255 / .7), rgb(208 185 233 / .22));
+  --window: light-dark(#D9963A, #F2C066);
+  --rain: light-dark(rgb(58 52 66 / .42), rgb(214 204 228 / .4));
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  min-height: clamp(680px, calc(100svh - 88px), 1040px);
+  background: linear-gradient(to bottom, var(--ground) 10%, var(--sky));
+  isolation: isolate;
+}
+
+.nf-text {
+  position: relative;
+  z-index: 2;
+  width: min(100% - 2 * var(--pad), 640px);
+  margin: 0 auto auto;
+  padding-block: clamp(72px, 12vh, 152px) 24px;
+  text-align: center;
 }
 .nf .big {
-  margin: 0 0 24px;
+  margin: 0 0 8px;
   color: var(--accent);
   font-family: var(--display);
-  font-size: clamp(120px, 16vw, 240px);
-  letter-spacing: -.03em;
-  line-height: .8;
+  font-size: clamp(96px, 12vw, 168px);
+  letter-spacing: -.02em;
+  line-height: .9;
 }
 .nf h1 {
-  margin-bottom: 24px;
-  font-size: clamp(52px, 6vw, 92px);
-  line-height: .95;
+  margin: 0 0 28px;
+  font-size: clamp(44px, 5vw, 72px);
+  line-height: 1;
+  text-wrap: balance;
 }
 .nf p {
-  max-width: 30em;
+  max-width: 34em;
+  margin: 0 auto;
   color: var(--ink-2);
   font-family: var(--body);
-  font-size: 20px;
+  font-size: 19px;
+  line-height: 1.6;
+  text-wrap: pretty;
 }
-.nf .bigsearch { margin: 28px 0 16px; }
-.nf p.meta-text {
-  font-family: var(--sans);
-  font-size: 15px;
+.nf .bigsearch { margin: 40px auto 0; }
+
+/* Its empty sky runs up behind the text; narrow screens cut the right side */
+.nf-scene {
+  display: block;
+  width: 100%;
+  height: clamp(220px, 28vw, 380px);
+  margin-top: clamp(-150px, -9vw, -40px);
 }
-.nf .right {
-  display: grid;
-  padding-top: 12px;
-  gap: 20px;
+.nf-scene .lake { fill: var(--lake); }
+.nf-scene .mist-in { stop-color: var(--sky); stop-opacity: .85; }
+.nf-scene .mist-out { stop-color: var(--sky); stop-opacity: 0; }
+.nf-scene .glow-in { stop-color: var(--window); stop-opacity: .3; }
+.nf-scene .glow-out { stop-color: var(--window); stop-opacity: 0; }
+.nf-scene .reflection { opacity: .32; }
+.nf-scene .window-trail { fill: var(--window); }
+.nf-scene .shimmer {
+  fill: none;
+  stroke: var(--shine);
+  stroke-linecap: round;
+  stroke-width: 1.5;
 }
-@media (max-width: 860px) {
-  .nf {
-    grid-template-columns: minmax(0, 1fr);
-    padding-block: 40px 24px;
+.nf-scene .rip {
+  fill: none;
+  stroke: var(--shine);
+  stroke-width: 1.2;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: nf-ripple 2.6s cubic-bezier(.16, 1, .3, 1) infinite;
+}
+@keyframes nf-ripple {
+  0% {
+    opacity: .9;
+    transform: scale(.15);
   }
-  .nf .big { font-size: 120px; }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+/* Drops are made by js/modules/rain-scene.js and slant with the wind */
+.nf-rain {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  container-type: size;
+}
+.nf-rain i {
+  position: absolute;
+  top: -12%;
+  left: var(--x);
+  width: 1px;
+  height: var(--l);
+  background: linear-gradient(to bottom, transparent, var(--rain));
+  opacity: var(--o);
+  animation: nf-fall var(--d) linear var(--t) infinite;
+  rotate: 11deg;
+}
+@keyframes nf-fall {
+  to { transform: translateY(125cqh); }
+}
+
+/* The lake runs into the footer */
+.site-foot { margin-top: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nf-rain i {
+    animation: none;
+    transform: translateY(var(--y));
+  }
+  .nf-scene .rip {
+    animation: none;
+    opacity: .5;
+  }
+}
+
+@media (max-width: 600px) {
+  .nf { min-height: calc(100svh - 64px); }
+  .nf-text { padding-top: 56px; }
+  .nf p { font-size: 18px; }
 }

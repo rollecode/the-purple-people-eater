@@ -30,6 +30,7 @@ const MODULES = {
   'theme/lost-images': '.prose img',
   'theme/now-panel': '[data-most-read], [data-now]',
   'theme/presence': '.single-post',
+  'theme/rain-scene': '[data-rain]',
   'theme/random-picks': '[data-picks]',
   'theme/read-count': '.single-post',
   'theme/reading': '.card, .single-post',
