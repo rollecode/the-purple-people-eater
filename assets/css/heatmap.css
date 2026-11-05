@@ -115,6 +115,30 @@ a.heat-day:hover {
   border-radius: 3px;
 }
 
+/* On touch and on narrow screens the squares stay big enough for a finger and the year scrolls sideways,
+ opening at today; the day names stay put */
+@media (pointer: coarse), (max-width: 760px) {
+  .heat-scroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .heat-scroll::-webkit-scrollbar { display: none; }
+  .heat {
+    max-width: none;
+    --gap: 5px;
+  }
+  .heat-months, .heat-grid { grid-template-columns: repeat(var(--weeks), 24px); }
+  .heat-days {
+    position: sticky;
+    z-index: 1;
+    left: 0;
+    background: var(--ground);
+    box-shadow: -8px 0 0 var(--ground), 8px 0 0 var(--ground);
+  }
+  .heat-day { border-radius: 5px; }
+}
+
 /* Black tooltip over a heatmap day, placed by heatmap.js */
 .heat-tip {
   position: fixed;

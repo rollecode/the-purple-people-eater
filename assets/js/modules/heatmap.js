@@ -13,7 +13,7 @@ import { getJson } from 'theme/lib';
 const el = document.getElementById('heatmap');
 
 const MONTHS = [ 'tammi', 'helmi', 'maalis', 'huhti', 'touko', 'kesä', 'heinä', 'elo', 'syys', 'loka', 'marras', 'joulu' ];
-const MIN_CELL = 8; // Below this a square is too small to see or tap: drop the oldest weeks
+const MIN_CELL = 8; // Below this a square is too small to see: drop the oldest weeks
 const LABEL_WEEKS = 4; // Room a month name needs at the right edge
 const DAY_MS = 86400000;
 const localIso = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -89,13 +89,20 @@ const draw = ({ words: counts, links: days }) => {
     }
   };
 
-  fit();
+  // Where the year scrolls sideways, it opens at today
+  const scroller = el.parentElement;
+  const fitAndShowToday = () => {
+    fit();
+    scroller.scrollLeft = scroller.scrollWidth;
+  };
+
+  fitAndShowToday();
 
   let width = el.parentElement.clientWidth;
   new ResizeObserver(() => {
     if (el.parentElement.clientWidth !== width) {
       width = el.parentElement.clientWidth;
-      fit();
+      fitAndShowToday();
     }
   }).observe(el.parentElement);
 
@@ -156,6 +163,7 @@ const draw = ({ words: counts, links: days }) => {
   el.addEventListener('pointerleave', hideTip);
   el.addEventListener('focusout', hideTip);
   window.addEventListener('scroll', hideTip, { passive: true });
+  scroller.addEventListener('scroll', hideTip, { passive: true });
 };
 
 getJson('heatmap').then(draw);
