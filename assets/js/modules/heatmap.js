@@ -14,6 +14,7 @@ const el = document.getElementById('heatmap');
 
 const MONTHS = [ 'tammi', 'helmi', 'maalis', 'huhti', 'touko', 'kesä', 'heinä', 'elo', 'syys', 'loka', 'marras', 'joulu' ];
 const MIN_CELL = 8; // Below this a square is too small to see: drop the oldest weeks
+const SWIPE_CELL = 18; // Square size to aim for where the year scrolls sideways
 const LABEL_WEEKS = 4; // Room a month name needs at the right edge
 const DAY_MS = 86400000;
 const localIso = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -90,9 +91,21 @@ const draw = ({ words: counts, links: days }) => {
   };
 
   // Where the year scrolls sideways, it opens at today
+  // Where the year scrolls sideways, the squares are sized so whole weeks fill the view: no sliver
+  // of a week peeks out beside the day names
   const scroller = el.parentElement;
+  const swipes = window.matchMedia('(pointer: coarse), (max-width: 760px)');
   const fitAndShowToday = () => {
     fit();
+    el.style.removeProperty('--cell');
+    if (swipes.matches) {
+      const grid = el.querySelector('.heat-grid');
+      const gap = parseFloat(getComputedStyle(grid).columnGap);
+      const labels = grid.getBoundingClientRect().left - scroller.getBoundingClientRect().left + scroller.scrollLeft;
+      const view = scroller.clientWidth - parseFloat(getComputedStyle(scroller).paddingRight) - labels;
+      const weeks = Math.round((view + gap) / (SWIPE_CELL + gap));
+      el.style.setProperty('--cell', `${(view + gap) / weeks - gap}px`);
+    }
     scroller.scrollLeft = scroller.scrollWidth;
   };
 

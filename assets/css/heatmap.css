@@ -119,24 +119,33 @@ a.heat-day:hover {
  opening at today; the day names stay put */
 @media (pointer: coarse), (max-width: 760px) {
   .heat-scroll {
+    padding-left: 0;
     overflow-x: auto;
+    scroll-padding-left: 36px;
+    scroll-snap-type: x mandatory;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
   }
   .heat-scroll::-webkit-scrollbar { display: none; }
   .heat {
     max-width: none;
-    --gap: 5px;
+    --gap: 4px;
   }
-  .heat-months, .heat-grid { grid-template-columns: repeat(var(--weeks), 24px); }
+  .heat-months, .heat-grid { grid-template-columns: repeat(var(--weeks), var(--cell, 18px)); }
+
+  /* A swipe stops on a Monday, whole weeks in view */
+  .heat-grid > :nth-child(7n + 1) { scroll-snap-align: start; }
+
+  /* Covers the gap and the month row too, so nothing scrolls out beside the day names */
   .heat-days {
     position: sticky;
     z-index: 1;
     left: 0;
+    margin: -24px -8px 0 0;
+    padding: 24px 8px 0 0;
     background: var(--ground);
-    box-shadow: -8px 0 0 var(--ground), 8px 0 0 var(--ground);
   }
-  .heat-day { border-radius: 5px; }
+  .heat-day { border-radius: 4px; }
 }
 
 /* Black tooltip over a heatmap day, placed by heatmap.js */
