@@ -13,7 +13,9 @@
 /* js/editor/video-embed.js puts the site's video look inside YouTube embeds; the block's own preview steps aside */
 .wp-block-embed__wrapper:has(> .vid) > :not(.vid) { display: none; }
 /* js/editor/code-highlight.js lays a coloured copy under the code being typed, which turns see-through */
-.editor-styles-wrapper .wp-block-code:has(> .code-shadow) { position: relative; }
+.editor-styles-wrapper .wp-block-code:has(> .code-bar) { position: relative; }
+/* Long lines scroll sideways as on the site instead of wrapping (the editable text sets its own white-space inline) */
+.editor-styles-wrapper .wp-block-code > code { white-space: pre !important; }
 .editor-styles-wrapper .wp-block-code:has(> .code-shadow) > code:not(.code-shadow) {
   position: relative;
   z-index: 1;
@@ -24,7 +26,10 @@
   position: absolute;
   inset: 0;
   padding: inherit;
-  white-space: break-spaces;
+  white-space: pre;
   pointer-events: none;
 }
-.editor-styles-wrapper .wp-block-code > .code-bar { inset: 0 0 auto; }
+.editor-styles-wrapper .wp-block-code > .code-bar {
+  z-index: 2;
+  inset: 0 0 auto;
+}
