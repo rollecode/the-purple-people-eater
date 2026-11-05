@@ -66,9 +66,8 @@ const draw = ({ words: counts, links: days }) => {
     }
 
     el.style.setProperty('--weeks', weeks);
-    el.innerHTML = `<div class="heat-months" aria-hidden="true">${months}</div>
-      <div class="heat-days" aria-hidden="true"><span>ma</span><span></span><span>ke</span><span></span><span>pe</span><span></span><span></span></div>
-      <div class="heat-grid">${cells}</div>
+    el.innerHTML = `<div class="heat-days" aria-hidden="true"><span>ma</span><span></span><span>ke</span><span></span><span>pe</span><span></span><span></span></div>
+      <div class="heat-weeks"><div class="heat-months" aria-hidden="true">${months}</div><div class="heat-grid">${cells}</div></div>
       <div class="heat-legend" aria-hidden="true"><span>Vähemmän</span><i style="background: var(--h0)"></i><i style="background: var(--h1)"></i><i style="background: var(--h2)"></i><i style="background: var(--h3)"></i><i style="background: var(--h4)"></i><span>Enemmän</span></div>`;
 
     // One tab stop: the newest day
@@ -90,23 +89,35 @@ const draw = ({ words: counts, links: days }) => {
     }
   };
 
-  // Where the year scrolls sideways, it opens at today
-  // Where the year scrolls sideways, the squares are sized so whole weeks fill the view: no sliver
-  // of a week peeks out beside the day names
-  const scroller = el.parentElement;
+  // Where the weeks scroll sideways, the squares are sized so whole weeks fill the view
   const swipes = window.matchMedia('(pointer: coarse), (max-width: 760px)');
+  const weeksEl = () => el.querySelector('.heat-weeks');
+
+  // A month name that starts left of the view would show only its tail
+  const hideCutMonths = () => {
+    const weeks = weeksEl();
+    weeks.querySelectorAll('.heat-months span').forEach((span) => {
+      span.style.visibility = span.offsetLeft < weeks.scrollLeft - 1 ? 'hidden' : '';
+    });
+  };
+
   const fitAndShowToday = () => {
     fit();
     el.style.removeProperty('--cell');
+    el.style.removeProperty('--trim');
+    const weeks = weeksEl();
     if (swipes.matches) {
-      const grid = el.querySelector('.heat-grid');
-      const gap = parseFloat(getComputedStyle(grid).columnGap);
-      const labels = grid.getBoundingClientRect().left - scroller.getBoundingClientRect().left + scroller.scrollLeft;
-      const view = scroller.clientWidth - parseFloat(getComputedStyle(scroller).paddingRight) - labels;
-      const weeks = Math.round((view + gap) / (SWIPE_CELL + gap));
-      el.style.setProperty('--cell', `${(view + gap) / weeks - gap}px`);
+      // A whole-pixel step from week to week, so a swipe never stops between pixels; the
+      // pixels left over come off the view's width
+      const gap = parseFloat(getComputedStyle(el.querySelector('.heat-grid')).columnGap);
+      const view = weeks.getBoundingClientRect().width - parseFloat(getComputedStyle(weeks).paddingRight);
+      const count = Math.round((view + gap) / (SWIPE_CELL + gap));
+      const step = Math.floor((view + gap) / count);
+      el.style.setProperty('--cell', `${step - gap}px`);
+      el.style.setProperty('--trim', `${view + gap - step * count}px`);
     }
-    scroller.scrollLeft = scroller.scrollWidth;
+    weeks.scrollLeft = weeks.scrollWidth;
+    hideCutMonths();
   };
 
   fitAndShowToday();
@@ -176,7 +187,10 @@ const draw = ({ words: counts, links: days }) => {
   el.addEventListener('pointerleave', hideTip);
   el.addEventListener('focusout', hideTip);
   window.addEventListener('scroll', hideTip, { passive: true });
-  scroller.addEventListener('scroll', hideTip, { passive: true });
+  el.addEventListener('scroll', () => {
+    hideTip();
+    hideCutMonths();
+  }, { capture: true, passive: true });
 };
 
 getJson('heatmap').then(draw);
