@@ -163,6 +163,142 @@
   }
 }
 
+/* Videos and embedded frames take the same floating, tilted shape as pictures */
+.prose .vid,
+.prose .wp-block-video > video,
+.prose :is(.wp-block-embed.is-type-rich, .spotify-embed) iframe,
+.prose iframe:is([src*="spotify.com"], [src*="soundcloud.com"], [src*="mementomori.social"], [src*="instagram.com"], [src*="facebook.com"]) {
+  border-radius: 20px;
+  box-shadow: var(--float-shadow);
+  transform: rotate(calc(var(--tilt, 0deg) * var(--tilt-scale, 1)));
+}
+
+/* Spotify draws its own card with these corners */
+.prose iframe[src*="spotify.com"] { border-radius: 12px; }
+
+/* A light page inside a dark one would get a white backdrop where it is transparent */
+.prose iframe {
+  border: 0;
+  color-scheme: normal;
+}
+.prose .vid {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 22px;
+  background: var(--soft);
+  transition: transform .7s var(--ease), box-shadow .7s var(--ease);
+}
+@supports (corner-shape: squircle) {
+  .prose .vid {
+    border-radius: 40px;
+    corner-shape: squircle;
+  }
+}
+.prose .vid.is-playing { transform: none; }
+.prose .vid :is(iframe, video) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.prose .vid.is-native video { object-fit: cover; }
+.prose .vid.is-native.is-playing video { object-fit: contain; }
+
+/* The still drifts slowly while it waits */
+.prose .vid .vid-poster,
+.prose .vid .vid-poster:hover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  box-shadow: none;
+  object-fit: cover;
+  transform: scale(1.04);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .prose .vid .vid-poster { animation: vid-drift 26s ease-in-out infinite alternate; }
+}
+@keyframes vid-drift {
+  to { transform: scale(1.14) translate(-2.5%, -1.5%); }
+}
+.prose .vid:has(.vid-title)::after {
+  position: absolute;
+  inset: 45% 0 0;
+  background: linear-gradient(to top, rgb(12 10 16 / .72), transparent);
+  content: "";
+  pointer-events: none;
+}
+.prose .vid-title {
+  position: absolute;
+  z-index: 1;
+  right: 96px;
+  bottom: 20px;
+  left: 24px;
+  display: -webkit-box;
+  overflow: hidden;
+  color: #FFFFFF;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-shadow: 0 1px 2px rgb(0 0 0 / .4);
+}
+
+/* The whole poster is the button; the round mark shows where */
+.prose .vid-play {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  padding: 0;
+  inset: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  place-items: center;
+}
+.prose .vid-play svg {
+  width: 72px;
+  height: 72px;
+  padding: 22px 20px 22px 24px;
+  border-radius: 50%;
+  background: var(--deep);
+  box-shadow: 0 2px 6px rgb(0 0 0 / .18), 0 16px 32px -12px rgb(0 0 0 / .45);
+  fill: var(--on-deep);
+  transition: transform .5s var(--ease);
+}
+.prose .vid-play:focus-visible { outline: 0; }
+.prose .vid-play:focus-visible svg {
+  outline: 2px solid var(--on-deep);
+  outline-offset: 3px;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .prose .vid:not(.is-playing):hover {
+    box-shadow: var(--float-shadow-hover);
+    transform: translateY(-4px) rotate(calc(var(--tilt, 0deg) * var(--tilt-scale, 1) * .4));
+  }
+  .prose .vid-play:hover svg { transform: scale(1.08); }
+}
+@media (max-width: 600px) {
+  .prose .vid-title {
+    right: 72px;
+    bottom: 14px;
+    left: 16px;
+    font-size: 14px;
+  }
+  .prose .vid-play svg {
+    width: 60px;
+    height: 60px;
+    padding: 18px 16px 18px 20px;
+  }
+}
+
 /* Gallery pictures sit in a grid, so they stay straight */
 .prose .wp-block-gallery img { transform: none; }
 .prose figure { margin: 2em 0; }

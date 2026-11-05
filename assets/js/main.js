@@ -37,6 +37,7 @@ const MODULES = {
   'theme/responses': '.single-post, .single-diary',
   'theme/side-notes': '.single-post',
   'theme/summary': '.ai-summary',
+  'theme/video': '.vid, .prose video[controls][poster]',
   'theme/word-explanations': 'dfn.gloss',
   'theme/year-shelf': '[data-stat], [data-shelf], [data-years]',
 };

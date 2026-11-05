@@ -14,7 +14,7 @@ const loseImage = (image) => {
   (lone ? link : image).replaceWith(note);
 };
 
-$$('.prose img').forEach((image) => {
+$$('.prose img:not(.vid-poster)').forEach((image) => {
   if (image.complete && image.naturalWidth === 0 && image.currentSrc) {
     loseImage(image);
     return;
