@@ -22,7 +22,7 @@
   z-index: 2;
   width: min(100% - 2 * var(--pad), 640px);
   margin: auto;
-  padding-block: 64px 40px;
+  padding-block: 64px 0;
   text-align: center;
 }
 .nf .big {
@@ -137,6 +137,6 @@
 
 @media (max-width: 600px) {
   .nf { min-height: calc(100svh - 64px); }
-  .nf-text { padding-block: 48px 32px; }
+  .nf-text { padding-block: 48px 0; }
   .nf p { font-size: 18px; }
 }
