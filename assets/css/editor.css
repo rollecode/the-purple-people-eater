@@ -10,3 +10,5 @@
   outline: 2px solid var(--wp-admin-theme-color);
   outline-offset: -2px;
 }
+/* js/editor/video-embed.js puts the site's video look inside YouTube embeds; the block's own preview steps aside */
+.wp-block-embed__wrapper:has(> .vid) > :not(.vid) { display: none; }

@@ -208,7 +208,7 @@
 .prose .vid.is-native video { object-fit: cover; }
 .prose .vid.is-native.is-playing video { object-fit: contain; }
 
-/* The still drifts slowly while it waits */
+/* The still waits on top until the muted preview behind it is playing */
 .prose .vid .vid-poster,
 .prose .vid .vid-poster:hover {
   position: absolute;
@@ -218,14 +218,19 @@
   border-radius: 0;
   box-shadow: none;
   object-fit: cover;
-  transform: scale(1.04);
+  transform: none;
+  transition: opacity .8s var(--ease);
 }
-@media (prefers-reduced-motion: no-preference) {
-  .prose .vid .vid-poster { animation: vid-drift 26s ease-in-out infinite alternate; }
+.prose .vid.is-live .vid-poster { opacity: 0; }
+
+/* Scaled up so YouTube's own title bar and logo fall outside the frame */
+.prose .vid .vid-preview {
+  pointer-events: none;
+  transform: scale(1.12);
 }
-@keyframes vid-drift {
-  to { transform: scale(1.14) translate(-2.5%, -1.5%); }
-}
+
+/* The embed block's aspect-ratio spacer would sit as an empty box above the poster */
+.prose .wp-block-embed__wrapper:has(> .vid)::before { display: none; }
 .prose .vid:has(.vid-title)::after {
   position: absolute;
   inset: 45% 0 0;
