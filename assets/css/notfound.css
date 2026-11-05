@@ -21,8 +21,8 @@
   position: relative;
   z-index: 2;
   width: min(100% - 2 * var(--pad), 640px);
-  margin: 0 auto auto;
-  padding-block: clamp(72px, 12vh, 152px) 24px;
+  margin: auto;
+  padding-block: 64px 40px;
   text-align: center;
 }
 .nf .big {
@@ -48,7 +48,14 @@
   line-height: 1.6;
   text-wrap: pretty;
 }
-.nf .bigsearch { margin: 40px auto 0; }
+.nf .bigsearch {
+  max-width: 440px;
+  margin: 40px auto 0;
+}
+.nf .bigsearch input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
 
 /* Its empty sky runs up behind the text; narrow screens cut the right side */
 .nf-scene {
@@ -130,6 +137,6 @@
 
 @media (max-width: 600px) {
   .nf { min-height: calc(100svh - 64px); }
-  .nf-text { padding-top: 56px; }
+  .nf-text { padding-block: 48px 32px; }
   .nf p { font-size: 18px; }
 }
