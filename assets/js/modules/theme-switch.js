@@ -34,19 +34,61 @@ const ninetiesSheet = () => {
   return link;
 };
 
+// Resolves once the 90s stylesheet and extras are in or out
 const setNineties = (nineties) => {
   if (!nineties && !$('link[data-nineties]')) {
-    return;
+    return Promise.resolve();
   }
-  ninetiesSheet().disabled = !nineties;
-  import('theme/ninety').then((module) => (nineties ? module.on() : module.off()));
+  const link = ninetiesSheet();
+  link.disabled = !nineties;
+  const loaded = nineties && !link.sheet
+    ? new Promise((resolve) => {
+      link.addEventListener('load', resolve, { once: true });
+      link.addEventListener('error', resolve, { once: true });
+    })
+    : null;
+  const extras = import('theme/ninety').then((module) => (nineties ? module.on() : module.off()));
+  return Promise.all([ loaded, extras ]);
+};
+
+// The 90s layout is a different height: while it comes or goes, the pressed button is kept where
+// it was on the screen, until the reader scrolls or the page has settled
+const HOLD_MS = 1500; // Late images and the visit counter
+const HANDS_ON = [ 'wheel', 'touchstart', 'keydown', 'pointerdown' ];
+const holdInPlace = (button, change) => {
+  const root = document.documentElement;
+  const middle = () => {
+    const rect = button.getBoundingClientRect();
+    return rect.top + rect.height / 2;
+  };
+  const top = middle();
+  let holding = true;
+  const stop = () => {
+    holding = false;
+  };
+  const frame = () => {
+    if (!holding) {
+      root.style.removeProperty('overflow-anchor');
+      HANDS_ON.forEach((type) => window.removeEventListener(type, stop, true));
+      return;
+    }
+    const shift = middle() - top;
+    if (shift) {
+      window.scrollBy({ top: shift, behavior: 'instant' });
+    }
+    requestAnimationFrame(frame);
+  };
+  root.style.overflowAnchor = 'none';
+  HANDS_ON.forEach((type) => window.addEventListener(type, stop, { capture: true, passive: true }));
+  change().finally(() => window.setTimeout(stop, HOLD_MS));
+  requestAnimationFrame(frame);
 };
 
 const applyTheme = () => {
   const choice = store.raw('theme');
   const theme = choice || (systemDark.matches ? 'theme-dark' : 'theme-light');
   document.documentElement.className = theme;
-  setNineties(NINETIES === theme);
+  const switched = setNineties(NINETIES === theme);
   themeButtons.forEach((button) => {
     const value = button.dataset.themeSet;
     const pressed = choice ? `theme-${value}` === choice : 'auto' === value;
@@ -55,12 +97,13 @@ const applyTheme = () => {
   if (themeSwitch) {
     moveThemePill();
   }
+  return switched;
 };
 
 themeButtons.forEach((button) => button.addEventListener('click', () => {
   const value = button.dataset.themeSet;
   store.raw('theme', 'auto' === value ? null : `theme-${value}`);
-  applyTheme();
+  holdInPlace(button, applyTheme);
 }));
 
 systemDark.addEventListener('change', applyTheme);
