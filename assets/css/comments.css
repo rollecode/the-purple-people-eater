@@ -383,3 +383,11 @@
   color: inherit;
   text-decoration: none;
 }
+/* Custom emoji from fediverse servers, the size of the text around them */
+.cmt-body img.emoji {
+  display: inline;
+  width: auto;
+  height: 1.25em;
+  margin: 0 .05em;
+  vertical-align: -.25em;
+}
