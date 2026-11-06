@@ -120,6 +120,11 @@
   color: var(--accent);
 }
 
+/* Phones: the pill hugs the picture's corner */
+@media (max-width: 600px) {
+  .lead-badge { margin: 12px; }
+}
+
 /* Without a picture the pill sits above the headline */
 .card-lead:not(:has(.card-img)) .lead-badge {
   position: static;
