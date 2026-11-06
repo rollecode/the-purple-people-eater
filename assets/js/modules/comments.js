@@ -59,7 +59,7 @@ const decorateComments = () => $$('.comment-list .cmt').forEach((comment, index)
     if (item.classList.contains('is-quote')) {
       label = `lainasi ${at}`;
     } else if (item.classList.contains('is-share')) {
-      label = `jakoi ${at}`;
+      label = `jaettu ${at}`;
     } else if (item.classList.contains('is-mention')) {
       label = `linkitti ${at}`;
     }
