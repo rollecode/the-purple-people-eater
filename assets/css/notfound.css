@@ -48,7 +48,7 @@
   text-wrap: pretty;
 }
 .nf .bigsearch {
-  max-width: 440px;
+  max-width: 320px;
   margin: 40px auto 0;
 }
 .nf .bigsearch input::placeholder {
@@ -136,7 +136,21 @@
 }
 
 @media (max-width: 600px) {
-  .nf { min-height: calc(100svh - 64px); }
-  .nf-text { padding-block: 48px 0; }
+  /* Centred on the whole screen: the scene's empty sky lies under the text instead of pushing it up */
+  .nf {
+    justify-content: center;
+    min-height: calc(100svh - 64px);
+  }
+  .nf-text {
+    margin-block: 0;
+    padding-block: 0;
+  }
+  .nf-scene {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 190px;
+    margin: 0;
+  }
   .nf p { font-size: 18px; }
 }
