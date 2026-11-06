@@ -203,7 +203,7 @@ const showTopHighlight = ({ text, count }) => {
 };
 
 if (responsesFor) {
-  getJson(`responses/${responsesFor}`).then(({ comments, fediverse, bluesky, threads, likes, boosts, people, claps, highlight, reach }) => {
+  getJson(`responses/${responsesFor}`).then(({ comments, fediverse, bluesky, threads, linkedin, likes, boosts, people, claps, highlight, reach }) => {
     showClaps(claps);
     showReach(reach);
     if (highlight && highlightProse) {
@@ -228,7 +228,7 @@ if (responsesFor) {
     }
 
     if (line) {
-      const sources = [ [ fediverse, 'fedi', 'fediversumista' ], [ bluesky, 'bluesky', 'Blueskystä' ], [ threads, 'threads', 'Threadsista' ] ]
+      const sources = [ [ fediverse, 'fedi', 'fediversumista' ], [ bluesky, 'bluesky', 'Blueskystä' ], [ threads, 'threads', 'Threadsista' ], [ linkedin, 'linkedin', 'LinkedInistä' ] ]
         .filter(([ count ]) => count)
         .map(([ count, name, from ]) => `<span class="count-part">${icon(name, 'ic-sm')}${fiNumber(count)}<span class="count-from"> ${from}</span></span>`)
         .join('');

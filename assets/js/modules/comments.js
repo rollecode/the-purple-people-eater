@@ -3,13 +3,14 @@ import { $, $$, permalink, getJson, escapeHtml, icon, responsesFor, fiAgo } from
 /**
  * Comments: Rolle's own, handles and where each came from, long ones folded
  */
-const OWN_PROFILES = [ 'https://mementomori.social/@rolle', 'https://bsky.app/profile/rolle.social', 'https://www.threads.com/@rolle_' ];
+const OWN_PROFILES = [ 'https://mementomori.social/@rolle', 'https://bsky.app/profile/rolle.social', 'https://www.threads.com/@rolle_', 'https://www.linkedin.com/in/rolaukka' ];
 const COMMENT_CLAMP_CHARS = 900;
 const RELATIVE_FOR_MS = 7 * 86400000;
 const NETWORKS = {
   fediverse: { icon: 'masto', from: 'fediversumi', at: 'fediversumissa' },
   bluesky: { icon: 'bluesky', from: 'Bluesky', at: 'Blueskyssä' },
   threads: { icon: 'threads', from: 'Threads', at: 'Threadsissa' },
+  linkedin: { icon: 'linkedin', from: 'LinkedIn', at: 'LinkedInissä' },
   web: { icon: 'link', from: 'verkosta', at: 'verkossa' },
 };
 
@@ -20,7 +21,7 @@ const commentHandle = (url, network) => {
   if (network === 'threads') {
     return (url.match(/threads\.(?:com|net)\/@([^/?]+)/) || [])[1];
   }
-  if (network === 'web') {
+  if (network === 'web' || network === 'linkedin') {
     return '';
   }
   const fedi = url.match(/^https?:\/\/([^/]+)\/@([^/?]+)/);
@@ -32,7 +33,7 @@ const decorateComments = () => $$('.comment-list .cmt').forEach((comment, index)
   const link = $('.name a', comment);
   const url = link ? link.href.replace(/\/$/, '') : '';
   const body = $('.cmt-body', comment);
-  const network = [ 'bluesky', 'threads', 'fediverse', 'web' ].find((name) => item.classList.contains(`from-${name}`))
+  const network = [ 'bluesky', 'threads', 'linkedin', 'fediverse', 'web' ].find((name) => item.classList.contains(`from-${name}`))
     || (/^https?:\/\/[^/]+\/@[^/?]+/.test(url) ? 'fediverse' : '');
   const handle = network ? commentHandle(url, network) : '';
 
