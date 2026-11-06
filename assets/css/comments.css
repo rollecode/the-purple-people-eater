@@ -230,7 +230,12 @@
   padding-left: 36px;
   gap: 12px;
 }
-.comment-list li > ol > li { position: relative; }
+/* A long code line in a reply scrolls inside it instead of widening the page */
+.comment-list li > ol > li {
+  position: relative;
+  min-width: 0;
+}
+.cmt-body pre { overflow-x: auto; }
 
 /* Each reply draws its own elbow, and the line on to the next reply, so
  the thread line ends at the last reply */
