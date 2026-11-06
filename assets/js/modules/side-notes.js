@@ -4,6 +4,18 @@ import { $, $$, articleId, getJson, escapeHtml, fiWord, textItem, prose } from '
  * Article parts the template cannot know: side notes, related texts,
  * the age note, the byline icons and counts
  */
+// Floated into the margin beside their paragraph; without a margin they follow it, so reading is not cut off
+const MARGIN = matchMedia('(min-width: 1361px)');
+const placed = [];
+
+const seatNotes = () => {
+  // Notes going after a paragraph are inserted last first, so several keep their order
+  const order = MARGIN.matches ? placed : [ ...placed ].reverse();
+  order.forEach(({ note, target }) => target.insertAdjacentElement(MARGIN.matches ? 'beforebegin' : 'afterend', note));
+};
+
+MARGIN.addEventListener('change', seatNotes);
+
 const placeNotes = (notes) => {
   const paragraphs = $$('p', prose);
 
@@ -18,8 +30,12 @@ const placeNotes = (notes) => {
       link.insertAdjacentHTML('afterend', `<sup class="ref" aria-hidden="true">${index + 1}</sup>`);
     }
 
-    target.insertAdjacentHTML('beforebegin', `<div class="mnote" role="note"><span class="n" aria-hidden="true">${index + 1}</span><b>${escapeHtml(label)}<span class="screen-reader-text">:</span></b> <a href="${escapeHtml(url)}">${escapeHtml(title)}</a>${about ? `<span class="about">${escapeHtml(about)}</span>` : ''}${text ? `<span class="snippet">${escapeHtml(text)}</span>` : ''}</div>`);
+    const note = document.createElement('template');
+    note.innerHTML = `<div class="mnote" role="note"><span class="n" aria-hidden="true">${index + 1}</span><b>${escapeHtml(label)}<span class="screen-reader-text">:</span></b> <a href="${escapeHtml(url)}">${escapeHtml(title)}</a>${about ? `<span class="about">${escapeHtml(about)}</span>` : ''}${text ? `<span class="snippet">${escapeHtml(text)}</span>` : ''}</div>`;
+    placed.push({ note: note.content.firstElementChild, target });
   });
+
+  seatNotes();
 };
 
 if (articleId) {
