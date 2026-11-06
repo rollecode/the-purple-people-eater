@@ -36,8 +36,9 @@ const MODULES = {
   'theme/reading': '.card, .single-post',
   'theme/responses': '.single-post, .single-diary',
   'theme/side-notes': '.single-post',
+  'theme/stance-meter': '.single-post .stance-meter',
   'theme/summary': '.ai-summary',
-  'theme/video': '.vid, .prose video[controls][poster]',
+  'theme/video': '.vid, .prose video[controls]',
   'theme/word-explanations': 'dfn.gloss',
   'theme/year-shelf': '[data-stat], [data-shelf], [data-years]',
 };

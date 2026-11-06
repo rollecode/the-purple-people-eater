@@ -39,3 +39,10 @@
   z-index: 2;
   inset: 0 0 auto;
 }
+.stance-meter-editor {
+  padding: 14px 18px;
+  border-radius: 8px;
+  background: var(--tint);
+  font-family: var(--sans);
+  font-size: 14px;
+}
