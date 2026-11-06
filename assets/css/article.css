@@ -227,6 +227,9 @@
     grid-template-columns: repeat(2, max-content);
     justify-content: start;
   }
+
+  /* Too long to share a row with the comment count */
+  .byline .meta > .readers-now { grid-column: 1 / -1; }
 }
 
 /* Two columns of meta no longer fit beside the photo, a three-digit comment count needs 387px */
