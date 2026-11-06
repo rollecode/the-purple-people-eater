@@ -743,9 +743,10 @@
   right: clamp(6px, 1.2vw, 24px);
   justify-items: center;
   gap: 12px;
-  color: var(--muted);
+  color: var(--ink);
   font-family: var(--sans);
   font-size: 12px;
+  font-weight: 600;
   opacity: 0;
   pointer-events: none;
   transform: translateY(-50%);
@@ -777,10 +778,13 @@
   transition: top .6s var(--ease);
 }
 
-/* On narrower screens the bar alone, inside the page gutter */
+/* On narrower screens everything slims down to fit the page gutter */
 @media (max-width: 1599px) {
-  .stance-meter { right: 5px; }
-  .stance-label { display: none; }
+  .stance-meter {
+    right: 3px;
+    gap: 8px;
+    font-size: 10px;
+  }
   .stance-track {
     width: 4px;
     height: 32vh;
