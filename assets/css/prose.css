@@ -844,26 +844,47 @@
   .prose .link-card { transition: none; }
 }
 
-/* Fediverse posts embedded by the ActivityPub plugin, whose own styles are white and black only */
+/* Fediverse posts embedded by the ActivityPub plugin: Mastodon's own dark purple in both modes, so they never pass for our cards */
 .prose .activitypub-embed {
+  --mastodon-surface: #17063b;
+  --mastodon-rule: #2f0c7a;
+  --mastodon-ink: #f4f2fb;
+  --mastodon-muted: #b4aedb;
+  --mastodon-link: #858afa;
   margin: 0 0 1.4em;
-  border-color: var(--rule-strong);
+  border-color: var(--mastodon-rule);
   border-radius: 16px;
-  background: var(--surface);
-  color: var(--ink);
+  background: var(--mastodon-surface);
+  color: var(--mastodon-ink);
   font-family: var(--sans);
+  /* The article's 21px type would stretch every line box in the card */
+  font-size: 15px;
+  line-height: 1.4;
+}
+.prose .activitypub-embed .activitypub-embed-header { position: relative; padding-right: 52px; }
+/* Mastodon's logo, from Simple Icons (CC0) */
+.prose .activitypub-embed .activitypub-embed-header::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 22px;
+  height: 22px;
+  background: var(--mastodon-ink);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.02-.041.053.053 0 0 0-.046-.01 20.282 20.282 0 0 1-4.709.545c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.167-3.63-.024-5.545zm-3.748 9.195h-2.561V8.29c0-1.309-.55-1.976-1.67-1.976-1.23 0-1.846.79-1.846 2.35v3.403h-2.546V8.663c0-1.56-.617-2.35-1.848-2.35-1.112 0-1.668.668-1.67 1.977v6.218H4.822V8.102c0-1.31.337-2.35 1.011-3.12.696-.77 1.608-1.164 2.74-1.164 1.311 0 2.302.5 2.962 1.498l.638 1.06.638-1.06c.66-.999 1.65-1.498 2.96-1.498 1.13 0 2.043.395 2.74 1.164.675.77 1.012 1.81 1.012 3.12z'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 .prose .activitypub-embed .p-name {
   margin: 0;
-  color: var(--ink);
+  color: var(--mastodon-ink);
   font-family: var(--sans);
   font-size: 16px;
   font-weight: 600;
   line-height: 1.3;
   letter-spacing: normal;
 }
-.prose .activitypub-embed :is(.ap-account, .activitypub-embed-meta, .ap-stat-label) { color: var(--muted); }
-.prose .activitypub-embed .ap-subtitle { color: var(--ink); }
+.prose .activitypub-embed :is(.ap-account, .activitypub-embed-meta, .ap-stat-label) { color: var(--mastodon-muted); }
+.prose .activitypub-embed .ap-account { display: block; }
+.prose .activitypub-embed .ap-subtitle { color: var(--mastodon-ink); }
 .prose .activitypub-embed :is(.ap-subtitle p, li) {
   margin: 0 0 .8em;
   color: inherit;
@@ -871,9 +892,12 @@
   font-size: 16px;
   line-height: 1.55;
 }
-.prose .activitypub-embed .ap-subtitle a { color: var(--link); }
-.prose .activitypub-embed :is(.activitypub-embed-meta, .ap-preview) { border-color: var(--rule-strong); }
-.prose .activitypub-embed .activitypub-embed-meta strong { color: var(--ink); }
+/* One 15px step between every part, as around the card's edges */
+.prose .activitypub-embed .ap-subtitle > :last-child { margin-bottom: 0; }
+.prose .activitypub-embed .ap-preview { margin-top: 0; }
+.prose .activitypub-embed .ap-subtitle a { color: var(--mastodon-link); }
+.prose .activitypub-embed :is(.activitypub-embed-meta, .ap-preview) { border-color: var(--mastodon-rule); }
+.prose .activitypub-embed .activitypub-embed-meta strong { color: var(--mastodon-ink); }
 .prose .activitypub-embed img {
   border-radius: 0;
   box-shadow: none;
