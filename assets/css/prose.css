@@ -843,3 +843,40 @@
 @media (prefers-reduced-motion: reduce) {
   .prose .link-card { transition: none; }
 }
+
+/* Fediverse posts embedded by the ActivityPub plugin, whose own styles are white and black only */
+.prose .activitypub-embed {
+  margin: 0 0 1.4em;
+  border-color: var(--rule-strong);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--sans);
+}
+.prose .activitypub-embed .p-name {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: normal;
+}
+.prose .activitypub-embed :is(.ap-account, .activitypub-embed-meta, .ap-stat-label) { color: var(--muted); }
+.prose .activitypub-embed .ap-subtitle { color: var(--ink); }
+.prose .activitypub-embed :is(.ap-subtitle p, li) {
+  margin: 0 0 .8em;
+  color: inherit;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.55;
+}
+.prose .activitypub-embed .ap-subtitle a { color: var(--link); }
+.prose .activitypub-embed :is(.activitypub-embed-meta, .ap-preview) { border-color: var(--rule-strong); }
+.prose .activitypub-embed .activitypub-embed-meta strong { color: var(--ink); }
+.prose .activitypub-embed img {
+  border-radius: 0;
+  box-shadow: none;
+  transform: none;
+}
+.prose .activitypub-embed .activitypub-embed-header img { border-radius: 50%; }
