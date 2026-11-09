@@ -844,15 +844,15 @@
   .prose .link-card { transition: none; }
 }
 
-/* Fediverse posts embedded by the ActivityPub plugin: Mastodon's own dark purple in both modes, so they never pass for our cards */
+/* Fediverse posts embedded by the ActivityPub plugin: a near-black Mastodon purple in both modes, so they never pass for our cards */
 .prose .activitypub-embed {
-  --mastodon-surface: #17063b;
-  --mastodon-rule: #2f0c7a;
-  --mastodon-ink: #f4f2fb;
-  --mastodon-muted: #b4aedb;
-  --mastodon-link: #858afa;
+  --mastodon-surface: #07060e;
+  --mastodon-rule: #221d2e;
+  --mastodon-ink: #f1eff6;
+  --mastodon-muted: #a7a1b8;
+  --mastodon-link: #a3a6f7;
   margin: 0 0 1.4em;
-  border-color: var(--mastodon-rule);
+  border: 0;
   border-radius: 16px;
   background: var(--mastodon-surface);
   color: var(--mastodon-ink);
